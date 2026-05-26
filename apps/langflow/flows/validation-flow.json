@@ -1,0 +1,56 @@
+{
+  "id": "validation-flow",
+  "name": "Market Validation Flow",
+  "description": "Evaluates feasibility, competition strength, and regional barriers to entry.",
+  "data": {
+    "nodes": [
+      {
+        "id": "competitor-tool-1",
+        "type": "custom-component",
+        "data": {
+          "node": {
+            "template": {
+              "sector": "Logistics"
+            }
+          }
+        }
+      },
+      {
+        "id": "prompt-node-1",
+        "type": "PromptNode",
+        "data": {
+          "node": {
+            "template": {
+              "template": "Analyze feasibility and risks for: {title}. Competitor context: {competitors_context}"
+            }
+          }
+        }
+      },
+      {
+        "id": "llm-node-1",
+        "type": "GeminiNode",
+        "data": {
+          "node": {
+            "template": {
+              "model": "gemini-1.5-flash"
+            }
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "source": "competitor-tool-1",
+        "target": "prompt-node-1",
+        "sourceHandle": "text",
+        "targetHandle": "competitors_context"
+      },
+      {
+        "source": "prompt-node-1",
+        "target": "llm-node-1",
+        "sourceHandle": "prompt",
+        "targetHandle": "input"
+      }
+    ]
+  }
+}

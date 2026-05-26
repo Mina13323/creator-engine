@@ -1,0 +1,39 @@
+{
+  "id": "branding-flow",
+  "name": "Brand Identity Generator Flow",
+  "description": "Generates catchy names, slogans, positioning guidelines, and logo prompts.",
+  "data": {
+    "nodes": [
+      {
+        "id": "prompt-node-1",
+        "type": "PromptNode",
+        "data": {
+          "node": {
+            "template": {
+              "template": "System: Generate catchy brand names and slogans for a startup. Concept: {concept}. UVP: {uvp}"
+            }
+          }
+        }
+      },
+      {
+        "id": "llm-node-1",
+        "type": "OpenAINode",
+        "data": {
+          "node": {
+            "template": {
+              "model_name": "gpt-4o-mini"
+            }
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "source": "prompt-node-1",
+        "target": "llm-node-1",
+        "sourceHandle": "prompt",
+        "targetHandle": "input"
+      }
+    ]
+  }
+}

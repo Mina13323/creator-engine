@@ -1,0 +1,186 @@
+import mongoose, { Schema, Document } from 'mongoose';
+import {
+  Project,
+  BusinessIdea,
+  BusinessValidation,
+  BusinessModel,
+  BrandIdentity,
+  MarketingCampaign,
+  ExecutionRoadmap,
+  Conversation
+} from '@creator/types';
+
+// MongoDB Connection
+export async function connectDB(url: string) {
+  if (mongoose.connection.readyState >= 1) return;
+  try {
+    await mongoose.connect(url);
+    console.log('MongoDB connected successfully');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+    throw error;
+  }
+}
+
+// 1. Project Model
+const ProjectSchema = new Schema<Project & Document>(
+  {
+    userId: { type: String, required: true, index: true },
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    industry: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ['draft', 'idea', 'validated', 'branded', 'marketing-ready', 'active'],
+      default: 'draft'
+    }
+  },
+  { timestamps: true }
+);
+
+// 2. Business Idea Model
+const BusinessIdeaSchema = new Schema<BusinessIdea & Document>(
+  {
+    projectId: { type: String, required: true, index: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    targetAudience: { type: String, required: true },
+    monetization: [{ type: String }],
+    skillsRequired: [{ type: String }],
+    score: { type: Number, default: 0 }
+  },
+  { timestamps: true }
+);
+
+// 3. Business Validation Model
+const CompetitorSchema = new Schema({
+  name: { type: String, required: true },
+  marketShare: { type: String, required: true },
+  strengths: [{ type: String }],
+  weaknesses: [{ type: String }]
+});
+
+const BusinessValidationSchema = new Schema<BusinessValidation & Document>(
+  {
+    projectId: { type: String, required: true, index: true },
+    feasibilityScore: { type: Number, required: true },
+    marketDemandScore: { type: Number, required: true },
+    riskScore: { type: Number, required: true },
+    competitors: [CompetitorSchema],
+    marketSize: { type: String, required: true },
+    barriersToEntry: [{ type: String }],
+    validationSummary: { type: String, required: true }
+  },
+  { timestamps: true }
+);
+
+// 4. Business Strategy / Model Model
+const LeanCanvasSchema = new Schema({
+  problem: [{ type: String }],
+  solution: [{ type: String }],
+  keyMetrics: [{ type: String }],
+  uniqueValueProposition: { type: String, required: true },
+  unfairAdvantage: { type: String, required: true },
+  channels: [{ type: String }],
+  customerSegments: [{ type: String }],
+  costStructure: [{ type: String }],
+  revenueStreams: [{ type: String }]
+});
+
+const BusinessModelSchema = new Schema<BusinessModel & Document>(
+  {
+    projectId: { type: String, required: true, index: true },
+    leanCanvas: { type: LeanCanvasSchema, required: true },
+    pricingStrategy: { type: String, required: true },
+    mvpScope: [{ type: String }]
+  },
+  { timestamps: true }
+);
+
+// 5. Brand Identity Model
+const BrandIdentitySchema = new Schema<BrandIdentity & Document>(
+  {
+    projectId: { type: String, required: true, index: true },
+    brandName: { type: String, required: true },
+    slogan: { type: String, required: true },
+    toneOfVoice: { type: String, required: true },
+    brandPositioning: { type: String, required: true },
+    logoPrompt: { type: String, required: true },
+    colorPalette: {
+      primary: { type: String, required: true },
+      secondary: { type: String, required: true },
+      background: { type: String, required: true },
+      accent: { type: String, required: true }
+    }
+  },
+  { timestamps: true }
+);
+
+// 6. Marketing Campaign Model
+const MarketingCampaignSchema = new Schema<MarketingCampaign & Document>(
+  {
+    projectId: { type: String, required: true, index: true },
+    targetChannels: [{ type: String }],
+    budgetAllocation: { type: Map, of: Number },
+    adCopies: [
+      {
+        platform: { type: String, required: true },
+        headline: { type: String, required: true },
+        body: { type: String, required: true },
+        callToAction: { type: String, required: true }
+      }
+    ],
+    contentHooks: [{ type: String }],
+    socialMediaStrategy: { type: String, required: true }
+  },
+  { timestamps: true }
+);
+
+// 7. Execution Roadmap Model
+const RoadmapMilestoneSchema = new Schema({
+  id: { type: String, required: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  durationWeeks: { type: Number, required: true },
+  dependencies: [{ type: String }],
+  tasks: [{ type: String }],
+  toolRecommendations: [{ type: String }],
+  estimatedCost: { type: Number, required: true }
+});
+
+const ExecutionRoadmapSchema = new Schema<ExecutionRoadmap & Document>(
+  {
+    projectId: { type: String, required: true, index: true },
+    milestones: [RoadmapMilestoneSchema],
+    totalEstimatedBudget: { type: Number, required: true },
+    totalDurationWeeks: { type: Number, required: true }
+  },
+  { timestamps: true }
+);
+
+// 8. Cofounder Conversation Model
+const ChatMessageSchema = new Schema({
+  id: { type: String, required: true },
+  sender: { type: String, enum: ['user', 'ai'], required: true },
+  message: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now },
+  ragSources: [{ type: String }]
+});
+
+const ConversationSchema = new Schema<Conversation & Document>(
+  {
+    projectId: { type: String, required: true, index: true },
+    messages: [ChatMessageSchema]
+  },
+  { timestamps: true }
+);
+
+// Export Mongoose Models
+export const ProjectModel = mongoose.models.Project || mongoose.model<Project & Document>('Project', ProjectSchema);
+export const BusinessIdeaModel = mongoose.models.BusinessIdea || mongoose.model<BusinessIdea & Document>('BusinessIdea', BusinessIdeaSchema);
+export const BusinessValidationModel = mongoose.models.BusinessValidation || mongoose.model<BusinessValidation & Document>('BusinessValidation', BusinessValidationSchema);
+export const BusinessModelModel = mongoose.models.BusinessModel || mongoose.model<BusinessModel & Document>('BusinessModel', BusinessModelSchema);
+export const BrandIdentityModel = mongoose.models.BrandIdentity || mongoose.model<BrandIdentity & Document>('BrandIdentity', BrandIdentitySchema);
+export const MarketingCampaignModel = mongoose.models.MarketingCampaign || mongoose.model<MarketingCampaign & Document>('MarketingCampaign', MarketingCampaignSchema);
+export const ExecutionRoadmapModel = mongoose.models.ExecutionRoadmap || mongoose.model<ExecutionRoadmap & Document>('ExecutionRoadmap', ExecutionRoadmapSchema);
+export const ConversationModel = mongoose.models.Conversation || mongoose.model<Conversation & Document>('Conversation', ConversationSchema);

@@ -1,0 +1,79 @@
+{
+  "id": "business-idea-flow",
+  "name": "Business Idea Generator Flow",
+  "description": "Orchestrates skills, budget, industry, and location inputs to generate a validated startup business idea.",
+  "data": {
+    "nodes": [
+      {
+        "id": "input-node-1",
+        "type": "custom",
+        "data": {
+          "node": {
+            "template": {
+              "skills": ["Coding", "Marketing"],
+              "budget": 500,
+              "industry": "Logistics",
+              "location": "Cairo"
+            },
+            "description": "User profile inputs"
+          }
+        }
+      },
+      {
+        "id": "egypt-market-tool-1",
+        "type": "custom-component",
+        "data": {
+          "node": {
+            "template": {
+              "query": "Logistics"
+            },
+            "description": "Fetches target statistics in Egypt market"
+          }
+        }
+      },
+      {
+        "id": "prompt-node-1",
+        "type": "PromptNode",
+        "data": {
+          "node": {
+            "template": {
+              "template": "System: Generate a personalized business idea using skills {skills}, budget {budget}, in target location {location}. Context: {context}"
+            }
+          }
+        }
+      },
+      {
+        "id": "llm-node-1",
+        "type": "OpenAINode",
+        "data": {
+          "node": {
+            "template": {
+              "model_name": "gpt-4o-mini",
+              "temperature": 0.7
+            }
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "source": "input-node-1",
+        "target": "prompt-node-1",
+        "sourceHandle": "skills",
+        "targetHandle": "skills"
+      },
+      {
+        "source": "egypt-market-tool-1",
+        "target": "prompt-node-1",
+        "sourceHandle": "text",
+        "targetHandle": "context"
+      },
+      {
+        "source": "prompt-node-1",
+        "target": "llm-node-1",
+        "sourceHandle": "prompt",
+        "targetHandle": "input"
+      }
+    ]
+  }
+}
