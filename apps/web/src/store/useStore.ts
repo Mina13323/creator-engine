@@ -21,7 +21,17 @@ interface StoreState {
   chatMessages: ChatMessage[];
   chatLoading: boolean;
 
+  // Auth State
+  user: { id: string; email: string; name?: string } | null;
+  token: string | null;
+  isAuthModalOpen: boolean;
+
   // Actions
+  setAuthModalOpen: (isOpen: boolean) => void;
+  setAuth: (user: { id: string; email: string; name?: string } | null, token: string | null) => void;
+  logout: () => void;
+  verifyAuth: () => Promise<void>;
+  
   loadProjects: () => Promise<void>;
   selectProject: (projectId: string) => Promise<void>;
   createProject: (data: {
@@ -50,9 +60,48 @@ export const useStore = create<StoreState>((set, get) => ({
   chatMessages: [],
   chatLoading: false,
 
+  user: null,
+  token: typeof window !== 'undefined' ? localStorage.getItem('jwt_token') : null,
+  isAuthModalOpen: false,
+
+  setAuthModalOpen: (isOpen: boolean) => set({ isAuthModalOpen: isOpen }),
+  setAuth: (user, token) => {
+    if (token) {
+      localStorage.setItem('jwt_token', token);
+    } else {
+      localStorage.removeItem('jwt_token');
+    }
+    set({ user, token });
+  },
+  logout: () => {
+    localStorage.removeItem('jwt_token');
+    set({ user: null, token: null, isOnboarded: false, projects: [], currentProject: null });
+  },
+  verifyAuth: async () => {
+    const { token } = get();
+    if (!token) return;
+    try {
+      const res = await fetch(`${API_BASE}/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const { user } = await res.json();
+        set({ user });
+      } else {
+        get().logout();
+      }
+    } catch (e) {
+      console.warn('Auth verification failed', e);
+    }
+  },
+
   loadProjects: async () => {
     try {
-      const res = await fetch(`${API_BASE}/projects`);
+      const res = await fetch(`${API_BASE}/projects`, {
+        headers: {
+          ...(get().token ? { Authorization: `Bearer ${get().token}` } : {})
+        }
+      });
       if (res.ok) {
         const data = await res.json();
         set({ projects: data });
@@ -85,7 +134,11 @@ export const useStore = create<StoreState>((set, get) => ({
   selectProject: async (projectId: string) => {
     set({ loading: true, loadingMessage: 'Retrieving venture dossier...' });
     try {
-      const res = await fetch(`${API_BASE}/projects/${projectId}`);
+      const res = await fetch(`${API_BASE}/projects/${projectId}`, {
+        headers: {
+          ...(get().token ? { Authorization: `Bearer ${get().token}` } : {})
+        }
+      });
       if (res.ok) {
         const data = await res.json();
         set({
@@ -96,7 +149,11 @@ export const useStore = create<StoreState>((set, get) => ({
         });
 
         // Load chat history
-        const chatRes = await fetch(`${API_BASE}/ai/chat/${projectId}`);
+        const chatRes = await fetch(`${API_BASE}/ai/chat/${projectId}`, {
+          headers: {
+            ...(get().token ? { Authorization: `Bearer ${get().token}` } : {})
+          }
+        });
         if (chatRes.ok) {
           const chatData = await chatRes.json();
           set({ chatMessages: chatData });
@@ -204,7 +261,10 @@ export const useStore = create<StoreState>((set, get) => ({
     try {
       const res = await fetch(`${API_BASE}/projects`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(get().token ? { Authorization: `Bearer ${get().token}` } : {})
+        },
         body: JSON.stringify(data)
       });
       if (res.ok) {
@@ -340,7 +400,10 @@ export const useStore = create<StoreState>((set, get) => ({
     try {
       const res = await fetch(`${API_BASE}/ai/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(get().token ? { Authorization: `Bearer ${get().token}` } : {})
+        },
         body: JSON.stringify({
           projectId: currentProject.id,
           message

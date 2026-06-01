@@ -11,6 +11,7 @@ import MarketingEngine from '../components/MarketingEngine';
 import RoadmapPanel from '../components/RoadmapPanel';
 import CofounderChat from '../components/CofounderChat';
 import AIStudioPanel from '../components/AIStudioPanel';
+import AuthModal from '../components/AuthModal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { 
@@ -55,6 +56,7 @@ export default function AppPage() {
     if (typeof window !== 'undefined') {
       setApiKeyInput(localStorage.getItem('muapi_key') || '');
       setStudioUrlInput(localStorage.getItem('muapi_studio_url') || 'http://localhost:3001');
+      useStore.getState().verifyAuth();
     }
   }, []);
 
@@ -75,15 +77,23 @@ export default function AppPage() {
 
   if (showLanding && !isOnboarded) {
     return (
-      <LandingPage
-        onGetStarted={() => setShowLanding(false)}
-        onLogin={() => setShowLanding(false)}
-      />
+      <>
+        <LandingPage
+          onGetStarted={() => setShowLanding(false)}
+          onLogin={() => useStore.getState().setAuthModalOpen(true)}
+        />
+        <AuthModal />
+      </>
     );
   }
 
   if (!isOnboarded) {
-    return <Onboarding />;
+    return (
+      <>
+        <Onboarding />
+        <AuthModal />
+      </>
+    );
   }
 
   const sidebarItems = [
@@ -312,6 +322,7 @@ export default function AppPage() {
           </div>
         )}
       </AnimatePresence>
+      <AuthModal />
     </div>
   );
 }

@@ -10,11 +10,18 @@ import {
   BrandIdentityModel,
   MarketingCampaignModel,
   ExecutionRoadmapModel,
-  ConversationModel
+  ConversationModel,
+  UserModel
 } from '@creator/database';
 import { orchestrateVentureBuilder, runCofounderAgent } from '@creator/agents';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import { OAuth2Client } from 'google-auth-library';
 
 dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET || 'secret_key_for_jwt_fallback_only';
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || 'mock_client_id');
 
 const app = express();
 app.use(cors());
@@ -40,6 +47,7 @@ if (MONGO_URL) {
 
 // In-Memory Fallback DB for running offline or without database configurations
 const inMemoryDB = {
+  users: [] as any[],
   projects: [] as any[],
   ideas: [] as any[],
   validations: [] as any[],
@@ -51,6 +59,27 @@ const inMemoryDB = {
 };
 
 // ==========================================
+// MIDDLEWARES
+// ==========================================
+
+export const authMiddleware = async (req: Request, res: Response, next: any) => {
+  try {
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
+
+    if (!token) {
+      return res.status(401).json({ error: 'Unauthorized: No token provided' });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET) as { id: string };
+    (req as any).user = { id: decoded.id };
+    next();
+  } catch (error) {
+    return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+  }
+};
+
+// ==========================================
 // ROUTES
 // ==========================================
 
@@ -59,10 +88,114 @@ app.get('/api/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', database: dbConnected ? 'connected' : 'offline/mock-fallback' });
 });
 
-// Create Project & Kickoff Multi-Agent Generation
-app.post('/api/projects', async (req: Request, res: Response): Promise<any> => {
+// ==========================================
+// AUTH ROUTES
+// ==========================================
+
+app.post('/api/auth/register', async (req: Request, res: Response): Promise<any> => {
   try {
-    const { name, description, industry, skills, budget, location, userId = 'user_demo' } = req.body;
+    if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
+
+    const { email, password, name } = req.body;
+    if (!email || !password || !name) return res.status(400).json({ error: 'Missing fields' });
+
+    const existing = await UserModel.findOne({ email });
+    if (existing) return res.status(400).json({ error: 'Email already in use' });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const userId = `usr_${Date.now()}`;
+    const newUser = new UserModel({ id: userId, email, password: hashedPassword, name });
+    await newUser.save();
+
+    const token = jwt.sign({ id: newUser.id }, JWT_SECRET, { expiresIn: '7d' });
+    return res.status(201).json({ token, user: { id: newUser.id, name, email } });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.post('/api/auth/login', async (req: Request, res: Response): Promise<any> => {
+  try {
+    if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
+
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ error: 'Missing fields' });
+
+    const user = await UserModel.findOne({ email });
+    if (!user || !user.password) return res.status(401).json({ error: 'Invalid credentials' });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
+
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
+    return res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.post('/api/auth/google', async (req: Request, res: Response): Promise<any> => {
+  try {
+    if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
+
+    const { credential } = req.body;
+    if (!credential) return res.status(400).json({ error: 'Missing Google credential' });
+
+    let payload: any = null;
+    try {
+      if (process.env.GOOGLE_CLIENT_ID) {
+        const ticket = await googleClient.verifyIdToken({
+          idToken: credential,
+          audience: process.env.GOOGLE_CLIENT_ID
+        });
+        payload = ticket.getPayload();
+      } else {
+        payload = jwt.decode(credential);
+      }
+    } catch (e) {
+      payload = jwt.decode(credential); 
+    }
+
+    if (!payload || !payload.email) return res.status(401).json({ error: 'Invalid Google token' });
+
+    const { email, name, sub: googleId } = payload;
+    let user = await UserModel.findOne({ email });
+
+    if (!user) {
+      user = new UserModel({ id: `usr_${Date.now()}`, email, name, googleId });
+      await user.save();
+    } else if (!user.googleId) {
+      // Link Google account if not linked
+      user.googleId = googleId;
+      await user.save();
+    }
+
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
+    return res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/api/auth/me', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
+
+    const userId = (req as any).user.id;
+    const user = await UserModel.findOne({ id: userId });
+    
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    return res.json({ user: { id: user.id, name: user.name, email: user.email } });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Create Project & Kickoff Multi-Agent Generation
+app.post('/api/projects', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { name, description, industry, skills, budget, location } = req.body;
+    const userId = (req as any).user.id;
 
     if (!name || !description || !industry || !skills || !budget || !location) {
       return res.status(400).json({ error: 'Missing required onboarding parameters' });
@@ -122,7 +255,7 @@ app.post('/api/projects', async (req: Request, res: Response): Promise<any> => {
 });
 
 // Get Project Details & All AI Generated Outputs
-app.get('/api/projects/:id', async (req: Request, res: Response): Promise<any> => {
+app.get('/api/projects/:id', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
     const projectId = req.params.id;
 
@@ -164,13 +297,14 @@ app.get('/api/projects/:id', async (req: Request, res: Response): Promise<any> =
 });
 
 // List Projects
-app.get('/api/projects', async (req: Request, res: Response) => {
+app.get('/api/projects', authMiddleware, async (req: Request, res: Response) => {
   try {
+    const userId = (req as any).user.id;
     if (dbConnected) {
-      const list = await ProjectModel.find().sort({ createdAt: -1 });
+      const list = await ProjectModel.find({ userId }).sort({ createdAt: -1 });
       res.json(list);
     } else {
-      res.json([...inMemoryDB.projects].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()));
+      res.json([...inMemoryDB.projects].filter(p => p.userId === userId).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()));
     }
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
@@ -178,7 +312,7 @@ app.get('/api/projects', async (req: Request, res: Response) => {
 });
 
 // AI Cofounder Chat Endpoint
-app.post('/api/ai/chat', async (req: Request, res: Response): Promise<any> => {
+app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
     const { projectId, message } = req.body;
 
@@ -246,7 +380,7 @@ app.post('/api/ai/chat', async (req: Request, res: Response): Promise<any> => {
 });
 
 // Get Chat History
-app.get('/api/ai/chat/:projectId', async (req: Request, res: Response) => {
+app.get('/api/ai/chat/:projectId', authMiddleware, async (req: Request, res: Response) => {
   try {
     const { projectId } = req.params;
     if (dbConnected) {
