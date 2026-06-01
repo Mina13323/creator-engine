@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { 
-  Lightbulb, Sparkles, Pencil, MapPin, Globe, DollarSign, 
+import {
+  Lightbulb, Sparkles, Pencil, MapPin, Globe, DollarSign,
   FileText, BarChart, Store, CheckCircle, ChevronLeft, Loader2
 } from 'lucide-react';
 import { Button } from './ui/button';
@@ -24,8 +24,8 @@ const NAME_IDEAS = [
 ];
 
 export default function Onboarding() {
-  const { createProject, loadProjects, loading, loadingMessage } = useStore();
-  
+  const { createProject, loadProjects, loading, loadingMessage, setAuthModalOpen, user } = useStore();
+
   const [step, setStep] = useState(1);
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('Unknown, Cairo Governorate, Egypt');
@@ -43,12 +43,16 @@ export default function Onboarding() {
   };
 
   const handleLaunch = async () => {
+    if (!user) {
+      setAuthModalOpen(true);
+      return;
+    }
     // Mapping our new flow to the existing store payload
     const payload = {
       name: name || 'My New Venture',
       description: `${description}. Unique features: ${uniqueFeatures.join(', ')}`,
       industry: 'E-commerce', // Default
-      skills: uniqueFeatures.length > 0 ? uniqueFeatures : ['Digital Marketing'], 
+      skills: uniqueFeatures.length > 0 ? uniqueFeatures : ['Digital Marketing'],
       budget: currency === 'usd' ? 1000 : 500,
       location: location,
     };
@@ -64,11 +68,15 @@ export default function Onboarding() {
             <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
             <div className="w-1/2 h-full bg-emerald-500 rounded-sm -skew-x-12"></div>
           </div>
-          <span className="font-bold text-lg text-slate-900 tracking-tight">Venturekit</span>
+          <span className="font-bold text-lg text-slate-900 tracking-tight">CEO</span>
         </div>
-        
+
         <div className="absolute top-6 right-6">
-          <Button variant="ghost" className="text-emerald-600 font-semibold hover:text-emerald-700 hover:bg-emerald-50">Login</Button>
+          {!user ? (
+            <Button onClick={() => setAuthModalOpen(true)} variant="ghost" className="text-emerald-600 font-semibold hover:text-emerald-700 hover:bg-emerald-50">Login</Button>
+          ) : (
+            <span className="text-emerald-700 font-medium text-sm">Logged in as {user.name || user.email}</span>
+          )}
         </div>
 
         <div className="w-full max-w-xl text-center space-y-6 mt-12">
@@ -77,9 +85,9 @@ export default function Onboarding() {
             <Sparkles className="w-5 h-5" />
             <Pencil className="w-5 h-5" />
           </div>
-          
+
           <h1 className="text-2xl font-medium text-slate-900 mb-10">Just a few final details. You can change this later.</h1>
-          
+
           <div className="text-left space-y-2">
             <h3 className="font-medium text-slate-900">Concept</h3>
             <div className="flex items-center gap-3 text-slate-500 text-sm">
@@ -87,9 +95,9 @@ export default function Onboarding() {
               <span>{loadingMessage || 'Pulling together your concept...'}</span>
             </div>
           </div>
-          
+
           <div className="pt-8">
-            <Button 
+            <Button
               className="w-full bg-emerald-300 hover:bg-emerald-400 text-white rounded-xl py-6 text-base font-semibold transition-colors pointer-events-none"
             >
               Next
@@ -101,7 +109,7 @@ export default function Onboarding() {
   }
 
   const renderStepIcon = () => {
-    switch(step) {
+    switch (step) {
       case 1:
         return (
           <div className="flex justify-center gap-4 text-amber-500 mb-8">
@@ -147,9 +155,13 @@ export default function Onboarding() {
         </div>
         <span className="font-bold text-lg text-slate-900 tracking-tight">Venturekit</span>
       </div>
-      
+
       <div className="absolute top-6 right-6">
-        <Button variant="ghost" className="text-emerald-600 font-semibold hover:text-emerald-700 hover:bg-emerald-50">Login</Button>
+        {!user ? (
+          <Button onClick={() => setAuthModalOpen(true)} variant="ghost" className="text-emerald-600 font-semibold hover:text-emerald-700 hover:bg-emerald-50">Login</Button>
+        ) : (
+          <span className="text-emerald-700 font-medium text-sm">Logged in as {user.name || user.email}</span>
+        )}
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center p-6">
@@ -158,14 +170,14 @@ export default function Onboarding() {
 
           <div className="relative">
             {step > 1 && (
-              <button 
+              <button
                 onClick={() => setStep(step - 1)}
                 className="absolute left-0 top-1.5 text-slate-400 hover:text-slate-600 transition-colors"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
             )}
-            
+
             <h1 className="text-2xl font-medium text-center text-slate-900 mb-6">
               {step === 1 && "What's your business idea?"}
               {step === 2 && "Where is your business located?"}
@@ -178,7 +190,7 @@ export default function Onboarding() {
           <div className="space-y-6">
             {step === 1 && (
               <div className="relative">
-                <Input 
+                <Input
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="E.g. dog walking"
@@ -192,7 +204,7 @@ export default function Onboarding() {
 
             {step === 2 && (
               <div className="space-y-4">
-                <Input 
+                <Input
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   placeholder="Unknown, Cairo Governorate, Egypt"
@@ -228,9 +240,9 @@ export default function Onboarding() {
             {step === 3 && (
               <div className="space-y-6">
                 <div className="relative">
-                  <Input 
+                  <Input
                     value={uniqueFeatures.join(', ')}
-                    onChange={() => {}}
+                    onChange={() => { }}
                     placeholder="E.g. all-natural ingredients, warm atmosphere, etc."
                     className="w-full rounded-xl py-6 px-4 text-base border-slate-300 focus-visible:ring-emerald-500 text-slate-900 bg-white"
                   />
@@ -238,7 +250,7 @@ export default function Onboarding() {
                     <div className="w-2 h-2 rounded-full bg-purple-500"></div>
                   </div>
                 </div>
-                
+
                 <div>
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-sm font-medium text-slate-500">Ideas</span>
@@ -248,12 +260,11 @@ export default function Onboarding() {
                   </div>
                   <div className="flex flex-wrap gap-2.5">
                     {UNIQUE_IDEAS.map(idea => (
-                      <Badge 
+                      <Badge
                         key={idea}
-                        variant="outline" 
-                        className={`cursor-pointer px-4 py-2 text-sm font-medium rounded-full border-slate-200 transition-colors ${
-                          uniqueFeatures.includes(idea) ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'hover:bg-slate-50 text-slate-700 bg-white'
-                        }`}
+                        variant="outline"
+                        className={`cursor-pointer px-4 py-2 text-sm font-medium rounded-full border-slate-200 transition-colors ${uniqueFeatures.includes(idea) ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'hover:bg-slate-50 text-slate-700 bg-white'
+                          }`}
                         onClick={() => toggleUniqueFeature(idea)}
                       >
                         {idea}
@@ -266,13 +277,13 @@ export default function Onboarding() {
 
             {step === 4 && (
               <div className="space-y-6">
-                <Input 
+                <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="E.g. Happy Hounds"
                   className="w-full rounded-xl py-6 px-4 text-base border-slate-300 focus-visible:ring-emerald-500 text-slate-900 bg-white"
                 />
-                
+
                 <div>
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-sm font-medium text-slate-500">Ideas</span>
@@ -282,12 +293,11 @@ export default function Onboarding() {
                   </div>
                   <div className="flex flex-wrap gap-2.5">
                     {NAME_IDEAS.map(idea => (
-                      <Badge 
+                      <Badge
                         key={idea}
-                        variant="outline" 
-                        className={`cursor-pointer px-4 py-2 text-sm font-medium rounded-full border-slate-200 transition-colors ${
-                          name === idea ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'hover:bg-slate-50 text-slate-700 bg-white'
-                        }`}
+                        variant="outline"
+                        className={`cursor-pointer px-4 py-2 text-sm font-medium rounded-full border-slate-200 transition-colors ${name === idea ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'hover:bg-slate-50 text-slate-700 bg-white'
+                          }`}
                         onClick={() => setName(idea)}
                       >
                         {idea}
@@ -298,7 +308,7 @@ export default function Onboarding() {
               </div>
             )}
 
-            <Button 
+            <Button
               onClick={() => {
                 if (step < 4) {
                   setStep(step + 1);
@@ -315,16 +325,15 @@ export default function Onboarding() {
 
         {/* Stepper Dots */}
         <div className="absolute bottom-16 flex items-center justify-center gap-2">
-          {[1,2,3,4,5].map(i => (
-            <div 
-              key={i} 
-              className={`h-1.5 rounded-full transition-all ${
-                i === step ? 'w-6 bg-slate-400' : 'w-1.5 bg-slate-200'
-              }`}
+          {[1, 2, 3, 4, 5].map(i => (
+            <div
+              key={i}
+              className={`h-1.5 rounded-full transition-all ${i === step ? 'w-6 bg-slate-400' : 'w-1.5 bg-slate-200'
+                }`}
             />
           ))}
         </div>
-        
+
         {/* Footer */}
         <div className="absolute bottom-6 flex items-center justify-center gap-1.5 text-xs text-slate-400">
           <div className="w-3 h-3 border border-slate-400 rounded-sm flex items-center justify-center">

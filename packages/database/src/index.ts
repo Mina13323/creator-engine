@@ -7,7 +7,8 @@ import {
   BrandIdentity,
   MarketingCampaign,
   ExecutionRoadmap,
-  Conversation
+  Conversation,
+  User
 } from '@creator/types';
 
 // MongoDB Connection
@@ -21,6 +22,18 @@ export async function connectDB(url: string) {
     throw error;
   }
 }
+
+// 0. User Model
+const UserSchema = new Schema<User & Document>(
+  {
+    id: { type: String, required: true, index: true },
+    email: { type: String, required: true, unique: true },
+    name: { type: String },
+    password: { type: String }, // optional because of Google Auth
+    googleId: { type: String },
+  },
+  { timestamps: true }
+);
 
 // 1. Project Model
 const ProjectSchema = new Schema<Project & Document>(
@@ -176,6 +189,7 @@ const ConversationSchema = new Schema<Conversation & Document>(
 );
 
 // Export Mongoose Models
+export const UserModel = mongoose.models.User || mongoose.model<User & Document & { password?: string, googleId?: string }>('User', UserSchema);
 export const ProjectModel = mongoose.models.Project || mongoose.model<Project & Document>('Project', ProjectSchema);
 export const BusinessIdeaModel = mongoose.models.BusinessIdea || mongoose.model<BusinessIdea & Document>('BusinessIdea', BusinessIdeaSchema);
 export const BusinessValidationModel = mongoose.models.BusinessValidation || mongoose.model<BusinessValidation & Document>('BusinessValidation', BusinessValidationSchema);
