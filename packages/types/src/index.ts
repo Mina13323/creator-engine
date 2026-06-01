@@ -2,6 +2,11 @@ export interface User {
   id: string;
   email: string;
   name?: string;
+
+  // Authentication
+  password?: string;
+  googleId?: string;
+
   createdAt: Date;
 }
 
