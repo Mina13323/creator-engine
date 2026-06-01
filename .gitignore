@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+.pnpm-store/
 
 # Next.js
 .next/
@@ -20,3 +21,6 @@ dev-err.log
 # OS
 .DS_Store
 Thumbs.db
+
+# Editor/IDE
+.vscode/
