@@ -1,0 +1,8 @@
+@@ -2,7 +2,7 @@
+ import dbConnect from '../../../../../../../src/lib/dbConnect';
+ import { FinancialForecast, PricingStrategy } from '../../../../../../../src/models/FinancialPlan/financialPlan';
+ import { z } from 'zod';
+import { generateFinancialPrediction } from '../../../../../../../src/lib/ragService';
+ 
+ const PredictPayloadSchema = z.object({
+   projectId: z.string().regex(/^[0-9a-fA-F]{24}$/, "Invalid MongoDB ObjectId"),

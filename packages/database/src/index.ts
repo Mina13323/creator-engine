@@ -203,3 +203,114 @@ export const BrandIdentityModel = mongoose.models.BrandIdentity || mongoose.mode
 export const MarketingCampaignModel = mongoose.models.MarketingCampaign || mongoose.model<MarketingCampaign & Document>('MarketingCampaign', MarketingCampaignSchema);
 export const ExecutionRoadmapModel = mongoose.models.ExecutionRoadmap || mongoose.model<ExecutionRoadmap & Document>('ExecutionRoadmap', ExecutionRoadmapSchema);
 export const ConversationModel = mongoose.models.Conversation || mongoose.model<Conversation & Document>('Conversation', ConversationSchema);
+
+// --- Financial Plan Interfaces ---
+export interface IStartupCost {
+  category: string;
+  amount: number;
+  description?: string;
+}
+
+export interface IMonthlyCost {
+  category: string;
+  amount: number;
+  isVariable: boolean;
+  description?: string;
+}
+
+export interface IRevenueProjection {
+  month: number;
+  projected_revenue: number;
+  cumulative_revenue: number;
+}
+
+export interface IFinancialForecast extends Document {
+  projectId: mongoose.Types.ObjectId;
+  startupCosts: IStartupCost[];
+  totalStartupCost: number;
+  monthlyCosts: IMonthlyCost[];
+  totalMonthlyCost: number;
+  revenueProjections: IRevenueProjection[];
+  breakEvenMonth: number | null;
+  currency: 'EGP' | 'USD';
+  assumptionsApplied: string[];
+  updatedAt: Date;
+}
+
+export interface IPriceTier {
+  tierName: 'Free' | 'Pro' | 'Enterprise' | string;
+  amount: number;
+  billingCycle: 'monthly' | 'annual' | 'one-time';
+  targetSegment: string;
+  features: string[];
+  justification: string;
+}
+
+export interface IPricingStrategy extends Document {
+  projectId: mongoose.Types.ObjectId;
+  businessModel: 'SaaS' | 'Agency retainer' | 'E-commerce' | 'Freelance' | string;
+  recommendedStrategyType: string;
+  currency: 'EGP' | 'USD';
+  priceTiers: IPriceTier[];
+  marketPositioningRationale: string;
+  updatedAt: Date;
+}
+
+// --- Financial Plan Schemas ---
+export const StartupCostSchema = new Schema<IStartupCost>({
+  category: { type: String, required: true },
+  amount: { type: Number, required: true, min: 0 },
+  description: { type: String }
+}, { _id: false });
+
+export const MonthlyCostSchema = new Schema<IMonthlyCost>({
+  category: { type: String, required: true },
+  amount: { type: Number, required: true, min: 0 },
+  isVariable: { type: Boolean, default: false },
+  description: { type: String }
+}, { _id: false });
+
+export const RevenueProjectionSchema = new Schema<IRevenueProjection>({
+  month: { type: Number, required: true, min: 1, max: 12 },
+  projected_revenue: { type: Number, required: true, min: 0 },
+  cumulative_revenue: { type: Number, required: true, min: 0 }
+}, { _id: false });
+
+export const FinancialForecastSchema = new Schema<IFinancialForecast>({
+  projectId: { type: Schema.Types.ObjectId, required: true, unique: true, index: true },
+  startupCosts: [StartupCostSchema],
+  totalStartupCost: { type: Number, required: true, default: 0 },
+  monthlyCosts: [MonthlyCostSchema],
+  totalMonthlyCost: { type: Number, required: true, default: 0 },
+  revenueProjections: [RevenueProjectionSchema],
+  breakEvenMonth: { type: Number, default: null, min: 1, max: 12 },
+  currency: { type: String, enum: ['EGP', 'USD'], default: 'EGP' },
+  assumptionsApplied: [{ type: String }]
+}, { timestamps: true });
+
+export const PriceTierSchema = new Schema<IPriceTier>({
+  tierName: { type: String, required: true },
+  amount: { type: Number, required: true, min: 0 },
+  billingCycle: { type: String, enum: ['monthly', 'annual', 'one-time'], required: true },
+  targetSegment: { type: String, required: true },
+  features: [{ type: String }],
+  justification: { type: String }
+}, { _id: false });
+
+export const PricingStrategySchema = new Schema<IPricingStrategy>({
+  projectId: { type: Schema.Types.ObjectId, required: true, unique: true, index: true },
+  businessModel: { type: String, required: true },
+  recommendedStrategyType: { type: String, required: true },
+  currency: { type: String, enum: ['EGP', 'USD'], default: 'EGP' },
+  priceTiers: [PriceTierSchema],
+  marketPositioningRationale: { type: String, required: true }
+}, { timestamps: true });
+
+// Pre-save Hooks for Mathematical Integrity
+FinancialForecastSchema.pre<IFinancialForecast>('save', function () {
+  this.totalStartupCost = this.startupCosts.reduce((sum: number, item: any) => sum + item.amount, 0);
+  this.totalMonthlyCost = this.monthlyCosts.reduce((sum: number, item: any) => sum + item.amount, 0);
+});
+
+export const FinancialForecast = mongoose.models.FinancialForecast || mongoose.model<IFinancialForecast>('FinancialForecast', FinancialForecastSchema);
+export const PricingStrategy = mongoose.models.PricingStrategy || mongoose.model<IPricingStrategy>('PricingStrategy', PricingStrategySchema);

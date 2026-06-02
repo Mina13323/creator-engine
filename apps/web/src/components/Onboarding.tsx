@@ -211,7 +211,7 @@ export default function Onboarding() {
                   className="w-full rounded-xl py-6 px-4 text-base border-slate-300 focus-visible:ring-emerald-500 text-slate-900 bg-white"
                 />
                 <div className="flex justify-center gap-4 pt-2">
-                  <Select value={language} onValueChange={setLanguage}>
+                  <Select value={language} onValueChange={(val) => setLanguage(val || '')}>
                     <SelectTrigger className="w-[140px] rounded-xl border-none shadow-none text-slate-600 focus:ring-0 font-medium">
                       <SelectValue placeholder="English" />
                     </SelectTrigger>
@@ -221,7 +221,7 @@ export default function Onboarding() {
                     </SelectContent>
                   </Select>
 
-                  <Select value={currency} onValueChange={setCurrency}>
+                  <Select value={currency} onValueChange={(val) => setCurrency(val || '')}>
                     <SelectTrigger className="w-[140px] rounded-xl border-none shadow-none text-slate-600 focus:ring-0 font-medium bg-amber-50">
                       <div className="flex items-center gap-2">
                         <div className="w-5 h-5 rounded-full bg-amber-200 flex items-center justify-center text-xs text-amber-700 font-bold">$</div>
