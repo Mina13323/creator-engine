@@ -8,7 +8,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Business Idea is required' }, { status: 400 });
     }
 
-    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL || 'http://localhost:5678/webhook/financial-engine';
+    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL || 'https://omarmohammed.app.n8n.cloud/webhook-test/financial-engine';
 
     // In a real environment, this calls the n8n webhook which processes the RAG & Gemini nodes
     try {
