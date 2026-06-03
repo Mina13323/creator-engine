@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calculator, Zap, DollarSign, TrendingUp, AlertCircle, Building, Server, ArrowRight } from 'lucide-react';
 
-export default function FinancialEngineDashboard() {
+export default function FinancialEngine() {
   const [businessIdea, setBusinessIdea] = useState('');
   const [businessModel, setBusinessModel] = useState('SaaS');
   const [loading, setLoading] = useState(false);
