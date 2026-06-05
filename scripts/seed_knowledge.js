@@ -16,7 +16,11 @@ try {
   }
 } catch (e) {}
 
-const MONGO_URI = process.env.DATABASE_URL || "mongodb+srv://menawaelmagdy_db_user:minawaelmagdy@creator-engine.2krql9o.mongodb.net/creator_engine?appName=creator-engine";
+const MONGO_URI = process.env.DATABASE_URL;
+if (!MONGO_URI) {
+  console.error("Error: DATABASE_URL is not set in environment or .env file.");
+  process.exit(1);
+}
 
 // Define Schema matching packages/database/src/index.ts
 const KnowledgeDocumentSchema = new mongoose.Schema({

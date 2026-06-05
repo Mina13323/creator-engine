@@ -19,7 +19,11 @@ try {
   }
 } catch (e) {}
 
-const MONGO_URI = process.env.DATABASE_URL || "mongodb+srv://menawaelmagdy_db_user:minawaelmagdy@creator-engine.2krql9o.mongodb.net/creator_engine?appName=creator-engine";
+const MONGO_URI = process.env.DATABASE_URL;
+if (!MONGO_URI) {
+  console.error("Error: DATABASE_URL is not set in environment or .env file.");
+  process.exit(1);
+}
 const JWT_SECRET = process.env.JWT_SECRET || 'CreatorEngineSecretKey';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
