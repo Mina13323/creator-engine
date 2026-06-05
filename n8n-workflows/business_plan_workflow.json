@@ -1,0 +1,154 @@
+{
+  "name": "Business Plan Generation Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "business-plan-flow",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"api_key\": \"YOUR_TAVILY_API_KEY\", \"query\": \"startup research: competitor analysis, market size, business models, monetization strategies for \" + $('Webhook').item.json.body.opportunity.title + \" - \" + $('Webhook').item.json.body.opportunity.description, \"search_depth\": \"advanced\", \"include_answer\": true}"
+      },
+      "id": "tavily",
+      "name": "Tavily Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        300,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_FIREWORKS_API_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"model\": \"accounts/fireworks/models/deepseek-v4-flash\", \"messages\": [{\"role\": \"system\", \"content\": \"You are Creator Engine's Business Plan Generation Agent. Your task is to draft a comprehensive, structured business plan for the founder's chosen opportunity. Utilize the provided founder profile and market research trends to output a high-fidelity business plan. You must return ONLY valid JSON matching the exact schema. No markdown, no explanations, no wrapping in triple backticks.\"}, {\"role\": \"user\", \"content\": \"Opportunity Details:\\n\" + JSON.stringify($('Webhook').item.json.body.opportunity) + \"\\n\\nFounder Profile:\\n\" + JSON.stringify($('Webhook').item.json.body.founderProfile) + \"\\n\\nMarket Research Insights:\\n\" + JSON.stringify($json.results) + \"\\n\\nGenerate a complete startup business plan tailored to this opportunity and founder. Your output must strictly match the following JSON schema:\\n{\\n  \\\"executiveSummary\\\": \\\"Detailed high-level overview of the venture.\\\",\\n  \\\"problemStatement\\\": \\\"Clear definition of the core problems being solved.\\\",\\n  \\\"solution\\\": \\\"Description of the product/service offering and how it resolves the problem.\\\",\\n  \\\"targetAudience\\\": \\\"Detailed description of the target audience segments and demographics.\\\",\\n  \\\"marketOpportunity\\\": \\\"Market size analysis, growth rate, and TAM/SAM/SOM estimates.\\\",\\n  \\\"leanCanvas\\\": {\\n    \\\"problem\\\": [\\\"Problem 1\\\", \\\"Problem 2\\\"],\\n    \\\"solution\\\": [\\\"Solution 1\\\", \\\"Solution 2\\\"],\\n    \\\"keyMetrics\\\": [\\\"Metric 1\\\", \\\"Metric 2\\\"],\\n    \\\"uniqueValueProposition\\\": \\\"A single compelling message that states why this startup is different and worth buying.\\\",\\n    \\\"unfairAdvantage\\\": \\\"Something that cannot be easily copied or bought.\\\",\\n    \\\"channels\\\": [\\\"Channel 1\\\", \\\"Channel 2\\\"],\\n    \\\"customerSegments\\\": [\\\"Segment 1\\\", \\\"Segment 2\\\"],\\n    \\\"costStructure\\\": [\\\"Cost 1\\\", \\\"Cost 2\\\"],\\n    \\\"revenueStreams\\\": [\\\"Stream 1\\\", \\\"Stream 2\\\"]\\n  },\\n  \\\"businessModel\\\": \\\"Comprehensive details of the business model and value capture strategy.\\\",\\n  \\\"pricingStrategy\\\": \\\"Specific pricing tiers, models, or unit economics.\\\",\\n  \\\"goToMarketStrategy\\\": \\\"Detailed multi-channel customer acquisition and launch strategy.\\\",\\n  \\\"mvpScope\\\": [\\\"Feature 1\\\", \\\"Feature 2\\\", \\\"Feature 3\\\"],\\n  \\\"successMetrics\\\": [\\\"Metric 1\\\", \\\"Metric 2\\\"],\\n  \\\"growthStrategy\\\": \\\"Scale strategies, viral loops, or partnerships.\\\",\\n  \\\"marketResearchSummary\\\": \\\"Summarized competitive analysis and research from Tavily search findings.\\\"\\n}\"}], \"temperature\": 0.7, \"max_tokens\": 4000, \"response_format\": {\"type\": \"json_object\"}}"
+      },
+      "id": "fireworks",
+      "name": "Fireworks AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const content = $input.first().json.choices[0].message.content.trim();\nlet parsed;\ntry {\n  parsed = JSON.parse(content);\n} catch (e) {\n  const match = content.match(/\\{[\\s\\S]*\\}/);\n  parsed = JSON.parse(match ? match[0] : content);\n}\nreturn { json: { success: true, data: parsed } };"
+      },
+      "id": "parser",
+      "name": "Parse JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        900,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Tavily Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily Search": {
+      "main": [
+        [
+          {
+            "node": "Fireworks AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fireworks AI": {
+      "main": [
+        [
+          {
+            "node": "Parse JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse JSON": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  ],
+  "active": false,
+  "settings": {}
+}

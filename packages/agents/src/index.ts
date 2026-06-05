@@ -114,11 +114,13 @@ export async function runOpportunityAgent(
 
 export async function runBusinessPlanAgent(
   projectId: string,
-  selectedOpportunity: any
+  selectedOpportunity: any,
+  founderProfile: any
 ): Promise<Partial<BusinessPlan> | null> {
   const result = await callN8n<Partial<BusinessPlan>>('business-plan-flow', {
     projectId,
-    opportunity: selectedOpportunity
+    opportunity: selectedOpportunity,
+    founderProfile
   });
 
   if (result && result.success) {
@@ -130,6 +132,7 @@ export async function runBusinessPlanAgent(
     executiveSummary: 'A platform bridging the gap between local talent and SME needs.',
     problemStatement: 'SMEs struggle to find reliable local freelancers, and freelancers lack consistent deal flow.',
     solution: 'An AI-matched marketplace ensuring quality and escrow payments.',
+    targetAudience: 'Local small and medium enterprises (SMEs) looking for verified project talent, and skilled local freelancers.',
     marketOpportunity: 'The MENA gig economy is growing at 22% CAGR.',
     leanCanvas: {
       problem: ['Unreliable freelancers', 'Payment disputes'],
@@ -143,12 +146,16 @@ export async function runBusinessPlanAgent(
       revenueStreams: ['10% platform fee']
     },
     customerSegments: ['SMEs', 'Freelancers'],
+    businessModel: 'Transaction Fee',
     revenueModel: 'Transaction Fee',
     pricingStrategy: '10% on successful project completion',
     goToMarketStrategy: 'Direct sales to top 50 local SMEs to build initial demand.',
-    mvpScope: 'Basic user profiles, job posting, and Stripe escrow integration.',
+    mvpScope: ['Basic user profiles', 'Hyper-local AI matchmaking', 'Job posting workflow', 'Stripe escrow integration'],
     successMetrics: ['100 active jobs', '$10k GMV first month'],
-    growthStrategy: 'Referral program offering $50 credit for successful hires.'
+    growthStrategy: 'Referral program offering $50 credit for successful hires.',
+    marketResearchSummary: 'Tavily research highlights high demand for verified talent in the MENA region with 22% CAGR.',
+    generatedByModel: 'deepseek-v4-flash',
+    generatedAt: new Date()
   };
 }
 

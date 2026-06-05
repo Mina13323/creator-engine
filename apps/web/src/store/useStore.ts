@@ -17,6 +17,9 @@ interface StoreState {
 
   // Lifecycle Output States (for currently generating views)
   opportunities: BusinessOpportunity[];
+  selectedOpportunity: SelectedOpportunity | null;
+  isSelecting: boolean;
+  selectionError: string | null;
 
   // Auth State
   user: AuthUser | null;
@@ -57,6 +60,9 @@ export const useStore = create<StoreState>((set, get) => ({
   chatMessages: [],
   chatLoading: false,
   opportunities: [],
+  selectedOpportunity: null,
+  isSelecting: false,
+  selectionError: null,
 
   user: null,
   isAuthModalOpen: false,
@@ -77,7 +83,10 @@ export const useStore = create<StoreState>((set, get) => ({
       ventureState: null,
       activeTab: 'dashboard',
       chatMessages: [],
-      opportunities: []
+      opportunities: [],
+      selectedOpportunity: null,
+      isSelecting: false,
+      selectionError: null
     });
   },
   verifyAuth: async () => {
@@ -116,6 +125,7 @@ export const useStore = create<StoreState>((set, get) => ({
       set({
         currentProject: proj || null,
         ventureState: stateData,
+        selectedOpportunity: stateData?.selectedOpportunity || null,
         activeTab: 'dashboard',
         loading: false
       });
@@ -187,16 +197,20 @@ export const useStore = create<StoreState>((set, get) => ({
   },
 
   selectOpportunity: async (projectId, opportunityId) => {
-    set({ loading: true, loadingMessage: 'Selecting Opportunity...' });
+    set({ isSelecting: true, selectionError: null });
     try {
-      const res = await authClient.post<{ selectedOpportunity: SelectedOpportunity }>('/opportunities/select', { projectId, opportunityId });
+      const res = await authClient.post<{ success: boolean; selectedOpportunity: SelectedOpportunity }>('/opportunities/select', { projectId, opportunityId });
       set(state => {
         const updatedState = state.ventureState ? { ...state.ventureState, selectedOpportunity: res.selectedOpportunity } : state.ventureState;
-        return { ventureState: updatedState as VentureState, loading: false };
+        return {
+          selectedOpportunity: res.selectedOpportunity,
+          ventureState: updatedState as VentureState,
+          isSelecting: false
+        };
       });
-    } catch (e) {
+    } catch (e: any) {
       console.error('selectOpportunity failed', e);
-      set({ loading: false });
+      set({ isSelecting: false, selectionError: e.message || 'Failed to select opportunity' });
       throw e;
     }
   },

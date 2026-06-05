@@ -1,11 +1,11 @@
 # Graph Report - CEO  (2026-06-05)
 
 ## Corpus Check
-- 107 files · ~47,802 words
+- 104 files · ~44,348 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 923 nodes · 996 edges · 92 communities (65 shown, 27 thin omitted)
+- 872 nodes · 948 edges · 87 communities (62 shown, 25 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.9)
 - Token cost: 0 input · 0 output
 
@@ -94,11 +94,6 @@
 - [[_COMMUNITY_Community 83|Community 83]]
 - [[_COMMUNITY_Community 84|Community 84]]
 - [[_COMMUNITY_Community 85|Community 85]]
-- [[_COMMUNITY_Community 86|Community 86]]
-- [[_COMMUNITY_Community 87|Community 87]]
-- [[_COMMUNITY_Community 88|Community 88]]
-- [[_COMMUNITY_Community 89|Community 89]]
-- [[_COMMUNITY_Community 90|Community 90]]
 - [[_COMMUNITY_Community 93|Community 93]]
 
 ## God Nodes (most connected - your core abstractions)
@@ -128,11 +123,11 @@
 ## Import Cycles
 - 2-file cycle: `apps/web/src/lib/authClient.ts -> apps/web/src/store/useStore.ts -> apps/web/src/lib/authClient.ts`
 
-## Communities (92 total, 27 thin omitted)
+## Communities (87 total, 25 thin omitted)
 
 ### Community 0 - "Data Models & Schemas"
-Cohesion: 0.07
-Nodes (41): AppPage(), PROTECTED_TABS, AuthModal(), BrandingPanel(), BusinessPlanDashboard(), CofounderChat(), Dashboard(), NAME_IDEAS (+33 more)
+Cohesion: 0.11
+Nodes (28): BusinessPlanDashboard(), Dashboard(), NAME_IDEAS, UNIQUE_IDEAS, OpportunityExplorer(), cn(), Badge(), badgeVariants (+20 more)
 
 ### Community 1 - "Web App Config"
 Cohesion: 0.05
@@ -173,6 +168,10 @@ Nodes (24): active, main, connections, Code in JavaScript, Embeddings OpenAI, Me
 ### Community 11 - "Turbo Workspace"
 Cohesion: 0.09
 Nodes (21): aliases, components, hooks, lib, ui, utils, iconLibrary, menuAccent (+13 more)
+
+### Community 12 - "Landing Page"
+Cohesion: 0.06
+Nodes (25): AppPage(), PROTECTED_TABS, AuthModal(), BrandingPanel(), CofounderChat(), ASSETS, OPTIONS, Onboarding() (+17 more)
 
 ### Community 13 - "Community 13"
 Cohesion: 0.12
@@ -346,40 +345,24 @@ Nodes (3): For /graphify explain, For /graphify path, graphify reference: query,
 Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
-### Community 86 - "Community 86"
-Cohesion: 0.10
-Nodes (19): AgentRun, AgentRunSchema, BusinessPlan, BusinessPlanSchema, FounderProfile, FounderProfileSchema, fs, jwt (+11 more)
-
-### Community 87 - "Community 87"
-Cohesion: 0.12
-Nodes (14): AgentRun, AgentRunSchema, BusinessOpportunity, BusinessOpportunitySchema, fs, jwt, mongoose, path (+6 more)
-
-### Community 88 - "Community 88"
-Cohesion: 0.14
-Nodes (13): connections, active, Fireworks AI, Parse JSON, settings, Tavily Search, Webhook, main (+5 more)
-
-### Community 89 - "Community 89"
-Cohesion: 0.38
-Nodes (9): checkEmail(), get(), getMe(), googleLogin(), login(), logout(), post(), request() (+1 more)
-
 ## Knowledge Gaps
-- **554 isolated node(s):** `PreToolUse`, `name`, `version`, `private`, `main` (+549 more)
+- **513 isolated node(s):** `PreToolUse`, `name`, `version`, `private`, `main` (+508 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **27 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **25 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `devDependencies` connect `API Server Setup` to `Tailwind Styling`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `devDependencies` connect `API Server Setup` to `Mongoose Models`?**
-  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **Why does `KnowledgeDocument` connect `Root Package Config` to `Web App Config`?**
-  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **What connects `PreToolUse`, `name`, `version` to the rest of the system?**
-  _556 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _515 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Data Models & Schemas` be split into smaller, more focused modules?**
-  _Cohesion score 0.07168458781362007 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11336032388663968 - nodes in this community are weakly interconnected._
 - **Should `Web App Config` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
 - **Should `Dashboard Features` be split into smaller, more focused modules?**

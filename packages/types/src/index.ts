@@ -57,6 +57,7 @@ export interface Project {
   description: string;
   industry: string;
   status: 'draft' | 'idea' | 'validated' | 'branded' | 'marketing-ready' | 'active';
+  selectedOpportunityId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -105,6 +106,7 @@ export interface SelectedOpportunity {
   estimatedRevenue: string;
   timeToMVP: string;
   createdAt: Date;
+  selectedAt: Date;
 }
 
 export interface CompetitorAnalysis {
@@ -155,15 +157,20 @@ export interface BusinessPlan {
   executiveSummary: string;
   problemStatement: string;
   solution: string;
+  targetAudience: string;
   marketOpportunity: string;
   leanCanvas: LeanCanvas;
   customerSegments: string[];
-  revenueModel: string;
+  businessModel: string;
+  revenueModel?: string;
   pricingStrategy: string;
   goToMarketStrategy: string;
-  mvpScope: string;
+  mvpScope: string[];
   successMetrics: string[];
   growthStrategy: string;
+  marketResearchSummary?: string;
+  generatedByModel?: string;
+  generatedAt?: Date;
   version: number;
   isLatest: boolean;
   createdAt: Date;
@@ -246,6 +253,12 @@ export interface VentureState {
   founderProfile?: FounderProfile;
   selectedOpportunity?: SelectedOpportunity;
   businessPlan?: BusinessPlan;
+  latestBusinessPlan?: {
+    id: string;
+    version: number;
+    generatedAt: Date;
+    generatedByModel: string;
+  };
   financialForecast?: any; // To be implemented in future modules
   branding?: BrandIdentity;
   marketing?: MarketingCampaign;

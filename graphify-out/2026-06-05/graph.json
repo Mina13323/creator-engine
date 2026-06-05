@@ -373,195 +373,6 @@
       "norm_label": "trackagentrun()"
     },
     {
-      "label": "test_business_plan.js",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L1",
-      "id": "api_test_business_plan",
-      "community": 86,
-      "norm_label": "test_business_plan.js"
-    },
-    {
-      "label": "mongoose",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L1",
-      "id": "api_test_business_plan_mongoose",
-      "community": 86,
-      "norm_label": "mongoose"
-    },
-    {
-      "label": "jwt",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L2",
-      "id": "api_test_business_plan_jwt",
-      "community": 86,
-      "norm_label": "jwt"
-    },
-    {
-      "label": "fs",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L3",
-      "id": "api_test_business_plan_fs",
-      "community": 86,
-      "norm_label": "fs"
-    },
-    {
-      "label": "path",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L4",
-      "id": "api_test_business_plan_path",
-      "community": 86,
-      "norm_label": "path"
-    },
-    {
-      "label": "UserSchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L27",
-      "id": "api_test_business_plan_userschema",
-      "community": 86,
-      "norm_label": "userschema"
-    },
-    {
-      "label": "ProjectSchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L28",
-      "id": "api_test_business_plan_projectschema",
-      "community": 86,
-      "norm_label": "projectschema"
-    },
-    {
-      "label": "FounderProfileSchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L29",
-      "id": "api_test_business_plan_founderprofileschema",
-      "community": 86,
-      "norm_label": "founderprofileschema"
-    },
-    {
-      "label": "SelectedOpportunitySchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L34",
-      "id": "api_test_business_plan_selectedopportunityschema",
-      "community": 86,
-      "norm_label": "selectedopportunityschema"
-    },
-    {
-      "label": "LeanCanvasSchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L41",
-      "id": "api_test_business_plan_leancanvasschema",
-      "community": 86,
-      "norm_label": "leancanvasschema"
-    },
-    {
-      "label": "BusinessPlanSchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L47",
-      "id": "api_test_business_plan_businessplanschema",
-      "community": 86,
-      "norm_label": "businessplanschema"
-    },
-    {
-      "label": "VentureStateSchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L56",
-      "id": "api_test_business_plan_venturestateschema",
-      "community": 86,
-      "norm_label": "venturestateschema"
-    },
-    {
-      "label": "AgentRunSchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L63",
-      "id": "api_test_business_plan_agentrunschema",
-      "community": 86,
-      "norm_label": "agentrunschema"
-    },
-    {
-      "label": "User",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L69",
-      "id": "api_test_business_plan_user",
-      "community": 86,
-      "norm_label": "user"
-    },
-    {
-      "label": "Project",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L70",
-      "id": "api_test_business_plan_project",
-      "community": 86,
-      "norm_label": "project"
-    },
-    {
-      "label": "FounderProfile",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L71",
-      "id": "api_test_business_plan_founderprofile",
-      "community": 86,
-      "norm_label": "founderprofile"
-    },
-    {
-      "label": "SelectedOpportunity",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L72",
-      "id": "api_test_business_plan_selectedopportunity",
-      "community": 86,
-      "norm_label": "selectedopportunity"
-    },
-    {
-      "label": "BusinessPlan",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L73",
-      "id": "api_test_business_plan_businessplan",
-      "community": 86,
-      "norm_label": "businessplan"
-    },
-    {
-      "label": "VentureState",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L74",
-      "id": "api_test_business_plan_venturestate",
-      "community": 86,
-      "norm_label": "venturestate"
-    },
-    {
-      "label": "AgentRun",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L75",
-      "id": "api_test_business_plan_agentrun",
-      "community": 86,
-      "norm_label": "agentrun"
-    },
-    {
-      "label": "runTest()",
-      "file_type": "code",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L77",
-      "id": "api_test_business_plan_runtest",
-      "community": 86,
-      "norm_label": "runtest()"
-    },
-    {
       "label": "test_opportunity_discovery_v1.js",
       "file_type": "code",
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
@@ -703,150 +514,6 @@
       "source_location": "L56",
       "id": "api_test_opportunity_discovery_v1_runtest",
       "community": 35,
-      "norm_label": "runtest()"
-    },
-    {
-      "label": "test_opportunity_selection.js",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L1",
-      "id": "api_test_opportunity_selection",
-      "community": 87,
-      "norm_label": "test_opportunity_selection.js"
-    },
-    {
-      "label": "mongoose",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L1",
-      "id": "api_test_opportunity_selection_mongoose",
-      "community": 87,
-      "norm_label": "mongoose"
-    },
-    {
-      "label": "jwt",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L2",
-      "id": "api_test_opportunity_selection_jwt",
-      "community": 87,
-      "norm_label": "jwt"
-    },
-    {
-      "label": "fs",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L3",
-      "id": "api_test_opportunity_selection_fs",
-      "community": 87,
-      "norm_label": "fs"
-    },
-    {
-      "label": "path",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L4",
-      "id": "api_test_opportunity_selection_path",
-      "community": 87,
-      "norm_label": "path"
-    },
-    {
-      "label": "UserSchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L27",
-      "id": "api_test_opportunity_selection_userschema",
-      "community": 87,
-      "norm_label": "userschema"
-    },
-    {
-      "label": "ProjectSchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L28",
-      "id": "api_test_opportunity_selection_projectschema",
-      "community": 87,
-      "norm_label": "projectschema"
-    },
-    {
-      "label": "BusinessOpportunitySchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L29",
-      "id": "api_test_opportunity_selection_businessopportunityschema",
-      "community": 87,
-      "norm_label": "businessopportunityschema"
-    },
-    {
-      "label": "SelectedOpportunitySchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L36",
-      "id": "api_test_opportunity_selection_selectedopportunityschema",
-      "community": 87,
-      "norm_label": "selectedopportunityschema"
-    },
-    {
-      "label": "AgentRunSchema",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L44",
-      "id": "api_test_opportunity_selection_agentrunschema",
-      "community": 87,
-      "norm_label": "agentrunschema"
-    },
-    {
-      "label": "User",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L50",
-      "id": "api_test_opportunity_selection_user",
-      "community": 87,
-      "norm_label": "user"
-    },
-    {
-      "label": "Project",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L51",
-      "id": "api_test_opportunity_selection_project",
-      "community": 87,
-      "norm_label": "project"
-    },
-    {
-      "label": "BusinessOpportunity",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L52",
-      "id": "api_test_opportunity_selection_businessopportunity",
-      "community": 87,
-      "norm_label": "businessopportunity"
-    },
-    {
-      "label": "SelectedOpportunity",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L53",
-      "id": "api_test_opportunity_selection_selectedopportunity",
-      "community": 87,
-      "norm_label": "selectedopportunity"
-    },
-    {
-      "label": "AgentRun",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L54",
-      "id": "api_test_opportunity_selection_agentrun",
-      "community": 87,
-      "norm_label": "agentrun"
-    },
-    {
-      "label": "runTest()",
-      "file_type": "code",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L56",
-      "id": "api_test_opportunity_selection_runtest",
-      "community": 87,
       "norm_label": "runtest()"
     },
     {
@@ -2295,7 +1962,7 @@
       "source_file": "apps/web/src/app/page.tsx",
       "source_location": "L1",
       "id": "app_page",
-      "community": 0,
+      "community": 12,
       "norm_label": "page.tsx"
     },
     {
@@ -2304,7 +1971,7 @@
       "source_file": "apps/web/src/app/page.tsx",
       "source_location": "L38",
       "id": "app_page_protected_tabs",
-      "community": 0,
+      "community": 12,
       "norm_label": "protected_tabs"
     },
     {
@@ -2313,7 +1980,7 @@
       "source_file": "apps/web/src/app/page.tsx",
       "source_location": "L40",
       "id": "app_page_apppage",
-      "community": 0,
+      "community": 12,
       "norm_label": "apppage()"
     },
     {
@@ -2322,7 +1989,7 @@
       "source_file": "apps/web/src/components/AIStudioPanel.tsx",
       "source_location": "L1",
       "id": "components_aistudiopanel",
-      "community": 0,
+      "community": 12,
       "norm_label": "aistudiopanel.tsx"
     },
     {
@@ -2331,7 +1998,7 @@
       "source_file": "apps/web/src/components/AIStudioPanel.tsx",
       "source_location": "L4",
       "id": "components_aistudiopanel_aistudiopanel",
-      "community": 0,
+      "community": 12,
       "norm_label": "aistudiopanel()"
     },
     {
@@ -2340,7 +2007,7 @@
       "source_file": "apps/web/src/components/AuthModal.tsx",
       "source_location": "L1",
       "id": "components_authmodal",
-      "community": 0,
+      "community": 12,
       "norm_label": "authmodal.tsx"
     },
     {
@@ -2349,7 +2016,7 @@
       "source_file": "apps/web/src/components/AuthModal.tsx",
       "source_location": "L9",
       "id": "components_authmodal_authmodal",
-      "community": 0,
+      "community": 12,
       "norm_label": "authmodal()"
     },
     {
@@ -2358,7 +2025,7 @@
       "source_file": "apps/web/src/components/BrandingPanel.tsx",
       "source_location": "L1",
       "id": "components_brandingpanel",
-      "community": 0,
+      "community": 12,
       "norm_label": "brandingpanel.tsx"
     },
     {
@@ -2367,7 +2034,7 @@
       "source_file": "apps/web/src/components/BrandingPanel.tsx",
       "source_location": "L8",
       "id": "components_brandingpanel_brandingpanel",
-      "community": 0,
+      "community": 12,
       "norm_label": "brandingpanel()"
     },
     {
@@ -2394,7 +2061,7 @@
       "source_file": "apps/web/src/components/CofounderChat.tsx",
       "source_location": "L1",
       "id": "components_cofounderchat",
-      "community": 0,
+      "community": 12,
       "norm_label": "cofounderchat.tsx"
     },
     {
@@ -2403,7 +2070,7 @@
       "source_file": "apps/web/src/components/CofounderChat.tsx",
       "source_location": "L7",
       "id": "components_cofounderchat_cofounderchat",
-      "community": 0,
+      "community": 12,
       "norm_label": "cofounderchat()"
     },
     {
@@ -2430,7 +2097,7 @@
       "source_file": "apps/web/src/components/FinancialEngine.tsx",
       "source_location": "L1",
       "id": "components_financialengine",
-      "community": 0,
+      "community": 12,
       "norm_label": "financialengine.tsx"
     },
     {
@@ -2439,7 +2106,7 @@
       "source_file": "apps/web/src/components/FinancialEngine.tsx",
       "source_location": "L7",
       "id": "components_financialengine_financialengine",
-      "community": 0,
+      "community": 12,
       "norm_label": "financialengine()"
     },
     {
@@ -2709,7 +2376,7 @@
       "source_file": "apps/web/src/components/Onboarding.tsx",
       "source_location": "L15",
       "id": "components_onboarding_onboarding",
-      "community": 0,
+      "community": 12,
       "norm_label": "onboarding()"
     },
     {
@@ -2736,7 +2403,7 @@
       "source_file": "apps/web/src/components/RoadmapPanel.tsx",
       "source_location": "L1",
       "id": "components_roadmappanel",
-      "community": 0,
+      "community": 12,
       "norm_label": "roadmappanel.tsx"
     },
     {
@@ -2745,7 +2412,7 @@
       "source_file": "apps/web/src/components/RoadmapPanel.tsx",
       "source_location": "L7",
       "id": "components_roadmappanel_roadmappanel",
-      "community": 0,
+      "community": 12,
       "norm_label": "roadmappanel()"
     },
     {
@@ -3006,7 +2673,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L1",
       "id": "lib_api",
-      "community": 0,
+      "community": 12,
       "norm_label": "api.ts"
     },
     {
@@ -3015,7 +2682,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L1",
       "id": "lib_api_apiclient",
-      "community": 90,
+      "community": 12,
       "norm_label": "apiclient"
     },
     {
@@ -3024,7 +2691,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L2",
       "id": "lib_api_apiclient_generateimage",
-      "community": 90,
+      "community": 12,
       "norm_label": ".generateimage()"
     },
     {
@@ -3033,7 +2700,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L18",
       "id": "lib_api_apiclient_uploadfile",
-      "community": 90,
+      "community": 12,
       "norm_label": ".uploadfile()"
     },
     {
@@ -3042,7 +2709,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L37",
       "id": "lib_api_apiclient_generatemarketingstudioad",
-      "community": 90,
+      "community": 12,
       "norm_label": ".generatemarketingstudioad()"
     },
     {
@@ -3051,7 +2718,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L56",
       "id": "lib_api_api",
-      "community": 0,
+      "community": 12,
       "norm_label": "api"
     },
     {
@@ -3060,7 +2727,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L1",
       "id": "lib_authclient",
-      "community": 89,
+      "community": 12,
       "norm_label": "authclient.ts"
     },
     {
@@ -3069,7 +2736,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L9",
       "id": "lib_authclient_request",
-      "community": 89,
+      "community": 12,
       "norm_label": "request()"
     },
     {
@@ -3078,7 +2745,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L45",
       "id": "lib_authclient_checkemail",
-      "community": 89,
+      "community": 12,
       "norm_label": "checkemail()"
     },
     {
@@ -3087,7 +2754,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L52",
       "id": "lib_authclient_login",
-      "community": 89,
+      "community": 12,
       "norm_label": "login()"
     },
     {
@@ -3096,7 +2763,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L59",
       "id": "lib_authclient_signup",
-      "community": 89,
+      "community": 12,
       "norm_label": "signup()"
     },
     {
@@ -3105,7 +2772,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L66",
       "id": "lib_authclient_googlelogin",
-      "community": 89,
+      "community": 12,
       "norm_label": "googlelogin()"
     },
     {
@@ -3114,7 +2781,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L73",
       "id": "lib_authclient_logout",
-      "community": 89,
+      "community": 12,
       "norm_label": "logout()"
     },
     {
@@ -3123,7 +2790,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L81",
       "id": "lib_authclient_getme",
-      "community": 89,
+      "community": 12,
       "norm_label": "getme()"
     },
     {
@@ -3132,7 +2799,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L89",
       "id": "lib_authclient_get",
-      "community": 89,
+      "community": 12,
       "norm_label": "get()"
     },
     {
@@ -3141,7 +2808,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L93",
       "id": "lib_authclient_post",
-      "community": 89,
+      "community": 12,
       "norm_label": "post()"
     },
     {
@@ -3150,7 +2817,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L100",
       "id": "lib_authclient_authclient",
-      "community": 0,
+      "community": 12,
       "norm_label": "authclient"
     },
     {
@@ -3177,7 +2844,7 @@
       "source_file": "apps/web/src/store/useStore.ts",
       "source_location": "L1",
       "id": "store_usestore",
-      "community": 0,
+      "community": 12,
       "norm_label": "usestore.ts"
     },
     {
@@ -3186,16 +2853,16 @@
       "source_file": "apps/web/src/store/useStore.ts",
       "source_location": "L5",
       "id": "store_usestore_storestate",
-      "community": 0,
+      "community": 12,
       "norm_label": "storestate"
     },
     {
       "label": "useStore",
       "file_type": "code",
       "source_file": "apps/web/src/store/useStore.ts",
-      "source_location": "L52",
+      "source_location": "L49",
       "id": "store_usestore_usestore",
-      "community": 0,
+      "community": 12,
       "norm_label": "usestore"
     },
     {
@@ -3413,132 +3080,6 @@
       "id": "web_tsconfig_exclude",
       "community": 48,
       "norm_label": "exclude"
-    },
-    {
-      "label": "business_plan_workflow.json",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L1",
-      "id": "n8n_workflows_business_plan_workflow",
-      "community": 88,
-      "norm_label": "business_plan_workflow.json"
-    },
-    {
-      "label": "name",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L2",
-      "id": "n8n_workflows_business_plan_workflow_name",
-      "community": 88,
-      "norm_label": "name"
-    },
-    {
-      "label": "nodes",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L3",
-      "id": "n8n_workflows_business_plan_workflow_nodes",
-      "community": 88,
-      "norm_label": "nodes"
-    },
-    {
-      "label": "connections",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L106",
-      "id": "n8n_workflows_business_plan_workflow_connections",
-      "community": 88,
-      "norm_label": "connections"
-    },
-    {
-      "label": "Webhook",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L107",
-      "id": "n8n_workflows_business_plan_workflow_connections_webhook",
-      "community": 88,
-      "norm_label": "webhook"
-    },
-    {
-      "label": "main",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L108",
-      "id": "n8n_workflows_business_plan_workflow_webhook_main",
-      "community": 88,
-      "norm_label": "main"
-    },
-    {
-      "label": "Tavily Search",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L118",
-      "id": "n8n_workflows_business_plan_workflow_connections_tavily_search",
-      "community": 88,
-      "norm_label": "tavily search"
-    },
-    {
-      "label": "main",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L119",
-      "id": "n8n_workflows_business_plan_workflow_tavily_search_main",
-      "community": 88,
-      "norm_label": "main"
-    },
-    {
-      "label": "Fireworks AI",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L129",
-      "id": "n8n_workflows_business_plan_workflow_connections_fireworks_ai",
-      "community": 88,
-      "norm_label": "fireworks ai"
-    },
-    {
-      "label": "main",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L130",
-      "id": "n8n_workflows_business_plan_workflow_fireworks_ai_main",
-      "community": 88,
-      "norm_label": "main"
-    },
-    {
-      "label": "Parse JSON",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L140",
-      "id": "n8n_workflows_business_plan_workflow_connections_parse_json",
-      "community": 88,
-      "norm_label": "parse json"
-    },
-    {
-      "label": "main",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L141",
-      "id": "n8n_workflows_business_plan_workflow_parse_json_main",
-      "community": 88,
-      "norm_label": "main"
-    },
-    {
-      "label": "active",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L152",
-      "id": "n8n_workflows_business_plan_workflow_connections_active",
-      "community": 88,
-      "norm_label": "active"
-    },
-    {
-      "label": "settings",
-      "file_type": "code",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L153",
-      "id": "n8n_workflows_business_plan_workflow_connections_settings",
-      "community": 88,
-      "norm_label": "settings"
     },
     {
       "label": "financial_agents_guide.json",
@@ -4705,7 +4246,7 @@
       "label": "runCofounderAgent()",
       "file_type": "code",
       "source_file": "packages/agents/src/index.ts",
-      "source_location": "L162",
+      "source_location": "L155",
       "id": "src_index_runcofounderagent",
       "community": 6,
       "norm_label": "runcofounderagent()"
@@ -5146,7 +4687,7 @@
       "label": "BusinessIdeaSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L96",
+      "source_location": "L95",
       "id": "src_index_businessideaschema",
       "community": 1,
       "norm_label": "businessideaschema"
@@ -5155,7 +4696,7 @@
       "label": "BusinessOpportunitySchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L112",
+      "source_location": "L111",
       "id": "src_index_businessopportunityschema",
       "community": 1,
       "norm_label": "businessopportunityschema"
@@ -5164,7 +4705,7 @@
       "label": "SelectedOpportunitySchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L132",
+      "source_location": "L131",
       "id": "src_index_selectedopportunityschema",
       "community": 1,
       "norm_label": "selectedopportunityschema"
@@ -5173,7 +4714,7 @@
       "label": "CompetitorSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L154",
+      "source_location": "L152",
       "id": "src_index_competitorschema",
       "community": 1,
       "norm_label": "competitorschema"
@@ -5182,7 +4723,7 @@
       "label": "BusinessValidationSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L161",
+      "source_location": "L159",
       "id": "src_index_businessvalidationschema",
       "community": 1,
       "norm_label": "businessvalidationschema"
@@ -5191,7 +4732,7 @@
       "label": "LeanCanvasSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L178",
+      "source_location": "L176",
       "id": "src_index_leancanvasschema",
       "community": 1,
       "norm_label": "leancanvasschema"
@@ -5200,7 +4741,7 @@
       "label": "BusinessModelSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L190",
+      "source_location": "L188",
       "id": "src_index_businessmodelschema",
       "community": 1,
       "norm_label": "businessmodelschema"
@@ -5209,7 +4750,7 @@
       "label": "BusinessPlanSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L203",
+      "source_location": "L201",
       "id": "src_index_businessplanschema",
       "community": 1,
       "norm_label": "businessplanschema"
@@ -5218,7 +4759,7 @@
       "label": "BrandIdentitySchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L232",
+      "source_location": "L225",
       "id": "src_index_brandidentityschema",
       "community": 1,
       "norm_label": "brandidentityschema"
@@ -5227,7 +4768,7 @@
       "label": "MarketingCampaignSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L253",
+      "source_location": "L246",
       "id": "src_index_marketingcampaignschema",
       "community": 1,
       "norm_label": "marketingcampaignschema"
@@ -5236,7 +4777,7 @@
       "label": "RoadmapMilestoneSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L275",
+      "source_location": "L268",
       "id": "src_index_roadmapmilestoneschema",
       "community": 1,
       "norm_label": "roadmapmilestoneschema"
@@ -5245,7 +4786,7 @@
       "label": "ExecutionRoadmapSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L286",
+      "source_location": "L279",
       "id": "src_index_executionroadmapschema",
       "community": 1,
       "norm_label": "executionroadmapschema"
@@ -5254,7 +4795,7 @@
       "label": "ChatMessageSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L299",
+      "source_location": "L292",
       "id": "src_index_chatmessageschema",
       "community": 1,
       "norm_label": "chatmessageschema"
@@ -5263,7 +4804,7 @@
       "label": "ConversationSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L307",
+      "source_location": "L300",
       "id": "src_index_conversationschema",
       "community": 1,
       "norm_label": "conversationschema"
@@ -5272,7 +4813,7 @@
       "label": "VentureStateSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L318",
+      "source_location": "L311",
       "id": "src_index_venturestateschema",
       "community": 1,
       "norm_label": "venturestateschema"
@@ -5281,7 +4822,7 @@
       "label": "AgentRunSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L336",
+      "source_location": "L329",
       "id": "src_index_agentrunschema",
       "community": 1,
       "norm_label": "agentrunschema"
@@ -5290,7 +4831,7 @@
       "label": "UploadedDocumentSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L356",
+      "source_location": "L349",
       "id": "src_index_uploadeddocumentschema",
       "community": 1,
       "norm_label": "uploadeddocumentschema"
@@ -5299,7 +4840,7 @@
       "label": "OpportunityComparisonSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L372",
+      "source_location": "L365",
       "id": "src_index_opportunitycomparisonschema",
       "community": 1,
       "norm_label": "opportunitycomparisonschema"
@@ -5308,7 +4849,7 @@
       "label": "KnowledgeDocument",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L401",
+      "source_location": "L394",
       "id": "packages_database_src_index_ts_src_index_knowledgedocument",
       "community": 1,
       "norm_label": "knowledgedocument"
@@ -5317,7 +4858,7 @@
       "label": "KnowledgeDocumentSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L412",
+      "source_location": "L405",
       "id": "src_index_knowledgedocumentschema",
       "community": 1,
       "norm_label": "knowledgedocumentschema"
@@ -5326,7 +4867,7 @@
       "label": "IStartupCost",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L426",
+      "source_location": "L419",
       "id": "src_index_istartupcost",
       "community": 1,
       "norm_label": "istartupcost"
@@ -5335,7 +4876,7 @@
       "label": "IMonthlyCost",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L432",
+      "source_location": "L425",
       "id": "src_index_imonthlycost",
       "community": 1,
       "norm_label": "imonthlycost"
@@ -5344,7 +4885,7 @@
       "label": "IRevenueProjection",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L439",
+      "source_location": "L432",
       "id": "src_index_irevenueprojection",
       "community": 1,
       "norm_label": "irevenueprojection"
@@ -5353,7 +4894,7 @@
       "label": "IFinancialForecast",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L445",
+      "source_location": "L438",
       "id": "src_index_ifinancialforecast",
       "community": 1,
       "norm_label": "ifinancialforecast"
@@ -5362,7 +4903,7 @@
       "label": "IPriceTier",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L458",
+      "source_location": "L451",
       "id": "src_index_ipricetier",
       "community": 1,
       "norm_label": "ipricetier"
@@ -5371,7 +4912,7 @@
       "label": "IPricingStrategy",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L467",
+      "source_location": "L460",
       "id": "src_index_ipricingstrategy",
       "community": 1,
       "norm_label": "ipricingstrategy"
@@ -5380,7 +4921,7 @@
       "label": "StartupCostSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L478",
+      "source_location": "L471",
       "id": "src_index_startupcostschema",
       "community": 1,
       "norm_label": "startupcostschema"
@@ -5389,7 +4930,7 @@
       "label": "MonthlyCostSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L484",
+      "source_location": "L477",
       "id": "src_index_monthlycostschema",
       "community": 1,
       "norm_label": "monthlycostschema"
@@ -5398,7 +4939,7 @@
       "label": "RevenueProjectionSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L491",
+      "source_location": "L484",
       "id": "src_index_revenueprojectionschema",
       "community": 1,
       "norm_label": "revenueprojectionschema"
@@ -5407,7 +4948,7 @@
       "label": "FinancialForecastSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L497",
+      "source_location": "L490",
       "id": "src_index_financialforecastschema",
       "community": 1,
       "norm_label": "financialforecastschema"
@@ -5416,7 +4957,7 @@
       "label": "PriceTierSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L509",
+      "source_location": "L502",
       "id": "src_index_pricetierschema",
       "community": 1,
       "norm_label": "pricetierschema"
@@ -5425,7 +4966,7 @@
       "label": "PricingStrategySchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L518",
+      "source_location": "L511",
       "id": "src_index_pricingstrategyschema",
       "community": 1,
       "norm_label": "pricingstrategyschema"
@@ -6037,7 +5578,7 @@
       "label": "BusinessIdea",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L65",
+      "source_location": "L64",
       "id": "src_index_businessidea",
       "community": 3,
       "norm_label": "businessidea"
@@ -6046,7 +5587,7 @@
       "label": "BusinessOpportunity",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L77",
+      "source_location": "L76",
       "id": "src_index_businessopportunity",
       "community": 3,
       "norm_label": "businessopportunity"
@@ -6055,7 +5596,7 @@
       "label": "SelectedOpportunity",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L93",
+      "source_location": "L92",
       "id": "src_index_selectedopportunity",
       "community": 3,
       "norm_label": "selectedopportunity"
@@ -6064,7 +5605,7 @@
       "label": "CompetitorAnalysis",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L112",
+      "source_location": "L110",
       "id": "src_index_competitoranalysis",
       "community": 3,
       "norm_label": "competitoranalysis"
@@ -6073,7 +5614,7 @@
       "label": "BusinessValidation",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L119",
+      "source_location": "L117",
       "id": "src_index_businessvalidation",
       "community": 3,
       "norm_label": "businessvalidation"
@@ -6082,7 +5623,7 @@
       "label": "LeanCanvas",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L132",
+      "source_location": "L130",
       "id": "src_index_leancanvas",
       "community": 3,
       "norm_label": "leancanvas"
@@ -6091,7 +5632,7 @@
       "label": "BusinessModel",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L144",
+      "source_location": "L142",
       "id": "src_index_businessmodel",
       "community": 3,
       "norm_label": "businessmodel"
@@ -6100,7 +5641,7 @@
       "label": "BusinessPlan",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L153",
+      "source_location": "L151",
       "id": "src_index_businessplan",
       "community": 3,
       "norm_label": "businessplan"
@@ -6109,7 +5650,7 @@
       "label": "BrandIdentity",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L180",
+      "source_location": "L173",
       "id": "src_index_brandidentity",
       "community": 3,
       "norm_label": "brandidentity"
@@ -6118,7 +5659,7 @@
       "label": "MarketingCampaign",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L197",
+      "source_location": "L190",
       "id": "src_index_marketingcampaign",
       "community": 3,
       "norm_label": "marketingcampaign"
@@ -6127,7 +5668,7 @@
       "label": "RoadmapMilestone",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L213",
+      "source_location": "L206",
       "id": "src_index_roadmapmilestone",
       "community": 3,
       "norm_label": "roadmapmilestone"
@@ -6136,7 +5677,7 @@
       "label": "ExecutionRoadmap",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L224",
+      "source_location": "L217",
       "id": "src_index_executionroadmap",
       "community": 3,
       "norm_label": "executionroadmap"
@@ -6145,7 +5686,7 @@
       "label": "ChatMessage",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L233",
+      "source_location": "L226",
       "id": "src_index_chatmessage",
       "community": 3,
       "norm_label": "chatmessage"
@@ -6154,7 +5695,7 @@
       "label": "Conversation",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L241",
+      "source_location": "L234",
       "id": "src_index_conversation",
       "community": 3,
       "norm_label": "conversation"
@@ -6163,7 +5704,7 @@
       "label": "VentureState",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L249",
+      "source_location": "L242",
       "id": "src_index_venturestate",
       "community": 3,
       "norm_label": "venturestate"
@@ -6172,7 +5713,7 @@
       "label": "LoginRequest",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L273",
+      "source_location": "L260",
       "id": "src_index_loginrequest",
       "community": 3,
       "norm_label": "loginrequest"
@@ -6181,7 +5722,7 @@
       "label": "SignupRequest",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L278",
+      "source_location": "L265",
       "id": "src_index_signuprequest",
       "community": 3,
       "norm_label": "signuprequest"
@@ -6190,7 +5731,7 @@
       "label": "AuthUser",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L284",
+      "source_location": "L271",
       "id": "src_index_authuser",
       "community": 3,
       "norm_label": "authuser"
@@ -6199,7 +5740,7 @@
       "label": "AuthResponse",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L291",
+      "source_location": "L278",
       "id": "src_index_authresponse",
       "community": 3,
       "norm_label": "authresponse"
@@ -6208,7 +5749,7 @@
       "label": "N8nWebhookResponse",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L296",
+      "source_location": "L283",
       "id": "src_index_n8nwebhookresponse",
       "community": 3,
       "norm_label": "n8nwebhookresponse"
@@ -6217,7 +5758,7 @@
       "label": "AgentRun",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L304",
+      "source_location": "L291",
       "id": "src_index_agentrun",
       "community": 3,
       "norm_label": "agentrun"
@@ -6226,7 +5767,7 @@
       "label": "UploadedDocument",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L329",
+      "source_location": "L316",
       "id": "src_index_uploadeddocument",
       "community": 3,
       "norm_label": "uploadeddocument"
@@ -6235,7 +5776,7 @@
       "label": "OpportunityComparison",
       "file_type": "code",
       "source_file": "packages/types/src/index.ts",
-      "source_location": "L341",
+      "source_location": "L328",
       "id": "src_index_opportunitycomparison",
       "community": 3,
       "norm_label": "opportunitycomparison"
@@ -7739,7 +7280,7 @@
       "file_type": "code",
       "source_file": "apps/web/src/store/useStore.ts",
       "source_location": "L4",
-      "community": 0,
+      "community": 12,
       "norm_label": "projectoutputs",
       "id": "store_usestore_projectoutputs"
     },
@@ -8019,7 +7560,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
+      "community": 12,
       "norm_label": "offline mock fallback rationale",
       "id": "store_usestore_rationale_offline_mock"
     },
@@ -8474,9 +8015,9 @@
       "source_file": "D:/ITI_Final/creator-engine/.claude/settings.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "d_iti_final_creator_engine_claude_settings_json",
-      "target": "claude_settings_hooks"
+      "target": "claude_settings_hooks",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8494,9 +8035,9 @@
       "source_file": "D:/ITI_Final/creator-engine/.claude/settings.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_settings_hooks",
-      "target": "claude_settings_hooks_pretooluse"
+      "target": "claude_settings_hooks_pretooluse",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8882,212 +8423,12 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L75",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_agentrun",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L63",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_agentrunschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L73",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_businessplan",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L47",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_businessplanschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L71",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_founderprofile",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L29",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_founderprofileschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_fs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L2",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_jwt",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L41",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_leancanvasschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_mongoose",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L4",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_path",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L70",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_project",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L28",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_projectschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L77",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_runtest",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L72",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_selectedopportunity",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L34",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_selectedopportunityschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L69",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_user",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L27",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_userschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L74",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_venturestate",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_business_plan.js",
-      "source_location": "L56",
-      "weight": 1.0,
-      "source": "api_test_business_plan",
-      "target": "api_test_business_plan_venturestateschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L54",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_agentrun"
+      "target": "api_test_opportunity_discovery_v1_agentrun",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9095,9 +8436,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L44",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_agentrunschema"
+      "target": "api_test_opportunity_discovery_v1_agentrunschema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9105,9 +8446,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L53",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_businessopportunity"
+      "target": "api_test_opportunity_discovery_v1_businessopportunity",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9115,9 +8456,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L37",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_businessopportunityschema"
+      "target": "api_test_opportunity_discovery_v1_businessopportunityschema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9125,9 +8466,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L52",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_founderprofile"
+      "target": "api_test_opportunity_discovery_v1_founderprofile",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9135,9 +8476,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L29",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_founderprofileschema"
+      "target": "api_test_opportunity_discovery_v1_founderprofileschema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9145,9 +8486,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_fs"
+      "target": "api_test_opportunity_discovery_v1_fs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9155,9 +8496,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_jwt"
+      "target": "api_test_opportunity_discovery_v1_jwt",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9165,9 +8506,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_mongoose"
+      "target": "api_test_opportunity_discovery_v1_mongoose",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9175,9 +8516,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_path"
+      "target": "api_test_opportunity_discovery_v1_path",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9185,9 +8526,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L51",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_project"
+      "target": "api_test_opportunity_discovery_v1_project",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9195,9 +8536,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L28",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_projectschema"
+      "target": "api_test_opportunity_discovery_v1_projectschema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9205,9 +8546,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L56",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_runtest"
+      "target": "api_test_opportunity_discovery_v1_runtest",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9215,9 +8556,9 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L50",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_user"
+      "target": "api_test_opportunity_discovery_v1_user",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9225,158 +8566,8 @@
       "source_file": "apps/api/test_opportunity_discovery_v1.js",
       "source_location": "L27",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_test_opportunity_discovery_v1",
-      "target": "api_test_opportunity_discovery_v1_userschema"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L54",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_agentrun",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L44",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_agentrunschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L52",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_businessopportunity",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L29",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_businessopportunityschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_fs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L2",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_jwt",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_mongoose",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L4",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_path",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L51",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_project",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L28",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_projectschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L56",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_runtest",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L53",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_selectedopportunity",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L36",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_selectedopportunityschema",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L50",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_user",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "apps/api/test_opportunity_selection.js",
-      "source_location": "L27",
-      "weight": 1.0,
-      "source": "api_test_opportunity_selection",
-      "target": "api_test_opportunity_selection_userschema",
+      "target": "api_test_opportunity_discovery_v1_userschema",
       "confidence_score": 1.0
     },
     {
@@ -10385,9 +9576,9 @@
       "source_file": "apps/web/next.config.ts",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_next_config",
-      "target": "web_next_config_nextconfig"
+      "target": "web_next_config_nextconfig",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10725,9 +9916,9 @@
       "source_file": "apps/web/package.json",
       "source_location": "L31",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_package_devdependencies",
-      "target": "web_package_devdependencies_types_react"
+      "target": "web_package_devdependencies_types_react",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10735,9 +9926,9 @@
       "source_file": "apps/web/package.json",
       "source_location": "L32",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_package_devdependencies",
-      "target": "web_package_devdependencies_types_react_dom"
+      "target": "web_package_devdependencies_types_react_dom",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -11053,9 +10244,9 @@
       "source_file": "apps/web/src/components/AIStudioPanel.tsx",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "components_aistudiopanel",
-      "target": "components_aistudiopanel_aistudiopanel"
+      "target": "components_aistudiopanel_aistudiopanel",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -11063,9 +10254,9 @@
       "source_file": "apps/web/src/components/AuthModal.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "components_authmodal",
-      "target": "components_authmodal_authmodal"
+      "target": "components_authmodal_authmodal",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -11085,9 +10276,9 @@
       "source_file": "apps/web/src/components/AuthModal.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "components_authmodal",
-      "target": "lib_authclient_authclient"
+      "target": "lib_authclient_authclient",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -11128,9 +10319,9 @@
       "source_file": "apps/web/src/components/BrandingPanel.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "components_brandingpanel",
-      "target": "components_brandingpanel_brandingpanel"
+      "target": "components_brandingpanel_brandingpanel",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -11193,9 +10384,9 @@
       "source_file": "apps/web/src/components/BusinessPlanDashboard.tsx",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "components_businessplandashboard",
-      "target": "components_businessplandashboard_businessplandashboard"
+      "target": "components_businessplandashboard_businessplandashboard",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -11280,9 +10471,9 @@
       "source_file": "apps/web/src/components/CofounderChat.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "components_cofounderchat",
-      "target": "components_cofounderchat_cofounderchat"
+      "target": "components_cofounderchat_cofounderchat",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -11420,9 +10611,9 @@
       "source_file": "apps/web/src/components/FinancialEngine.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "components_financialengine",
-      "target": "components_financialengine_financialengine"
+      "target": "components_financialengine_financialengine",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -11640,9 +10831,9 @@
       "source_file": "apps/web/src/components/MarketingStudio.tsx",
       "source_location": "L236",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "components_marketingstudio",
-      "target": "components_marketingstudio_marketingstudio"
+      "target": "components_marketingstudio_marketingstudio",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -11916,9 +11107,9 @@
       "source_file": "apps/web/src/components/OpportunityExplorer.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "components_opportunityexplorer",
-      "target": "components_opportunityexplorer_opportunityexplorer"
+      "target": "components_opportunityexplorer_opportunityexplorer",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -12004,9 +11195,9 @@
       "source_file": "apps/web/src/components/OpportunityExplorer.tsx",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "components_opportunityexplorer",
-      "target": "ui_checkbox_checkbox"
+      "target": "ui_checkbox_checkbox",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -12025,9 +11216,9 @@
       "source_file": "apps/web/src/components/RoadmapPanel.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "components_roadmappanel",
-      "target": "components_roadmappanel_roadmappanel"
+      "target": "components_roadmappanel_roadmappanel",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -12365,9 +11556,9 @@
       "source_file": "apps/web/src/components/ui/checkbox.tsx",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "ui_checkbox",
-      "target": "ui_checkbox_checkbox"
+      "target": "ui_checkbox_checkbox",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -12679,9 +11870,9 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L100",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "lib_authclient",
-      "target": "lib_authclient_authclient"
+      "target": "lib_authclient_authclient",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12890,9 +12081,9 @@
       "source_file": "apps/web/src/store/useStore.ts",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "store_usestore",
-      "target": "lib_authclient_authclient"
+      "target": "lib_authclient_authclient",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12951,9 +12142,9 @@
       "source_file": "apps/web/tailwind.config.ts",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tailwind_config",
-      "target": "config_tailwind_config"
+      "target": "config_tailwind_config",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12971,9 +12162,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "d_iti_final_creator_engine_apps_web_tsconfig_json",
-      "target": "web_tsconfig_compileroptions"
+      "target": "web_tsconfig_compileroptions",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12981,9 +12172,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L28",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "d_iti_final_creator_engine_apps_web_tsconfig_json",
-      "target": "web_tsconfig_exclude"
+      "target": "web_tsconfig_exclude",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12991,9 +12182,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L27",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "d_iti_final_creator_engine_apps_web_tsconfig_json",
-      "target": "web_tsconfig_include"
+      "target": "web_tsconfig_include",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13011,9 +12202,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_allowjs"
+      "target": "web_tsconfig_compileroptions_allowjs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13021,9 +12212,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_esmoduleinterop"
+      "target": "web_tsconfig_compileroptions_esmoduleinterop",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13031,9 +12222,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_forceconsistentcasinginfilenames"
+      "target": "web_tsconfig_compileroptions_forceconsistentcasinginfilenames",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13041,9 +12232,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L16",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_incremental"
+      "target": "web_tsconfig_compileroptions_incremental",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13051,9 +12242,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_isolatedmodules"
+      "target": "web_tsconfig_compileroptions_isolatedmodules",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13061,9 +12252,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L15",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_jsx"
+      "target": "web_tsconfig_compileroptions_jsx",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13071,9 +12262,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_lib"
+      "target": "web_tsconfig_compileroptions_lib",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13081,9 +12272,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_module"
+      "target": "web_tsconfig_compileroptions_module",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13091,9 +12282,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_moduleresolution"
+      "target": "web_tsconfig_compileroptions_moduleresolution",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13101,9 +12292,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L9",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_noemit"
+      "target": "web_tsconfig_compileroptions_noemit",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13111,9 +12302,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L22",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_paths"
+      "target": "web_tsconfig_compileroptions_paths",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13121,9 +12312,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L17",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_plugins"
+      "target": "web_tsconfig_compileroptions_plugins",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13131,9 +12322,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L13",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_resolvejsonmodule"
+      "target": "web_tsconfig_compileroptions_resolvejsonmodule",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13141,9 +12332,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_skiplibcheck"
+      "target": "web_tsconfig_compileroptions_skiplibcheck",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13151,9 +12342,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_strict"
+      "target": "web_tsconfig_compileroptions_strict",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13161,9 +12352,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions",
-      "target": "web_tsconfig_compileroptions_target"
+      "target": "web_tsconfig_compileroptions_target",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13171,9 +12362,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L23",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions_paths",
-      "target": "web_tsconfig_paths"
+      "target": "web_tsconfig_paths",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13181,9 +12372,9 @@
       "source_file": "D:/ITI_Final/creator-engine/apps/web/tsconfig.json",
       "source_location": "L24",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "web_tsconfig_compileroptions_paths",
-      "target": "web_tsconfig_paths_creator"
+      "target": "web_tsconfig_paths_creator",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13208,142 +12399,12 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L106",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow",
-      "target": "n8n_workflows_business_plan_workflow_connections",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L2",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow",
-      "target": "n8n_workflows_business_plan_workflow_name",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow",
-      "target": "n8n_workflows_business_plan_workflow_nodes",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L152",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow_connections",
-      "target": "n8n_workflows_business_plan_workflow_connections_active",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L129",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow_connections",
-      "target": "n8n_workflows_business_plan_workflow_connections_fireworks_ai",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L140",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow_connections",
-      "target": "n8n_workflows_business_plan_workflow_connections_parse_json",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L153",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow_connections",
-      "target": "n8n_workflows_business_plan_workflow_connections_settings",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L118",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow_connections",
-      "target": "n8n_workflows_business_plan_workflow_connections_tavily_search",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L107",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow_connections",
-      "target": "n8n_workflows_business_plan_workflow_connections_webhook",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L108",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow_connections_webhook",
-      "target": "n8n_workflows_business_plan_workflow_webhook_main",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L119",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow_connections_tavily_search",
-      "target": "n8n_workflows_business_plan_workflow_tavily_search_main",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L130",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow_connections_fireworks_ai",
-      "target": "n8n_workflows_business_plan_workflow_fireworks_ai_main",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "n8n-workflows/business_plan_workflow.json",
-      "source_location": "L141",
-      "weight": 1.0,
-      "source": "n8n_workflows_business_plan_workflow_connections_parse_json",
-      "target": "n8n_workflows_business_plan_workflow_parse_json_main",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L195",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_json_n8n_workflows_financial_agents_guide",
-      "target": "n8n_workflows_financial_agents_guide_active"
+      "target": "n8n_workflows_financial_agents_guide_active",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13351,9 +12412,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L138",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_json_n8n_workflows_financial_agents_guide",
-      "target": "n8n_workflows_financial_agents_guide_connections"
+      "target": "n8n_workflows_financial_agents_guide_connections",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13361,9 +12422,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L205",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_json_n8n_workflows_financial_agents_guide",
-      "target": "n8n_workflows_financial_agents_guide_id"
+      "target": "n8n_workflows_financial_agents_guide_id",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13371,9 +12432,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L201",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_json_n8n_workflows_financial_agents_guide",
-      "target": "n8n_workflows_financial_agents_guide_meta"
+      "target": "n8n_workflows_financial_agents_guide_meta",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13381,9 +12442,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_json_n8n_workflows_financial_agents_guide",
-      "target": "n8n_workflows_financial_agents_guide_name"
+      "target": "n8n_workflows_financial_agents_guide_name",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13391,9 +12452,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_json_n8n_workflows_financial_agents_guide",
-      "target": "n8n_workflows_financial_agents_guide_nodes"
+      "target": "n8n_workflows_financial_agents_guide_nodes",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13401,9 +12462,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L137",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_json_n8n_workflows_financial_agents_guide",
-      "target": "n8n_workflows_financial_agents_guide_pindata"
+      "target": "n8n_workflows_financial_agents_guide_pindata",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13411,9 +12472,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L196",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_json_n8n_workflows_financial_agents_guide",
-      "target": "n8n_workflows_financial_agents_guide_settings"
+      "target": "n8n_workflows_financial_agents_guide_settings",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13421,9 +12482,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L206",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_json_n8n_workflows_financial_agents_guide",
-      "target": "n8n_workflows_financial_agents_guide_tags"
+      "target": "n8n_workflows_financial_agents_guide_tags",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13431,9 +12492,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L200",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_json_n8n_workflows_financial_agents_guide",
-      "target": "n8n_workflows_financial_agents_guide_versionid"
+      "target": "n8n_workflows_financial_agents_guide_versionid",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13571,9 +12632,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L151",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_connections_message_a_model",
-      "target": "n8n_workflows_financial_agents_guide_message_a_model_main"
+      "target": "n8n_workflows_financial_agents_guide_message_a_model_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13581,9 +12642,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L162",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_connections_code_in_javascript",
-      "target": "n8n_workflows_financial_agents_guide_code_in_javascript_main"
+      "target": "n8n_workflows_financial_agents_guide_code_in_javascript_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13601,9 +12662,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.json",
       "source_location": "L184",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_connections_mongodb_vector_search",
-      "target": "n8n_workflows_financial_agents_guide_mongodb_vector_search_main"
+      "target": "n8n_workflows_financial_agents_guide_mongodb_vector_search_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13781,9 +12842,9 @@
       "source_file": "n8n-workflows/financial_engine_workflow.json",
       "source_location": "L102",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_engine_workflow_connections",
-      "target": "n8n_workflows_financial_engine_workflow_connections_gemini_chat_model_node_ai_agent"
+      "target": "n8n_workflows_financial_engine_workflow_connections_gemini_chat_model_node_ai_agent",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13851,9 +12912,9 @@
       "source_file": "n8n-workflows/financial_engine_workflow.json",
       "source_location": "L92",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_engine_workflow_connections_mongodb_atlas_vector_search_node",
-      "target": "n8n_workflows_financial_engine_workflow_mongodb_atlas_vector_search_node_main"
+      "target": "n8n_workflows_financial_engine_workflow_mongodb_atlas_vector_search_node_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13861,9 +12922,9 @@
       "source_file": "n8n-workflows/financial_engine_workflow.json",
       "source_location": "L103",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_engine_workflow_connections_gemini_chat_model_node_ai_agent",
-      "target": "n8n_workflows_financial_engine_workflow_gemini_chat_model_node_ai_agent_main"
+      "target": "n8n_workflows_financial_engine_workflow_gemini_chat_model_node_ai_agent_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13871,9 +12932,9 @@
       "source_file": "n8n-workflows/financial_engine_workflow.json",
       "source_location": "L114",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_engine_workflow_connections_code_node_financial_deterministic_math",
-      "target": "n8n_workflows_financial_engine_workflow_code_node_financial_deterministic_math_main"
+      "target": "n8n_workflows_financial_engine_workflow_code_node_financial_deterministic_math_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13991,9 +13052,9 @@
       "source_file": "n8n-workflows/founder_analysis_workflow.json",
       "source_location": "L78",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_founder_analysis_workflow_connections_fireworks_ai",
-      "target": "n8n_workflows_founder_analysis_workflow_fireworks_ai_main"
+      "target": "n8n_workflows_founder_analysis_workflow_fireworks_ai_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14001,9 +13062,9 @@
       "source_file": "n8n-workflows/founder_analysis_workflow.json",
       "source_location": "L89",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_founder_analysis_workflow_connections_parse_json",
-      "target": "n8n_workflows_founder_analysis_workflow_parse_json_main"
+      "target": "n8n_workflows_founder_analysis_workflow_parse_json_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14011,9 +13072,9 @@
       "source_file": "n8n-workflows/opportunity_discovery_workflow.json",
       "source_location": "L152",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_opportunity_discovery_workflow",
-      "target": "n8n_workflows_opportunity_discovery_workflow_active"
+      "target": "n8n_workflows_opportunity_discovery_workflow_active",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14051,9 +13112,9 @@
       "source_file": "n8n-workflows/opportunity_discovery_workflow.json",
       "source_location": "L153",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_opportunity_discovery_workflow",
-      "target": "n8n_workflows_opportunity_discovery_workflow_settings"
+      "target": "n8n_workflows_opportunity_discovery_workflow_settings",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14081,9 +13142,9 @@
       "source_file": "n8n-workflows/opportunity_discovery_workflow.json",
       "source_location": "L140",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_opportunity_discovery_workflow_connections",
-      "target": "n8n_workflows_opportunity_discovery_workflow_connections_parse_json"
+      "target": "n8n_workflows_opportunity_discovery_workflow_connections_parse_json",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14101,9 +13162,9 @@
       "source_file": "n8n-workflows/opportunity_discovery_workflow.json",
       "source_location": "L118",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_opportunity_discovery_workflow_connections",
-      "target": "n8n_workflows_opportunity_discovery_workflow_connections_tavily_search"
+      "target": "n8n_workflows_opportunity_discovery_workflow_connections_tavily_search",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14161,9 +13222,9 @@
       "source_file": "n8n-workflows/opportunity_discovery_workflow.json",
       "source_location": "L119",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_opportunity_discovery_workflow_connections_tavily_search",
-      "target": "n8n_workflows_opportunity_discovery_workflow_tavily_search_main"
+      "target": "n8n_workflows_opportunity_discovery_workflow_tavily_search_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14171,9 +13232,9 @@
       "source_file": "n8n-workflows/opportunity_discovery_workflow.json",
       "source_location": "L130",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_opportunity_discovery_workflow_connections_fireworks_ai",
-      "target": "n8n_workflows_opportunity_discovery_workflow_fireworks_ai_main"
+      "target": "n8n_workflows_opportunity_discovery_workflow_fireworks_ai_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14181,9 +13242,9 @@
       "source_file": "n8n-workflows/opportunity_discovery_workflow.json",
       "source_location": "L141",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_opportunity_discovery_workflow_connections_parse_json",
-      "target": "n8n_workflows_opportunity_discovery_workflow_parse_json_main"
+      "target": "n8n_workflows_opportunity_discovery_workflow_parse_json_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14321,9 +13382,9 @@
       "source_file": "n8n-workflows/opportunity_ranking_workflow.json",
       "source_location": "L131",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_opportunity_ranking_workflow_connections_get_opportunities",
-      "target": "n8n_workflows_opportunity_ranking_workflow_get_opportunities_main"
+      "target": "n8n_workflows_opportunity_ranking_workflow_get_opportunities_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14331,9 +13392,9 @@
       "source_file": "n8n-workflows/opportunity_ranking_workflow.json",
       "source_location": "L142",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_opportunity_ranking_workflow_connections_fireworks_ai",
-      "target": "n8n_workflows_opportunity_ranking_workflow_fireworks_ai_main"
+      "target": "n8n_workflows_opportunity_ranking_workflow_fireworks_ai_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14341,9 +13402,9 @@
       "source_file": "n8n-workflows/opportunity_ranking_workflow.json",
       "source_location": "L153",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_opportunity_ranking_workflow_connections_parse_rankings",
-      "target": "n8n_workflows_opportunity_ranking_workflow_parse_rankings_main"
+      "target": "n8n_workflows_opportunity_ranking_workflow_parse_rankings_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14351,9 +13412,9 @@
       "source_file": "n8n-workflows/opportunity_ranking_workflow.json",
       "source_location": "L164",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_opportunity_ranking_workflow_connections_insert_rankings",
-      "target": "n8n_workflows_opportunity_ranking_workflow_insert_rankings_main"
+      "target": "n8n_workflows_opportunity_ranking_workflow_insert_rankings_main",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14642,9 +13703,9 @@
       "source_file": "package.json",
       "source_location": "L25",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "package_engines",
-      "target": "package_engines_pnpm"
+      "target": "package_engines_pnpm",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15164,9 +14225,9 @@
       "source_file": "packages/config/tsconfig.base.json",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "config_tsconfig_base_compileroptions",
-      "target": "config_tsconfig_base_compileroptions_declarationmap"
+      "target": "config_tsconfig_base_compileroptions_declarationmap",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15464,9 +14525,9 @@
       "source_file": "packages/database/src/index.ts",
       "source_location": "L111",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "packages_database_src_index_ts_src_index",
-      "target": "src_index_businessopportunityschema"
+      "target": "src_index_businessopportunityschema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15574,9 +14635,9 @@
       "source_file": "packages/database/src/index.ts",
       "source_location": "L438",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "packages_database_src_index_ts_src_index",
-      "target": "src_index_ifinancialforecast"
+      "target": "src_index_ifinancialforecast",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15604,9 +14665,9 @@
       "source_file": "packages/database/src/index.ts",
       "source_location": "L460",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "packages_database_src_index_ts_src_index",
-      "target": "src_index_ipricingstrategy"
+      "target": "src_index_ipricingstrategy",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15644,9 +14705,9 @@
       "source_file": "packages/database/src/index.ts",
       "source_location": "L405",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "packages_database_src_index_ts_src_index",
-      "target": "src_index_knowledgedocumentschema"
+      "target": "src_index_knowledgedocumentschema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15764,9 +14825,9 @@
       "source_file": "packages/database/src/index.ts",
       "source_location": "L131",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "packages_database_src_index_ts_src_index",
-      "target": "src_index_selectedopportunityschema"
+      "target": "src_index_selectedopportunityschema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -16215,9 +15276,9 @@
       "source_file": "packages/rag-core/src/index.ts",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "packages_rag_core_src_index_ts_src_index",
-      "target": "packages_rag_core_src_index_ts_src_index_knowledgedocument"
+      "target": "packages_rag_core_src_index_ts_src_index_knowledgedocument",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -16931,9 +15992,9 @@
       "source_file": "scripts/seed_knowledge.js",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "scripts_seed_knowledge",
-      "target": "scripts_seed_knowledge_fs"
+      "target": "scripts_seed_knowledge_fs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -16941,9 +16002,9 @@
       "source_file": "scripts/seed_knowledge.js",
       "source_location": "L22",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "scripts_seed_knowledge",
-      "target": "scripts_seed_knowledge_knowledgedocumentschema"
+      "target": "scripts_seed_knowledge_knowledgedocumentschema",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -16951,9 +16012,9 @@
       "source_file": "scripts/seed_knowledge.js",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "scripts_seed_knowledge",
-      "target": "scripts_seed_knowledge_mongoose"
+      "target": "scripts_seed_knowledge_mongoose",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -16961,9 +16022,9 @@
       "source_file": "scripts/seed_knowledge.js",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "scripts_seed_knowledge",
-      "target": "scripts_seed_knowledge_path"
+      "target": "scripts_seed_knowledge_path",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -16971,9 +16032,9 @@
       "source_file": "scripts/seed_knowledge.js",
       "source_location": "L255",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "scripts_seed_knowledge",
-      "target": "scripts_seed_knowledge_seed"
+      "target": "scripts_seed_knowledge_seed",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -16981,9 +16042,9 @@
       "source_file": "scripts/seed_knowledge.js",
       "source_location": "L35",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "scripts_seed_knowledge",
-      "target": "scripts_seed_knowledge_starterdocuments"
+      "target": "scripts_seed_knowledge_starterdocuments",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17061,9 +16122,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "d_iti_final_creator_engine_skills_lock_json",
-      "target": "creator_engine_skills_lock_skills"
+      "target": "creator_engine_skills_lock_skills",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17071,9 +16132,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L2",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "d_iti_final_creator_engine_skills_lock_json",
-      "target": "creator_engine_skills_lock_version"
+      "target": "creator_engine_skills_lock_version",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17081,9 +16142,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L4",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "creator_engine_skills_lock_skills",
-      "target": "creator_engine_skills_lock_skills_find_skills"
+      "target": "creator_engine_skills_lock_skills_find_skills",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17091,9 +16152,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "creator_engine_skills_lock_skills",
-      "target": "creator_engine_skills_lock_skills_frontend_design"
+      "target": "creator_engine_skills_lock_skills_frontend_design",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17101,9 +16162,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L8",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "creator_engine_skills_lock_skills_find_skills",
-      "target": "creator_engine_skills_lock_find_skills_computedhash"
+      "target": "creator_engine_skills_lock_find_skills_computedhash",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17111,9 +16172,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "creator_engine_skills_lock_skills_find_skills",
-      "target": "creator_engine_skills_lock_find_skills_skillpath"
+      "target": "creator_engine_skills_lock_find_skills_skillpath",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17121,9 +16182,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "creator_engine_skills_lock_skills_find_skills",
-      "target": "creator_engine_skills_lock_find_skills_source"
+      "target": "creator_engine_skills_lock_find_skills_source",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17131,9 +16192,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "creator_engine_skills_lock_skills_find_skills",
-      "target": "creator_engine_skills_lock_find_skills_sourcetype"
+      "target": "creator_engine_skills_lock_find_skills_sourcetype",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17141,9 +16202,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L14",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "creator_engine_skills_lock_skills_frontend_design",
-      "target": "creator_engine_skills_lock_frontend_design_computedhash"
+      "target": "creator_engine_skills_lock_frontend_design_computedhash",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17151,9 +16212,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L13",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "creator_engine_skills_lock_skills_frontend_design",
-      "target": "creator_engine_skills_lock_frontend_design_skillpath"
+      "target": "creator_engine_skills_lock_frontend_design_skillpath",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17161,9 +16222,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "creator_engine_skills_lock_skills_frontend_design",
-      "target": "creator_engine_skills_lock_frontend_design_source"
+      "target": "creator_engine_skills_lock_frontend_design_source",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17171,9 +16232,9 @@
       "source_file": "D:/ITI_Final/creator-engine/skills-lock.json",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "creator_engine_skills_lock_skills_frontend_design",
-      "target": "creator_engine_skills_lock_frontend_design_sourcetype"
+      "target": "creator_engine_skills_lock_frontend_design_sourcetype",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17391,9 +16452,9 @@
       "source_file": "turbo.json",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "turbo_tasks_build",
-      "target": "turbo_build_dependson"
+      "target": "turbo_build_dependson",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17451,9 +16512,9 @@
       "source_file": ".agents/rules/graphify.md",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "rules_graphify",
-      "target": "rules_graphify_graphify"
+      "target": "rules_graphify_graphify",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17461,9 +16522,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill",
-      "target": "find_skills_skill_find_skills"
+      "target": "find_skills_skill_find_skills",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17471,9 +16532,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L106",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_find_skills",
-      "target": "find_skills_skill_common_skill_categories"
+      "target": "find_skills_skill_common_skill_categories",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17481,9 +16542,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L34",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_find_skills",
-      "target": "find_skills_skill_how_to_help_users_find_skills"
+      "target": "find_skills_skill_how_to_help_users_find_skills",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17491,9 +16552,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L120",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_find_skills",
-      "target": "find_skills_skill_tips_for_effective_searches"
+      "target": "find_skills_skill_tips_for_effective_searches",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17501,9 +16562,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L21",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_find_skills",
-      "target": "find_skills_skill_what_is_the_skills_cli"
+      "target": "find_skills_skill_what_is_the_skills_cli",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17511,9 +16572,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L126",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_find_skills",
-      "target": "find_skills_skill_when_no_skills_are_found"
+      "target": "find_skills_skill_when_no_skills_are_found",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17521,9 +16582,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_find_skills",
-      "target": "find_skills_skill_when_to_use_this_skill"
+      "target": "find_skills_skill_when_to_use_this_skill",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17531,9 +16592,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L36",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_how_to_help_users_find_skills",
-      "target": "find_skills_skill_step_1_understand_what_they_need"
+      "target": "find_skills_skill_step_1_understand_what_they_need",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17541,9 +16602,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L44",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_how_to_help_users_find_skills",
-      "target": "find_skills_skill_step_2_check_the_leaderboard_first"
+      "target": "find_skills_skill_step_2_check_the_leaderboard_first",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17551,9 +16612,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L52",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_how_to_help_users_find_skills",
-      "target": "find_skills_skill_step_3_search_for_skills"
+      "target": "find_skills_skill_step_3_search_for_skills",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17561,9 +16622,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L66",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_how_to_help_users_find_skills",
-      "target": "find_skills_skill_step_4_verify_quality_before_recommending"
+      "target": "find_skills_skill_step_4_verify_quality_before_recommending",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17571,9 +16632,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L74",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_how_to_help_users_find_skills",
-      "target": "find_skills_skill_step_5_present_options_to_the_user"
+      "target": "find_skills_skill_step_5_present_options_to_the_user",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17581,9 +16642,9 @@
       "source_file": ".agents/skills/find-skills/SKILL.md",
       "source_location": "L96",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "find_skills_skill_how_to_help_users_find_skills",
-      "target": "find_skills_skill_step_6_offer_to_install"
+      "target": "find_skills_skill_step_6_offer_to_install",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17591,9 +16652,9 @@
       "source_file": ".agents/skills/frontend-design/SKILL.md",
       "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_design_skill",
-      "target": "frontend_design_skill_design_thinking"
+      "target": "frontend_design_skill_design_thinking",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17601,9 +16662,9 @@
       "source_file": ".agents/skills/frontend-design/SKILL.md",
       "source_location": "L27",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "frontend_design_skill",
-      "target": "frontend_design_skill_frontend_aesthetics_guidelines"
+      "target": "frontend_design_skill_frontend_aesthetics_guidelines",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17611,9 +16672,9 @@
       "source_file": ".agents/workflows/graphify.md",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "workflows_graphify",
-      "target": "workflows_graphify_workflow_graphify"
+      "target": "workflows_graphify_workflow_graphify",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17621,9 +16682,9 @@
       "source_file": ".claude/CLAUDE.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_claude",
-      "target": "claude_claude_graphify"
+      "target": "claude_claude_graphify",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17631,9 +16692,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill",
-      "target": "graphify_skill_graphify"
+      "target": "graphify_skill_graphify",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17641,9 +16702,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L619",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_graphify",
-      "target": "graphify_skill_for_graphify_add_and_watch"
+      "target": "graphify_skill_for_graphify_add_and_watch",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17651,9 +16712,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L607",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_graphify",
-      "target": "graphify_skill_for_graphify_query"
+      "target": "graphify_skill_for_graphify_query",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17661,9 +16722,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L625",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_graphify",
-      "target": "graphify_skill_for_the_commit_hook_and_native_claude_md_integration"
+      "target": "graphify_skill_for_the_commit_hook_and_native_claude_md_integration",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17671,9 +16732,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L601",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_graphify",
-      "target": "graphify_skill_for_update_and_cluster_only"
+      "target": "graphify_skill_for_update_and_cluster_only",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17681,9 +16742,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L644",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_graphify",
-      "target": "graphify_skill_honesty_rules"
+      "target": "graphify_skill_honesty_rules",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17691,9 +16752,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L583",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_graphify",
-      "target": "graphify_skill_interpreter_guard_for_subcommands"
+      "target": "graphify_skill_interpreter_guard_for_subcommands",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17701,9 +16762,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L631",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_graphify",
-      "target": "graphify_skill_troubleshooting"
+      "target": "graphify_skill_troubleshooting",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17711,9 +16772,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_graphify",
-      "target": "graphify_skill_usage"
+      "target": "graphify_skill_usage",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17721,9 +16782,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L44",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_graphify",
-      "target": "graphify_skill_what_graphify_is_for"
+      "target": "graphify_skill_what_graphify_is_for",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17731,9 +16792,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L48",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_graphify",
-      "target": "graphify_skill_what_you_must_do_when_invoked"
+      "target": "graphify_skill_what_you_must_do_when_invoked",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17741,9 +16802,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L60",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_what_you_must_do_when_invoked",
-      "target": "graphify_skill_step_0_github_repos_and_multi_path_merge_only_if_a_url_or_several_paths"
+      "target": "graphify_skill_step_0_github_repos_and_multi_path_merge_only_if_a_url_or_several_paths",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17751,9 +16812,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L64",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_what_you_must_do_when_invoked",
-      "target": "graphify_skill_step_1_ensure_graphify_is_installed"
+      "target": "graphify_skill_step_1_ensure_graphify_is_installed",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17761,9 +16822,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L165",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_what_you_must_do_when_invoked",
-      "target": "graphify_skill_step_2_5_video_and_audio_only_if_video_files_detected"
+      "target": "graphify_skill_step_2_5_video_and_audio_only_if_video_files_detected",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17771,9 +16832,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L128",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_what_you_must_do_when_invoked",
-      "target": "graphify_skill_step_2_detect_files"
+      "target": "graphify_skill_step_2_detect_files",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17781,9 +16842,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L169",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_what_you_must_do_when_invoked",
-      "target": "graphify_skill_step_3_extract_entities_and_relationships"
+      "target": "graphify_skill_step_3_extract_entities_and_relationships",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17791,9 +16852,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L391",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_what_you_must_do_when_invoked",
-      "target": "graphify_skill_step_4_build_graph_cluster_analyze_generate_outputs"
+      "target": "graphify_skill_step_4_build_graph_cluster_analyze_generate_outputs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17801,9 +16862,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L443",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_what_you_must_do_when_invoked",
-      "target": "graphify_skill_step_5_label_communities"
+      "target": "graphify_skill_step_5_label_communities",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17811,9 +16872,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L483",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_what_you_must_do_when_invoked",
-      "target": "graphify_skill_step_6_generate_obsidian_vault_opt_in_html"
+      "target": "graphify_skill_step_6_generate_obsidian_vault_opt_in_html",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17821,9 +16882,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L509",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_what_you_must_do_when_invoked",
-      "target": "graphify_skill_step_9_save_manifest_update_cost_tracker_clean_up_and_report"
+      "target": "graphify_skill_step_9_save_manifest_update_cost_tracker_clean_up_and_report",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17831,9 +16892,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L503",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_what_you_must_do_when_invoked",
-      "target": "graphify_skill_steps_6b_8_wiki_neo4j_svg_graphml_mcp_benchmark_only_on_their_flags"
+      "target": "graphify_skill_steps_6b_8_wiki_neo4j_svg_graphml_mcp_benchmark_only_on_their_flags",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17841,9 +16902,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L186",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_step_3_extract_entities_and_relationships",
-      "target": "graphify_skill_part_a_structural_extraction_for_code_files"
+      "target": "graphify_skill_part_a_structural_extraction_for_code_files",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17851,9 +16912,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L212",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_step_3_extract_entities_and_relationships",
-      "target": "graphify_skill_part_b_semantic_extraction_parallel_subagents"
+      "target": "graphify_skill_part_b_semantic_extraction_parallel_subagents",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17861,9 +16922,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L357",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_step_3_extract_entities_and_relationships",
-      "target": "graphify_skill_part_c_merge_ast_semantic_into_final_extraction"
+      "target": "graphify_skill_part_c_merge_ast_semantic_into_final_extraction",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17871,9 +16932,9 @@
       "source_file": ".claude/skills/graphify/SKILL.md",
       "source_location": "L633",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "graphify_skill_troubleshooting",
-      "target": "graphify_skill_powershell_5_1_vertical_scrolling_stops_working"
+      "target": "graphify_skill_powershell_5_1_vertical_scrolling_stops_working",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17881,9 +16942,9 @@
       "source_file": ".claude/skills/graphify/references/add-watch.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_add_watch",
-      "target": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder"
+      "target": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17891,9 +16952,9 @@
       "source_file": ".claude/skills/graphify/references/add-watch.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
-      "target": "references_add_watch_for_graphify_add"
+      "target": "references_add_watch_for_graphify_add",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17901,9 +16962,9 @@
       "source_file": ".claude/skills/graphify/references/add-watch.md",
       "source_location": "L39",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_add_watch_graphify_reference_add_a_url_and_watch_a_folder",
-      "target": "references_add_watch_for_watch"
+      "target": "references_add_watch_for_watch",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17911,9 +16972,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_exports",
-      "target": "references_exports_graphify_reference_extra_exports_and_benchmark"
+      "target": "references_exports_graphify_reference_extra_exports_and_benchmark",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17921,9 +16982,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "references_exports_step_6b_wiki_only_if_wiki_flag"
+      "target": "references_exports_step_6b_wiki_only_if_wiki_flag",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17931,9 +16992,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L15",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "references_exports_step_7_neo4j_export_only_if_neo4j_or_neo4j_push_flag"
+      "target": "references_exports_step_7_neo4j_export_only_if_neo4j_or_neo4j_push_flag",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17941,9 +17002,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L31",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "references_exports_step_7b_svg_export_only_if_svg_flag"
+      "target": "references_exports_step_7b_svg_export_only_if_svg_flag",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17951,9 +17012,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L37",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "references_exports_step_7c_graphml_export_only_if_graphml_flag"
+      "target": "references_exports_step_7c_graphml_export_only_if_graphml_flag",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17961,9 +17022,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L43",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "references_exports_step_7d_mcp_server_only_if_mcp_flag"
+      "target": "references_exports_step_7d_mcp_server_only_if_mcp_flag",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17971,9 +17032,9 @@
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L63",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_exports_graphify_reference_extra_exports_and_benchmark",
-      "target": "references_exports_step_8_token_reduction_benchmark_only_if_total_words_5000"
+      "target": "references_exports_step_8_token_reduction_benchmark_only_if_total_words_5000",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17981,9 +17042,9 @@
       "source_file": ".claude/skills/graphify/references/extraction-spec.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_extraction_spec",
-      "target": "references_extraction_spec_graphify_reference_extraction_subagent_prompt"
+      "target": "references_extraction_spec_graphify_reference_extraction_subagent_prompt",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17991,9 +17052,9 @@
       "source_file": ".claude/skills/graphify/references/github-and-merge.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_github_and_merge",
-      "target": "references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge"
+      "target": "references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18001,9 +17062,9 @@
       "source_file": ".claude/skills/graphify/references/github-and-merge.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
-      "target": "references_github_and_merge_step_0_clone_github_repo_s_only_if_a_github_url_was_given"
+      "target": "references_github_and_merge_step_0_clone_github_repo_s_only_if_a_github_url_was_given",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18011,9 +17072,9 @@
       "source_file": ".claude/skills/graphify/references/hooks.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_hooks",
-      "target": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration"
+      "target": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18021,9 +17082,9 @@
       "source_file": ".claude/skills/graphify/references/hooks.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
-      "target": "references_hooks_for_git_commit_hook"
+      "target": "references_hooks_for_git_commit_hook",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18031,9 +17092,9 @@
       "source_file": ".claude/skills/graphify/references/hooks.md",
       "source_location": "L21",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_hooks_graphify_reference_commit_hook_and_native_claude_md_integration",
-      "target": "references_hooks_for_native_claude_md_integration"
+      "target": "references_hooks_for_native_claude_md_integration",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18041,9 +17102,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_query",
-      "target": "references_query_graphify_reference_query_path_explain"
+      "target": "references_query_graphify_reference_query_path_explain",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18051,9 +17112,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L198",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_query_graphify_reference_query_path_explain",
-      "target": "references_query_for_graphify_explain"
+      "target": "references_query_for_graphify_explain",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18061,9 +17122,9 @@
       "source_file": ".claude/skills/graphify/references/query.md",
       "source_location": "L136",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_query_graphify_reference_query_path_explain",
-      "target": "references_query_for_graphify_path"
+      "target": "references_query_for_graphify_path",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18071,9 +17132,9 @@
       "source_file": ".claude/skills/graphify/references/transcribe.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_transcribe",
-      "target": "references_transcribe_graphify_reference_transcribe_video_and_audio"
+      "target": "references_transcribe_graphify_reference_transcribe_video_and_audio",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18081,9 +17142,9 @@
       "source_file": ".claude/skills/graphify/references/transcribe.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_transcribe_graphify_reference_transcribe_video_and_audio",
-      "target": "references_transcribe_step_2_5_transcribe_video_audio_files_only_if_video_files_detected"
+      "target": "references_transcribe_step_2_5_transcribe_video_audio_files_only_if_video_files_detected",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18091,9 +17152,9 @@
       "source_file": ".claude/skills/graphify/references/update.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_update",
-      "target": "references_update_graphify_reference_incremental_update_and_cluster_only"
+      "target": "references_update_graphify_reference_incremental_update_and_cluster_only",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18101,9 +17162,9 @@
       "source_file": ".claude/skills/graphify/references/update.md",
       "source_location": "L166",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_update_graphify_reference_incremental_update_and_cluster_only",
-      "target": "references_update_for_cluster_only"
+      "target": "references_update_for_cluster_only",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18111,9 +17172,9 @@
       "source_file": ".claude/skills/graphify/references/update.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "references_update_graphify_reference_incremental_update_and_cluster_only",
-      "target": "references_update_for_update_incremental_re_extraction"
+      "target": "references_update_for_update_incremental_re_extraction",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18121,9 +17182,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude",
-      "target": "claude_graphify"
+      "target": "claude_graphify",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18131,9 +17192,9 @@
       "source_file": "README.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "readme",
-      "target": "readme_creator_engine"
+      "target": "readme_creator_engine",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18141,9 +17202,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_md_n8n_workflows_financial_agents_guide",
-      "target": "n8n_workflows_financial_agents_guide_n8n_financial_engine_workflow_specification"
+      "target": "n8n_workflows_financial_agents_guide_n8n_financial_engine_workflow_specification",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18151,9 +17212,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.md",
       "source_location": "L64",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_n8n_financial_engine_workflow_specification",
-      "target": "n8n_workflows_financial_agents_guide_code_b_deterministic_financial_forecasting_code_node"
+      "target": "n8n_workflows_financial_agents_guide_code_b_deterministic_financial_forecasting_code_node",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18161,9 +17222,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.md",
       "source_location": "L35",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_n8n_financial_engine_workflow_specification",
-      "target": "n8n_workflows_financial_agents_guide_prompt_a_openai_system_prompt"
+      "target": "n8n_workflows_financial_agents_guide_prompt_a_openai_system_prompt",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -18171,9 +17232,9 @@
       "source_file": "n8n-workflows/financial_agents_guide.md",
       "source_location": "L5",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "n8n_workflows_financial_agents_guide_n8n_financial_engine_workflow_specification",
-      "target": "n8n_workflows_financial_agents_guide_workflow_architecture_nodes"
+      "target": "n8n_workflows_financial_agents_guide_workflow_architecture_nodes",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",

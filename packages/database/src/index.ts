@@ -86,7 +86,8 @@ const ProjectSchema = new Schema<Project & Document>(
       type: String,
       enum: ['draft', 'idea', 'validated', 'branded', 'marketing-ready', 'active'],
       default: 'draft'
-    }
+    },
+    selectedOpportunityId: { type: String }
   },
   { timestamps: true }
 );
@@ -143,7 +144,8 @@ const SelectedOpportunitySchema = new Schema<SelectedOpportunity & Document>(
     difficulty: { type: String, required: true },
     startupCost: { type: String, required: true },
     estimatedRevenue: { type: String, required: true },
-    timeToMVP: { type: String, required: true }
+    timeToMVP: { type: String, required: true },
+    selectedAt: { type: Date, required: true, default: Date.now }
   },
   { timestamps: true, collection: 'selected_opportunities' }
 );
@@ -206,19 +208,24 @@ const BusinessPlanSchema = new Schema<BusinessPlan & Document>(
     executiveSummary: { type: String, required: true },
     problemStatement: { type: String, required: true },
     solution: { type: String, required: true },
+    targetAudience: { type: String, required: true },
     marketOpportunity: { type: String, required: true },
     leanCanvas: { type: LeanCanvasSchema, required: true },
     customerSegments: [{ type: String }],
-    revenueModel: { type: String, required: true },
+    businessModel: { type: String, required: true },
+    revenueModel: { type: String },
     pricingStrategy: { type: String, required: true },
     goToMarketStrategy: { type: String, required: true },
-    mvpScope: { type: String, required: true },
+    mvpScope: [{ type: String }],
     successMetrics: [{ type: String }],
     growthStrategy: { type: String, required: true },
+    marketResearchSummary: { type: String },
+    generatedByModel: { type: String },
+    generatedAt: { type: Date, default: Date.now },
     version: { type: Number, default: 1 },
     isLatest: { type: Boolean, default: true }
   },
-  { timestamps: true }
+  { timestamps: true, collection: 'business_plans' }
 );
 
 // 5. Brand Identity Model
@@ -315,7 +322,7 @@ const VentureStateSchema = new Schema<VentureState & Document>(
     projectId: { type: String, required: true, index: true },
     founderProfile: { type: Schema.Types.Mixed },
     selectedOpportunity: { type: Schema.Types.Mixed },
-    businessPlan: { type: Schema.Types.Mixed },
+    latestBusinessPlan: { type: Schema.Types.Mixed },
     financialForecast: { type: Schema.Types.Mixed },
     branding: { type: Schema.Types.Mixed },
     marketing: { type: Schema.Types.Mixed },
@@ -395,6 +402,7 @@ export interface KnowledgeDocument {
   userId?: string;
   projectId?: string;
   documentId?: string;
+  docId?: string;
   content: string;
   category: string;
   source: string;
@@ -405,11 +413,12 @@ const KnowledgeDocumentSchema = new Schema<KnowledgeDocument & Document>({
   userId: { type: String },
   projectId: { type: String },
   documentId: { type: String },
+  docId: { type: String },
   content: { type: String, required: true },
   category: { type: String, required: true },
   source: { type: String, required: true },
   embedding: { type: [Number] }
-}, { timestamps: true });
+}, { timestamps: true, collection: 'knowledge_vectors' });
 
 export const KnowledgeDocumentModel = mongoose.models.KnowledgeDocument || mongoose.model<KnowledgeDocument & Document>('KnowledgeDocument', KnowledgeDocumentSchema);
 

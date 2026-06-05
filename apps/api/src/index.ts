@@ -226,7 +226,8 @@ async function trackAgentRun(
   projectId: string,
   workflow: string,
   input: any,
-  action: () => Promise<any>
+  action: () => Promise<any>,
+  aiModel?: string
 ) {
   if (!dbConnected) return await action();
   
@@ -236,7 +237,7 @@ async function trackAgentRun(
     projectId,
     workflow,
     status: 'running',
-    aiModel: 'deepseek-v3', // Assume fireworks AI default for now
+    aiModel: aiModel || 'deepseek-v3',
     provider: 'fireworks',
     startedAt: new Date(),
     input
@@ -331,14 +332,53 @@ app.post('/api/opportunities/discover', authMiddleware, async (req: Request, res
     const founderProfile = await FounderProfileModel.findOne({ projectId, userId });
     if (!founderProfile) return res.status(404).json({ error: 'Founder profile not found' });
 
-    // Call Agent with tracking
-    const opportunities = await trackAgentRun(userId, projectId, 'opportunity-discovery', founderProfile.toObject(), () => runOpportunityAgent(projectId, founderProfile.toObject()));
+    // Call Agent with tracking (Model: deepseek-v4-flash)
+    const rawOpportunities = await trackAgentRun(
+      userId,
+      projectId,
+      'opportunity-discovery',
+      founderProfile.toObject(),
+      () => runOpportunityAgent(projectId, founderProfile.toObject()),
+      'deepseek-v4-flash'
+    );
     
-    if (dbConnected && opportunities && opportunities.length > 0) {
-      await BusinessOpportunityModel.insertMany(opportunities);
+    // Express owns formatting and persistence
+    const formattedOpportunities = (rawOpportunities || []).map((opp: any, idx: number) => {
+      const startupCostStr = typeof opp.startupCost === 'number'
+        ? `$${opp.startupCost.toLocaleString()}`
+        : String(opp.startupCost || '$0');
+        
+      const estimatedRevenueStr = typeof opp.estimatedRevenue === 'number'
+        ? `$${opp.estimatedRevenue.toLocaleString()}/mo`
+        : String(opp.estimatedRevenue || '$0/mo');
+
+      return {
+        id: opp.id || `opp_${Date.now()}_${idx}_${Math.random().toString(36).substring(2, 7)}`,
+        userId,
+        projectId,
+        title: opp.title,
+        description: opp.description,
+        opportunityScore: opp.opportunityScore || 0,
+        founderFitScore: opp.founderFitScore || 0,
+        marketDemandScore: opp.marketDemandScore || 0,
+        aiAdvantageScore: opp.aiAdvantageScore || 0,
+        difficulty: opp.difficulty || 'Medium',
+        startupCost: startupCostStr,
+        estimatedRevenue: estimatedRevenueStr,
+        timeToMVP: opp.timeToMVP || '4 Weeks'
+      };
+    });
+
+    if (dbConnected) {
+      // Clear previous opportunities for the project to prevent duplicates on regeneration
+      await BusinessOpportunityModel.deleteMany({ projectId, userId });
+      
+      if (formattedOpportunities.length > 0) {
+        await BusinessOpportunityModel.insertMany(formattedOpportunities);
+      }
     }
 
-    return res.json({ opportunities });
+    return res.json({ opportunities: formattedOpportunities });
   } catch (err: any) {
     console.error('Opportunity discovery error:', err);
     return res.status(500).json({ error: err.message });
@@ -352,34 +392,55 @@ app.post('/api/opportunities/select', authMiddleware, async (req: Request, res: 
     const { projectId, opportunityId } = req.body;
     if (!projectId || !opportunityId) return res.status(400).json({ error: 'Missing projectId or opportunityId' });
 
+    const project = await ProjectModel.findOne({ id: projectId, userId });
+    if (!project) return res.status(404).json({ error: 'Project not found' });
+
     const opportunity = await BusinessOpportunityModel.findOne({ id: opportunityId, projectId });
     if (!opportunity) return res.status(404).json({ error: 'Opportunity not found' });
 
-    const selected = new SelectedOpportunityModel({
-      id: `sel_${Date.now()}`,
+    // Wrap in trackAgentRun to audit opportunity selection (workflow: 'opportunity-selection', model: 'system')
+    const selected = await trackAgentRun(
       userId,
       projectId,
-      opportunityId,
-      title: opportunity.title,
-      description: opportunity.description,
-      opportunityScore: opportunity.opportunityScore,
-      founderFitScore: opportunity.founderFitScore,
-      marketDemandScore: opportunity.marketDemandScore,
-      aiAdvantageScore: opportunity.aiAdvantageScore,
-      difficulty: opportunity.difficulty,
-      startupCost: opportunity.startupCost,
-      estimatedRevenue: opportunity.estimatedRevenue,
-      timeToMVP: opportunity.timeToMVP
-    });
+      'opportunity-selection',
+      { opportunityId },
+      async () => {
+        // Delete previous selected opportunity for this project
+        await SelectedOpportunityModel.deleteMany({ projectId, userId });
 
-    if (dbConnected) {
-      await selected.save();
-      await ProjectModel.findOneAndUpdate({ id: projectId }, { name: opportunity.title, description: opportunity.description });
-      await updateVentureState(projectId, userId, { selectedOpportunity: selected.toObject() });
-    }
+        const newSelected = new SelectedOpportunityModel({
+          id: `sel_${Date.now()}`,
+          userId,
+          projectId,
+          opportunityId,
+          title: opportunity.title,
+          description: opportunity.description,
+          opportunityScore: opportunity.opportunityScore,
+          founderFitScore: opportunity.founderFitScore,
+          marketDemandScore: opportunity.marketDemandScore,
+          aiAdvantageScore: opportunity.aiAdvantageScore,
+          difficulty: opportunity.difficulty,
+          startupCost: opportunity.startupCost,
+          estimatedRevenue: opportunity.estimatedRevenue,
+          timeToMVP: opportunity.timeToMVP,
+          selectedAt: new Date()
+        });
 
-    return res.json({ selectedOpportunity: selected });
+        if (dbConnected) {
+          await newSelected.save();
+          // Save selectedOpportunityId on Project document (instead of renaming project)
+          await ProjectModel.findOneAndUpdate({ id: projectId, userId }, { selectedOpportunityId: opportunityId });
+          await updateVentureState(projectId, userId, { selectedOpportunity: newSelected.toObject() });
+        }
+
+        return newSelected;
+      },
+      'system'
+    );
+
+    return res.json({ success: true, selectedOpportunity: selected });
   } catch (err: any) {
+    console.error('Opportunity selection error:', err);
     return res.status(500).json({ error: err.message });
   }
 });
@@ -393,8 +454,18 @@ app.post('/api/business-plan/generate', authMiddleware, async (req: Request, res
     const selected = await SelectedOpportunityModel.findOne({ projectId, userId });
     if (!selected) return res.status(400).json({ error: 'No opportunity selected for this project' });
 
-    // Call Agent with tracking
-    const planData = await trackAgentRun(userId, projectId, 'business-plan', selected.toObject(), () => runBusinessPlanAgent(projectId, selected.toObject()));
+    const founderProfile = await FounderProfileModel.findOne({ projectId, userId });
+    if (!founderProfile) return res.status(400).json({ error: 'Founder profile not found for this project' });
+
+    // Call Agent with tracking (workflow: 'business-plan', model: 'deepseek-v4-flash')
+    const planData = await trackAgentRun(
+      userId,
+      projectId,
+      'business-plan',
+      selected.toObject(),
+      () => runBusinessPlanAgent(projectId, selected.toObject(), founderProfile.toObject()),
+      'deepseek-v4-flash'
+    );
 
     let version = 1;
     if (dbConnected) {
@@ -411,13 +482,24 @@ app.post('/api/business-plan/generate', authMiddleware, async (req: Request, res
       userId,
       projectId,
       ...planData,
+      generatedByModel: 'deepseek-v4-flash',
+      generatedAt: new Date(),
       version,
       isLatest: true
     });
 
     if (dbConnected) {
       await plan.save();
-      await updateVentureState(projectId, userId, { businessPlan: plan.toObject() });
+      await updateVentureState(projectId, userId, {
+        latestBusinessPlan: {
+          id: plan.id,
+          version: plan.version,
+          generatedAt: plan.generatedAt || new Date(),
+          generatedByModel: plan.generatedByModel || 'deepseek-v4-flash'
+        }
+      });
+      // Ensure we unset the old full businessPlan if it exists to avoid DB duplication
+      await VentureStateModel.updateOne({ projectId, userId }, { $unset: { businessPlan: "" } });
     }
 
     return res.json({ businessPlan: plan });
@@ -452,7 +534,15 @@ app.get('/api/projects/:projectId/state', authMiddleware, async (req: Request, r
     const state = await VentureStateModel.findOne({ projectId, userId });
     if (!state) return res.status(404).json({ error: 'Venture state not found' });
 
-    return res.json(state);
+    const stateObj = state.toObject();
+    if (stateObj.latestBusinessPlan && stateObj.latestBusinessPlan.id) {
+      const plan = await BusinessPlanModel.findOne({ id: stateObj.latestBusinessPlan.id, userId });
+      if (plan) {
+        stateObj.businessPlan = plan.toObject();
+      }
+    }
+
+    return res.json(stateObj);
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }
@@ -468,16 +558,27 @@ app.get('/api/projects/:projectId/context', authMiddleware, async (req: Request,
 
     const project = await ProjectModel.findOne({ id: projectId, userId });
     const founderProfile = await FounderProfileModel.findOne({ projectId, userId });
+    const opportunities = await BusinessOpportunityModel.find({ projectId, userId });
     const selectedOpportunity = await SelectedOpportunityModel.findOne({ projectId, userId });
-    const businessPlan = await BusinessPlanModel.findOne({ projectId, userId, isLatest: true });
     const ventureState = await VentureStateModel.findOne({ projectId, userId });
+
+    let ventureStateObj = null;
+    if (ventureState) {
+      ventureStateObj = ventureState.toObject();
+      if (ventureStateObj.latestBusinessPlan && ventureStateObj.latestBusinessPlan.id) {
+        const plan = await BusinessPlanModel.findOne({ id: ventureStateObj.latestBusinessPlan.id, userId });
+        if (plan) {
+          ventureStateObj.businessPlan = plan.toObject();
+        }
+      }
+    }
 
     return res.json({
       project,
       founderProfile,
+      opportunities,
       selectedOpportunity,
-      businessPlan,
-      ventureState
+      ventureState: ventureStateObj
     });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
