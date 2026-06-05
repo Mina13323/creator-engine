@@ -1,472 +1,527 @@
 {
-  "D:\\ITI_Final\\creator-engine\\.claude\\settings.json": {
-    "mtime": 1780502755.2532897,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.claude\\settings.json": {
+    "mtime": 1780683732.9517121,
     "ast_hash": "af5683cedca023035194f9ad92eb0eef",
     "semantic_hash": "af5683cedca023035194f9ad92eb0eef"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\api\\package.json": {
-    "mtime": 1780326954.436775,
-    "ast_hash": "b6b065a231bad424d00c21557f31d106",
-    "semantic_hash": "b6b065a231bad424d00c21557f31d106"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\api\\package.json": {
+    "mtime": 1780683741.205928,
+    "ast_hash": "c01c7d5c7f08165c2a4c63322a0e97ea",
+    "semantic_hash": "c01c7d5c7f08165c2a4c63322a0e97ea"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\api\\src\\index.ts": {
-    "mtime": 1780326954.437771,
-    "ast_hash": "d4f9285cb7d1ea655c3f611aba5165c4",
-    "semantic_hash": "d4f9285cb7d1ea655c3f611aba5165c4"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\api\\src\\index.ts": {
+    "mtime": 1780683741.2069275,
+    "ast_hash": "118f27817f4430c30906f55790c62713",
+    "semantic_hash": "118f27817f4430c30906f55790c62713"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\api\\tsconfig.json": {
-    "mtime": 1780326954.437771,
-    "ast_hash": "3ce3ec9bc30f052688a3f4a067bca66d",
-    "semantic_hash": "3ce3ec9bc30f052688a3f4a067bca66d"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\api\\tsconfig.json": {
+    "mtime": 1779757185.0052745,
+    "ast_hash": "ac8baf6e7c75e2be94bbf59b59f40a07",
+    "semantic_hash": "ac8baf6e7c75e2be94bbf59b59f40a07"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\langflow\\custom-components\\competitor_tool.py": {
-    "mtime": 1780326954.4392805,
-    "ast_hash": "d847d862ac786277ef55231e6a5d7cd4",
-    "semantic_hash": "d847d862ac786277ef55231e6a5d7cd4"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\n8n\\package.json": {
+    "mtime": 1780683741.2079272,
+    "ast_hash": "ffb3c128673bce0aa01069757d41ecef",
+    "semantic_hash": "ffb3c128673bce0aa01069757d41ecef"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\langflow\\custom-components\\egypt_market_tool.py": {
-    "mtime": 1780326954.44029,
-    "ast_hash": "d36f1c338e8dec78bc95c06aa7d2c782",
-    "semantic_hash": "d36f1c338e8dec78bc95c06aa7d2c782"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\n8n\\scripts\\competitor-tool.js": {
+    "mtime": 1780683741.208928,
+    "ast_hash": "dd415342e702b24efb78d7b4f0bee5e1",
+    "semantic_hash": "dd415342e702b24efb78d7b4f0bee5e1"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\langflow\\custom-components\\pricing_tool.py": {
-    "mtime": 1780326954.44029,
-    "ast_hash": "9a417ebedf546ec4a5671375480bbae0",
-    "semantic_hash": "9a417ebedf546ec4a5671375480bbae0"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\n8n\\scripts\\egypt-market-tool.js": {
+    "mtime": 1780683741.208928,
+    "ast_hash": "ac4ad344c663d987ae081e01c98ce040",
+    "semantic_hash": "ac4ad344c663d987ae081e01c98ce040"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\langflow\\custom-components\\startup_framework_tool.py": {
-    "mtime": 1780326954.4412901,
-    "ast_hash": "780d612363509442b8965c52600b3355",
-    "semantic_hash": "780d612363509442b8965c52600b3355"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\n8n\\scripts\\pricing-tool.js": {
+    "mtime": 1780683741.210432,
+    "ast_hash": "65b73e9281cac9f69f8ab0ab2f784340",
+    "semantic_hash": "65b73e9281cac9f69f8ab0ab2f784340"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\langflow\\flows\\branding-flow.json": {
-    "mtime": 1780326954.4412901,
-    "ast_hash": "f1d05aa80194c924a9efee6178cffbc5",
-    "semantic_hash": "f1d05aa80194c924a9efee6178cffbc5"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\n8n\\scripts\\startup-framework-tool.js": {
+    "mtime": 1780683741.2129476,
+    "ast_hash": "6e0298b714e4479131035d3b642129c9",
+    "semantic_hash": "6e0298b714e4479131035d3b642129c9"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\langflow\\flows\\business-idea-flow.json": {
-    "mtime": 1780326954.4423847,
-    "ast_hash": "ccc42195662c2fc7ee8b5fcb66d440ee",
-    "semantic_hash": "ccc42195662c2fc7ee8b5fcb66d440ee"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\n8n\\workflows\\branding-flow.json": {
+    "mtime": 1780683741.2139478,
+    "ast_hash": "6352576bfcbbf81bda5938763fcab5d6",
+    "semantic_hash": "6352576bfcbbf81bda5938763fcab5d6"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\langflow\\flows\\cofounder-chat-flow.json": {
-    "mtime": 1780326954.4423847,
-    "ast_hash": "303dc339c0ddb7f78215258fe7332666",
-    "semantic_hash": "303dc339c0ddb7f78215258fe7332666"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\n8n\\workflows\\business-idea-flow.json": {
+    "mtime": 1780683741.2149484,
+    "ast_hash": "866c8e2e78133ed13a07feeb2bf077d6",
+    "semantic_hash": "866c8e2e78133ed13a07feeb2bf077d6"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\langflow\\flows\\marketing-flow.json": {
-    "mtime": 1780326954.4433846,
-    "ast_hash": "2069c5b634b259ba0011b5b4c4e64a64",
-    "semantic_hash": "2069c5b634b259ba0011b5b4c4e64a64"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\n8n\\workflows\\cofounder-chat-flow.json": {
+    "mtime": 1780683741.2159622,
+    "ast_hash": "8143b6a070b443c0a5a458de2339a80e",
+    "semantic_hash": "8143b6a070b443c0a5a458de2339a80e"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\langflow\\flows\\roadmap-flow.json": {
-    "mtime": 1780326954.4433846,
-    "ast_hash": "3861296cc7b56c6c2db3c9a0be67316f",
-    "semantic_hash": "3861296cc7b56c6c2db3c9a0be67316f"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\n8n\\workflows\\marketing-flow.json": {
+    "mtime": 1780683741.2169578,
+    "ast_hash": "2e15f53209e74e8319be9670038ea19d",
+    "semantic_hash": "2e15f53209e74e8319be9670038ea19d"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\langflow\\flows\\validation-flow.json": {
-    "mtime": 1780326954.4443822,
-    "ast_hash": "edff5aae215f1ab077008a0503803631",
-    "semantic_hash": "edff5aae215f1ab077008a0503803631"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\n8n\\workflows\\roadmap-flow.json": {
+    "mtime": 1780683741.217958,
+    "ast_hash": "50441543a8be32d42891abff4f05d0bf",
+    "semantic_hash": "50441543a8be32d42891abff4f05d0bf"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\langflow\\package.json": {
-    "mtime": 1780326954.4443822,
-    "ast_hash": "b307652c5c7e16463196e305d77056c1",
-    "semantic_hash": "b307652c5c7e16463196e305d77056c1"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\n8n\\workflows\\validation-flow.json": {
+    "mtime": 1780683741.218948,
+    "ast_hash": "114a96d6803b0456a260384ecd469fb3",
+    "semantic_hash": "114a96d6803b0456a260384ecd469fb3"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\.eslintrc.json": {
-    "mtime": 1780326954.445891,
-    "ast_hash": "37ec0877f887e5d24b45db6049c1159e",
-    "semantic_hash": "37ec0877f887e5d24b45db6049c1159e"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\.eslintrc.json": {
+    "mtime": 1779758568.910184,
+    "ast_hash": "6c636976577d27c2ebdc12da2f6f2b56",
+    "semantic_hash": "6c636976577d27c2ebdc12da2f6f2b56"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\components.json": {
-    "mtime": 1780326954.445891,
-    "ast_hash": "ade2ccb37ad61d187bcf5a95b48a9309",
-    "semantic_hash": "ade2ccb37ad61d187bcf5a95b48a9309"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\components.json": {
+    "mtime": 1779763338.550315,
+    "ast_hash": "d37c9d6701bafb02675152df323b964c",
+    "semantic_hash": "d37c9d6701bafb02675152df323b964c"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\next-env.d.ts": {
-    "mtime": 1780326954.4468985,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\next-env.d.ts": {
+    "mtime": 1779758354.1982048,
     "ast_hash": "c68600c0eb0d34c34bfc0f4b2547e31f",
     "semantic_hash": "c68600c0eb0d34c34bfc0f4b2547e31f"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\next.config.ts": {
-    "mtime": 1780326954.4468985,
-    "ast_hash": "2a3e08c245268e1e3eb0585e20034d82",
-    "semantic_hash": "2a3e08c245268e1e3eb0585e20034d82"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\next.config.ts": {
+    "mtime": 1779757270.4178646,
+    "ast_hash": "48bdf0958af9f3c59e0437288691166d",
+    "semantic_hash": "48bdf0958af9f3c59e0437288691166d"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\package.json": {
-    "mtime": 1780439492.8461432,
-    "ast_hash": "b476617d8e45542aad38db8dc0fd5794",
-    "semantic_hash": "b476617d8e45542aad38db8dc0fd5794"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\package.json": {
+    "mtime": 1780683741.2199478,
+    "ast_hash": "68a13064d284d9e599703bd8de99c077",
+    "semantic_hash": "68a13064d284d9e599703bd8de99c077"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\postcss.config.js": {
-    "mtime": 1780326954.4474773,
-    "ast_hash": "762a94d1749c8e97eebf3f94102e8eb2",
-    "semantic_hash": "762a94d1749c8e97eebf3f94102e8eb2"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\postcss.config.js": {
+    "mtime": 1779757202.8614142,
+    "ast_hash": "854b38759e7a8b4b82306ae2d9a3a833",
+    "semantic_hash": "854b38759e7a8b4b82306ae2d9a3a833"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\app\\api\\financial-engine\\route.ts": {
-    "mtime": 1780451558.9497519,
-    "ast_hash": "64b7c99bc47a8e2e40d972fe41ea8824",
-    "semantic_hash": "64b7c99bc47a8e2e40d972fe41ea8824"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\app\\api\\financial-engine\\route.ts": {
+    "mtime": 1780683733.1684015,
+    "ast_hash": "872d50f0e2ce7be6988543241cb46b72",
+    "semantic_hash": "872d50f0e2ce7be6988543241cb46b72"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\app\\api\\financials\\[projectId]\\route.ts": {
-    "mtime": 1780439492.848287,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\app\\api\\financials\\[projectId]\\route.ts": {
+    "mtime": 1780683733.1694164,
     "ast_hash": "5687bfa461cb936bf868d44ad19a6aec",
     "semantic_hash": "5687bfa461cb936bf868d44ad19a6aec"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\app\\api\\predictFinances\\route.ts": {
-    "mtime": 1780439492.8492987,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\app\\api\\predictFinances\\route.ts": {
+    "mtime": 1780683733.1704009,
     "ast_hash": "238aa590ef70e93e3fd8a0c5288d27a3",
     "semantic_hash": "238aa590ef70e93e3fd8a0c5288d27a3"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\app\\financial-engine\\page.tsx": {
-    "mtime": 1780452084.5026846,
-    "ast_hash": "3d67a029f0394292d3e5b9b9cf7de8ec",
-    "semantic_hash": "3d67a029f0394292d3e5b9b9cf7de8ec"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\app\\layout.tsx": {
+    "mtime": 1779757222.0666797,
+    "ast_hash": "e765aaf39f11026a9d415b1c8389b7d3",
+    "semantic_hash": "e765aaf39f11026a9d415b1c8389b7d3"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\app\\layout.tsx": {
-    "mtime": 1780326954.449486,
-    "ast_hash": "ec6c0f324e46671382edcdf3d0b1154e",
-    "semantic_hash": "ec6c0f324e46671382edcdf3d0b1154e"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\app\\page.tsx": {
+    "mtime": 1780683741.2209668,
+    "ast_hash": "447f423583c9f80c1241a440c430d124",
+    "semantic_hash": "447f423583c9f80c1241a440c430d124"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\app\\page.tsx": {
-    "mtime": 1780326954.4505484,
-    "ast_hash": "ac97e81033fd2f73f71f763e01dbec3f",
-    "semantic_hash": "ac97e81033fd2f73f71f763e01dbec3f"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\AIStudioPanel.tsx": {
+    "mtime": 1780683741.2229476,
+    "ast_hash": "956545e32b87f8411f1fd62df7ca50e1",
+    "semantic_hash": "956545e32b87f8411f1fd62df7ca50e1"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\AIStudioPanel.tsx": {
-    "mtime": 1780326954.4505484,
-    "ast_hash": "9009e651f604b760116490e5f6aa2057",
-    "semantic_hash": "9009e651f604b760116490e5f6aa2057"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\AuthModal.tsx": {
+    "mtime": 1780683741.2239482,
+    "ast_hash": "8a225a92f89e07d6dce41190246eaee6",
+    "semantic_hash": "8a225a92f89e07d6dce41190246eaee6"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\AuthModal.tsx": {
-    "mtime": 1780326954.4515574,
-    "ast_hash": "935f79901507bef37d53bcca56862c5d",
-    "semantic_hash": "935f79901507bef37d53bcca56862c5d"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\BrandingPanel.tsx": {
+    "mtime": 1780683741.224949,
+    "ast_hash": "f81a11dc1e3debced60b8258e55a1a86",
+    "semantic_hash": "f81a11dc1e3debced60b8258e55a1a86"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\BrandingPanel.tsx": {
-    "mtime": 1780326954.452571,
-    "ast_hash": "e9c5bc367a8df54afc67beef5d604d9b",
-    "semantic_hash": "e9c5bc367a8df54afc67beef5d604d9b"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\BusinessPlanDashboard.tsx": {
+    "mtime": 1780683741.2255106,
+    "ast_hash": "2f458cb7dec4b3c484d29cd2e7306502",
+    "semantic_hash": "2f458cb7dec4b3c484d29cd2e7306502"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\BusinessBuilder.tsx": {
-    "mtime": 1780326954.452571,
-    "ast_hash": "6214a80a934e2246646879fb1e95db88",
-    "semantic_hash": "6214a80a934e2246646879fb1e95db88"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\CofounderChat.tsx": {
+    "mtime": 1779757260.7876866,
+    "ast_hash": "c304bda851cdedf454ceab50bffdadc8",
+    "semantic_hash": "c304bda851cdedf454ceab50bffdadc8"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\CofounderChat.tsx": {
-    "mtime": 1780326954.4535685,
-    "ast_hash": "6ece55296c317829dfa1a0768a72bb37",
-    "semantic_hash": "6ece55296c317829dfa1a0768a72bb37"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\Dashboard.tsx": {
+    "mtime": 1780683741.226516,
+    "ast_hash": "3b6306d04af29f32a53724d6abed8626",
+    "semantic_hash": "3b6306d04af29f32a53724d6abed8626"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\Dashboard.tsx": {
-    "mtime": 1780326954.4535685,
-    "ast_hash": "807358a021e222242f12a5a450fa1782",
-    "semantic_hash": "807358a021e222242f12a5a450fa1782"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\FinancialEngine.tsx": {
+    "mtime": 1780683733.172431,
+    "ast_hash": "b62cbfa897d8fb55566f23447c46a182",
+    "semantic_hash": "b62cbfa897d8fb55566f23447c46a182"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\LandingPage.tsx": {
-    "mtime": 1780326954.4545653,
-    "ast_hash": "faa4b8340705c6e69fb7cc067b291982",
-    "semantic_hash": "faa4b8340705c6e69fb7cc067b291982"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\LandingPage.tsx": {
+    "mtime": 1779765325.764202,
+    "ast_hash": "c2cfec4f6abfd206f7a93a563ec9377a",
+    "semantic_hash": "c2cfec4f6abfd206f7a93a563ec9377a"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\MarketingEngine.tsx": {
-    "mtime": 1780326954.455564,
-    "ast_hash": "9c016558c9d832a60c2248e7f27717d2",
-    "semantic_hash": "9c016558c9d832a60c2248e7f27717d2"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\MarketingStudio.tsx": {
+    "mtime": 1780683741.2275167,
+    "ast_hash": "0d21dfe3d66cf719feafedc5588ad0a8",
+    "semantic_hash": "0d21dfe3d66cf719feafedc5588ad0a8"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\Onboarding.tsx": {
-    "mtime": 1780439492.851298,
-    "ast_hash": "4fdf5a9e4f73746ba8db414d74074657",
-    "semantic_hash": "4fdf5a9e4f73746ba8db414d74074657"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\Onboarding.tsx": {
+    "mtime": 1780683741.2285166,
+    "ast_hash": "2ffa41e375149509e759067a65ce9cf2",
+    "semantic_hash": "2ffa41e375149509e759067a65ce9cf2"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\RoadmapPanel.tsx": {
-    "mtime": 1780326954.4565642,
-    "ast_hash": "55b623cbfa2b94e3b4bbe53b41a2f1a6",
-    "semantic_hash": "55b623cbfa2b94e3b4bbe53b41a2f1a6"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\OpportunityExplorer.tsx": {
+    "mtime": 1780683741.2285166,
+    "ast_hash": "e57da6297f5f0677c9ac16ca28e8d474",
+    "semantic_hash": "e57da6297f5f0677c9ac16ca28e8d474"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\ui\\badge.tsx": {
-    "mtime": 1780326954.4575667,
-    "ast_hash": "1ff3e04a7fd408f9bd7520187dce5d19",
-    "semantic_hash": "1ff3e04a7fd408f9bd7520187dce5d19"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\RoadmapPanel.tsx": {
+    "mtime": 1779757255.8378158,
+    "ast_hash": "0616591ffe02878ca9155714af4c3f19",
+    "semantic_hash": "0616591ffe02878ca9155714af4c3f19"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\ui\\button.tsx": {
-    "mtime": 1780326954.458568,
-    "ast_hash": "fa7dc9bec92a2ea0344e2a5c4738514f",
-    "semantic_hash": "fa7dc9bec92a2ea0344e2a5c4738514f"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\ui\\badge.tsx": {
+    "mtime": 1779763492.5356498,
+    "ast_hash": "e4ec840217040d5630ee6ed7213a1d72",
+    "semantic_hash": "e4ec840217040d5630ee6ed7213a1d72"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\ui\\card.tsx": {
-    "mtime": 1780326954.458568,
-    "ast_hash": "8ce8ba8f46073af348bcd6751b909682",
-    "semantic_hash": "8ce8ba8f46073af348bcd6751b909682"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\ui\\button.tsx": {
+    "mtime": 1779763490.209669,
+    "ast_hash": "705bf3552a39e0c722665ccbecb30654",
+    "semantic_hash": "705bf3552a39e0c722665ccbecb30654"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\ui\\input.tsx": {
-    "mtime": 1780326954.459563,
-    "ast_hash": "da33823853390b57ac04230a67657585",
-    "semantic_hash": "da33823853390b57ac04230a67657585"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\ui\\card.tsx": {
+    "mtime": 1779763492.0170016,
+    "ast_hash": "f493f1f077059a080b2c475873def5c0",
+    "semantic_hash": "f493f1f077059a080b2c475873def5c0"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\components\\ui\\select.tsx": {
-    "mtime": 1780326954.459563,
-    "ast_hash": "fc7d964889fe17cca9fc412266dba5d1",
-    "semantic_hash": "fc7d964889fe17cca9fc412266dba5d1"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\ui\\checkbox.tsx": {
+    "mtime": 1780683741.2295282,
+    "ast_hash": "672cc032c86d12f90cda5972f8b12858",
+    "semantic_hash": "672cc032c86d12f90cda5972f8b12858"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\lib\\muapi.ts": {
-    "mtime": 1780326954.4605658,
-    "ast_hash": "e13ed547c13bed087cbb1bbf86fdeabb",
-    "semantic_hash": "e13ed547c13bed087cbb1bbf86fdeabb"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\ui\\input.tsx": {
+    "mtime": 1779763490.663332,
+    "ast_hash": "0607b02d99a2e92f9509223f36ccc6ec",
+    "semantic_hash": "0607b02d99a2e92f9509223f36ccc6ec"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\lib\\utils.ts": {
-    "mtime": 1780326954.4605658,
-    "ast_hash": "1d8011eb18769078bf77502b220daa5e",
-    "semantic_hash": "1d8011eb18769078bf77502b220daa5e"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\components\\ui\\select.tsx": {
+    "mtime": 1779763491.310789,
+    "ast_hash": "ab95f478cb74d1906b07425c15b124cc",
+    "semantic_hash": "ab95f478cb74d1906b07425c15b124cc"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\src\\store\\useStore.ts": {
-    "mtime": 1780326954.4615638,
-    "ast_hash": "89dc72b9f0312094de65f04e294c0a8e",
-    "semantic_hash": "89dc72b9f0312094de65f04e294c0a8e"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\lib\\api.ts": {
+    "mtime": 1780683741.2305164,
+    "ast_hash": "0cabc55ad809cf5f8404ef5bfc3613cc",
+    "semantic_hash": "0cabc55ad809cf5f8404ef5bfc3613cc"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\tailwind.config.ts": {
-    "mtime": 1780326954.4615638,
-    "ast_hash": "22c0c9ab407be1cff416104ef857a20d",
-    "semantic_hash": "22c0c9ab407be1cff416104ef857a20d"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\lib\\authClient.ts": {
+    "mtime": 1780683741.2315304,
+    "ast_hash": "7025e8e2eaca4a320760b2abee6b2cf5",
+    "semantic_hash": "7025e8e2eaca4a320760b2abee6b2cf5"
   },
-  "D:\\ITI_Final\\creator-engine\\apps\\web\\tsconfig.json": {
-    "mtime": 1780439492.8532999,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\lib\\utils.ts": {
+    "mtime": 1779763513.429783,
+    "ast_hash": "5a6fd53fdcf2be529e9cc0b718fde352",
+    "semantic_hash": "5a6fd53fdcf2be529e9cc0b718fde352"
+  },
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\src\\store\\useStore.ts": {
+    "mtime": 1780683741.2325172,
+    "ast_hash": "e0c59d65b5d84d6d80186f7ccc3954c5",
+    "semantic_hash": "e0c59d65b5d84d6d80186f7ccc3954c5"
+  },
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\tailwind.config.ts": {
+    "mtime": 1779758342.1821218,
+    "ast_hash": "c39e01a191058d1301875768c6e12bcb",
+    "semantic_hash": "c39e01a191058d1301875768c6e12bcb"
+  },
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\apps\\web\\tsconfig.json": {
+    "mtime": 1780683733.1739666,
     "ast_hash": "eda09dea47fee4a2f7bac1f88c756202",
     "semantic_hash": "eda09dea47fee4a2f7bac1f88c756202"
   },
-  "D:\\ITI_Final\\creator-engine\\graphify_step1.ps1": {
-    "mtime": 1780502872.9752314,
-    "ast_hash": "b2e4a6a7560a5bf0cdbdd18cb7e457e2",
-    "semantic_hash": "b2e4a6a7560a5bf0cdbdd18cb7e457e2"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\n8n-workflows\\financial_agents_guide.json": {
+    "mtime": 1780683733.2435863,
+    "ast_hash": "86cbcf46bafb39dddddebc69b081392b",
+    "semantic_hash": "86cbcf46bafb39dddddebc69b081392b"
   },
-  "D:\\ITI_Final\\creator-engine\\graphify_step2.ps1": {
-    "mtime": 1780502894.5798068,
-    "ast_hash": "fb12296af73dcc5c9ad65515a38eda11",
-    "semantic_hash": "fb12296af73dcc5c9ad65515a38eda11"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\n8n-workflows\\financial_engine_workflow.json": {
+    "mtime": 1780683733.245584,
+    "ast_hash": "297e089b19722b701c52f2295ec19d60",
+    "semantic_hash": "297e089b19722b701c52f2295ec19d60"
   },
-  "D:\\ITI_Final\\creator-engine\\graphify_step3.ps1": {
-    "mtime": 1780502928.3574,
-    "ast_hash": "6cfd019ece4819ac8225bd45f75e2a05",
-    "semantic_hash": "6cfd019ece4819ac8225bd45f75e2a05"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\n8n-workflows\\founder_analysis_workflow.json": {
+    "mtime": 1780683741.233517,
+    "ast_hash": "562acedbb81cf29afb4d7a32375a274a",
+    "semantic_hash": "562acedbb81cf29afb4d7a32375a274a"
   },
-  "D:\\ITI_Final\\creator-engine\\graphify_step3.py": {
-    "mtime": 1780502972.3876445,
-    "ast_hash": "e7ec99bb8bf3a4931bd12e25bdde1b86",
-    "semantic_hash": "e7ec99bb8bf3a4931bd12e25bdde1b86"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\n8n-workflows\\opportunity_discovery_workflow.json": {
+    "mtime": 1780683741.233517,
+    "ast_hash": "18a3f6788b03a5a17a403a4817552172",
+    "semantic_hash": "18a3f6788b03a5a17a403a4817552172"
   },
-  "D:\\ITI_Final\\creator-engine\\package.json": {
-    "mtime": 1780439492.85782,
-    "ast_hash": "49e89c006d5504c56afe4bf1201035c5",
-    "semantic_hash": "49e89c006d5504c56afe4bf1201035c5"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\n8n-workflows\\opportunity_ranking_workflow.json": {
+    "mtime": 1780683741.2345164,
+    "ast_hash": "6e7b8e4ce653a8e21ba14712daf1684d",
+    "semantic_hash": "6e7b8e4ce653a8e21ba14712daf1684d"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\agents\\package.json": {
-    "mtime": 1780326954.4647753,
-    "ast_hash": "5b7ad46713b72d1defe5cbb7d747b49e",
-    "semantic_hash": "5b7ad46713b72d1defe5cbb7d747b49e"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\package.json": {
+    "mtime": 1780683741.2355158,
+    "ast_hash": "330c71479d8d0d6166469cd38e38bffb",
+    "semantic_hash": "330c71479d8d0d6166469cd38e38bffb"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\agents\\src\\index.ts": {
-    "mtime": 1780326954.4657862,
-    "ast_hash": "c2e5643593fee68da52d5e7483a3001c",
-    "semantic_hash": "c2e5643593fee68da52d5e7483a3001c"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\agents\\package.json": {
+    "mtime": 1779758255.6568518,
+    "ast_hash": "559766ec9d102165249ed9352b82b192",
+    "semantic_hash": "559766ec9d102165249ed9352b82b192"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\agents\\tsconfig.json": {
-    "mtime": 1780326954.4657862,
-    "ast_hash": "c54ad44c23080e91298a0f198c8d0cc7",
-    "semantic_hash": "c54ad44c23080e91298a0f198c8d0cc7"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\agents\\src\\index.ts": {
+    "mtime": 1780683741.2365155,
+    "ast_hash": "d73a0295569c871ff0293c69fc756b95",
+    "semantic_hash": "d73a0295569c871ff0293c69fc756b95"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\config\\package.json": {
-    "mtime": 1780326954.4667828,
-    "ast_hash": "4e4014efc452cdcd5ba3209f3f30f960",
-    "semantic_hash": "4e4014efc452cdcd5ba3209f3f30f960"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\agents\\tsconfig.json": {
+    "mtime": 1779757165.56673,
+    "ast_hash": "aab0eb0dfbfc7805adfe874c81621208",
+    "semantic_hash": "aab0eb0dfbfc7805adfe874c81621208"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\config\\tailwind.config.js": {
-    "mtime": 1780326954.4667828,
-    "ast_hash": "f7f5940a251182a85beee37cb8ae6f52",
-    "semantic_hash": "f7f5940a251182a85beee37cb8ae6f52"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\config\\package.json": {
+    "mtime": 1779757104.9043899,
+    "ast_hash": "6cd681245ed472f0d54b5cd1c01304b8",
+    "semantic_hash": "6cd681245ed472f0d54b5cd1c01304b8"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\config\\tsconfig.base.json": {
-    "mtime": 1780326954.4677868,
-    "ast_hash": "a2e6a41d6374de1ee62c0a04cfa84cf5",
-    "semantic_hash": "a2e6a41d6374de1ee62c0a04cfa84cf5"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\config\\tailwind.config.js": {
+    "mtime": 1779757109.098373,
+    "ast_hash": "315f3791cdc90c4fdb45292c83f0aa48",
+    "semantic_hash": "315f3791cdc90c4fdb45292c83f0aa48"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\database\\package.json": {
-    "mtime": 1780326954.4677868,
-    "ast_hash": "ce49743e5196ce7d9b7924542e46efdd",
-    "semantic_hash": "ce49743e5196ce7d9b7924542e46efdd"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\config\\tsconfig.base.json": {
+    "mtime": 1779757112.4171183,
+    "ast_hash": "fb106ce1ebf9e8f5c8480f378542ea4e",
+    "semantic_hash": "fb106ce1ebf9e8f5c8480f378542ea4e"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\database\\src\\index.ts": {
-    "mtime": 1780439509.7741907,
-    "ast_hash": "f29d1b07327f4f9f4aa0798afd80358f",
-    "semantic_hash": "f29d1b07327f4f9f4aa0798afd80358f"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\database\\package.json": {
+    "mtime": 1779757127.0380473,
+    "ast_hash": "7750b71d2ae6453892113dcbdbf1f1a6",
+    "semantic_hash": "7750b71d2ae6453892113dcbdbf1f1a6"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\database\\tsconfig.json": {
-    "mtime": 1780326954.469295,
-    "ast_hash": "c54ad44c23080e91298a0f198c8d0cc7",
-    "semantic_hash": "c54ad44c23080e91298a0f198c8d0cc7"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\database\\src\\index.ts": {
+    "mtime": 1780683741.2375157,
+    "ast_hash": "d078bdc54b00fa1a4867a9c929b2ffca",
+    "semantic_hash": "d078bdc54b00fa1a4867a9c929b2ffca"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\prompts\\package.json": {
-    "mtime": 1780326954.4703035,
-    "ast_hash": "bbfb97da1acbfea0e3b6a78245c59c9a",
-    "semantic_hash": "bbfb97da1acbfea0e3b6a78245c59c9a"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\database\\tsconfig.json": {
+    "mtime": 1779757130.1755207,
+    "ast_hash": "aab0eb0dfbfc7805adfe874c81621208",
+    "semantic_hash": "aab0eb0dfbfc7805adfe874c81621208"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\prompts\\src\\index.ts": {
-    "mtime": 1780326954.4713042,
-    "ast_hash": "6ca2108dca4cb593a1c75fd76021699f",
-    "semantic_hash": "6ca2108dca4cb593a1c75fd76021699f"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\prompts\\package.json": {
+    "mtime": 1779757137.3069901,
+    "ast_hash": "3c47bc04b5028cf429611b63c6421ee9",
+    "semantic_hash": "3c47bc04b5028cf429611b63c6421ee9"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\prompts\\tsconfig.json": {
-    "mtime": 1780326954.4713042,
-    "ast_hash": "c54ad44c23080e91298a0f198c8d0cc7",
-    "semantic_hash": "c54ad44c23080e91298a0f198c8d0cc7"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\prompts\\src\\index.ts": {
+    "mtime": 1779757146.456028,
+    "ast_hash": "b2220716d75abdb03e6acf9185c0c309",
+    "semantic_hash": "b2220716d75abdb03e6acf9185c0c309"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\rag-core\\package.json": {
-    "mtime": 1780326954.472401,
-    "ast_hash": "1537bfe97708c3cd195cce9f7f672b8e",
-    "semantic_hash": "1537bfe97708c3cd195cce9f7f672b8e"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\prompts\\tsconfig.json": {
+    "mtime": 1779757140.683803,
+    "ast_hash": "aab0eb0dfbfc7805adfe874c81621208",
+    "semantic_hash": "aab0eb0dfbfc7805adfe874c81621208"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\rag-core\\src\\index.ts": {
-    "mtime": 1780439492.861832,
-    "ast_hash": "2bc33c7592e3df51b8da8304981d2d5d",
-    "semantic_hash": "2bc33c7592e3df51b8da8304981d2d5d"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\rag-core\\package.json": {
+    "mtime": 1780683741.238517,
+    "ast_hash": "30f9f266ba9b79aaf842338db88f2ae3",
+    "semantic_hash": "30f9f266ba9b79aaf842338db88f2ae3"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\rag-core\\src\\ragService.ts": {
-    "mtime": 1780439492.8628294,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\rag-core\\src\\index.ts": {
+    "mtime": 1780683741.2395163,
+    "ast_hash": "b9a90efbe558d72eb7fac54ff7f7e872",
+    "semantic_hash": "b9a90efbe558d72eb7fac54ff7f7e872"
+  },
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\rag-core\\src\\ragService.ts": {
+    "mtime": 1780683733.2485855,
     "ast_hash": "2a5fd2ddded5d48136a3a8dbfdb74d8d",
     "semantic_hash": "2a5fd2ddded5d48136a3a8dbfdb74d8d"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\rag-core\\tsconfig.json": {
-    "mtime": 1780326954.4734025,
-    "ast_hash": "c54ad44c23080e91298a0f198c8d0cc7",
-    "semantic_hash": "c54ad44c23080e91298a0f198c8d0cc7"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\rag-core\\tsconfig.json": {
+    "mtime": 1779757152.9281301,
+    "ast_hash": "aab0eb0dfbfc7805adfe874c81621208",
+    "semantic_hash": "aab0eb0dfbfc7805adfe874c81621208"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\types\\package.json": {
-    "mtime": 1780326954.474689,
-    "ast_hash": "e65f5eacbc26dae49cc6277a759613cb",
-    "semantic_hash": "e65f5eacbc26dae49cc6277a759613cb"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\types\\package.json": {
+    "mtime": 1779757115.4854968,
+    "ast_hash": "6282ba45dc06a3b5f22090b39dd7071d",
+    "semantic_hash": "6282ba45dc06a3b5f22090b39dd7071d"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\types\\src\\index.ts": {
-    "mtime": 1780439492.470098,
-    "ast_hash": "38b119265db7a80b8764de40b96d5245",
-    "semantic_hash": "38b119265db7a80b8764de40b96d5245"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\types\\src\\index.ts": {
+    "mtime": 1780683741.240517,
+    "ast_hash": "36c91f21b9ca7773fe29dfea6c5f33ff",
+    "semantic_hash": "36c91f21b9ca7773fe29dfea6c5f33ff"
   },
-  "D:\\ITI_Final\\creator-engine\\packages\\types\\tsconfig.json": {
-    "mtime": 1780326954.4756956,
-    "ast_hash": "c54ad44c23080e91298a0f198c8d0cc7",
-    "semantic_hash": "c54ad44c23080e91298a0f198c8d0cc7"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\packages\\types\\tsconfig.json": {
+    "mtime": 1779757118.8427172,
+    "ast_hash": "aab0eb0dfbfc7805adfe874c81621208",
+    "semantic_hash": "aab0eb0dfbfc7805adfe874c81621208"
   },
-  "D:\\ITI_Final\\creator-engine\\skills-lock.json": {
-    "mtime": 1780439492.867283,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\scripts\\graphify_ast_update.py": {
+    "mtime": 1780684253.2285416,
+    "ast_hash": "486adbfbe72493ffa2eafb6a85364fd0",
+    "semantic_hash": "486adbfbe72493ffa2eafb6a85364fd0"
+  },
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\scripts\\graphify_step1.ps1": {
+    "mtime": 1780683741.244522,
+    "ast_hash": "4a37e6be07243fa74765a88d89ec681f",
+    "semantic_hash": "4a37e6be07243fa74765a88d89ec681f"
+  },
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\scripts\\graphify_step2.ps1": {
+    "mtime": 1780683741.244522,
+    "ast_hash": "eae33d07576ceb247b13675dbf1baf9f",
+    "semantic_hash": "eae33d07576ceb247b13675dbf1baf9f"
+  },
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\scripts\\graphify_step3.ps1": {
+    "mtime": 1780683741.2455225,
+    "ast_hash": "79d5d020e6e9ca412054c36f90a05268",
+    "semantic_hash": "79d5d020e6e9ca412054c36f90a05268"
+  },
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\scripts\\graphify_step3.py": {
+    "mtime": 1780684217.173271,
+    "ast_hash": "38a66ce3445d0ea02c1deb454ca11d7d",
+    "semantic_hash": "38a66ce3445d0ea02c1deb454ca11d7d"
+  },
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\scripts\\test_db_save.js": {
+    "mtime": 1780683741.2465222,
+    "ast_hash": "9ff898d564c986634477778b4f279442",
+    "semantic_hash": "9ff898d564c986634477778b4f279442"
+  },
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\scripts\\test_routes.js": {
+    "mtime": 1780683741.247522,
+    "ast_hash": "254a91d2d373cbc375d37824dcf095b5",
+    "semantic_hash": "254a91d2d373cbc375d37824dcf095b5"
+  },
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\skills-lock.json": {
+    "mtime": 1780683733.2525854,
     "ast_hash": "a90dae20df7307abe31befd41e000a39",
     "semantic_hash": "a90dae20df7307abe31befd41e000a39"
   },
-  "D:\\ITI_Final\\creator-engine\\tsconfig.json": {
-    "mtime": 1780435519.9438486,
-    "ast_hash": "d962983e5751567864f7459e3d9fc92e",
-    "semantic_hash": "d962983e5751567864f7459e3d9fc92e"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\tsconfig.json": {
+    "mtime": 1779757089.2933095,
+    "ast_hash": "1f1c394194f16465ecc1be8220709123",
+    "semantic_hash": "1f1c394194f16465ecc1be8220709123"
   },
-  "D:\\ITI_Final\\creator-engine\\turbo.json": {
-    "mtime": 1780326954.4792027,
-    "ast_hash": "a7b27d6ce051179e85f63ff07bc44ecf",
-    "semantic_hash": "a7b27d6ce051179e85f63ff07bc44ecf"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\turbo.json": {
+    "mtime": 1779757716.042944,
+    "ast_hash": "f96c07567f6383918c9a7a10d3c2b10b",
+    "semantic_hash": "f96c07567f6383918c9a7a10d3c2b10b"
   },
-  "D:\\ITI_Final\\creator-engine\\.agents\\rules\\graphify.md": {
-    "mtime": 1780502930.8443613,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.agents\\rules\\graphify.md": {
+    "mtime": 1780683732.9467099,
     "ast_hash": "a0e4d192b9e2e17256124dbfc8e24e6a",
     "semantic_hash": "a0e4d192b9e2e17256124dbfc8e24e6a"
   },
-  "D:\\ITI_Final\\creator-engine\\.agents\\skills\\find-skills\\SKILL.md": {
-    "mtime": 1780439492.8391035,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.agents\\skills\\find-skills\\SKILL.md": {
+    "mtime": 1780683732.9477098,
     "ast_hash": "423f2107c2f949cdaa6cad9b2fcc6df3",
     "semantic_hash": "423f2107c2f949cdaa6cad9b2fcc6df3"
   },
-  "D:\\ITI_Final\\creator-engine\\.agents\\skills\\frontend-design\\LICENSE.txt": {
-    "mtime": 1780439492.8411055,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.agents\\skills\\frontend-design\\LICENSE.txt": {
+    "mtime": 1780683732.9487174,
     "ast_hash": "29256199be2a609aac596980ffc11996",
     "semantic_hash": "29256199be2a609aac596980ffc11996"
   },
-  "D:\\ITI_Final\\creator-engine\\.agents\\skills\\frontend-design\\SKILL.md": {
-    "mtime": 1780439492.8421044,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.agents\\skills\\frontend-design\\SKILL.md": {
+    "mtime": 1780683732.94971,
     "ast_hash": "400c8b8231420f30b48aed0a6f37df9f",
     "semantic_hash": "400c8b8231420f30b48aed0a6f37df9f"
   },
-  "D:\\ITI_Final\\creator-engine\\.agents\\workflows\\graphify.md": {
-    "mtime": 1780502930.8466382,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.agents\\workflows\\graphify.md": {
+    "mtime": 1780683732.9507337,
     "ast_hash": "637776aa6f7496d069afe7520c845c8a",
     "semantic_hash": "637776aa6f7496d069afe7520c845c8a"
   },
-  "D:\\ITI_Final\\creator-engine\\.claude\\CLAUDE.md": {
-    "mtime": 1780502648.0173564,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.claude\\CLAUDE.md": {
+    "mtime": 1780683732.9517121,
     "ast_hash": "817fe671013b35ae0bc9301dfe449a87",
     "semantic_hash": "817fe671013b35ae0bc9301dfe449a87"
   },
-  "D:\\ITI_Final\\creator-engine\\.claude\\skills\\graphify\\SKILL.md": {
-    "mtime": 1780502755.2467606,
-    "ast_hash": "c0ac08140ebbce36e6562f1a8d3a97b9",
-    "semantic_hash": "c0ac08140ebbce36e6562f1a8d3a97b9"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.claude\\skills\\graphify\\SKILL.md": {
+    "mtime": 1780683732.9537106,
+    "ast_hash": "2b322366533837bd4968c9eb1700574a",
+    "semantic_hash": "2b322366533837bd4968c9eb1700574a"
   },
-  "D:\\ITI_Final\\creator-engine\\.claude\\skills\\graphify\\references\\add-watch.md": {
-    "mtime": 1780502549.1553638,
-    "ast_hash": "0df0589623217ca38a12bdcabfb42f4c",
-    "semantic_hash": "0df0589623217ca38a12bdcabfb42f4c"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.claude\\skills\\graphify\\references\\add-watch.md": {
+    "mtime": 1780683732.9547095,
+    "ast_hash": "e10311cd2f69de7d62674eff2b87420f",
+    "semantic_hash": "e10311cd2f69de7d62674eff2b87420f"
   },
-  "D:\\ITI_Final\\creator-engine\\.claude\\skills\\graphify\\references\\exports.md": {
-    "mtime": 1780502549.1603749,
-    "ast_hash": "7fb1a81aca17a462db70684a324fcfb0",
-    "semantic_hash": "7fb1a81aca17a462db70684a324fcfb0"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.claude\\skills\\graphify\\references\\exports.md": {
+    "mtime": 1780683732.9547095,
+    "ast_hash": "4b1c094b3077da6b95ec99694612327e",
+    "semantic_hash": "4b1c094b3077da6b95ec99694612327e"
   },
-  "D:\\ITI_Final\\creator-engine\\.claude\\skills\\graphify\\references\\extraction-spec.md": {
-    "mtime": 1780502549.1633735,
-    "ast_hash": "24808b03abfeaf5f6435bb69c0125b2c",
-    "semantic_hash": "24808b03abfeaf5f6435bb69c0125b2c"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.claude\\skills\\graphify\\references\\extraction-spec.md": {
+    "mtime": 1780683732.9557104,
+    "ast_hash": "a50d4409dbac381356a25ca0905d833c",
+    "semantic_hash": "a50d4409dbac381356a25ca0905d833c"
   },
-  "D:\\ITI_Final\\creator-engine\\.claude\\skills\\graphify\\references\\github-and-merge.md": {
-    "mtime": 1780502549.165903,
-    "ast_hash": "cde13df085e4c492aeb7ba298a996d0d",
-    "semantic_hash": "cde13df085e4c492aeb7ba298a996d0d"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.claude\\skills\\graphify\\references\\github-and-merge.md": {
+    "mtime": 1780683732.9557104,
+    "ast_hash": "aa0e7ef186392cad062e60483ca7dbbf",
+    "semantic_hash": "aa0e7ef186392cad062e60483ca7dbbf"
   },
-  "D:\\ITI_Final\\creator-engine\\.claude\\skills\\graphify\\references\\hooks.md": {
-    "mtime": 1780502549.167914,
-    "ast_hash": "3f545db6ce646650bb9de588f5512a27",
-    "semantic_hash": "3f545db6ce646650bb9de588f5512a27"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.claude\\skills\\graphify\\references\\hooks.md": {
+    "mtime": 1780683732.9572148,
+    "ast_hash": "0045c2f12c69bff3a641a8908a1ac057",
+    "semantic_hash": "0045c2f12c69bff3a641a8908a1ac057"
   },
-  "D:\\ITI_Final\\creator-engine\\.claude\\skills\\graphify\\references\\query.md": {
-    "mtime": 1780502549.1774383,
-    "ast_hash": "c2a8e798674a81b02aa9975f43023819",
-    "semantic_hash": "c2a8e798674a81b02aa9975f43023819"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.claude\\skills\\graphify\\references\\query.md": {
+    "mtime": 1780683732.9572148,
+    "ast_hash": "82efbb856d6a3e15e7d78743b34a63c1",
+    "semantic_hash": "82efbb856d6a3e15e7d78743b34a63c1"
   },
-  "D:\\ITI_Final\\creator-engine\\.claude\\skills\\graphify\\references\\transcribe.md": {
-    "mtime": 1780502549.1889644,
-    "ast_hash": "70f6aa30d6211f3a2c7e9fc45479f50c",
-    "semantic_hash": "70f6aa30d6211f3a2c7e9fc45479f50c"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.claude\\skills\\graphify\\references\\transcribe.md": {
+    "mtime": 1780683732.9572148,
+    "ast_hash": "cf217decf113af55483edfa042f22db5",
+    "semantic_hash": "cf217decf113af55483edfa042f22db5"
   },
-  "D:\\ITI_Final\\creator-engine\\.claude\\skills\\graphify\\references\\update.md": {
-    "mtime": 1780502549.196002,
-    "ast_hash": "735932eaa4f0c8fef9566c538ae3e5f8",
-    "semantic_hash": "735932eaa4f0c8fef9566c538ae3e5f8"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.claude\\skills\\graphify\\references\\update.md": {
+    "mtime": 1780683732.958728,
+    "ast_hash": "c7a284f2788907c62b1627839ab9a9f9",
+    "semantic_hash": "c7a284f2788907c62b1627839ab9a9f9"
   },
-  "D:\\ITI_Final\\creator-engine\\.github\\workflows\\ci.yml": {
-    "mtime": 1780439492.0432315,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\.github\\workflows\\ci.yml": {
+    "mtime": 1780331193.0157084,
     "ast_hash": "6ef457cfb516e6cca8d999b186c0a625",
     "semantic_hash": "6ef457cfb516e6cca8d999b186c0a625"
   },
-  "D:\\ITI_Final\\creator-engine\\CLAUDE.md": {
-    "mtime": 1780502648.020365,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\CLAUDE.md": {
+    "mtime": 1780683733.1654024,
     "ast_hash": "8a6643a420fdad6bfb583523bc6cef16",
     "semantic_hash": "8a6643a420fdad6bfb583523bc6cef16"
   },
-  "D:\\ITI_Final\\creator-engine\\README.md": {
-    "mtime": 1780326954.4357738,
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\README.md": {
+    "mtime": 1780331193.019709,
     "ast_hash": "9267b287800a1a6b8dc794ad920b8ce3",
     "semantic_hash": "9267b287800a1a6b8dc794ad920b8ce3"
   },
-  "D:\\ITI_Final\\creator-engine\\n8n-workflows\\financial_agents_guide.md": {
-    "mtime": 1780451578.8130608,
-    "ast_hash": "2663ebda61c64b6204afe4e45121102f",
-    "semantic_hash": "2663ebda61c64b6204afe4e45121102f"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\n8n-workflows\\financial_agents_guide.md": {
+    "mtime": 1780683733.244586,
+    "ast_hash": "42b00a790985f280e245b0e7b4622962",
+    "semantic_hash": "42b00a790985f280e245b0e7b4622962"
   },
-  "D:\\ITI_Final\\creator-engine\\pnpm-workspace.yaml": {
-    "mtime": 1780449458.274178,
-    "ast_hash": "c1192938a42c5d827b10fbbd487752e0",
-    "semantic_hash": "c1192938a42c5d827b10fbbd487752e0"
+  "C:\\Users\\Mina Wael\\Desktop\\CEO\\pnpm-workspace.yaml": {
+    "mtime": 1780683741.2435217,
+    "ast_hash": "4362002c29826665029eb8a8ac95d3ee",
+    "semantic_hash": "4362002c29826665029eb8a8ac95d3ee"
   }
 }
