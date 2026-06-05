@@ -2,6 +2,7 @@ export interface User {
   id: string;
   email: string;
   name?: string;
+  avatar?: string;
 
   // Authentication
   password?: string;
@@ -10,12 +11,43 @@ export interface User {
   createdAt: Date;
 }
 
+export interface FounderProfile {
+  id: string;
+  userId: string;
+  projectId: string;
+  
+  // Inputs
+  skills: string[];
+  experience: string;
+  industryInterests: string[];
+  budget: number;
+  location: string;
+  availableTime: string;
+  startupGoals: string;
+  riskTolerance: string;
+  teamSize: string;
+
+  // AI Generated Outputs
+  founderType?: string;
+  strengths?: string[];
+  weaknesses?: string[];
+  recommendedBusinessModels?: string[];
+  recommendedStartupTypes?: string[];
+
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface OnboardingData {
   skills: string[];
+  experience: string;
+  industryInterests: string[];
   budget: number;
-  industry: string;
   location: string;
-  commitment: 'part-time' | 'full-time';
+  availableTime: string;
+  startupGoals: string;
+  riskTolerance: string;
+  teamSize: string;
 }
 
 export interface Project {
@@ -25,19 +57,56 @@ export interface Project {
   description: string;
   industry: string;
   status: 'draft' | 'idea' | 'validated' | 'branded' | 'marketing-ready' | 'active';
+  selectedOpportunityId?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface BusinessIdea {
   id: string;
+  userId: string;
   projectId: string;
   title: string;
   description: string;
   targetAudience: string;
   monetization: string[];
   skillsRequired: string[];
-  score: number; // Overall matching score
+  score: number;
+}
+
+export interface BusinessOpportunity {
+  id: string;
+  userId: string;
+  projectId: string;
+  title: string;
+  description: string;
+  opportunityScore: number;
+  founderFitScore: number;
+  marketDemandScore: number;
+  aiAdvantageScore: number;
+  difficulty: string;
+  startupCost: string;
+  estimatedRevenue: string;
+  timeToMVP: string;
+}
+
+export interface SelectedOpportunity {
+  id: string;
+  userId: string;
+  projectId: string;
+  opportunityId: string;
+  title: string;
+  description: string;
+  opportunityScore: number;
+  founderFitScore: number;
+  marketDemandScore: number;
+  aiAdvantageScore: number;
+  difficulty: string;
+  startupCost: string;
+  estimatedRevenue: string;
+  timeToMVP: string;
+  createdAt: Date;
+  selectedAt: Date;
 }
 
 export interface CompetitorAnalysis {
@@ -49,6 +118,7 @@ export interface CompetitorAnalysis {
 
 export interface BusinessValidation {
   id: string;
+  userId: string;
   projectId: string;
   feasibilityScore: number; // 0-100
   marketDemandScore: number; // 0-100
@@ -73,14 +143,43 @@ export interface LeanCanvas {
 
 export interface BusinessModel {
   id: string;
+  userId: string;
   projectId: string;
   leanCanvas: LeanCanvas;
   pricingStrategy: string;
   mvpScope: string[];
 }
 
+export interface BusinessPlan {
+  id: string;
+  userId: string;
+  projectId: string;
+  executiveSummary: string;
+  problemStatement: string;
+  solution: string;
+  targetAudience: string;
+  marketOpportunity: string;
+  leanCanvas: LeanCanvas;
+  customerSegments: string[];
+  businessModel: string;
+  revenueModel?: string;
+  pricingStrategy: string;
+  goToMarketStrategy: string;
+  mvpScope: string[];
+  successMetrics: string[];
+  growthStrategy: string;
+  marketResearchSummary?: string;
+  generatedByModel?: string;
+  generatedAt?: Date;
+  version: number;
+  isLatest: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface BrandIdentity {
   id: string;
+  userId: string;
   projectId: string;
   brandName: string;
   slogan: string;
@@ -97,6 +196,7 @@ export interface BrandIdentity {
 
 export interface MarketingCampaign {
   id: string;
+  userId: string;
   projectId: string;
   targetChannels: string[];
   budgetAllocation: Record<string, number>;
@@ -123,6 +223,7 @@ export interface RoadmapMilestone {
 
 export interface ExecutionRoadmap {
   id: string;
+  userId: string;
   projectId: string;
   milestones: RoadmapMilestone[];
   totalEstimatedBudget: number;
@@ -139,7 +240,107 @@ export interface ChatMessage {
 
 export interface Conversation {
   id: string;
+  userId: string;
   projectId: string;
   messages: ChatMessage[];
   updatedAt: Date;
+}
+
+export interface VentureState {
+  id: string;
+  userId: string;
+  projectId: string;
+  founderProfile?: FounderProfile;
+  selectedOpportunity?: SelectedOpportunity;
+  businessPlan?: BusinessPlan;
+  latestBusinessPlan?: {
+    id: string;
+    version: number;
+    generatedAt: Date;
+    generatedByModel: string;
+  };
+  financialForecast?: any; // To be implemented in future modules
+  branding?: BrandIdentity;
+  marketing?: MarketingCampaign;
+  roadmap?: ExecutionRoadmap;
+  lastUpdated: Date;
+}
+
+// ==========================================
+// AUTH CONTRACTS
+// ==========================================
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface SignupRequest {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  name?: string;
+  avatar?: string;
+}
+
+export interface AuthResponse {
+  token: string;
+  user: AuthUser;
+}
+
+export interface N8nWebhookResponse<T = any> {
+  success: boolean;
+  workflow: string;
+  projectId: string;
+  generatedAt: string;
+  data: T;
+}
+
+export interface AgentRun {
+  id: string;
+  userId: string;
+  projectId: string;
+  workflow:
+    | "founder-analysis"
+    | "opportunity-discovery"
+    | "business-plan"
+    | "financial"
+    | "branding"
+    | "marketing"
+    | "roadmap"
+    | "ai-cofounder";
+  status: "pending" | "running" | "success" | "failed";
+  aiModel: string;
+  provider: string;
+  startedAt: Date;
+  completedAt?: Date;
+  durationMs?: number;
+  input: any;
+  output?: any;
+  error?: string;
+  createdAt: Date;
+}
+
+export interface UploadedDocument {
+  id: string;
+  userId: string;
+  projectId: string;
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  storageUrl: string;
+  processingStatus: "pending" | "processing" | "completed" | "failed";
+  uploadedAt: Date;
+}
+
+export interface OpportunityComparison {
+  id: string;
+  projectId: string;
+  selectedOpportunityIds: string[];
+  createdAt: Date;
 }

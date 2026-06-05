@@ -1,0 +1,49 @@
+{
+  "id": "business-idea-flow",
+  "name": "Business Idea Generator Flow",
+  "description": "Orchestrates skills, budget, industry, and location inputs to generate a validated startup business idea.",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "business-idea-flow",
+        "options": {}
+      },
+      "id": "webhook-node",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.item.json;\nconst skills = input.skills || [\"Coding\", \"Marketing\"];\nconst budget = input.budget || 500;\nconst industry = input.industry || \"Logistics\";\nconst location = input.location || \"Cairo\";\n\n// Inline execution or import of egypt-market-tool.js\nlet marketInsights = \"\";\ntry {\n  const path = require('path');\n  const egyptMarketTool = require(path.resolve(__dirname, '../scripts/egypt-market-tool.js'));\n  marketInsights = egyptMarketTool.build(industry).text;\n} catch (e) {\n  // Self-contained fallback logic\n  if (industry.toLowerCase().includes(\"logistics\")) {\n    marketInsights = \"Egypt logistics indicators: Fuel subsidy cuts driving electric micro-mobility. Cairo/Giza density highly profitable.\";\n  } else {\n    marketInsights = \"Egypt general market indicators: 110M+ population, 72.2% internet penetration, instant cash payments preferred.\";\n  }\n}\n\nreturn {\n  json: {\n    prompt: `System: Generate a personalized business idea using skills ${skills.join(', ')}, budget ${budget}, in target location ${location}. Context: ${marketInsights}`,\n    model: \"gpt-4o-mini\"\n  }\n};"
+      },
+      "id": "code-node",
+      "name": "Orchestrate Business Idea",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Orchestrate Business Idea",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {}
+}

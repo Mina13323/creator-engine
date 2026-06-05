@@ -1,0 +1,154 @@
+{
+  "name": "Opportunity Discovery Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "opportunity-discovery-flow",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"api_key\": \"YOUR_TAVILY_API_KEY\", \"query\": \"emerging startup trends, AI SaaS opportunities, startup opportunities matching \" + $('Webhook').item.json.body.founderProfile.founderType + \" in fields like \" + ($('Webhook').item.json.body.founderProfile.industryInterests ? $('Webhook').item.json.body.founderProfile.industryInterests.join(', ') : 'technology'), \"search_depth\": \"advanced\", \"include_answer\": true}"
+      },
+      "id": "tavily",
+      "name": "Tavily Search",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        300,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_FIREWORKS_API_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"model\": \"accounts/fireworks/models/deepseek-v4-flash\", \"messages\": [{\"role\": \"system\", \"content\": \"You are Creator Engine's Opportunity Discovery Agent. Your task is to generate startup opportunities that fit the founder profile. Use founder profile strengths/weaknesses and Tavily research results to generate opportunities ranked by viability. Return ONLY valid JSON matching the schema. No markdown, no explanations.\"}, {\"role\": \"user\", \"content\": \"Founder Profile:\\n\" + JSON.stringify($('Webhook').item.json.body.founderProfile) + \"\\n\\nMarket Trends Research:\\n\" + JSON.stringify($json.results) + \"\\n\\nGenerate exactly 10 to 20 startup opportunities. Output MUST match this schema:\\n{\\n  \\\"opportunities\\\": [\\n    {\\n      \\\"title\\\": \\\"Name of startup\\\",\\n      \\\"description\\\": \\\"One sentence description\\\",\\n      \\\"opportunityScore\\\": 95,\\n      \\\"founderFitScore\\\": 90,\\n      \\\"marketDemandScore\\\": 95,\\n      \\\"aiAdvantageScore\\\": 92,\\n      \\\"difficulty\\\": \\\"Medium\\\",\\n      \\\"startupCost\\\": 15000,\\n      \\\"estimatedRevenue\\\": 5000,\\n      \\\"timeToMVP\\\": \\\"4 weeks\\\",\\n      \\\"recommendedBusinessModel\\\": \\\"B2B SaaS\\\"\\n    }\\n  ]\\n}\"}], \"temperature\": 0.7, \"max_tokens\": 4000, \"response_format\": {\"type\": \"json_object\"}}"
+      },
+      "id": "fireworks",
+      "name": "Fireworks AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const content = $input.first().json.choices[0].message.content.trim();\nlet parsed;\ntry {\n  parsed = JSON.parse(content);\n} catch (e) {\n  const match = content.match(/\\{[\\s\\S]*\\}/);\n  parsed = JSON.parse(match ? match[0] : content);\n}\nreturn { json: { success: true, data: parsed.opportunities || parsed } };"
+      },
+      "id": "parser",
+      "name": "Parse JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        900,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Tavily Search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily Search": {
+      "main": [
+        [
+          {
+            "node": "Fireworks AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fireworks AI": {
+      "main": [
+        [
+          {
+            "node": "Parse JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse JSON": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {}
+}

@@ -1,3 +1,5 @@
+import { KnowledgeDocumentModel } from '@creator/database';
+
 export interface KnowledgeDocument {
   id: string;
   title: string;
@@ -5,7 +7,7 @@ export interface KnowledgeDocument {
   content: string;
 }
 
-// Grounded local knowledge database for the RAG pipeline
+// Fallback grounded local knowledge database for offline/mock usage
 const KNOWLEDGE_BASE: KnowledgeDocument[] = [
   {
     id: 'eg-market-1',
@@ -46,10 +48,88 @@ const KNOWLEDGE_BASE: KnowledgeDocument[] = [
 ];
 
 /**
- * Searches the local knowledge base using a basic term-matching algorithm.
- * Extensible to use OpenAI Embeddings and Pinecone in production.
+ * Generates vector embeddings for a given text using OpenAI or Gemini.
+ */
+export async function embedText(text: string): Promise<number[]> {
+  const openaiKey = process.env.OPENAI_API_KEY;
+  if (!openaiKey || openaiKey.includes('sk-proj-')) {
+    // Return a dummy embedding array of length 1536 (OpenAI standard) for fallback testing
+    return Array(1536).fill(0).map(() => Math.random() - 0.5);
+  }
+
+  try {
+    const res = await fetch('https://api.openai.com/v1/embeddings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${openaiKey}`
+      },
+      body: JSON.stringify({
+        input: text,
+        model: 'text-embedding-3-small'
+      })
+    });
+    
+    if (!res.ok) {
+      throw new Error(`Embedding API failed with status ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data.data[0].embedding;
+  } catch (error) {
+    console.error('Failed to generate embeddings:', error);
+    // Return dummy on failure so the system doesn't crash completely
+    return Array(1536).fill(0).map(() => Math.random() - 0.5);
+  }
+}
+
+/**
+ * Searches the Knowledge Base using MongoDB Atlas Vector Search.
+ * Falls back to basic term-matching if DB is offline.
  */
 export async function queryRAG(query: string, limit: number = 3): Promise<KnowledgeDocument[]> {
+  try {
+    // If we have a real MongoDB connection, try vector search
+    if (KnowledgeDocumentModel.db.readyState === 1) {
+      const queryVector = await embedText(query);
+      
+      // Perform MongoDB Atlas Vector Search
+      // Note: This requires an Atlas Search Index named "vector_index" on the collection
+      const results = await KnowledgeDocumentModel.aggregate([
+        {
+          $vectorSearch: {
+            index: 'vector_index',
+            path: 'embedding',
+            queryVector: queryVector,
+            numCandidates: limit * 10,
+            limit: limit
+          }
+        },
+        {
+          $project: {
+            id: 1,
+            title: 1,
+            category: 1,
+            content: 1,
+            score: { $meta: 'vectorSearchScore' }
+          }
+        }
+      ]);
+
+      if (results && results.length > 0) {
+        return results.map(r => ({
+          id: r.id,
+          title: r.title,
+          category: r.category,
+          content: r.content
+        }));
+      }
+    }
+  } catch (err) {
+    console.warn('MongoDB Vector Search failed or not configured, falling back to local text search.', err);
+  }
+
+  // --- FALLBACK LOGIC ---
   const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
   
   if (queryWords.length === 0) {
@@ -80,7 +160,6 @@ export async function queryRAG(query: string, limit: number = 3): Promise<Knowle
     return matches.slice(0, limit);
   }
 
-  // Fallback to top documents if no matches found
   return KNOWLEDGE_BASE.slice(0, limit);
 }
 
@@ -94,3 +173,5 @@ export async function queryPineconeVectorDB(query: string, apiKey: string, index
     { id: 'vec-1', score: 0.92, text: 'Sample retrieved text from Pinecone vector space' }
   ];
 }
+
+export * from './ragService';

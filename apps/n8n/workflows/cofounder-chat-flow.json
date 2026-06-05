@@ -1,0 +1,49 @@
+{
+  "id": "cofounder-chat-flow",
+  "name": "Cofounder Chat RAG Flow",
+  "description": "Runs query embeddings search and injects context into the cofounder prompt.",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "cofounder-chat-flow",
+        "options": {}
+      },
+      "id": "webhook-node",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.item.json;\nconst query = input.message || \"\";\nconst state = input.state || \"\";\nconst ragData = input.rag_data || \"\";\n\nreturn {\n  json: {\n    prompt: `System: You are an active startup cofounder. Venture state: ${state}. Market data context: ${ragData}. Answer user: ${query}`,\n    model: \"gpt-4o-mini\"\n  }\n};\n"
+      },
+      "id": "code-node",
+      "name": "Generate Chat Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Generate Chat Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {}
+}

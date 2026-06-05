@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
 import { Palette, Copy, Check, Info, Sparkles, ImagePlus, Loader2, Key } from 'lucide-react';
-import { muapi } from '../lib/muapi';
+import { api } from '../lib/api';
 
 export default function BrandingPanel() {
   const { currentOutputs } = useStore();
@@ -30,17 +30,13 @@ export default function BrandingPanel() {
     try {
       setIsGenerating(true);
       setError(null);
-      const result = await muapi.generateImage({
+      const result = await api.generateImage({
         prompt: branding.logoPrompt,
         model: 'flux-schnell'
       });
       setGeneratedLogo(result.url);
     } catch (err: any) {
-      if (err.message.includes('API Key missing')) {
-        setError('Please set your Muapi API key in the Dashboard settings or localStorage (muapi_key).');
-      } else {
-        setError(err.message || 'Failed to generate logo.');
-      }
+      setError(err.message || 'Failed to generate logo.');
     } finally {
       setIsGenerating(false);
     }

@@ -1,0 +1,49 @@
+{
+  "id": "roadmap-flow",
+  "name": "Roadmap Strategy Flow",
+  "description": "Calculates development timelines, cost estimations, and suggests SaaS tools.",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "roadmap-flow",
+        "options": {}
+      },
+      "id": "webhook-node",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.item.json;\nconst budget = input.budget || 500;\nconst mvpScope = input.mvp_scope || \"Simple user profiles, escrow milestones\";\n\n// Inline execution or import of pricing-tool.js\nlet pricingInsights = \"\";\ntry {\n  const path = require('path');\n  const pricingTool = require(path.resolve(__dirname, '../scripts/pricing-tool.js'));\n  pricingInsights = pricingTool.build(budget).text;\n} catch (e) {\n  if (budget < 1000) {\n    pricingInsights = \"Low-barrier Freemium: Focus on transaction cut-rates (2-3%) rather than high monthly retainers.\";\n  } else {\n    pricingInsights = \"Three-Tier Pricing: Standard free tier, $19/mo professional tier, $79/mo agency tier.\";\n  }\n}\n\nreturn {\n  json: {\n    prompt: `Draft a timeline for MVP build. Budget restrictions: ${pricingInsights}. Scope: ${mvpScope}`,\n    model: \"gpt-4o-mini\"\n  }\n};\n"
+      },
+      "id": "code-node",
+      "name": "Generate Roadmap Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Generate Roadmap Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {}
+}

@@ -4,41 +4,48 @@ import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
 import {
   Lightbulb, Sparkles, Pencil, MapPin, Globe, DollarSign,
-  FileText, BarChart, Store, CheckCircle, ChevronLeft, Loader2
+  FileText, BarChart, Store, CheckCircle, ChevronLeft, Loader2,
+  Briefcase, Clock, ShieldAlert, Users, Target
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { Badge } from './ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-
-const UNIQUE_IDEAS = [
-  'Fresh ingredients', 'Family friendly', 'Fast service', 'Trusted quality',
-  'Local sourcing', 'Friendly staff', 'Freshly prepared', 'Daily specials',
-  'Clean environment', 'Natural flavors'
-];
-
-const NAME_IDEAS = [
-  'Cairo Courtyard', 'Fresh Hearth Foods', 'Nourish Now', 'Trusty Table',
-  'Family First Market', 'Crisp Corner Kitchen', 'Local Line Deli',
-  'Daily Delight Hub', 'Harvest Home Meals', 'QuickServe Fresh'
-];
+import { OnboardingData } from '@creator/types';
 
 export default function Onboarding() {
-  const { createProject, loadProjects, loading, loadingMessage, setAuthModalOpen, user } = useStore();
+  const { createProject, analyzeFounder, loading, loadingMessage, setAuthModalOpen, user } = useStore();
 
-  const [step, setStep] = useState(1);
-  const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('Unknown, Cairo Governorate, Egypt');
-  const [language, setLanguage] = useState('english');
-  const [currency, setCurrency] = useState('usd');
-  const [uniqueFeatures, setUniqueFeatures] = useState<string[]>([]);
-  const [name, setName] = useState('');
+  const [step, setStep] = useState(0); // 0: Project Name, 1: Skills, 2: Resources, 3: Goals
+  const [projectName, setProjectName] = useState('');
+  const [createdProjectId, setCreatedProjectId] = useState<string | null>(null);
 
-  const toggleUniqueFeature = (feature: string) => {
-    if (uniqueFeatures.includes(feature)) {
-      setUniqueFeatures(uniqueFeatures.filter(f => f !== feature));
+  const [formData, setFormData] = useState<OnboardingData>({
+    skills: [],
+    experience: '',
+    industryInterests: [],
+    budget: 5000,
+    location: '',
+    availableTime: '',
+    startupGoals: '',
+    riskTolerance: '',
+    teamSize: 'Solo'
+  });
+
+  const [skillsInput, setSkillsInput] = useState('');
+  const [industryInput, setIndustryInput] = useState('');
+
+  const handleNextStep = async () => {
+    if (step === 0) {
+      if (!user) {
+        setAuthModalOpen(true);
+        return;
+      }
+      if (!projectName.trim()) return;
+      const pid = await createProject(projectName);
+      setCreatedProjectId(pid);
+      setStep(1);
     } else {
-      setUniqueFeatures([...uniqueFeatures, feature]);
+      setStep(step + 1);
     }
   };
 
@@ -47,22 +54,28 @@ export default function Onboarding() {
       setAuthModalOpen(true);
       return;
     }
-    // Mapping our new flow to the existing store payload
-    const payload = {
-      name: name || 'My New Venture',
-      description: `${description}. Unique features: ${uniqueFeatures.join(', ')}`,
-      industry: 'E-commerce', // Default
-      skills: uniqueFeatures.length > 0 ? uniqueFeatures : ['Digital Marketing'],
-      budget: currency === 'usd' ? 1000 : 500,
-      location: location,
+    
+    if (!createdProjectId) {
+      console.error('No project created');
+      return;
+    }
+    
+    // Process comma separated lists
+    const finalData = {
+      ...formData,
+      skills: skillsInput.split(',').map(s => s.trim()).filter(Boolean),
+      industryInterests: industryInput.split(',').map(s => s.trim()).filter(Boolean)
     };
-    await createProject(payload);
+
+    if (finalData.skills.length === 0) finalData.skills = ['Management'];
+    if (finalData.industryInterests.length === 0) finalData.industryInterests = ['SaaS'];
+
+    await analyzeFounder(createdProjectId, finalData);
   };
 
   if (loading) {
     return (
       <div className="min-h-screen bg-white text-slate-900 flex flex-col items-center pt-24 p-6 font-sans">
-        {/* Header / Logo */}
         <div className="absolute top-6 left-6 flex items-center gap-2">
           <div className="w-5 h-5 flex gap-1">
             <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
@@ -70,84 +83,25 @@ export default function Onboarding() {
           </div>
           <span className="font-bold text-lg text-slate-900 tracking-tight">CEO</span>
         </div>
-
-        <div className="absolute top-6 right-6">
-          {!user ? (
-            <Button onClick={() => setAuthModalOpen(true)} variant="ghost" className="text-emerald-600 font-semibold hover:text-emerald-700 hover:bg-emerald-50">Login</Button>
-          ) : (
-            <span className="text-emerald-700 font-medium text-sm">Logged in as {user.name || user.email}</span>
-          )}
-        </div>
-
         <div className="w-full max-w-xl text-center space-y-6 mt-12">
-          <div className="flex justify-center gap-4 text-purple-500 mb-6">
-            <FileText className="w-5 h-5" />
-            <Sparkles className="w-5 h-5" />
-            <Pencil className="w-5 h-5" />
+          <div className="flex justify-center gap-4 text-emerald-500 mb-6">
+            <Loader2 className="w-10 h-10 animate-spin" />
           </div>
-
-          <h1 className="text-2xl font-medium text-slate-900 mb-10">Just a few final details. You can change this later.</h1>
-
-          <div className="text-left space-y-2">
-            <h3 className="font-medium text-slate-900">Concept</h3>
-            <div className="flex items-center gap-3 text-slate-500 text-sm">
-              <Loader2 className="w-4 h-4 animate-spin text-slate-400" />
-              <span>{loadingMessage || 'Pulling together your concept...'}</span>
-            </div>
-          </div>
-
-          <div className="pt-8">
-            <Button
-              className="w-full bg-emerald-300 hover:bg-emerald-400 text-white rounded-xl py-6 text-base font-semibold transition-colors pointer-events-none"
-            >
-              Next
-            </Button>
-          </div>
+          <h1 className="text-2xl font-medium text-slate-900 mb-10">{loadingMessage || 'Analyzing Founder Profile...'}</h1>
         </div>
       </div>
     );
   }
 
   const renderStepIcon = () => {
-    switch (step) {
-      case 1:
-        return (
-          <div className="flex justify-center gap-4 text-amber-500 mb-8">
-            <Lightbulb className="w-5 h-5" />
-            <Sparkles className="w-5 h-5" />
-            <Pencil className="w-5 h-5" />
-          </div>
-        );
-      case 2:
-        return (
-          <div className="flex justify-center gap-4 text-emerald-600 mb-8">
-            <MapPin className="w-5 h-5" />
-            <Globe className="w-5 h-5" />
-            <DollarSign className="w-5 h-5" />
-          </div>
-        );
-      case 3:
-        return (
-          <div className="flex justify-center gap-4 text-indigo-500 mb-8">
-            <FileText className="w-5 h-5" />
-            <BarChart className="w-5 h-5" />
-            <Sparkles className="w-5 h-5" />
-          </div>
-        );
-      case 4:
-        return (
-          <div className="flex justify-center gap-4 text-rose-500 mb-8">
-            <Store className="w-5 h-5" />
-            <CheckCircle className="w-5 h-5" />
-            <Pencil className="w-5 h-5" />
-          </div>
-        );
-    }
+    if (step === 0) return <div className="flex justify-center gap-4 text-emerald-600 mb-8"><Briefcase className="w-5 h-5" /></div>;
+    if (step === 1) return <div className="flex justify-center gap-4 text-emerald-600 mb-8"><Briefcase className="w-5 h-5" /><Pencil className="w-5 h-5" /></div>;
+    if (step === 2) return <div className="flex justify-center gap-4 text-indigo-500 mb-8"><DollarSign className="w-5 h-5" /><MapPin className="w-5 h-5" /></div>;
+    if (step === 3) return <div className="flex justify-center gap-4 text-rose-500 mb-8"><Target className="w-5 h-5" /><ShieldAlert className="w-5 h-5" /></div>;
   };
 
   return (
     <div className="min-h-screen bg-white text-slate-900 flex flex-col relative font-sans">
-      {/* Header / Logo */}
       <div className="absolute top-6 left-6 flex items-center gap-2">
         <div className="w-5 h-5 flex gap-1">
           <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
@@ -167,179 +121,119 @@ export default function Onboarding() {
       <div className="flex-1 flex flex-col items-center justify-center p-6">
         <div className="w-full max-w-xl">
           {renderStepIcon()}
-
+          
           <div className="relative">
-            {step > 1 && (
-              <button
-                onClick={() => setStep(step - 1)}
-                className="absolute left-0 top-1.5 text-slate-400 hover:text-slate-600 transition-colors"
-              >
+            {step > 0 && (
+              <button onClick={() => setStep(step - 1)} className="absolute left-0 top-1 text-slate-400 hover:text-slate-600">
                 <ChevronLeft className="w-6 h-6" />
               </button>
             )}
-
             <h1 className="text-2xl font-medium text-center text-slate-900 mb-6">
-              {step === 1 && "What's your business idea?"}
-              {step === 2 && "Where is your business located?"}
-              {step === 3 && "What makes your business unique?"}
-              {step === 4 && "What is your business name?"}
+              {step === 0 && "Name your new project"}
+              {step === 1 && "What is your background?"}
+              {step === 2 && "What are your resources?"}
+              {step === 3 && "What are your goals?"}
             </h1>
           </div>
 
-          {/* Form Content */}
           <div className="space-y-6">
-            {step === 1 && (
-              <div className="relative">
-                <Input
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="E.g. dog walking"
-                  className="w-full rounded-xl py-6 px-4 text-base border-slate-300 focus-visible:ring-emerald-500 text-slate-900 bg-white"
-                />
-                <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                  <div className="w-2 h-2 rounded-full bg-purple-500"></div>
-                </div>
+            {step === 0 && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-700">Project Name</label>
+                <Input value={projectName} onChange={(e) => setProjectName(e.target.value)} placeholder="e.g. Acme Startup, Future Tech" className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200" />
               </div>
+            )}
+
+            {step === 1 && (
+              <>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Skills (comma separated)</label>
+                  <Input value={skillsInput} onChange={(e) => setSkillsInput(e.target.value)} placeholder="e.g. Marketing, Python, Sales" className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Experience Level</label>
+                  <Select value={formData.experience} onValueChange={(v) => setFormData({...formData, experience: v})}>
+                    <SelectTrigger className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200"><SelectValue placeholder="Select level" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Beginner">Beginner</SelectItem>
+                      <SelectItem value="Intermediate">Intermediate</SelectItem>
+                      <SelectItem value="Expert">Expert</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Industry Interests (comma separated)</label>
+                  <Input value={industryInput} onChange={(e) => setIndustryInput(e.target.value)} placeholder="e.g. E-commerce, AI, Local Services" className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200" />
+                </div>
+              </>
             )}
 
             {step === 2 && (
-              <div className="space-y-4">
-                <Input
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Unknown, Cairo Governorate, Egypt"
-                  className="w-full rounded-xl py-6 px-4 text-base border-slate-300 focus-visible:ring-emerald-500 text-slate-900 bg-white"
-                />
-                <div className="flex justify-center gap-4 pt-2">
-                  <Select value={language} onValueChange={setLanguage}>
-                    <SelectTrigger className="w-[140px] rounded-xl border-none shadow-none text-slate-600 focus:ring-0 font-medium">
-                      <SelectValue placeholder="English" />
-                    </SelectTrigger>
+              <>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Budget ($)</label>
+                  <Input type="number" value={formData.budget} onChange={(e) => setFormData({...formData, budget: Number(e.target.value)})} className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Location</label>
+                  <Input value={formData.location} onChange={(e) => setFormData({...formData, location: e.target.value})} placeholder="e.g. Cairo, Egypt" className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Team Size</label>
+                  <Select value={formData.teamSize} onValueChange={(v) => setFormData({...formData, teamSize: v})}>
+                    <SelectTrigger className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200"><SelectValue placeholder="Select team size" /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="english">English</SelectItem>
-                      <SelectItem value="arabic">Arabic</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <Select value={currency} onValueChange={setCurrency}>
-                    <SelectTrigger className="w-[140px] rounded-xl border-none shadow-none text-slate-600 focus:ring-0 font-medium bg-amber-50">
-                      <div className="flex items-center gap-2">
-                        <div className="w-5 h-5 rounded-full bg-amber-200 flex items-center justify-center text-xs text-amber-700 font-bold">$</div>
-                        <SelectValue placeholder="Dollar" />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="usd">Dollar</SelectItem>
-                      <SelectItem value="egp">EGP</SelectItem>
+                      <SelectItem value="Solo">Solo Founder</SelectItem>
+                      <SelectItem value="2-3 Cofounders">2-3 Cofounders</SelectItem>
+                      <SelectItem value="Small Team (4-10)">Small Team (4-10)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-              </div>
+              </>
             )}
 
             {step === 3 && (
-              <div className="space-y-6">
-                <div className="relative">
-                  <Input
-                    value={uniqueFeatures.join(', ')}
-                    onChange={() => { }}
-                    placeholder="E.g. all-natural ingredients, warm atmosphere, etc."
-                    className="w-full rounded-xl py-6 px-4 text-base border-slate-300 focus-visible:ring-emerald-500 text-slate-900 bg-white"
-                  />
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                    <div className="w-2 h-2 rounded-full bg-purple-500"></div>
-                  </div>
+              <>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Available Time</label>
+                  <Select value={formData.availableTime} onValueChange={(v) => setFormData({...formData, availableTime: v})}>
+                    <SelectTrigger className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200"><SelectValue placeholder="Select time" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Part-time (10-20 hrs/wk)">Part-time (10-20 hrs/wk)</SelectItem>
+                      <SelectItem value="Full-time (40+ hrs/wk)">Full-time (40+ hrs/wk)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-sm font-medium text-slate-500">Ideas</span>
-                    <Button variant="ghost" size="sm" className="h-8 rounded-full text-slate-500 bg-slate-50 hover:bg-slate-100 font-medium">
-                      <Loader2 className="w-3 h-3 mr-2" /> More
-                    </Button>
-                  </div>
-                  <div className="flex flex-wrap gap-2.5">
-                    {UNIQUE_IDEAS.map(idea => (
-                      <Badge
-                        key={idea}
-                        variant="outline"
-                        className={`cursor-pointer px-4 py-2 text-sm font-medium rounded-full border-slate-200 transition-colors ${uniqueFeatures.includes(idea) ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'hover:bg-slate-50 text-slate-700 bg-white'
-                          }`}
-                        onClick={() => toggleUniqueFeature(idea)}
-                      >
-                        {idea}
-                      </Badge>
-                    ))}
-                  </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Risk Tolerance</label>
+                  <Select value={formData.riskTolerance} onValueChange={(v) => setFormData({...formData, riskTolerance: v})}>
+                    <SelectTrigger className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200"><SelectValue placeholder="Select risk" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Low (Bootstrapped, profitable from day 1)">Low (Bootstrapped, profitable from day 1)</SelectItem>
+                      <SelectItem value="Medium (Willing to invest savings)">Medium (Willing to invest savings)</SelectItem>
+                      <SelectItem value="High (VC trajectory, high risk/reward)">High (VC trajectory, high risk/reward)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-              </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-700">Startup Goals</label>
+                  <Input value={formData.startupGoals} onChange={(e) => setFormData({...formData, startupGoals: e.target.value})} placeholder="e.g. Build a lifestyle business, Change the world" className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200" />
+                </div>
+              </>
             )}
+          </div>
 
-            {step === 4 && (
-              <div className="space-y-6">
-                <Input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="E.g. Happy Hounds"
-                  className="w-full rounded-xl py-6 px-4 text-base border-slate-300 focus-visible:ring-emerald-500 text-slate-900 bg-white"
-                />
-
-                <div>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-sm font-medium text-slate-500">Ideas</span>
-                    <Button variant="ghost" size="sm" className="h-8 rounded-full text-slate-500 bg-slate-50 hover:bg-slate-100 font-medium">
-                      <Loader2 className="w-3 h-3 mr-2" /> More
-                    </Button>
-                  </div>
-                  <div className="flex flex-wrap gap-2.5">
-                    {NAME_IDEAS.map(idea => (
-                      <Badge
-                        key={idea}
-                        variant="outline"
-                        className={`cursor-pointer px-4 py-2 text-sm font-medium rounded-full border-slate-200 transition-colors ${name === idea ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'hover:bg-slate-50 text-slate-700 bg-white'
-                          }`}
-                        onClick={() => setName(idea)}
-                      >
-                        {idea}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </div>
+          <div className="pt-8 flex justify-center">
+            {step < 3 ? (
+              <Button onClick={handleNextStep} disabled={step === 0 && !projectName.trim()} className="w-full sm:w-auto min-w-[200px] bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-6 text-base font-semibold">
+                Continue
+              </Button>
+            ) : (
+              <Button onClick={handleLaunch} className="w-full sm:w-auto min-w-[200px] bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-6 text-base font-semibold">
+                Analyze Founder Profile
+              </Button>
             )}
-
-            <Button
-              onClick={() => {
-                if (step < 4) {
-                  setStep(step + 1);
-                } else {
-                  handleLaunch();
-                }
-              }}
-              className="w-full bg-[#00A86B] hover:bg-[#008f5a] text-white rounded-xl py-6 text-base font-semibold transition-colors mt-4"
-            >
-              Next
-            </Button>
           </div>
-        </div>
-
-        {/* Stepper Dots */}
-        <div className="absolute bottom-16 flex items-center justify-center gap-2">
-          {[1, 2, 3, 4, 5].map(i => (
-            <div
-              key={i}
-              className={`h-1.5 rounded-full transition-all ${i === step ? 'w-6 bg-slate-400' : 'w-1.5 bg-slate-200'
-                }`}
-            />
-          ))}
-        </div>
-
-        {/* Footer */}
-        <div className="absolute bottom-6 flex items-center justify-center gap-1.5 text-xs text-slate-400">
-          <div className="w-3 h-3 border border-slate-400 rounded-sm flex items-center justify-center">
-            <span className="text-[8px] font-bold">Q</span>
-          </div>
-          <span>Private & secure. See our <a href="#" className="underline">privacy policy</a>.</span>
         </div>
       </div>
     </div>

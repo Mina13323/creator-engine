@@ -1,0 +1,49 @@
+{
+  "id": "validation-flow",
+  "name": "Market Validation Flow",
+  "description": "Evaluates feasibility, competition strength, and regional barriers to entry.",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "validation-flow",
+        "options": {}
+      },
+      "id": "webhook-node",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.item.json;\nconst title = input.title || \"Ventureify\";\nconst sector = input.sector || \"Logistics\";\n\n// Inline execution or import of competitor-tool.js\nlet competitorInsights = \"\";\ntry {\n  const path = require('path');\n  const competitorTool = require(path.resolve(__dirname, '../scripts/competitor-tool.js'));\n  competitorInsights = competitorTool.build(sector).text;\n} catch (e) {\n  if (sector.toLowerCase().includes(\"logistics\")) {\n    competitorInsights = \"Incumbents: Rabbit Mart, Upuse, Bosta. Strengths: Fleet density. Weaknesses: Heavy fossil fuel reliance.\";\n  } else {\n    competitorInsights = \"Incumbents: Global SaaS providers. Strengths: Feature maturity. Weaknesses: Lack of local language support.\";\n  }\n}\n\nreturn {\n  json: {\n    prompt: `Analyze feasibility and risks for: ${title}. Competitor context: ${competitorInsights}`,\n    model: \"gemini-1.5-flash\"\n  }\n};\n"
+      },
+      "id": "code-node",
+      "name": "Generate Validation Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Generate Validation Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {}
+}

@@ -1,0 +1,7 @@
+{
+  "name": "n8n-workflows",
+  "version": "1.0.0",
+  "private": true,
+  "description": "n8n multi-agent workflows and custom JS component scripts.",
+  "scripts": {}
+}
