@@ -1,0 +1,49 @@
+{
+  "id": "marketing-flow",
+  "name": "Marketing Strategy Flow",
+  "description": "Formulates launch campaign platforms, budget distribution, ad copywriting text, and content hooks.",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "marketing-flow",
+        "options": {}
+      },
+      "id": "webhook-node",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.item.json;\nconst brandName = input.brand_name || \"Ventureify\";\nconst audience = input.audience || \"freelancers\";\n\nreturn {\n  json: {\n    prompt: `Create ad copies and copywriting triggers for: ${brandName}. Audience: ${audience}`,\n    model: \"gpt-4o-mini\"\n  }\n};\n"
+      },
+      "id": "code-node",
+      "name": "Generate Marketing Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Generate Marketing Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {}
+}

@@ -1,11 +1,12 @@
 packages:
-  #  - 'apps/Open-Generative-AI'
   - 'apps/web'
   - 'apps/api'
   - 'packages/*'
 
 allowBuilds:
-  msw: set this to true or false
+  electron: true
+  esbuild: true
+  msw: true
   sharp: true
   unrs-resolver: true
 

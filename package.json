@@ -5,11 +5,8 @@
   "description": "Creator Engine - AI Venture Builder Monorepo",
   "scripts": {
     "dev": "corepack pnpm --recursive --parallel run dev",
-    "dev:open-generative-ai": "corepack pnpm --filter ./apps/Open-Generative-AI dev",
     "build": "corepack pnpm --recursive run build",
-    "build:open-generative-ai": "corepack pnpm --filter ./apps/Open-Generative-AI build",
     "lint": "corepack pnpm --filter web run lint",
-    "lint:open-generative-ai": "corepack pnpm --filter ./apps/Open-Generative-AI lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\""
   },
   "devDependencies": {

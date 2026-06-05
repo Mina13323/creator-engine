@@ -1,0 +1,49 @@
+{
+  "id": "branding-flow",
+  "name": "Brand Identity Generator Flow",
+  "description": "Generates catchy names, slogans, positioning guidelines, and logo prompts.",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "branding-flow",
+        "options": {}
+      },
+      "id": "webhook-node",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        100,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.item.json;\nconst concept = input.concept || \"AI-native venture builder\";\nconst uvp = input.uvp || \"Secure local payment-based freelancing\";\n\n// n8n Code Node executing flow prompt construction\nreturn {\n  json: {\n    prompt: `System: Generate catchy brand names and slogans for a startup. Concept: ${concept}. UVP: ${uvp}`,\n    model: \"gpt-4o-mini\",\n    output: \"Ventureify: Secure Work. Instant Pay.\"\n  }\n};"
+      },
+      "id": "code-node",
+      "name": "Generate Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        300,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Generate Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {}
+}

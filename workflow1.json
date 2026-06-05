@@ -1,0 +1,102 @@
+{
+  "name": "Founder Analysis Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "founder-analysis",
+        "responseMode": "responseNode"
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_FIREWORKS_API_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "jsonBody": "{\n  \"model\": \"accounts/fireworks/models/deepseek-v3\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a startup founder profiling expert. Return ONLY valid JSON.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Analyze this founder profile and return JSON only: {{$json.body}}\"\n    }\n  ],\n  \"temperature\": 0.4,\n  \"max_tokens\": 1000\n}"
+      },
+      "id": "fireworks",
+      "name": "Fireworks AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.choices[0].message.content;\nreturn [{ json: JSON.parse(raw) }];"
+      },
+      "id": "parser",
+      "name": "Parse JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [800, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json}}"
+      },
+      "id": "response",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1100, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Fireworks AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fireworks AI": {
+      "main": [
+        [
+          {
+            "node": "Parse JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse JSON": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {}
+}

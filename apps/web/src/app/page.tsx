@@ -5,9 +5,10 @@ import { useStore } from '../store/useStore';
 import Onboarding from '../components/Onboarding';
 import LandingPage from '../components/LandingPage';
 import Dashboard from '../components/Dashboard';
-import BusinessBuilder from '../components/BusinessBuilder';
+import OpportunityExplorer from '../components/OpportunityExplorer';
+import BusinessPlanDashboard from '../components/BusinessPlanDashboard';
 import BrandingPanel from '../components/BrandingPanel';
-import MarketingEngine from '../components/MarketingEngine';
+import MarketingStudio from '../components/MarketingStudio';
 import RoadmapPanel from '../components/RoadmapPanel';
 import CofounderChat from '../components/CofounderChat';
 import AIStudioPanel from '../components/AIStudioPanel';
@@ -28,9 +29,12 @@ import {
   Menu,
   X,
   LogOut,
-  Settings,
-  ImagePlus
+  ImagePlus,
+  Megaphone
 } from 'lucide-react';
+
+// Tabs that require authentication
+const PROTECTED_TABS = ['dashboard', 'business-builder', 'financials', 'guides', 'ai-consultant', 'pitch', 'radar', 'market-research', 'branding', 'marketing', 'roadmap'];
 
 export default function AppPage() {
   const { 
@@ -40,40 +44,42 @@ export default function AppPage() {
     currentProject, 
     activeTab, 
     selectProject, 
-    startNewVenture
+    startNewVenture,
+    user,
+    isAuthenticated,
+    logout
   } = useStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
 
-  // AI Settings Modal State
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [apiKeyInput, setApiKeyInput] = useState('');
-  const [studioUrlInput, setStudioUrlInput] = useState('http://localhost:3001');
-
-  // Load API key and URL from local storage on mount
+  // Verify auth on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setApiKeyInput(localStorage.getItem('muapi_key') || '');
-      setStudioUrlInput(localStorage.getItem('muapi_studio_url') || 'http://localhost:3001');
       useStore.getState().verifyAuth();
     }
   }, []);
 
-  const saveSettings = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('muapi_key', apiKeyInput.trim());
-      localStorage.setItem('muapi_studio_url', studioUrlInput.trim());
-      // Dispatch a custom event so AIStudioPanel can re-render immediately
-      window.dispatchEvent(new Event('muapi_settings_updated'));
-      setIsSettingsOpen(false);
+  // Hide landing page automatically if authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      setShowLanding(false);
     }
-  };
+  }, [isAuthenticated]);
+
+  // Route protection disabled for open UI development
+  /*
+  useEffect(() => {
+    if (isOnboarded && !isAuthenticated && PROTECTED_TABS.includes(activeTab)) {
+      useStore.getState().setAuthModalOpen(true);
+    }
+  }, [isOnboarded, isAuthenticated, activeTab]);
+  */
 
   useEffect(() => {
-    if (showLanding) return;
+    if (showLanding || !isAuthenticated) return;
     loadProjects();
-  }, [loadProjects, showLanding]);
+  }, [loadProjects, showLanding, isAuthenticated]);
 
   if (showLanding && !isOnboarded) {
     return (
@@ -97,16 +103,19 @@ export default function AppPage() {
   }
 
   const sidebarItems = [
-    { id: 'dashboard', label: 'Home', icon: Home, requiresProject: false },
-    { id: 'business-builder', label: 'Business Plan', icon: FileText, requiresProject: true },
+    { id: 'dashboard', label: 'Founder Profile', icon: Home, requiresProject: false },
+    { id: 'opportunities', label: 'Opportunities', icon: Radar, requiresProject: true },
+    { id: 'business-plan', label: 'Business Plan', icon: FileText, requiresProject: true },
     { id: 'financials', label: 'Financials', icon: BarChart3, requiresProject: true },
-    { id: 'guides', label: 'Guides', icon: BookOpen, requiresProject: true },
-    { id: 'ai-consultant', label: 'AI Consultant', icon: MessageSquare, requiresProject: true },
-    { id: 'pitch', label: 'Pitch', icon: Presentation, requiresProject: true },
-    { id: 'radar', label: 'Radar', icon: Radar, requiresProject: true },
-    { id: 'market-research', label: 'Market Research', icon: Clock, requiresProject: true },
+    { id: 'branding', label: 'Branding', icon: BookOpen, requiresProject: true },
+    { id: 'marketing', label: 'Marketing Studio', icon: Megaphone, requiresProject: true },
+    { id: 'roadmap', label: 'Roadmap', icon: Clock, requiresProject: true },
     { id: 'ai-studio', label: 'AI Studio', icon: ImagePlus, requiresProject: false },
   ] as const;
+
+  // User display info
+  const userInitial = user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || '?';
+  const userDisplayName = user?.name || user?.email || 'Guest';
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-slate-900 flex font-sans overflow-hidden">
@@ -198,22 +207,31 @@ export default function AppPage() {
             Help
           </button>
           
-          <button 
-            onClick={() => setIsSettingsOpen(true)}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50"
-          >
-            <Settings className="w-4 h-4 text-slate-500" />
-            AI Settings
-          </button>
-          
-          <div className="flex items-center justify-between px-3 py-2 mt-2 cursor-pointer hover:bg-slate-50 rounded-lg group" onClick={startNewVenture}>
+          {/* User account section */}
+          <div className="flex items-center justify-between px-3 py-2 mt-2 cursor-pointer hover:bg-slate-50 rounded-lg group">
             <div className="flex items-center gap-3">
-              <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold">
-                M
-              </div>
-              <span className="text-sm text-slate-600 font-medium">Account</span>
+              {user?.avatar ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={user.avatar} alt={userDisplayName} className="w-6 h-6 rounded-full object-cover" />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold">
+                  {userInitial}
+                </div>
+              )}
+              <span className="text-sm text-slate-600 font-medium truncate max-w-[120px]">
+                {userDisplayName}
+              </span>
             </div>
-            <LogOut className="w-3 h-3 text-slate-400 group-hover:text-slate-600" />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                logout();
+              }}
+              title="Logout"
+              className="text-slate-400 hover:text-red-500 transition-colors"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
       </motion.aside>
@@ -230,14 +248,15 @@ export default function AppPage() {
             className="flex-1 w-full max-w-6xl mx-auto"
           >
             {activeTab === 'dashboard' && <Dashboard />}
-            {activeTab === 'business-builder' && <BusinessBuilder />}
+            {activeTab === 'opportunities' && <OpportunityExplorer />}
+            {activeTab === 'business-plan' && <BusinessPlanDashboard />}
             {activeTab === 'branding' && <BrandingPanel />}
-            {activeTab === 'marketing' && <MarketingEngine />}
+            {activeTab === 'marketing' && <MarketingStudio />}
             {activeTab === 'roadmap' && <RoadmapPanel />}
             {activeTab === 'ai-studio' && <AIStudioPanel />}
             
             {/* Fallbacks for new tabs if components don't exist yet */}
-            {['financials', 'guides', 'ai-consultant', 'pitch', 'radar', 'market-research'].includes(activeTab) && (
+            {['financials'].includes(activeTab) && (
               <div className="p-8 md:p-12 text-center text-slate-500">
                 <h2 className="text-2xl font-semibold mb-2 text-slate-800 capitalize">{activeTab.replace('-', ' ')}</h2>
                 <p>This module is under construction in the new UI.</p>
@@ -246,82 +265,6 @@ export default function AppPage() {
           </motion.div>
         </AnimatePresence>
       </main>
-
-      {/* Custom AI Settings Modal */}
-      <AnimatePresence>
-        {isSettingsOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/30 backdrop-blur-sm p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-100"
-            >
-              <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
-                    <Settings className="w-4 h-4" />
-                  </div>
-                  <h3 className="font-semibold text-slate-800 text-lg">AI Studio Settings</h3>
-                </div>
-                <button 
-                  onClick={() => setIsSettingsOpen(false)}
-                  className="text-slate-400 hover:text-slate-600 transition-colors p-1"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              
-              <div className="p-6 space-y-4">
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  Enter your Muapi API Key to enable native image and asset generation within the Creator Engine dashboard.
-                </p>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                    Muapi API Key
-                  </label>
-                  <input
-                    type="password"
-                    value={apiKeyInput}
-                    onChange={(e) => setApiKeyInput(e.target.value)}
-                    placeholder="sk-..."
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all font-mono text-sm bg-slate-50 text-slate-900"
-                    autoFocus
-                  />
-                </div>
-                <div className="space-y-1.5 mt-4">
-                  <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
-                    Studio Interface URL
-                  </label>
-                  <input
-                    type="url"
-                    value={studioUrlInput}
-                    onChange={(e) => setStudioUrlInput(e.target.value)}
-                    placeholder="http://localhost:3001"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition-all font-mono text-sm bg-slate-50 text-slate-900"
-                  />
-                  <p className="text-xs text-slate-500 mt-1">If the iframe shows an error, ensure the studio is running and update the port here.</p>
-                </div>
-              </div>
-
-              <div className="px-6 py-4 bg-slate-50 flex items-center justify-end gap-3 border-t border-slate-100">
-                <button
-                  onClick={() => setIsSettingsOpen(false)}
-                  className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={saveSettings}
-                  className="px-5 py-2 text-sm font-semibold bg-slate-900 hover:bg-slate-800 text-white rounded-lg transition-colors shadow-md shadow-slate-900/10"
-                >
-                  Save Settings
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
       <AuthModal />
     </div>
   );

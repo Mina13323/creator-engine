@@ -2,13 +2,21 @@ import mongoose, { Schema, Document } from 'mongoose';
 import {
   Project,
   BusinessIdea,
+  BusinessOpportunity,
+  SelectedOpportunity,
   BusinessValidation,
   BusinessModel,
+  BusinessPlan,
   BrandIdentity,
   MarketingCampaign,
   ExecutionRoadmap,
   Conversation,
-  User
+  User,
+  FounderProfile,
+  VentureState,
+  AgentRun,
+  UploadedDocument,
+  OpportunityComparison
 } from '@creator/types';
 
 // MongoDB Connection
@@ -27,6 +35,7 @@ export async function connectDB(url: string) {
 interface UserDocument extends User {
   password?: string;
   googleId?: string;
+  avatar?: string;
 }
 
 const UserSchema = new Schema<UserDocument & Document>(
@@ -35,14 +44,40 @@ const UserSchema = new Schema<UserDocument & Document>(
     email: { type: String, required: true, unique: true },
     name: { type: String },
     password: { type: String },
-    googleId: { type: String }
+    googleId: { type: String },
+    avatar: { type: String }
   },
   { timestamps: true }
+);
+
+// 0.5 Founder Profile Model
+const FounderProfileSchema = new Schema<FounderProfile & Document>(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    skills: [{ type: String }],
+    experience: { type: String, required: true },
+    industryInterests: [{ type: String }],
+    budget: { type: Number, required: true },
+    location: { type: String, required: true },
+    availableTime: { type: String, required: true },
+    startupGoals: { type: String, required: true },
+    riskTolerance: { type: String, required: true },
+    teamSize: { type: String, required: true },
+    founderType: { type: String },
+    strengths: [{ type: String }],
+    weaknesses: [{ type: String }],
+    recommendedBusinessModels: [{ type: String }],
+    recommendedStartupTypes: [{ type: String }]
+  },
+  { timestamps: true, collection: 'founder_profiles' }
 );
 
 // 1. Project Model
 const ProjectSchema = new Schema<Project & Document>(
   {
+    id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     name: { type: String, required: true },
     description: { type: String, required: true },
@@ -56,9 +91,11 @@ const ProjectSchema = new Schema<Project & Document>(
   { timestamps: true }
 );
 
-// 2. Business Idea Model
+// 2. Business Idea Model (Legacy, kept per spec)
 const BusinessIdeaSchema = new Schema<BusinessIdea & Document>(
   {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
@@ -67,7 +104,48 @@ const BusinessIdeaSchema = new Schema<BusinessIdea & Document>(
     skillsRequired: [{ type: String }],
     score: { type: Number, default: 0 }
   },
-  { timestamps: true }
+  { timestamps: true, collection: 'business_ideas' }
+);
+
+// 2.1 Business Opportunity Model
+const BusinessOpportunitySchema = new Schema<BusinessOpportunity & Document>(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    opportunityScore: { type: Number, required: true },
+    founderFitScore: { type: Number, required: true },
+    marketDemandScore: { type: Number, required: true },
+    aiAdvantageScore: { type: Number, required: true },
+    difficulty: { type: String, required: true },
+    startupCost: { type: String, required: true },
+    estimatedRevenue: { type: String, required: true },
+    timeToMVP: { type: String, required: true }
+  },
+  { timestamps: true, collection: 'business_opportunities' }
+);
+
+// 2.2 Selected Opportunity Model
+const SelectedOpportunitySchema = new Schema<SelectedOpportunity & Document>(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    opportunityId: { type: String, required: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    opportunityScore: { type: Number, required: true },
+    founderFitScore: { type: Number, required: true },
+    marketDemandScore: { type: Number, required: true },
+    aiAdvantageScore: { type: Number, required: true },
+    difficulty: { type: String, required: true },
+    startupCost: { type: String, required: true },
+    estimatedRevenue: { type: String, required: true },
+    timeToMVP: { type: String, required: true }
+  },
+  { timestamps: true, collection: 'selected_opportunities' }
 );
 
 // 3. Business Validation Model
@@ -80,6 +158,8 @@ const CompetitorSchema = new Schema({
 
 const BusinessValidationSchema = new Schema<BusinessValidation & Document>(
   {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     feasibilityScore: { type: Number, required: true },
     marketDemandScore: { type: Number, required: true },
@@ -89,7 +169,7 @@ const BusinessValidationSchema = new Schema<BusinessValidation & Document>(
     barriersToEntry: [{ type: String }],
     validationSummary: { type: String, required: true }
   },
-  { timestamps: true }
+  { timestamps: true, collection: 'business_validations' }
 );
 
 // 4. Business Strategy / Model Model
@@ -107,10 +187,36 @@ const LeanCanvasSchema = new Schema({
 
 const BusinessModelSchema = new Schema<BusinessModel & Document>(
   {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     leanCanvas: { type: LeanCanvasSchema, required: true },
     pricingStrategy: { type: String, required: true },
     mvpScope: [{ type: String }]
+  },
+  { timestamps: true, collection: 'business_models' }
+);
+
+// 4.5 Business Plan Model
+const BusinessPlanSchema = new Schema<BusinessPlan & Document>(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    executiveSummary: { type: String, required: true },
+    problemStatement: { type: String, required: true },
+    solution: { type: String, required: true },
+    marketOpportunity: { type: String, required: true },
+    leanCanvas: { type: LeanCanvasSchema, required: true },
+    customerSegments: [{ type: String }],
+    revenueModel: { type: String, required: true },
+    pricingStrategy: { type: String, required: true },
+    goToMarketStrategy: { type: String, required: true },
+    mvpScope: { type: String, required: true },
+    successMetrics: [{ type: String }],
+    growthStrategy: { type: String, required: true },
+    version: { type: Number, default: 1 },
+    isLatest: { type: Boolean, default: true }
   },
   { timestamps: true }
 );
@@ -118,6 +224,8 @@ const BusinessModelSchema = new Schema<BusinessModel & Document>(
 // 5. Brand Identity Model
 const BrandIdentitySchema = new Schema<BrandIdentity & Document>(
   {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     brandName: { type: String, required: true },
     slogan: { type: String, required: true },
@@ -137,6 +245,8 @@ const BrandIdentitySchema = new Schema<BrandIdentity & Document>(
 // 6. Marketing Campaign Model
 const MarketingCampaignSchema = new Schema<MarketingCampaign & Document>(
   {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     targetChannels: [{ type: String }],
     budgetAllocation: { type: Map, of: Number },
@@ -168,6 +278,8 @@ const RoadmapMilestoneSchema = new Schema({
 
 const ExecutionRoadmapSchema = new Schema<ExecutionRoadmap & Document>(
   {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     milestones: [RoadmapMilestoneSchema],
     totalEstimatedBudget: { type: Number, required: true },
@@ -187,19 +299,116 @@ const ChatMessageSchema = new Schema({
 
 const ConversationSchema = new Schema<Conversation & Document>(
   {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     messages: [ChatMessageSchema]
   },
   { timestamps: true }
 );
 
+// 9. Venture State Model
+const VentureStateSchema = new Schema<VentureState & Document>(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    founderProfile: { type: Schema.Types.Mixed },
+    selectedOpportunity: { type: Schema.Types.Mixed },
+    businessPlan: { type: Schema.Types.Mixed },
+    financialForecast: { type: Schema.Types.Mixed },
+    branding: { type: Schema.Types.Mixed },
+    marketing: { type: Schema.Types.Mixed },
+    roadmap: { type: Schema.Types.Mixed },
+    lastUpdated: { type: Date, default: Date.now }
+  },
+  { timestamps: true, collection: 'venture_states' }
+);
+
+// 10. Agent Run Model
+const AgentRunSchema = new Schema<AgentRun & Document>(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    workflow: { type: String, required: true },
+    status: { type: String, enum: ['pending', 'running', 'success', 'failed'], required: true },
+    aiModel: { type: String, required: true },
+    provider: { type: String, required: true },
+    startedAt: { type: Date, required: true },
+    completedAt: { type: Date },
+    durationMs: { type: Number },
+    input: { type: Schema.Types.Mixed, required: true },
+    output: { type: Schema.Types.Mixed },
+    error: { type: String }
+  },
+  { timestamps: true }
+);
+
+// 11. Uploaded Document Model
+const UploadedDocumentSchema = new Schema<UploadedDocument & Document>(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    fileName: { type: String, required: true },
+    fileType: { type: String, required: true },
+    fileSize: { type: Number, required: true },
+    storageUrl: { type: String, required: true },
+    processingStatus: { type: String, enum: ['pending', 'processing', 'completed', 'failed'], required: true },
+    uploadedAt: { type: Date, default: Date.now }
+  },
+  { timestamps: true }
+);
+
+// 12. Opportunity Comparison Model
+const OpportunityComparisonSchema = new Schema<OpportunityComparison & Document>(
+  {
+    id: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    selectedOpportunityIds: [{ type: String, required: true }]
+  },
+  { timestamps: true }
+);
+
 // Export Mongoose Models
 export const UserModel = mongoose.models.User || mongoose.model<UserDocument & Document>('User', UserSchema);
+export const FounderProfileModel = mongoose.models.FounderProfile || mongoose.model<FounderProfile & Document>('FounderProfile', FounderProfileSchema);
 export const ProjectModel = mongoose.models.Project || mongoose.model<Project & Document>('Project', ProjectSchema);
 export const BusinessIdeaModel = mongoose.models.BusinessIdea || mongoose.model<BusinessIdea & Document>('BusinessIdea', BusinessIdeaSchema);
+export const BusinessOpportunityModel = mongoose.models.BusinessOpportunity || mongoose.model<BusinessOpportunity & Document>('BusinessOpportunity', BusinessOpportunitySchema);
+export const SelectedOpportunityModel = mongoose.models.SelectedOpportunity || mongoose.model<SelectedOpportunity & Document>('SelectedOpportunity', SelectedOpportunitySchema);
 export const BusinessValidationModel = mongoose.models.BusinessValidation || mongoose.model<BusinessValidation & Document>('BusinessValidation', BusinessValidationSchema);
 export const BusinessModelModel = mongoose.models.BusinessModel || mongoose.model<BusinessModel & Document>('BusinessModel', BusinessModelSchema);
+export const BusinessPlanModel = mongoose.models.BusinessPlan || mongoose.model<BusinessPlan & Document>('BusinessPlan', BusinessPlanSchema);
 export const BrandIdentityModel = mongoose.models.BrandIdentity || mongoose.model<BrandIdentity & Document>('BrandIdentity', BrandIdentitySchema);
 export const MarketingCampaignModel = mongoose.models.MarketingCampaign || mongoose.model<MarketingCampaign & Document>('MarketingCampaign', MarketingCampaignSchema);
 export const ExecutionRoadmapModel = mongoose.models.ExecutionRoadmap || mongoose.model<ExecutionRoadmap & Document>('ExecutionRoadmap', ExecutionRoadmapSchema);
 export const ConversationModel = mongoose.models.Conversation || mongoose.model<Conversation & Document>('Conversation', ConversationSchema);
+export const VentureStateModel = mongoose.models.VentureState || mongoose.model<VentureState & Document>('VentureState', VentureStateSchema);
+export const AgentRunModel = mongoose.models.AgentRun || mongoose.model<AgentRun & Document>('AgentRun', AgentRunSchema);
+export const UploadedDocumentModel = mongoose.models.UploadedDocument || mongoose.model<UploadedDocument & Document>('UploadedDocument', UploadedDocumentSchema);
+export const OpportunityComparisonModel = mongoose.models.OpportunityComparison || mongoose.model<OpportunityComparison & Document>('OpportunityComparison', OpportunityComparisonSchema);
+
+// Knowledge Document for RAG
+export interface KnowledgeDocument {
+  userId?: string;
+  projectId?: string;
+  documentId?: string;
+  content: string;
+  category: string;
+  source: string;
+  embedding?: number[];
+}
+
+const KnowledgeDocumentSchema = new Schema<KnowledgeDocument & Document>({
+  userId: { type: String },
+  projectId: { type: String },
+  documentId: { type: String },
+  content: { type: String, required: true },
+  category: { type: String, required: true },
+  source: { type: String, required: true },
+  embedding: { type: [Number] }
+}, { timestamps: true });
+
+export const KnowledgeDocumentModel = mongoose.models.KnowledgeDocument || mongoose.model<KnowledgeDocument & Document>('KnowledgeDocument', KnowledgeDocumentSchema);

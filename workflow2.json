@@ -1,0 +1,147 @@
+{
+    "name": "Opportunity Discovery Workflow",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "opportunity-discovery",
+                "responseMode": "responseNode",
+                "options": {}
+            },
+            "id": "webhook",
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                -240,
+                -208
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "https://api.fireworks.ai/inference/v1/chat/completions",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Authorization",
+                            "value": "Bearer YOUR_FIREWORKS_API_KEY"
+                        },
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"model\": \"accounts/fireworks/models/deepseek-v4-flash\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are Creator Engine Opportunity Discovery Agent. Generate startup opportunities tailored to the founder profile. Return ONLY valid JSON. No markdown. No explanations.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Generate exactly 50 startup opportunities based on this founder profile: \" + JSON.stringify($json) + \". Return JSON with an opportunities array. Each opportunity must contain title, problem, targetAudience, businessModel, difficulty, estimatedMRR, reason, score.\"\n    }\n  ],\n  \"temperature\": 0.7,\n  \"max_tokens\": 4000,\n  \"response_format\": {\n    \"type\": \"json_object\"\n  }\n}"
+            },
+            "id": "fireworks",
+            "name": "Fireworks AI",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4,
+            "position": [
+                272,
+                -208
+            ]
+        },
+        {
+            "parameters": {
+                "jsCode": "const raw = $input.first().json.choices[0].message.content.trim();\nconst parsed = JSON.parse(raw);\n\nreturn parsed.opportunities.map(opportunity => ({\n  json: {\n    userId: 'mina_001',\n    projectId: 'creator_engine',\n    ...opportunity,\n    createdAt: new Date().toISOString()\n  }\n}));"
+            },
+            "id": "parser",
+            "name": "Parse Opportunities",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                576,
+                -208
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "insert",
+                "collection": "startup_opportunities",
+                "fields": "userId, projectId, title, problem, targetAudience, businessModel, difficulty, estimatedMRR, reason, score, createdAt",
+                "options": {}
+            },
+            "id": "save",
+            "name": "Insert Opportunities",
+            "type": "n8n-nodes-base.mongoDb",
+            "typeVersion": 1.3,
+            "position": [
+                832,
+                -208
+            ],
+            "credentials": {
+                "mongoDb": {
+                    "id": "0JlybiXBeHcaA5wk",
+                    "name": "MongoDB account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{$json}}",
+                "options": {}
+            },
+            "id": "response",
+            "name": "Respond",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                1088,
+                -208
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Fireworks AI",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Fireworks AI": {
+            "main": [
+                [
+                    {
+                        "node": "Parse Opportunities",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Parse Opportunities": {
+            "main": [
+                [
+                    {
+                        "node": "Insert Opportunities",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Insert Opportunities": {
+            "main": [
+                [
+                    {
+                        "node": "Respond",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
