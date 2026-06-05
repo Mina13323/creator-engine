@@ -94,3 +94,5 @@ export async function queryPineconeVectorDB(query: string, apiKey: string, index
     { id: 'vec-1', score: 0.92, text: 'Sample retrieved text from Pinecone vector space' }
   ];
 }
+
+export * from './ragService';
