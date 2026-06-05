@@ -13,6 +13,7 @@ import RoadmapPanel from '../components/RoadmapPanel';
 import CofounderChat from '../components/CofounderChat';
 import AIStudioPanel from '../components/AIStudioPanel';
 import AuthModal from '../components/AuthModal';
+import FinancialEngine from '../components/FinancialEngine';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { 
@@ -255,8 +256,10 @@ export default function AppPage() {
             {activeTab === 'roadmap' && <RoadmapPanel />}
             {activeTab === 'ai-studio' && <AIStudioPanel />}
             
+            {activeTab === 'financials' && <FinancialEngine />}
+            
             {/* Fallbacks for new tabs if components don't exist yet */}
-            {['financials'].includes(activeTab) && (
+            {['guides', 'ai-consultant', 'pitch', 'radar', 'market-research'].includes(activeTab) && (
               <div className="p-8 md:p-12 text-center text-slate-500">
                 <h2 className="text-2xl font-semibold mb-2 text-slate-800 capitalize">{activeTab.replace('-', ' ')}</h2>
                 <p>This module is under construction in the new UI.</p>

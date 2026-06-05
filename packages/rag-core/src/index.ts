@@ -162,3 +162,16 @@ export async function queryRAG(query: string, limit: number = 3): Promise<Knowle
 
   return KNOWLEDGE_BASE.slice(0, limit);
 }
+
+/**
+ * Mock function demonstrating how to integrate real vector database lookups.
+ */
+export async function queryPineconeVectorDB(query: string, apiKey: string, indexName: string) {
+  console.log(`Connecting to Pinecone index ${indexName} with key: ${apiKey.substring(0, 5)}...`);
+  // Realistic return contract for vector database integrations
+  return [
+    { id: 'vec-1', score: 0.92, text: 'Sample retrieved text from Pinecone vector space' }
+  ];
+}
+
+export * from './ragService';
