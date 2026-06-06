@@ -108,7 +108,7 @@ export const useStore = create<StoreState>((set, get) => ({
       const data = await authClient.get<Project[]>('/projects');
       set({ projects: data });
       if (data.length > 0) {
-        await get().selectProject(data[0].id || data[0]._id as any);
+        await get().selectProject(data[0].id || (data[0] as any)._id);
         set({ isOnboarded: true });
       }
     } catch (e) {
