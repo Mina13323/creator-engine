@@ -1,7 +1,11 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
+import path from 'path';
+const envPath = path.resolve(__dirname, '../../../.env');
+dotenv.config({ path: envPath });
+console.log('[API] Resolved .env path:', envPath, 'Loaded Fireworks Key:', process.env.FIREWORKS_API_KEY ? 'YES' : 'NO');
 import {
   connectDB,
   ProjectModel,
@@ -718,7 +722,7 @@ app.post('/api/studio/generate-image', authMiddleware, async (req: Request, res:
     }
 
     const enhancedPrompt = `${prompt}, ${style} style, high quality, highly detailed`;
-    const url = "https://api.fireworks.ai/inference/v1/image_generation/accounts/fireworks/models/playground-v2-5-1024px-aesthetic";
+    const url = "https://api.fireworks.ai/inference/v1/workflows/accounts/fireworks/models/flux-1-schnell-fp8/text_to_image";
 
     const imageRes = await fetch(url, {
       method: 'POST',

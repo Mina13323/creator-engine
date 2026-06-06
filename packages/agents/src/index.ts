@@ -181,10 +181,42 @@ export async function runCofounderAgent(
     };
   }
 
+  console.log('[Agents] Falling back to direct LLM fetch...');
+  const fallbackPrompt = `System: You are an active startup cofounder. Venture state: ${projectContext}. Market data context: ${ragContext}. Answer user: ${message}`;
+  
+  try {
+    const fireworksKey = process.env.FIREWORKS_API_KEY;
+    if (fireworksKey) {
+      const response = await fetch('https://api.fireworks.ai/inference/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${fireworksKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'accounts/fireworks/models/deepseek-v4-pro',
+          messages: [{ role: 'user', content: fallbackPrompt }]
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json() as any;
+        return {
+          id: `msg_ai_${Date.now()}`,
+          sender: 'ai',
+          message: data.choices[0].message.content,
+          timestamp: new Date()
+        };
+      }
+    }
+  } catch (error) {
+    console.error('[Agents] Fallback fetch failed:', error);
+  }
+
   return {
     id: `msg_ai_${Date.now()}`,
     sender: 'ai',
-    message: "I am your AI Cofounder. I'm currently running in local fallback mode.",
+    message: "I am your AI Cofounder. Both n8n and the fallback API failed to respond.",
     timestamp: new Date()
   };
 }
