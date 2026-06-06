@@ -242,6 +242,7 @@ export interface Conversation {
   id: string;
   userId: string;
   projectId: string;
+  title?: string;
   messages: ChatMessage[];
   updatedAt: Date;
 }

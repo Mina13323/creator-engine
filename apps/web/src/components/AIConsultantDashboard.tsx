@@ -4,11 +4,18 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { Send, Sparkles, User, Brain, ExternalLink, Lightbulb, History, HistoryIcon, FileText, Megaphone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
 
 export default function AIConsultantDashboard() {
-  const { chatMessages, sendChatMessage, clearChat, chatLoading, currentProject } = useStore();
+  const { chatMessages, sendChatMessage, clearChat, chatLoading, currentProject, conversations, setActiveConversation, loadConversations, activeConversationId } = useStore();
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (currentProject) {
+      loadConversations(currentProject.id);
+    }
+  }, [currentProject, loadConversations]);
 
   // Auto-scroll to bottom of chat
   useEffect(() => {
@@ -105,13 +112,18 @@ export default function AIConsultantDashboard() {
                   </div>
 
                   <div className="space-y-2 max-w-full">
-                    <div className={`p-4 rounded-2xl text-sm leading-relaxed prose prose-sm max-w-none ${
+                    <div className={`p-4 rounded-2xl text-sm leading-relaxed ${
                       isUser 
                         ? 'bg-indigo-600 text-white rounded-tr-none' 
                         : 'bg-white border border-slate-200 text-slate-700 rounded-tl-none shadow-sm'
                     }`}>
-                      {/* Simple rendering for now, could add markdown support later */}
-                      <div className="whitespace-pre-wrap">{msg.message}</div>
+                      {isUser ? (
+                        <div className="whitespace-pre-wrap">{msg.message}</div>
+                      ) : (
+                        <div className="prose prose-sm max-w-none text-slate-700">
+                          <ReactMarkdown>{msg.message}</ReactMarkdown>
+                        </div>
+                      )}
                     </div>
 
                     {!isUser && msg.ragSources && msg.ragSources.length > 0 && (
@@ -212,21 +224,35 @@ export default function AIConsultantDashboard() {
             </div>
           </div>
           
-          <div className="space-y-2 mt-4">
+          <div className="space-y-2 mt-4 flex-1 overflow-y-auto">
             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Recent Conversations</h3>
-            {chatMessages.length === 0 ? (
+            <button
+              onClick={() => clearChat()}
+              className="w-full py-2 px-3 mb-3 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold transition-colors shadow-sm"
+            >
+              + Start New Session
+            </button>
+            
+            {conversations.length === 0 ? (
               <p className="text-xs text-slate-500 italic">No previous chats.</p>
             ) : (
-              <div className="space-y-3">
-                <div className="text-xs text-slate-600 bg-white p-3 rounded-lg border border-slate-200 shadow-sm line-clamp-3">
-                  {chatMessages[chatMessages.length - 1].message}
-                </div>
-                <button
-                  onClick={() => clearChat()}
-                  className="w-full py-2 px-3 bg-white border border-slate-200 hover:bg-slate-50 hover:border-indigo-300 text-indigo-600 rounded-lg text-xs font-semibold transition-colors shadow-sm"
-                >
-                  Start New Session
-                </button>
+              <div className="space-y-2">
+                {conversations.map(conv => (
+                  <button
+                    key={conv.id}
+                    onClick={() => setActiveConversation(conv.id)}
+                    className={`w-full text-left text-xs p-3 rounded-lg border shadow-sm transition-colors ${
+                      activeConversationId === conv.id 
+                        ? 'bg-indigo-600 text-white border-indigo-700' 
+                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:border-indigo-300'
+                    }`}
+                  >
+                    <div className="line-clamp-2">{conv.title || 'Conversation...'}</div>
+                    <div className={`mt-1 text-[10px] ${activeConversationId === conv.id ? 'text-indigo-200' : 'text-slate-400'}`}>
+                      {new Date(conv.updatedAt).toLocaleDateString()}
+                    </div>
+                  </button>
+                ))}
               </div>
             )}
           </div>

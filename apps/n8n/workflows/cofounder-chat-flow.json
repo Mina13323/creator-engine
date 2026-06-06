@@ -16,7 +16,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const input = $input.item.json;\nconst query = input.message || '';\nconst state = input.state || '';\nconst ragData = input.rag_data || '';\n\nreturn {\n  json: {\n    prompt: `System: You are an active startup cofounder. Venture state: ${state}. Market data context: ${ragData}. Answer user: ${query}`\n  }\n};\n"
+        "jsCode": "const input = $input.item.json.body || $input.item.json;\nconst query = input.message || '';\nconst state = input.state || '';\nconst ragData = input.rag_data || '';\n\nreturn {\n  json: {\n    prompt: `System: You are an active startup cofounder. Venture state: ${state}. Market data context: ${ragData}. Answer user: ${query}`\n  }\n};\n"
       },
       "id": "code-node",
       "name": "Generate Chat Prompt",
