@@ -45,6 +45,7 @@ interface StoreState {
   generateImage: (prompt: string, style: string) => Promise<string>;
 
   sendChatMessage: (message: string) => Promise<void>;
+  clearChat: () => Promise<void>;
   resetToDashboard: () => void;
   startNewVenture: () => void;
   setActiveTab: (tab: StoreState['activeTab']) => void;
@@ -277,6 +278,18 @@ export const useStore = create<StoreState>((set, get) => ({
       });
     } catch (e) {
       set({ chatLoading: false });
+    }
+  },
+
+  clearChat: async () => {
+    const { currentProject } = get();
+    if (!currentProject) return;
+
+    set({ chatMessages: [] });
+    try {
+      await authClient.delete(`/projects/${currentProject.id}/memory`);
+    } catch (e) {
+      console.error('Failed to clear chat memory', e);
     }
   },
 

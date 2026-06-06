@@ -710,6 +710,18 @@ app.get('/api/projects/:projectId/memory', authMiddleware, async (req: Request, 
   }
 });
 
+// Clear Memory Endpoint
+app.delete('/api/projects/:projectId/memory', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { projectId } = req.params;
+    await ConversationModel.findOneAndUpdate({ projectId }, { messages: [] });
+    return res.json({ success: true });
+  } catch (error) {
+    console.error('Memory clear error:', error);
+    res.status(500).json({ error: 'Failed to clear memory' });
+  }
+});
+
 // Image Generation Endpoint (AI Studio)
 app.post('/api/studio/generate-image', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {

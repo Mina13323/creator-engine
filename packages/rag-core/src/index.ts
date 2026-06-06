@@ -178,7 +178,7 @@ export async function queryRAG(query: string, limit: number = 3): Promise<Knowle
     return matches.slice(0, limit);
   }
 
-  return KNOWLEDGE_BASE.slice(0, limit);
+  return [];
 }
 
 /**

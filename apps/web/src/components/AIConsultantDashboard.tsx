@@ -6,7 +6,7 @@ import { Send, Sparkles, User, Brain, ExternalLink, Lightbulb, History, HistoryI
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function AIConsultantDashboard() {
-  const { chatMessages, sendChatMessage, chatLoading, currentProject } = useStore();
+  const { chatMessages, sendChatMessage, clearChat, chatLoading, currentProject } = useStore();
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -217,8 +217,16 @@ export default function AIConsultantDashboard() {
             {chatMessages.length === 0 ? (
               <p className="text-xs text-slate-500 italic">No previous chats.</p>
             ) : (
-              <div className="text-xs text-slate-600 bg-white p-3 rounded-lg border border-slate-200 shadow-sm line-clamp-3">
-                {chatMessages[chatMessages.length - 1].message}
+              <div className="space-y-3">
+                <div className="text-xs text-slate-600 bg-white p-3 rounded-lg border border-slate-200 shadow-sm line-clamp-3">
+                  {chatMessages[chatMessages.length - 1].message}
+                </div>
+                <button
+                  onClick={() => clearChat()}
+                  className="w-full py-2 px-3 bg-white border border-slate-200 hover:bg-slate-50 hover:border-indigo-300 text-indigo-600 rounded-lg text-xs font-semibold transition-colors shadow-sm"
+                >
+                  Start New Session
+                </button>
               </div>
             )}
           </div>
