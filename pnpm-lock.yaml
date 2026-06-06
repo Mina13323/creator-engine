@@ -60,6 +60,9 @@ importers:
       '@creator/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@creator/rag-core':
+        specifier: workspace:*
+        version: link:../../packages/rag-core
       '@creator/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -4388,7 +4391,7 @@ snapshots:
       langsmith: 0.7.4(openai@6.42.0(zod@4.4.3))
       mustache: 4.2.0
       p-queue: 6.6.2
-      zod: 3.25.76
+      zod: 4.4.3
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/exporter-trace-otlp-proto'

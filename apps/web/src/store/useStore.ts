@@ -42,6 +42,7 @@ interface StoreState {
   selectOpportunity: (projectId: string, opportunityId: string) => Promise<void>;
   generateBusinessPlan: (projectId: string) => Promise<void>;
   uploadDocument: (projectId: string, fileData: { fileName: string, fileType: string, storageUrl: string, fileSize: number }) => Promise<void>;
+  generateImage: (prompt: string, style: string) => Promise<string>;
 
   sendChatMessage: (message: string) => Promise<void>;
   resetToDashboard: () => void;
@@ -235,6 +236,16 @@ export const useStore = create<StoreState>((set, get) => ({
       await authClient.post(`/projects/${projectId}/documents/upload`, fileData);
     } catch (e) {
       console.error('uploadDocument failed', e);
+      throw e;
+    }
+  },
+
+  generateImage: async (prompt: string, style: string) => {
+    try {
+      const res = await authClient.post<{ imageUrl: string }>('/studio/generate-image', { prompt, style });
+      return res.imageUrl;
+    } catch (e) {
+      console.error('generateImage failed', e);
       throw e;
     }
   },

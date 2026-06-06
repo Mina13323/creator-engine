@@ -7,7 +7,7 @@ import { ImagePlus, Video, FileAudio, FolderHeart, Sparkles, Download, Layers } 
 type StudioTab = 'image' | 'media' | 'library';
 
 export default function AIStudioPanel() {
-  const { currentProject } = useStore();
+  const { currentProject, generateImage } = useStore();
   const [activeTab, setActiveTab] = useState<StudioTab>('image');
   
   // Image Gen State
@@ -29,12 +29,16 @@ export default function AIStudioPanel() {
     if (!imagePrompt.trim()) return;
     
     setIsGenerating(true);
-    // Simulate generation delay
-    setTimeout(() => {
-      // Return a placeholder generated image
-      setGeneratedImageUrl(`https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop`);
+    setGeneratedImageUrl(null); // Clear previous image while generating
+    try {
+      const url = await generateImage(imagePrompt, imageStyle);
+      setGeneratedImageUrl(url);
+    } catch (error) {
+      console.error("Failed to generate image", error);
+      alert("Failed to generate image. Please try again.");
+    } finally {
       setIsGenerating(false);
-    }, 2500);
+    }
   };
 
   return (

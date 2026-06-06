@@ -689,7 +689,64 @@ app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Pr
 
     return res.json({ userMessage, aiResponse, history: chatHistory });
   } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Chat error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Memory Retrieval Endpoint
+app.get('/api/projects/:projectId/memory', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { projectId } = req.params;
+    const conversation = await ConversationModel.findOne({ projectId });
+    return res.json({ history: conversation?.messages || [] });
+  } catch (error) {
+    console.error('Memory retrieval error:', error);
+    res.status(500).json({ error: 'Failed to retrieve memory' });
+  }
+});
+
+// Image Generation Endpoint (AI Studio)
+app.post('/api/studio/generate-image', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { prompt, style } = req.body;
+    if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
+
+    const fireworksKey = process.env.FIREWORKS_API_KEY;
+    if (!fireworksKey) {
+      return res.status(500).json({ error: 'Fireworks API key not configured' });
+    }
+
+    const enhancedPrompt = `${prompt}, ${style} style, high quality, highly detailed`;
+    const url = "https://api.fireworks.ai/inference/v1/image_generation/accounts/fireworks/models/playground-v2-5-1024px-aesthetic";
+
+    const imageRes = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${fireworksKey}`,
+        'Accept': 'image/jpeg'
+      },
+      body: JSON.stringify({
+        prompt: enhancedPrompt,
+        aspect_ratio: "16:9"
+      })
+    });
+
+    if (!imageRes.ok) {
+      const errText = await imageRes.text();
+      console.error('Fireworks image error:', errText);
+      throw new Error('Image generation failed');
+    }
+
+    const buffer = await imageRes.arrayBuffer();
+    const base64Image = Buffer.from(buffer).toString('base64');
+    const dataUrl = `data:image/jpeg;base64,${base64Image}`;
+
+    return res.json({ imageUrl: dataUrl });
+  } catch (error) {
+    console.error('Image generation error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
