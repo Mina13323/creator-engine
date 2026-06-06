@@ -33,7 +33,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer fw_894LJgTtTrwubVe9mH6ogJ"
+              "value": "Bearer ={{ $env.FIREWORKS_API_KEY }}"
             },
             {
               "name": "Content-Type",
