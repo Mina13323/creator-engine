@@ -44,6 +44,24 @@ const KNOWLEDGE_BASE: KnowledgeDocument[] = [
     title: 'Pre-launch Waitlist Playbook',
     category: 'marketing-templates',
     content: 'A pre-launch waitlist is built by offering early-access rewards, beta features, or referral bonuses. Use landing page builders with clear, single call-to-action hooks. Collect emails and phone numbers for WhatsApp marketing, which has over 90% open rates in Egypt.'
+  },
+  {
+    id: 'founder-advice-1',
+    title: 'Paul Graham on Doing Things That Don\'t Scale',
+    category: 'founder-advice',
+    content: 'Startups take off because the founders make them take off. The most common unscalable thing founders have to do at the start is to recruit users manually. You can\'t wait for users to come to you. You have to go out and get them.'
+  },
+  {
+    id: 'startup-playbook-1',
+    title: 'The YC Startup Playbook: Finding Product-Market Fit',
+    category: 'startup-playbooks',
+    content: 'Product-market fit means being in a good market with a product that can satisfy that market. You can always feel when product/market fit isn\'t happening. The customers aren\'t quite getting value out of the product, word of mouth isn\'t spreading, usage isn\'t growing that fast. You can always feel product/market fit when it\'s happening. The customers are buying the product just as fast as you can make it.'
+  },
+  {
+    id: 'mentor-resource-1',
+    title: 'Mentoring Framework: B2B Sales Strategy',
+    category: 'mentoring-resources',
+    content: 'When selling B2B SaaS, your pricing should be based on the ROI you provide to the business. Do not compete on price. Your sales cycle will be long (3-6 months), so you must qualify leads early. The decision-maker is often not the end-user. Always sell the outcome, not the features.'
   }
 ];
 

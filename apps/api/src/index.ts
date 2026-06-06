@@ -23,6 +23,7 @@ import {
 } from '@creator/database';
 import { LoginRequest, SignupRequest, AuthResponse, AuthUser, FounderProfile, SelectedOpportunity, BusinessPlan } from '@creator/types';
 import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent } from '@creator/agents';
+import { queryRAG } from '@creator/rag-core';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
@@ -665,7 +666,17 @@ app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Pr
     const userMessage = { id: `msg_user_${Date.now()}`, sender: 'user' as const, message, timestamp: new Date() };
     chatHistory.push(userMessage);
 
-    const aiResponse = await runCofounderAgent(message, JSON.stringify(state), chatHistory);
+    // Fetch relevant context from Knowledge Base
+    const ragResults = await queryRAG(message, 2);
+    const ragContext = JSON.stringify(ragResults);
+
+    const aiResponse = await runCofounderAgent(message, JSON.stringify(state), chatHistory, ragContext);
+    
+    // Attach RAG sources to AI response for UI transparency
+    if (aiResponse) {
+      aiResponse.ragSources = ragResults.map((r: any) => r.title);
+    }
+    
     chatHistory.push(aiResponse);
 
     if (dbConnected) {

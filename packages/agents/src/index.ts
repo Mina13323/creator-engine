@@ -162,12 +162,14 @@ export async function runBusinessPlanAgent(
 export async function runCofounderAgent(
   message: string,
   projectContext: string,
-  chatHistory: any[]
+  chatHistory: any[],
+  ragContext: string
 ): Promise<any> {
   const result = await callN8n<any>('cofounder-chat-flow', {
     message,
     state: projectContext,
-    history: chatHistory
+    history: chatHistory,
+    rag_data: ragContext
   });
 
   if (result && result.success) {
