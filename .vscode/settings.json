@@ -1,5 +1,0 @@
-{
-  "css.lint.unknownAtRules": "ignore",
-  "python.analysis.reportMissingImports": "none",
-  "python.analysis.reportMissingModuleSource": "none"
-}
