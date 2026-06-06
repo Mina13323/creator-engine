@@ -5,9 +5,10 @@ node_modules/
 # Next.js
 .next/
 
-# Build output
+# Build output and Caches
 dist/
 build/
+.turbo/
 
 # Environment
 .env
@@ -24,3 +25,9 @@ Thumbs.db
 
 # Editor/IDE
 .vscode/
+
+# AI Agents & Knowledge Graphs
+.agents/
+graphify-out/
+.graphify_*.json
+.graphify_python
