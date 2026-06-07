@@ -16,7 +16,8 @@ import {
   VentureState,
   AgentRun,
   UploadedDocument,
-  OpportunityComparison
+  OpportunityComparison,
+  PitchDeck
 } from '@creator/types';
 
 // MongoDB Connection
@@ -235,26 +236,49 @@ const BrandIdentitySchema = new Schema<BrandIdentity & Document>(
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     brandName: { type: String, required: true },
+    tagline: { type: String, default: '' },
     slogan: { type: String, required: true },
     toneOfVoice: { type: String, required: true },
     brandPositioning: { type: String, required: true },
+    brandPersonality: [{ type: String }],
+    brandStory: { type: String, default: '' },
+    brandVoice: {
+      dos: [{ type: String }],
+      donts: [{ type: String }]
+    },
     logoPrompt: { type: String, required: true },
     colorPalette: {
       primary: { type: String, required: true },
       secondary: { type: String, required: true },
       background: { type: String, required: true },
       accent: { type: String, required: true }
-    }
+    },
+    generatedByModel: { type: String },
+    generatedAt: { type: Date, default: Date.now },
+    version: { type: Number, default: 1 },
+    isLatest: { type: Boolean, default: true }
   },
-  { timestamps: true }
+  { timestamps: true, collection: 'brand_identities' }
 );
 
 // 6. Marketing Campaign Model
+const MarketingCampaignItemSchema = new Schema({
+  name: { type: String, required: true },
+  platform: { type: String, required: true },
+  budget: { type: Number, default: 0 },
+  goal: { type: String, required: true },
+  duration: { type: String, required: true },
+  tactics: [{ type: String }]
+});
+
 const MarketingCampaignSchema = new Schema<MarketingCampaign & Document>(
   {
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
+    marketingPlan: { type: String, default: '' },
+    launchPlan: { type: Schema.Types.Mixed, default: '' },
+    campaigns: [MarketingCampaignItemSchema],
     targetChannels: [{ type: String }],
     budgetAllocation: { type: Map, of: Number },
     adCopies: [
@@ -266,9 +290,40 @@ const MarketingCampaignSchema = new Schema<MarketingCampaign & Document>(
       }
     ],
     contentHooks: [{ type: String }],
-    socialMediaStrategy: { type: String, required: true }
+    socialMediaStrategy: { type: String, required: true },
+    generatedByModel: { type: String },
+    generatedAt: { type: Date, default: Date.now },
+    version: { type: Number, default: 1 },
+    isLatest: { type: Boolean, default: true }
   },
-  { timestamps: true }
+  { timestamps: true, collection: 'marketing_campaigns' }
+);
+
+// 6.5 Pitch Deck Model
+const PitchDeckSchema = new Schema<PitchDeck & Document>(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    startupPitch: { type: String, required: true },
+    investorSummary: { type: String, required: true },
+    elevatorPitch: { type: String, required: true },
+    problemStatement: { type: String, default: '' },
+    solution: { type: String, default: '' },
+    keyMetrics: {
+      marketSize: { type: String },
+      revenueModel: { type: String },
+      targetCustomers: { type: String },
+      uniqueAdvantage: { type: String },
+      fundingAsk: { type: String }
+    },
+    traction: { type: String },
+    generatedByModel: { type: String },
+    generatedAt: { type: Date, default: Date.now },
+    version: { type: Number, default: 1 },
+    isLatest: { type: Boolean, default: true }
+  },
+  { timestamps: true, collection: 'pitch_decks' }
 );
 
 // 7. Execution Roadmap Model
@@ -326,6 +381,7 @@ const VentureStateSchema = new Schema<VentureState & Document>(
     financialForecast: { type: Schema.Types.Mixed },
     branding: { type: Schema.Types.Mixed },
     marketing: { type: Schema.Types.Mixed },
+    pitchDeck: { type: Schema.Types.Mixed },
     roadmap: { type: Schema.Types.Mixed },
     lastUpdated: { type: Date, default: Date.now }
   },
@@ -390,6 +446,7 @@ export const BusinessModelModel = mongoose.models.BusinessModel || mongoose.mode
 export const BusinessPlanModel = mongoose.models.BusinessPlan || mongoose.model<BusinessPlan & Document>('BusinessPlan', BusinessPlanSchema);
 export const BrandIdentityModel = mongoose.models.BrandIdentity || mongoose.model<BrandIdentity & Document>('BrandIdentity', BrandIdentitySchema);
 export const MarketingCampaignModel = mongoose.models.MarketingCampaign || mongoose.model<MarketingCampaign & Document>('MarketingCampaign', MarketingCampaignSchema);
+export const PitchDeckModel = mongoose.models.PitchDeck || mongoose.model<PitchDeck & Document>('PitchDeck', PitchDeckSchema);
 export const ExecutionRoadmapModel = mongoose.models.ExecutionRoadmap || mongoose.model<ExecutionRoadmap & Document>('ExecutionRoadmap', ExecutionRoadmapSchema);
 export const ConversationModel = mongoose.models.Conversation || mongoose.model<Conversation & Document>('Conversation', ConversationSchema);
 export const VentureStateModel = mongoose.models.VentureState || mongoose.model<VentureState & Document>('VentureState', VentureStateSchema);

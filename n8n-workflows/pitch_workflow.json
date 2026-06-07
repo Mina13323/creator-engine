@@ -1,0 +1,89 @@
+{
+  "name": "Pitch Agent Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pitch-flow",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_FIREWORKS_API_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"model\": \"accounts/fireworks/models/deepseek-v4-flash\", \"messages\": [{\"role\": \"system\", \"content\": \"You are the Pitch Agent — a former VC associate turned startup advisor who has reviewed 500+ pitch decks and helped founders raise from Sequoia, a16z, and MENA-based VCs (Wamda, Algebra, Flat6Labs).\\n\\nBehavioral Guidelines:\\n- The startup pitch must follow investor storytelling logic: Problem → Solution → Traction → Market → Team → Ask.\\n- Every claim must feel specific and credible — use concrete numbers, not vague language like 'large market' or 'growing fast.'\\n- The elevator pitch must be 60-90 words, conversational, and memorable.\\n- The investor summary is written FOR the investor — focus on ROI, risk, and exit potential.\\n- Problem and solution statements should be tight, 2-3 sentences maximum.\\n\\nYou must output ONLY valid JSON — no markdown, no explanations, no wrapping in backticks.\"}, {\"role\": \"user\", \"content\": \"Create complete investor pitch content for:\\n\\nBrand Identity:\\n\" + JSON.stringify($('Webhook').item.json.body.brandIdentity) + \"\\n\\nBusiness Plan:\\n\" + JSON.stringify($('Webhook').item.json.body.businessPlan) + \"\\n\\nOutput JSON matching this schema exactly:\\n{\\n  \\\"startupPitch\\\": \\\"Full 6-7 paragraph pitch: (1) The Problem (2) Our Solution (3) Market Opportunity with TAM/SAM/SOM (4) Business Model & Revenue (5) Traction & Roadmap (6) The Team (7) The Ask\\\",\\n  \\\"investorSummary\\\": \\\"2-3 paragraphs for investors: opportunity → differentiation → traction → financials → return potential\\\",\\n  \\\"elevatorPitch\\\": \\\"Single 60-90 word paragraph for a non-technical audience\\\",\\n  \\\"problemStatement\\\": \\\"2-3 sentences: who suffers, what they suffer, cost of inaction\\\",\\n  \\\"solution\\\": \\\"2-3 sentences: product/service, how it solves the problem, key innovation\\\",\\n  \\\"slideOutline\\\": [{\\\"slideNumber\\\": 1, \\\"title\\\": \\\"\\\", \\\"keyMessage\\\": \\\"\\\", \\\"bullets\\\": []}],\\n  \\\"keyMetrics\\\": {\\n    \\\"marketSize\\\": \\\"TAM: $XB, SAM: $XM, SOM: $XM (Year 1 target)\\\",\\n    \\\"revenueModel\\\": \\\"Model with pricing details\\\",\\n    \\\"targetCustomers\\\": \\\"Specific segment with demographics\\\",\\n    \\\"uniqueAdvantage\\\": \\\"The one thing competitors cannot easily replicate\\\",\\n    \\\"fundingAsk\\\": \\\"Amount, valuation cap, and use of funds breakdown\\\"\\n  },\\n  \\\"traction\\\": \\\"Current milestones or planned proof points\\\"\\n}\"}], \"temperature\": 0.65, \"max_tokens\": 4000, \"response_format\": {\"type\": \"json_object\"}}"
+      },
+      "id": "fireworks",
+      "name": "Fireworks AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const content = $input.first().json.choices[0].message.content.trim();\nlet parsed;\ntry {\n  parsed = JSON.parse(content);\n} catch (e) {\n  const match = content.match(/\\{[\\s\\S]*\\}/);\n  parsed = JSON.parse(match ? match[0] : content);\n}\nconst projectId = $('Webhook').item.json.body.projectId || 'unknown';\nreturn { json: { success: true, workflow: 'pitch-flow', projectId, generatedAt: new Date().toISOString(), data: parsed } };"
+      },
+      "id": "parser",
+      "name": "Parse JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [700, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [{ "node": "Fireworks AI", "type": "main", "index": 0 }]
+      ]
+    },
+    "Fireworks AI": {
+      "main": [
+        [{ "node": "Parse JSON", "type": "main", "index": 0 }]
+      ]
+    },
+    "Parse JSON": {
+      "main": [
+        [{ "node": "Respond", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -253,6 +253,108 @@ const starterDocuments = [
     category: 'startup-finance',
     source: 'Startup Finance 101',
     content: 'Contribution Margin measures profitability on an individual transaction or unit basis, calculated as Unit Price minus Variable Cost per Unit.'
+  },
+
+  // ─────────────────────────────────────────────
+  // 11. PITCH DECK EXAMPLES & FRAMEWORKS
+  // ─────────────────────────────────────────────
+  {
+    documentId: 'pitch-airbnb',
+    category: 'pitch-deck-examples',
+    source: 'Startup Pitch Case Studies',
+    content: "Airbnb's original 2009 seed pitch deck is one of the most studied in startup history. Key structure: (1) Problem — travelers pay high hotel prices, hosts have unused rooms; (2) Solution — web platform connecting travelers with locals; (3) Market Validation — 630k listings on Craigslist prove latent demand; (4) Market Size — $2B+ opportunity in budget travel; (5) Business Model — 10% transaction fee; (6) Competitive Advantage — trust through profiles, reviews, payments. Lessons: Start with a relatable, human problem. Use real market proxy data to validate demand before you exist. Keep slides to one idea per page."
+  },
+  {
+    documentId: 'pitch-uber',
+    category: 'pitch-deck-examples',
+    source: 'Startup Pitch Case Studies',
+    content: "Uber's early pitch framed the problem as: 'Everyone who has ever tried to get a cab in San Francisco knows the problem.' This hyper-specific, relatable opener was key. Their narrative: Problem (taxi experience is broken) → Solution (one tap, a car comes to you) → Market Size (taxi industry $4.2B in US alone) → Traction (proof from early SF launch) → Business Model (20% commission) → Ask ($1.25M at $5.75M valuation). Key lesson: Ground the problem in a visceral, personal experience the investor can identify with. Show traction in one market before projecting globally."
+  },
+  {
+    documentId: 'pitch-yc-formula',
+    category: 'pitch-deck-examples',
+    source: 'Y Combinator Pitch Guidelines',
+    content: 'Y Combinator recommends a concise 10-slide deck: (1) Company purpose — one sentence; (2) Problem; (3) Solution — demo or description; (4) Why now — timing insight; (5) Market size — TAM/SAM/SOM; (6) Competition — honest landscape; (7) Product — screenshots or live demo; (8) Business model — how you make money; (9) Team — why you; (10) Financials/Ask — runway and use of funds. Common mistakes: vague problem statements, unrealistic market sizes, no traction slide, team slides without relevant domain expertise.'
+  },
+  {
+    documentId: 'pitch-mena',
+    category: 'pitch-deck-examples',
+    source: 'MENA Startup Ecosystem Report',
+    content: 'MENA investors (Wamda, Flat6Labs, Algebra Ventures, STV) have specific expectations: (1) Show deep local market understanding — regional nuances matter; (2) Demonstrate founder-market fit — why are YOU the right team for Egypt/Saudi/UAE; (3) Unit economics must work in MENA pricing context (lower ARPU than US); (4) Careem differentiated by focusing on driver supply as the key bottleneck; (5) Vezeeta grew by solving appointment booking pain in high specialist wait-time markets; (6) Instabug won MENA by focusing first on developer community outreach. Key: MENA investors want to see path to profitability earlier than US VCs.'
+  },
+  {
+    documentId: 'pitch-narrative-arc',
+    category: 'pitch-deck-examples',
+    source: 'Investor Pitch Frameworks',
+    content: "The most successful investor pitches follow a narrative arc: (1) HOOK — open with a surprising stat, bold claim, or vivid anecdote; (2) PROBLEM — make the investor feel the pain personally; use specificity ('$47B is wasted annually on X'); (3) SOLUTION — explain simply enough for an 8-year-old; (4) TRACTION — numbers proving product-market fit; (5) MARKET — show size without fabricating numbers; (6) TEAM — 2-3 sentences per co-founder, focus on why this team for this market; (7) ASK — be specific: '$500K pre-seed to hire 2 engineers and reach $50K MRR by Q4.' Vague asks lose deals."
+  },
+
+  // ─────────────────────────────────────────────
+  // 12. BRANDING CASE STUDIES
+  // ─────────────────────────────────────────────
+  {
+    documentId: 'brand-apple',
+    category: 'branding-case-studies',
+    source: 'Brand Strategy Case Studies',
+    content: "Apple's brand is built on three core principles: simplicity, humanity, and creativity. Voice guidelines: Short sentences. No technical jargon. Lead with the human benefit, not the spec. Apple never says '2GHz processor' — they say 'so fast it feels instant.' Brand archetype: The Creator/Magician. Color psychology: Clean white communicates simplicity and purity. Key lesson: Apple positions against 'the rest' without naming competitors. '1,000 songs in your pocket' didn't mention MP3 players — it reframed the category. For startups: Pick one brand promise and ruthlessly filter every message through it."
+  },
+  {
+    documentId: 'brand-notion',
+    category: 'branding-case-studies',
+    source: 'Brand Strategy Case Studies',
+    content: "Notion's brand strategy relies on user-generated content (templates, tutorials) as the primary growth engine. Brand voice: calm, empowering, slightly philosophical. They avoid hype words like 'revolutionary' and use measured language like 'a new tool for thought.' Key branding decisions: (1) Community-first — Notion's brand is as much the user community as the product; (2) Flexibility as identity — let users self-define (students, developers, companies); (3) Typography-forward design — editorial aesthetic stands out in a sea of colorful SaaS tools. Lesson: Positioning as a canvas rather than a point solution can broaden TAM but requires community investment."
+  },
+  {
+    documentId: 'brand-duolingo',
+    category: 'branding-case-studies',
+    source: 'Brand Strategy Case Studies',
+    content: 'Duolingo transformed a utility product (language learning) into an emotionally engaging brand through personality. Key elements: (1) The Duo mascot (green owl) is used in meme-worthy, self-deprecating social content — became a viral loop; (2) Brand voice is playful, slightly unhinged, self-aware — they lean into the joke of "the app that threatens you to practice"; (3) Streak mechanic tied to brand loyalty; (4) Social media strategy: post memes about themselves. Result: 500M downloads driven largely by organic word of mouth. Lesson: If your category is boring, inject personality into the brand — not just the product.'
+  },
+  {
+    documentId: 'brand-egyptian-startups',
+    category: 'branding-case-studies',
+    source: 'MENA Startup Brand Analysis',
+    content: 'Successful Egyptian startup brand strategies: (1) SWVL — positioned as "mass transit reimagined," modern bold identity targeting urban professionals frustrated with microbuses; dark blue palette communicated global ambition; (2) MaxAB — B2B food distribution used "for the love of food" as its narrative, humanizing a supply chain product; (3) Instabug — developer-first brand with technical credibility signals: open source contributions, docs-first approach, dark mode defaults. Key insight: MENA founders must choose between local cultural resonance (Arabic name) vs global scale signals (English name, international design). The choice affects investor perception and talent acquisition.'
+  },
+  {
+    documentId: 'brand-story-framework',
+    category: 'branding-case-studies',
+    source: 'Brand Story Methodology',
+    content: 'The most compelling brand stories follow a four-part arc: (1) ORIGIN — what personal frustration or observation sparked the idea? Authenticity matters; invented origin stories lose trust; (2) MISSION — what are we doing today and for whom? Should be specific enough to exclude: "We help X do Y in context Z"; (3) VALUES — what do we refuse to compromise on? Values differentiate culture and attract the right team; (4) VISION — what does the world look like if we succeed? This is the bigger "why" that transcends the product. Good brand stories are emotionally resonant and factually grounded — never purely aspirational without roots in real experience.'
+  },
+
+  // ─────────────────────────────────────────────
+  // 13. MARKETING CAMPAIGN EXAMPLES
+  // ─────────────────────────────────────────────
+  {
+    documentId: 'marketing-dsc',
+    category: 'marketing-campaign-examples',
+    source: 'Viral Marketing Case Studies',
+    content: 'Dollar Shave Club launched in 2012 with a $4,500 YouTube video that generated 12,000 orders in 48 hours. Key elements: (1) Founder-fronted video with self-deprecating humor addressed the problem directly; (2) Clear pricing ($1/month) reduced friction; (3) Referral program: "Give a friend a free month, get a free month"; (4) Email nurture sequence reinforced subscription habit. Budget breakdown: $0 celebrity, $4,500 production, $0 paid distribution (organic viral). Lesson: A clear, entertaining value proposition told through a human story beats polished advertising. The founder as face of brand creates authenticity no agency can buy.'
+  },
+  {
+    documentId: 'marketing-product-hunt',
+    category: 'marketing-campaign-examples',
+    source: 'Launch Playbooks',
+    content: 'A successful Product Hunt launch: (1) PRE-LAUNCH (2 weeks before): Build waitlist landing page, recruit a respected hunter (large PH following), collect 200+ beta users who will upvote day-of; (2) LAUNCH DAY: Go live at 12:01am PST, post in Slack communities, Twitter/X, LinkedIn simultaneously, personally DM your network, respond to every comment on PH within 1 hour; (3) POST-LAUNCH: Collect testimonials, follow up with email sequence, write a "lessons learned" blog post. Typical results: 500-2,000 upvotes, 200-1,000 new signups, Product of the Day badge. Key lesson: The launch starts 2 weeks before launch day.'
+  },
+  {
+    documentId: 'marketing-b2b-outreach',
+    category: 'marketing-campaign-examples',
+    source: 'B2B Sales & Marketing Playbooks',
+    content: 'High-converting B2B cold outreach follows AIDA: (1) ATTENTION — personalized first line referencing their specific business or recent news; (2) INTEREST — one sentence on the problem you solve; (3) DESIRE — specific outcome: "We helped [similar company] reduce churn by 34% in 60 days"; (4) ACTION — one low-friction ask: "Would a 15-minute call make sense?" Email sequence: Day 1 — intro (60-80 words max); Day 3 — value-add resource; Day 7 — follow-up with social proof; Day 14 — breakup email. LinkedIn connection requests: 200 characters max, personalized, no pitch. Target 3-5% reply rate as healthy benchmark.'
+  },
+  {
+    documentId: 'marketing-reels-growth',
+    category: 'marketing-campaign-examples',
+    source: 'Social Media Growth Playbooks',
+    content: 'High-performing startup Reels formula: (1) HOOK (0-3 seconds): Text overlay creating curiosity or FOMO — e.g., "I made $10K in 30 days doing this one thing"; (2) CONTENT (3-25 seconds): Deliver the value promised by the hook — tutorials, before/after, behind-the-scenes; (3) ENGAGEMENT TRIGGER (last 5 seconds): Ask a question or tease a follow-up. Hashtag strategy: 3 large (1M+), 3 medium (100K-1M), 3 niche (<100K). Posting cadence for growth: 5-7 Reels per week for first 60 days. Content pillars: Education, Social proof, Behind the scenes, Offers (max 1 in 7 posts). First 15 minutes of engagement determines reach.'
+  },
+  {
+    documentId: 'marketing-whatsapp-mena',
+    category: 'marketing-campaign-examples',
+    source: 'MENA Digital Marketing Guide',
+    content: "WhatsApp is Egypt's primary digital communication channel with 40M+ active users and >90% open rates. Startup playbook: (1) Build broadcast list via opt-in collection at every touchpoint; (2) Segment contacts by stage (leads, customers, VIPs); (3) Max 2-3 broadcasts per week; (4) WhatsApp Business API enables automated sequences for order confirmations, appointment reminders, re-engagement; (5) VIP Groups for top customers — exclusive offers and feedback; (6) Voice notes outperform text for sales outreach in Egypt — personal, casual, high trust. Content types that convert: exclusive discount codes, flash sales, new feature announcements, personal check-ins from the founder."
   }
 ];
 

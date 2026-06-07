@@ -7,9 +7,9 @@ export class ApiClient {
     console.log('[API] Mock generateImage requested:', params);
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     // Return a dummy image
-    return { 
+    return {
       url: "https://d3adwkbyhxyrtq.cloudfront.net/web-app/Elena.webp",
       id: "mock-image-" + Date.now()
     };
@@ -26,7 +26,7 @@ export class ApiClient {
     } else {
       await new Promise(resolve => setTimeout(resolve, 1500));
     }
-    
+
     // Return a dummy file URL (avatar or UGC video depending on file type)
     if (file.type.startsWith('video/')) {
       return "https://d3adwkbyhxyrtq.cloudfront.net/web-app/ugc.mp4";
@@ -44,7 +44,7 @@ export class ApiClient {
     console.log('[API] Mock generateMarketingStudioAd requested:', params);
     // Simulate longer generation delay
     await new Promise(resolve => setTimeout(resolve, 3000));
-    
+
     // Return a dummy video URL
     return {
       url: "https://d3adwkbyhxyrtq.cloudfront.net/web-app/ugc_how_to.mp4",

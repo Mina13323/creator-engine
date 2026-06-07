@@ -1,12 +1,12 @@
 import { create } from 'zustand';
-import { Project, ChatMessage, AuthUser, FounderProfile, BusinessOpportunity, SelectedOpportunity, BusinessPlan, VentureState, OnboardingData } from '@creator/types';
+import { Project, ChatMessage, AuthUser, FounderProfile, BusinessOpportunity, SelectedOpportunity, BusinessPlan, VentureState, OnboardingData, BrandIdentity, MarketingCampaign, PitchDeck } from '@creator/types';
 import { authClient } from '../lib/authClient';
 
 interface StoreState {
   projects: Project[];
   currentProject: Project | null;
   ventureState: VentureState | null;
-  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'roadmap' | 'ai-studio';
+  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'marketing-ai' | 'pitch' | 'roadmap' | 'ai-studio';
   isOnboarded: boolean;
   
   // Async states
@@ -20,6 +20,14 @@ interface StoreState {
   selectedOpportunity: SelectedOpportunity | null;
   isSelecting: boolean;
   selectionError: string | null;
+
+  // Branding / Marketing / Pitch
+  brandIdentity: BrandIdentity | null;
+  marketingCampaign: MarketingCampaign | null;
+  pitchDeck: PitchDeck | null;
+  brandingLoading: boolean;
+  marketingLoading: boolean;
+  pitchLoading: boolean;
 
   // Auth State
   user: AuthUser | null;
@@ -42,6 +50,9 @@ interface StoreState {
   selectOpportunity: (projectId: string, opportunityId: string) => Promise<void>;
   generateBusinessPlan: (projectId: string) => Promise<void>;
   uploadDocument: (projectId: string, fileData: { fileName: string, fileType: string, storageUrl: string, fileSize: number }) => Promise<void>;
+  generateBranding: (projectId: string) => Promise<void>;
+  generateMarketing: (projectId: string) => Promise<void>;
+  generatePitch: (projectId: string) => Promise<void>;
 
   sendChatMessage: (message: string) => Promise<void>;
   resetToDashboard: () => void;
@@ -63,6 +74,13 @@ export const useStore = create<StoreState>((set, get) => ({
   selectedOpportunity: null,
   isSelecting: false,
   selectionError: null,
+
+  brandIdentity: null,
+  marketingCampaign: null,
+  pitchDeck: null,
+  brandingLoading: false,
+  marketingLoading: false,
+  pitchLoading: false,
 
   user: null,
   isAuthModalOpen: false,
@@ -86,7 +104,13 @@ export const useStore = create<StoreState>((set, get) => ({
       opportunities: [],
       selectedOpportunity: null,
       isSelecting: false,
-      selectionError: null
+      selectionError: null,
+      brandIdentity: null,
+      marketingCampaign: null,
+      pitchDeck: null,
+      brandingLoading: false,
+      marketingLoading: false,
+      pitchLoading: false
     });
   },
   verifyAuth: async () => {
@@ -126,6 +150,9 @@ export const useStore = create<StoreState>((set, get) => ({
         currentProject: proj || null,
         ventureState: stateData,
         selectedOpportunity: stateData?.selectedOpportunity || null,
+        brandIdentity: stateData?.branding || null,
+        marketingCampaign: stateData?.marketing || null,
+        pitchDeck: stateData?.pitchDeck || null,
         activeTab: 'dashboard',
         loading: false
       });
@@ -239,6 +266,63 @@ export const useStore = create<StoreState>((set, get) => ({
     }
   },
 
+  generateBranding: async (projectId) => {
+    set({ brandingLoading: true });
+    try {
+      const res = await authClient.post<{ brandIdentity: BrandIdentity }>('/branding/generate', { projectId });
+      set(state => {
+        const updatedState = state.ventureState ? { ...state.ventureState, branding: res.brandIdentity } : state.ventureState;
+        return {
+          brandIdentity: res.brandIdentity,
+          ventureState: updatedState as VentureState,
+          brandingLoading: false
+        };
+      });
+    } catch (e) {
+      console.error('generateBranding failed', e);
+      set({ brandingLoading: false });
+      throw e;
+    }
+  },
+
+  generateMarketing: async (projectId) => {
+    set({ marketingLoading: true });
+    try {
+      const res = await authClient.post<{ marketingCampaign: MarketingCampaign }>('/marketing/generate', { projectId });
+      set(state => {
+        const updatedState = state.ventureState ? { ...state.ventureState, marketing: res.marketingCampaign } : state.ventureState;
+        return {
+          marketingCampaign: res.marketingCampaign,
+          ventureState: updatedState as VentureState,
+          marketingLoading: false
+        };
+      });
+    } catch (e) {
+      console.error('generateMarketing failed', e);
+      set({ marketingLoading: false });
+      throw e;
+    }
+  },
+
+  generatePitch: async (projectId) => {
+    set({ pitchLoading: true });
+    try {
+      const res = await authClient.post<{ pitchDeck: PitchDeck }>('/pitch/generate', { projectId });
+      set(state => {
+        const updatedState = state.ventureState ? { ...state.ventureState, pitchDeck: res.pitchDeck } : state.ventureState;
+        return {
+          pitchDeck: res.pitchDeck,
+          ventureState: updatedState as VentureState,
+          pitchLoading: false
+        };
+      });
+    } catch (e) {
+      console.error('generatePitch failed', e);
+      set({ pitchLoading: false });
+      throw e;
+    }
+  },
+
   sendChatMessage: async (message: string) => {
     const { currentProject } = get();
     if (!currentProject) return;
@@ -274,7 +358,10 @@ export const useStore = create<StoreState>((set, get) => ({
       currentProject: null,
       ventureState: null,
       activeTab: 'dashboard',
-      chatMessages: []
+      chatMessages: [],
+      brandIdentity: null,
+      marketingCampaign: null,
+      pitchDeck: null
     });
   },
 
@@ -285,7 +372,10 @@ export const useStore = create<StoreState>((set, get) => ({
       ventureState: null,
       activeTab: 'dashboard',
       chatMessages: [],
-      opportunities: []
+      opportunities: [],
+      brandIdentity: null,
+      marketingCampaign: null,
+      pitchDeck: null
     });
   }
 }));
