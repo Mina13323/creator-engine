@@ -4,15 +4,23 @@ export class ApiClient {
     aspect_ratio?: string;
     model?: string;
   }) {
-    console.log('[API] Mock generateImage requested:', params);
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    console.log('[API] generateImage requested:', params);
 
-    // Return a dummy image
-    return {
-      url: "https://d3adwkbyhxyrtq.cloudfront.net/web-app/Elena.webp",
-      id: "mock-image-" + Date.now()
-    };
+    const response = await fetch('/api/generate-image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt: params.prompt,
+        model: params.model,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error?.error || 'Image generation failed');
+    }
+
+    return response.json() as Promise<{ url: string; id: string }>;
   }
 
   async uploadFile(file: File, onProgress?: (pct: number) => void): Promise<string> {
