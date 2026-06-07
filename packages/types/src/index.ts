@@ -192,6 +192,28 @@ export interface BrandIdentity {
     background: string;
     accent: string;
   };
+  brandPersonality: string[];
+  brandStory: string;
+  brandVoice: {
+    dos: string[];
+    donts: string[];
+  };
+  tagline: string;
+  generatedByModel?: string;
+  generatedAt?: Date;
+  version: number;
+  isLatest: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MarketingCampaignItem {
+  name: string;
+  platform: string;
+  budget: number;
+  goal: string;
+  duration: string;
+  tactics: string[];
 }
 
 export interface MarketingCampaign {
@@ -208,6 +230,40 @@ export interface MarketingCampaign {
   }[];
   contentHooks: string[];
   socialMediaStrategy: string;
+  marketingPlan: string;
+  launchPlan: string | Record<string, string>;
+  campaigns: MarketingCampaignItem[];
+  generatedByModel?: string;
+  generatedAt?: Date;
+  version: number;
+  isLatest: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PitchDeck {
+  id: string;
+  userId: string;
+  projectId: string;
+  startupPitch: string;
+  investorSummary: string;
+  elevatorPitch: string;
+  problemStatement: string;
+  solution: string;
+  keyMetrics: {
+    marketSize: string;
+    revenueModel: string;
+    targetCustomers: string;
+    uniqueAdvantage: string;
+    fundingAsk?: string;
+  };
+  traction: string;
+  generatedByModel?: string;
+  generatedAt?: Date;
+  version: number;
+  isLatest: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface RoadmapMilestone {
@@ -263,6 +319,7 @@ export interface VentureState {
   financialForecast?: any; // To be implemented in future modules
   branding?: BrandIdentity;
   marketing?: MarketingCampaign;
+  pitchDeck?: PitchDeck;
   roadmap?: ExecutionRoadmap;
   lastUpdated: Date;
 }
@@ -313,8 +370,12 @@ export interface AgentRun {
     | "financial"
     | "branding"
     | "marketing"
+    | "pitch"
     | "roadmap"
-    | "ai-cofounder";
+    | "ai-cofounder"
+    | "document-processing"
+    | "opportunity-selection"
+    | "system";
   status: "pending" | "running" | "success" | "failed";
   aiModel: string;
   provider: string;

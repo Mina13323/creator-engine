@@ -17,6 +17,7 @@ import {
   BusinessPlanModel,
   BrandIdentityModel,
   MarketingCampaignModel,
+  PitchDeckModel,
   ExecutionRoadmapModel,
   ConversationModel,
   UserModel,
@@ -25,8 +26,8 @@ import {
   AgentRunModel,
   UploadedDocumentModel
 } from '@creator/database';
-import { LoginRequest, SignupRequest, AuthResponse, AuthUser, FounderProfile, SelectedOpportunity, BusinessPlan } from '@creator/types';
-import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent } from '@creator/agents';
+import { LoginRequest, SignupRequest, AuthResponse, AuthUser, FounderProfile, SelectedOpportunity, BusinessPlan, PitchDeck } from '@creator/types';
+import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent, runBrandingAgent, runMarketingAgent, runPitchAgent } from '@creator/agents';
 import { queryRAG } from '@creator/rag-core';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -118,7 +119,7 @@ app.post('/api/auth/signup', async (req: Request, res: Response): Promise<any> =
 
 app.post('/api/auth/register', async (req: Request, res: Response): Promise<any> => {
   // Alias
-  return app._router.handle(req, res, () => {}); 
+  return app._router.handle(req, res, () => { });
 });
 
 app.post('/api/auth/login', async (req: Request, res: Response): Promise<any> => {
@@ -156,7 +157,7 @@ app.post('/api/auth/google', async (req: Request, res: Response): Promise<any> =
         payload = jwt.decode(credential);
       }
     } catch (e) {
-      payload = jwt.decode(credential); 
+      payload = jwt.decode(credential);
     }
 
     if (!payload || !payload.email) return res.status(401).json({ error: 'Invalid Google token' });
@@ -235,7 +236,7 @@ async function trackAgentRun(
   aiModel?: string
 ) {
   if (!dbConnected) return await action();
-  
+
   const run = new AgentRunModel({
     id: `run_${Date.now()}`,
     userId,
@@ -272,7 +273,7 @@ app.post('/api/projects', authMiddleware, async (req: Request, res: Response): P
   try {
     const userId = (req as any).user.id;
     const { name } = req.body;
-    
+
     if (!name) return res.status(400).json({ error: 'Missing project name' });
 
     const projectId = `proj_${Date.now()}`;
@@ -284,11 +285,11 @@ app.post('/api/projects', authMiddleware, async (req: Request, res: Response): P
       industry: 'Unknown',
       status: 'draft'
     });
-    
+
     if (dbConnected) {
       await project.save();
     }
-    
+
     return res.status(201).json({ projectId, status: 'draft', project });
   } catch (err: any) {
     console.error('Project creation error:', err);
@@ -301,12 +302,12 @@ app.post('/api/founder/analyze', authMiddleware, async (req: Request, res: Respo
   try {
     const userId = (req as any).user.id;
     const { projectId, data } = req.body;
-    
+
     if (!projectId || !data) return res.status(400).json({ error: 'Missing projectId or data' });
 
     // Call Agent with tracking
     const analysis = await trackAgentRun(userId, projectId, 'founder-analysis', data, () => runFounderAgent(projectId, data));
-    
+
     const founderProfile = new FounderProfileModel({
       id: `fp_${Date.now()}`,
       userId,
@@ -314,7 +315,7 @@ app.post('/api/founder/analyze', authMiddleware, async (req: Request, res: Respo
       ...data,
       ...(analysis || {})
     });
-    
+
     if (dbConnected) {
       await founderProfile.save();
       await updateVentureState(projectId, userId, { founderProfile: founderProfile.toObject() });
@@ -346,13 +347,13 @@ app.post('/api/opportunities/discover', authMiddleware, async (req: Request, res
       () => runOpportunityAgent(projectId, founderProfile.toObject()),
       'deepseek-v4-flash'
     );
-    
+
     // Express owns formatting and persistence
     const formattedOpportunities = (rawOpportunities || []).map((opp: any, idx: number) => {
       const startupCostStr = typeof opp.startupCost === 'number'
         ? `$${opp.startupCost.toLocaleString()}`
         : String(opp.startupCost || '$0');
-        
+
       const estimatedRevenueStr = typeof opp.estimatedRevenue === 'number'
         ? `$${opp.estimatedRevenue.toLocaleString()}/mo`
         : String(opp.estimatedRevenue || '$0/mo');
@@ -377,7 +378,7 @@ app.post('/api/opportunities/discover', authMiddleware, async (req: Request, res
     if (dbConnected) {
       // Clear previous opportunities for the project to prevent duplicates on regeneration
       await BusinessOpportunityModel.deleteMany({ projectId, userId });
-      
+
       if (formattedOpportunities.length > 0) {
         await BusinessOpportunityModel.insertMany(formattedOpportunities);
       }
@@ -455,7 +456,7 @@ app.post('/api/business-plan/generate', authMiddleware, async (req: Request, res
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
-    
+
     const selected = await SelectedOpportunityModel.findOne({ projectId, userId });
     if (!selected) return res.status(400).json({ error: 'No opportunity selected for this project' });
 
@@ -518,7 +519,7 @@ app.get('/api/projects/:projectId/business-plans', authMiddleware, async (req: R
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.params;
-    
+
     if (!dbConnected) return res.status(503).json({ error: 'DB required' });
 
     const plans = await BusinessPlanModel.find({ projectId, userId }).sort({ version: -1 });
@@ -533,7 +534,7 @@ app.get('/api/projects/:projectId/state', authMiddleware, async (req: Request, r
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.params;
-    
+
     if (!dbConnected) return res.status(503).json({ error: 'DB required' });
 
     const state = await VentureStateModel.findOne({ projectId, userId });
@@ -558,7 +559,7 @@ app.get('/api/projects/:projectId/context', authMiddleware, async (req: Request,
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.params;
-    
+
     if (!dbConnected) return res.status(503).json({ error: 'DB required' });
 
     const project = await ProjectModel.findOne({ id: projectId, userId });
@@ -596,7 +597,7 @@ app.post('/api/projects/:projectId/documents/upload', authMiddleware, async (req
     const userId = (req as any).user.id;
     const { projectId } = req.params;
     const { fileName, fileType, storageUrl, fileSize } = req.body;
-    
+
     if (!fileName || !fileType || !storageUrl) {
       return res.status(400).json({ error: 'Missing required file details (fileName, fileType, storageUrl)' });
     }
@@ -617,7 +618,7 @@ app.post('/api/projects/:projectId/documents/upload', authMiddleware, async (req
       storageUrl,
       processingStatus: 'pending'
     });
-    
+
     await uploadedDoc.save();
 
     // The actual triggering of the n8n webhook would happen here.
@@ -806,6 +807,196 @@ app.get('/api/ai/chat/:projectId', authMiddleware, async (req: Request, res: Res
     }
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// ==========================================
+// BRANDING ROUTES
+// ==========================================
+
+app.post('/api/branding/generate', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.body;
+    if (!projectId) return res.status(400).json({ error: 'Missing projectId' });
+
+    const selected = await SelectedOpportunityModel.findOne({ projectId, userId });
+    const businessPlan = await BusinessPlanModel.findOne({ projectId, userId, isLatest: true });
+
+    const brandData = await trackAgentRun(
+      userId, projectId, 'branding', { projectId },
+      () => runBrandingAgent(projectId, businessPlan?.toObject() || {}, selected?.toObject() || {}),
+      'deepseek-v3'
+    );
+
+    // Versioning
+    let version = 1;
+    if (dbConnected) {
+      const existingLatest = await BrandIdentityModel.findOne({ projectId, userId, isLatest: true });
+      if (existingLatest) {
+        version = (existingLatest.version || 1) + 1;
+        existingLatest.isLatest = false;
+        await existingLatest.save();
+      }
+    }
+
+    const brand = new BrandIdentityModel({
+      id: `brand_${Date.now()}`,
+      userId, projectId,
+      ...brandData,
+      version,
+      isLatest: true,
+      generatedByModel: 'deepseek-v3',
+      generatedAt: new Date()
+    });
+
+    if (dbConnected) {
+      await brand.save();
+      await updateVentureState(projectId, userId, { branding: brand.toObject() });
+    }
+
+    return res.json({ brandIdentity: brand });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/projects/:projectId/branding', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.params;
+    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    const brand = await BrandIdentityModel.findOne({ projectId, userId, isLatest: true });
+    if (!brand) return res.status(404).json({ error: 'Brand identity not found' });
+    return res.json({ brandIdentity: brand });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ==========================================
+// MARKETING ROUTES
+// ==========================================
+
+app.post('/api/marketing/generate', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.body;
+    if (!projectId) return res.status(400).json({ error: 'Missing projectId' });
+
+    const brand = await BrandIdentityModel.findOne({ projectId, userId, isLatest: true });
+    const businessPlan = await BusinessPlanModel.findOne({ projectId, userId, isLatest: true });
+
+    const marketingData = await trackAgentRun(
+      userId, projectId, 'marketing', { projectId },
+      () => runMarketingAgent(projectId, brand?.toObject() || {}, businessPlan?.toObject() || {}),
+      'deepseek-v3'
+    );
+
+    let version = 1;
+    if (dbConnected) {
+      const existingLatest = await MarketingCampaignModel.findOne({ projectId, userId, isLatest: true });
+      if (existingLatest) {
+        version = (existingLatest.version || 1) + 1;
+        existingLatest.isLatest = false;
+        await existingLatest.save();
+      }
+    }
+
+    const marketing = new MarketingCampaignModel({
+      id: `mkt_${Date.now()}`,
+      userId, projectId,
+      ...marketingData,
+      version,
+      isLatest: true,
+      generatedByModel: 'deepseek-v3',
+      generatedAt: new Date()
+    });
+
+    if (dbConnected) {
+      await marketing.save();
+      await updateVentureState(projectId, userId, { marketing: marketing.toObject() });
+    }
+
+    return res.json({ marketingCampaign: marketing });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/projects/:projectId/marketing', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.params;
+    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    const marketing = await MarketingCampaignModel.findOne({ projectId, userId, isLatest: true });
+    if (!marketing) return res.status(404).json({ error: 'Marketing campaign not found' });
+    return res.json({ marketingCampaign: marketing });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ==========================================
+// PITCH ROUTES
+// ==========================================
+
+app.post('/api/pitch/generate', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.body;
+    if (!projectId) return res.status(400).json({ error: 'Missing projectId' });
+
+    const businessPlan = await BusinessPlanModel.findOne({ projectId, userId, isLatest: true });
+    const brand = await BrandIdentityModel.findOne({ projectId, userId, isLatest: true });
+
+    const pitchData = await trackAgentRun(
+      userId, projectId, 'pitch', { projectId },
+      () => runPitchAgent(projectId, businessPlan?.toObject() || {}, brand?.toObject() || {}),
+      'deepseek-v3'
+    );
+
+    let version = 1;
+    if (dbConnected) {
+      const existingLatest = await PitchDeckModel.findOne({ projectId, userId, isLatest: true });
+      if (existingLatest) {
+        version = (existingLatest.version || 1) + 1;
+        existingLatest.isLatest = false;
+        await existingLatest.save();
+      }
+    }
+
+    const pitch = new PitchDeckModel({
+      id: `pitch_${Date.now()}`,
+      userId, projectId,
+      ...pitchData,
+      version,
+      isLatest: true,
+      generatedByModel: 'deepseek-v3',
+      generatedAt: new Date()
+    });
+
+    if (dbConnected) {
+      await pitch.save();
+      await updateVentureState(projectId, userId, { pitchDeck: pitch.toObject() });
+    }
+
+    return res.json({ pitchDeck: pitch });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/projects/:projectId/pitch', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.params;
+    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    const pitch = await PitchDeckModel.findOne({ projectId, userId, isLatest: true });
+    if (!pitch) return res.status(404).json({ error: 'Pitch deck not found' });
+    return res.json({ pitchDeck: pitch });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
   }
 });
 

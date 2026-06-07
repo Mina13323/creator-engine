@@ -8,7 +8,9 @@ import Dashboard from '../components/Dashboard';
 import OpportunityExplorer from '../components/OpportunityExplorer';
 import BusinessPlanDashboard from '../components/BusinessPlanDashboard';
 import BrandingPanel from '../components/BrandingPanel';
+import MarketingDashboard from '../components/MarketingDashboard';
 import MarketingStudio from '../components/MarketingStudio';
+import PitchDashboard from '../components/PitchDashboard';
 import RoadmapPanel from '../components/RoadmapPanel';
 import CofounderChat from '../components/CofounderChat';
 import AIConsultantDashboard from '../components/AIConsultantDashboard';
@@ -32,7 +34,8 @@ import {
   X,
   LogOut,
   ImagePlus,
-  Megaphone
+  Megaphone,
+  Video
 } from 'lucide-react';
 
 // Tabs that require authentication
@@ -110,7 +113,9 @@ export default function AppPage() {
     { id: 'business-plan', label: 'Business Plan', icon: FileText, requiresProject: true },
     { id: 'financials', label: 'Financials', icon: BarChart3, requiresProject: true },
     { id: 'branding', label: 'Branding', icon: BookOpen, requiresProject: true },
-    { id: 'marketing', label: 'Marketing Studio', icon: Megaphone, requiresProject: true },
+    { id: 'marketing-ai', label: 'Marketing Plan', icon: Megaphone, requiresProject: true },
+    { id: 'marketing', label: 'Marketing Studio', icon: Video, requiresProject: true },
+    { id: 'pitch', label: 'Pitch Deck', icon: Presentation, requiresProject: true },
     { id: 'roadmap', label: 'Roadmap', icon: Clock, requiresProject: true },
     { id: 'ai-consultant', label: 'AI Consultant', icon: MessageSquare, requiresProject: true },
     { id: 'ai-studio', label: 'AI Studio', icon: ImagePlus, requiresProject: false },
@@ -254,7 +259,9 @@ export default function AppPage() {
             {activeTab === 'opportunities' && <OpportunityExplorer />}
             {activeTab === 'business-plan' && <BusinessPlanDashboard />}
             {activeTab === 'branding' && <BrandingPanel />}
+            {activeTab === 'marketing-ai' && <MarketingDashboard />}
             {activeTab === 'marketing' && <MarketingStudio />}
+            {activeTab === 'pitch' && <PitchDashboard />}
             {activeTab === 'roadmap' && <RoadmapPanel />}
             {activeTab === 'ai-consultant' && <AIConsultantDashboard />}
             {activeTab === 'ai-studio' && <AIStudioPanel />}
@@ -262,7 +269,7 @@ export default function AppPage() {
             {activeTab === 'financials' && <FinancialEngine />}
             
             {/* Fallbacks for new tabs if components don't exist yet */}
-            {['guides', 'pitch', 'radar', 'market-research'].includes(activeTab) && (
+            {['guides', 'radar', 'market-research'].includes(activeTab) && (
               <div className="p-8 md:p-12 text-center text-slate-500">
                 <h2 className="text-2xl font-semibold mb-2 text-slate-800 capitalize">{activeTab.replace('-', ' ')}</h2>
                 <p>This module is under construction in the new UI.</p>
