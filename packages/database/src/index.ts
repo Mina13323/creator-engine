@@ -1,14 +1,15 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import {
+  User,
   Project,
-  BusinessIdea,
-  BusinessValidation,
-  BusinessModel,
-  BrandIdentity,
-  MarketingCampaign,
-  ExecutionRoadmap,
+  BusinessPlanOutput,
+  MarketResearchOutput,
+  FinancialForecastOutput,
+  BrandingOutput,
+  MarketingOutput,
+  ExecutionRoadmapOutput,
   Conversation,
-  User
+  FounderProfile
 } from '@creator/types';
 
 // MongoDB Connection
@@ -43,6 +44,7 @@ const UserSchema = new Schema<UserDocument & Document>(
 // 1. Project Model
 const ProjectSchema = new Schema<Project & Document>(
   {
+    id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     name: { type: String, required: true },
     description: { type: String, required: true },
@@ -56,117 +58,108 @@ const ProjectSchema = new Schema<Project & Document>(
   { timestamps: true }
 );
 
-// 2. Business Idea Model
-const BusinessIdeaSchema = new Schema<BusinessIdea & Document>(
+// We need a way to store FounderProfile
+// It can be attached to the Project, or stored as its own document.
+// Since ProjectResultsResponse returns it directly, let's create a FounderProfileModel
+const FounderProfileSchema = new Schema<FounderProfile & Document & { projectId: string }>(
   {
     projectId: { type: String, required: true, index: true },
-    title: { type: String, required: true },
-    description: { type: String, required: true },
+    skills: [{ type: String }],
+    budget: { type: Number, required: true },
+    industry: { type: String, required: true },
+    location: { type: String, required: true },
+    commitment: { type: String, enum: ['part-time', 'full-time'], required: true }
+  },
+  { timestamps: true }
+);
+
+// 2. Business Plan Output
+const BusinessPlanSchema = new Schema<BusinessPlanOutput & Document & { projectId: string }>(
+  {
+    projectId: { type: String, required: true, index: true },
+    businessIdea: { type: String, required: true },
     targetAudience: { type: String, required: true },
-    monetization: [{ type: String }],
-    skillsRequired: [{ type: String }],
-    score: { type: Number, default: 0 }
+    valueProposition: { type: String, required: true },
+    revenueModel: [{ type: String }],
+    mvpFeatures: [{ type: String }]
   },
   { timestamps: true }
 );
 
-// 3. Business Validation Model
-const CompetitorSchema = new Schema({
-  name: { type: String, required: true },
-  marketShare: { type: String, required: true },
-  strengths: [{ type: String }],
-  weaknesses: [{ type: String }]
-});
-
-const BusinessValidationSchema = new Schema<BusinessValidation & Document>(
+const MarketResearchSchema = new Schema<MarketResearchOutput & Document & { projectId: string }>(
   {
     projectId: { type: String, required: true, index: true },
-    feasibilityScore: { type: Number, required: true },
-    marketDemandScore: { type: Number, required: true },
-    riskScore: { type: Number, required: true },
-    competitors: [CompetitorSchema],
-    marketSize: { type: String, required: true },
-    barriersToEntry: [{ type: String }],
-    validationSummary: { type: String, required: true }
+    validationReport: { type: String },
+    competitorAnalysis: { type: String },
+    trendAnalysis: { type: String },
+    processedAt: { type: String }
   },
-  { timestamps: true }
+  { timestamps: true, collection: 'marketresearches' } // Using standard plural for Mongoose
 );
 
-// 4. Business Strategy / Model Model
-const LeanCanvasSchema = new Schema({
-  problem: [{ type: String }],
-  solution: [{ type: String }],
-  keyMetrics: [{ type: String }],
-  uniqueValueProposition: { type: String, required: true },
-  unfairAdvantage: { type: String, required: true },
-  channels: [{ type: String }],
-  customerSegments: [{ type: String }],
-  costStructure: [{ type: String }],
-  revenueStreams: [{ type: String }]
-});
-
-const BusinessModelSchema = new Schema<BusinessModel & Document>(
+// 4. Financial Forecast Output
+const FinancialForecastSchema = new Schema<FinancialForecastOutput & Document & { projectId: string }>(
   {
     projectId: { type: String, required: true, index: true },
-    leanCanvas: { type: LeanCanvasSchema, required: true },
-    pricingStrategy: { type: String, required: true },
-    mvpScope: [{ type: String }]
+    startupCost: { type: Number, required: true },
+    monthlyExpenses: { type: Number, required: true },
+    expectedRevenue: { type: Number, required: true },
+    breakEvenMonth: { type: Number, required: true },
+    profitProjection: [{ type: Number }]
   },
   { timestamps: true }
 );
 
-// 5. Brand Identity Model
-const BrandIdentitySchema = new Schema<BrandIdentity & Document>(
+// 5. Branding Output
+const ColorPaletteSchema = new Schema({
+  primary: { type: String, required: true },
+  secondary: { type: String, required: true },
+  accent: { type: String, required: true },
+  background: { type: String, required: true }
+}, { _id: false });
+
+const BrandingSchema = new Schema<BrandingOutput & Document & { projectId: string }>(
   {
     projectId: { type: String, required: true, index: true },
     brandName: { type: String, required: true },
     slogan: { type: String, required: true },
-    toneOfVoice: { type: String, required: true },
-    brandPositioning: { type: String, required: true },
+    tone: { type: String, required: true },
     logoPrompt: { type: String, required: true },
-    colorPalette: {
-      primary: { type: String, required: true },
-      secondary: { type: String, required: true },
-      background: { type: String, required: true },
-      accent: { type: String, required: true }
-    }
+    colorPalette: { type: ColorPaletteSchema, required: true }
   },
   { timestamps: true }
 );
 
-// 6. Marketing Campaign Model
-const MarketingCampaignSchema = new Schema<MarketingCampaign & Document>(
+// 6. Marketing Output
+const CampaignSchema = new Schema({
+  platform: { type: String, required: true },
+  headline: { type: String, required: true },
+  description: { type: String, required: true },
+  callToAction: { type: String, required: true }
+}, { _id: false });
+
+const MarketingSchema = new Schema<MarketingOutput & Document & { projectId: string }>(
   {
     projectId: { type: String, required: true, index: true },
-    targetChannels: [{ type: String }],
-    budgetAllocation: { type: Map, of: Number },
-    adCopies: [
-      {
-        platform: { type: String, required: true },
-        headline: { type: String, required: true },
-        body: { type: String, required: true },
-        callToAction: { type: String, required: true }
-      }
-    ],
-    contentHooks: [{ type: String }],
+    channels: [{ type: String }],
+    campaigns: [CampaignSchema],
+    contentIdeas: [{ type: String }],
     socialMediaStrategy: { type: String, required: true }
   },
   { timestamps: true }
 );
 
-// 7. Execution Roadmap Model
+// 7. Execution Roadmap Output
 const RoadmapMilestoneSchema = new Schema({
-  id: { type: String, required: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
   durationWeeks: { type: Number, required: true },
-  dependencies: [{ type: String }],
   tasks: [{ type: String }],
-  toolRecommendations: [{ type: String }],
-  estimatedCost: { type: Number, required: true }
-});
+  estimatedCost: { type: Number, required: true },
+  dependencies: [{ type: String }]
+}, { _id: false });
 
-const ExecutionRoadmapSchema = new Schema<ExecutionRoadmap & Document>(
+const ExecutionRoadmapSchema = new Schema<ExecutionRoadmapOutput & Document & { projectId: string }>(
   {
     projectId: { type: String, required: true, index: true },
     milestones: [RoadmapMilestoneSchema],
@@ -183,10 +176,11 @@ const ChatMessageSchema = new Schema({
   message: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
   ragSources: [{ type: String }]
-});
+}, { _id: false });
 
 const ConversationSchema = new Schema<Conversation & Document>(
   {
+    id: { type: String, required: true },
     projectId: { type: String, required: true, index: true },
     messages: [ChatMessageSchema]
   },
@@ -196,10 +190,11 @@ const ConversationSchema = new Schema<Conversation & Document>(
 // Export Mongoose Models
 export const UserModel = mongoose.models.User || mongoose.model<UserDocument & Document>('User', UserSchema);
 export const ProjectModel = mongoose.models.Project || mongoose.model<Project & Document>('Project', ProjectSchema);
-export const BusinessIdeaModel = mongoose.models.BusinessIdea || mongoose.model<BusinessIdea & Document>('BusinessIdea', BusinessIdeaSchema);
-export const BusinessValidationModel = mongoose.models.BusinessValidation || mongoose.model<BusinessValidation & Document>('BusinessValidation', BusinessValidationSchema);
-export const BusinessModelModel = mongoose.models.BusinessModel || mongoose.model<BusinessModel & Document>('BusinessModel', BusinessModelSchema);
-export const BrandIdentityModel = mongoose.models.BrandIdentity || mongoose.model<BrandIdentity & Document>('BrandIdentity', BrandIdentitySchema);
-export const MarketingCampaignModel = mongoose.models.MarketingCampaign || mongoose.model<MarketingCampaign & Document>('MarketingCampaign', MarketingCampaignSchema);
-export const ExecutionRoadmapModel = mongoose.models.ExecutionRoadmap || mongoose.model<ExecutionRoadmap & Document>('ExecutionRoadmap', ExecutionRoadmapSchema);
+export const FounderProfileModel = mongoose.models.FounderProfile || mongoose.model<FounderProfile & Document & { projectId: string }>('FounderProfile', FounderProfileSchema);
+export const BusinessPlanModel = mongoose.models.BusinessPlan || mongoose.model<BusinessPlanOutput & Document & { projectId: string }>('BusinessPlan', BusinessPlanSchema);
+export const MarketResearchModel = mongoose.models.MarketResearch || mongoose.model<MarketResearchOutput & Document & { projectId: string }>('MarketResearch', MarketResearchSchema);
+export const FinancialForecastModel = mongoose.models.FinancialForecast || mongoose.model<FinancialForecastOutput & Document & { projectId: string }>('FinancialForecast', FinancialForecastSchema);
+export const BrandingModel = mongoose.models.Branding || mongoose.model<BrandingOutput & Document & { projectId: string }>('Branding', BrandingSchema);
+export const MarketingModel = mongoose.models.Marketing || mongoose.model<MarketingOutput & Document & { projectId: string }>('Marketing', MarketingSchema);
+export const ExecutionRoadmapModel = mongoose.models.ExecutionRoadmap || mongoose.model<ExecutionRoadmapOutput & Document & { projectId: string }>('ExecutionRoadmap', ExecutionRoadmapSchema);
 export const ConversationModel = mongoose.models.Conversation || mongoose.model<Conversation & Document>('Conversation', ConversationSchema);

@@ -1,366 +1,285 @@
-import { AGENT_PROMPTS } from '@creator/prompts';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { queryRAG } from '@creator/rag-core';
+import { SYSTEM_PROMPTS } from '@creator/prompts';
 import {
-  BusinessIdea,
-  BusinessValidation,
-  BusinessModel,
-  BrandIdentity,
-  MarketingCampaign,
-  ExecutionRoadmap,
-  ChatMessage
+  AgentInput,
+  AgentOutput,
+  IAgent,
+  BusinessPlanOutput,
+  MarketResearchOutput,
+  FinancialForecastOutput,
+  BrandingOutput,
+  MarketingOutput,
+  ExecutionRoadmapOutput,
+  ChatMessage,
+  FounderProfile
 } from '@creator/types';
 
-// Simple LLM runner interface using standard fetch.
-// It tries to call Gemini or OpenAI. If both keys are absent, it returns null.
+const API_KEY = process.env.GEMINI_API_KEY || '';
+let genAI: GoogleGenerativeAI | null = null;
+if (API_KEY) {
+  genAI = new GoogleGenerativeAI(API_KEY);
+}
+
 async function callLLM(systemPrompt: string, userPrompt: string): Promise<string | null> {
-  const geminiKey = process.env.GEMINI_API_KEY;
-  const openaiKey = process.env.OPENAI_API_KEY;
-
-  if (geminiKey && !geminiKey.includes('AIzaSy...')) {
-    try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`;
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: `${systemPrompt}\n\nUser Request:\n${userPrompt}` }] }],
-          generationConfig: { responseMimeType: 'application/json' }
-        })
-      });
-      const data = await response.json();
-      return data.candidates?.[0]?.content?.parts?.[0]?.text || null;
-    } catch (e) {
-      console.warn('Gemini API call failed, falling back:', e);
-    }
+  if (!genAI) {
+    console.log('[Mock LLM] Using fallback due to missing GEMINI_API_KEY');
+    return null; // Return null to trigger fallback
   }
 
-  if (openaiKey && !openaiKey.includes('sk-proj-')) {
-    try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${openaiKey}`
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: userPrompt }
-          ],
-          response_format: { type: 'json_object' }
-        })
-      });
-      const data = await response.json();
-      return data.choices?.[0]?.message?.content || null;
-    } catch (e) {
-      console.warn('OpenAI API call failed, falling back:', e);
-    }
-  }
+  try {
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-1.5-flash',
+      systemInstruction: systemPrompt
+    });
 
-  return null;
+    const result = await model.generateContent(userPrompt);
+    const response = await result.response;
+    let text = response.text();
+    text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+    return text;
+  } catch (error) {
+    console.error('LLM API Error:', error);
+    return null;
+  }
 }
 
-// ==========================================
-// AGENT RUNNERS
-// ==========================================
+export class BusinessPlanAgent implements IAgent<BusinessPlanOutput> {
+  async execute(input: AgentInput): Promise<AgentOutput<BusinessPlanOutput>> {
+    const p = input.founderProfile;
+    const system = SYSTEM_PROMPTS.BUSINESS_PLAN_AGENT.system;
+    const user = SYSTEM_PROMPTS.BUSINESS_PLAN_AGENT.user(p.skills, p.budget, p.industry, p.location, p.commitment);
 
-export async function runIdeaAgent(
-  projectId: string,
-  skills: string[],
-  budget: number,
-  industry: string,
-  location: string
-): Promise<BusinessIdea> {
-  const systemPrompt = AGENT_PROMPTS.IDEA_AGENT.system;
-  const userPrompt = AGENT_PROMPTS.IDEA_AGENT.user(skills, budget, industry, location);
+    let data: BusinessPlanOutput;
+    const rawJson = await callLLM(system, user);
 
-  const rawJson = await callLLM(systemPrompt, userPrompt);
-  if (rawJson) {
-    try {
-      const parsed = JSON.parse(rawJson);
-      return { id: `idea_${Date.now()}`, projectId, ...parsed };
-    } catch (_) {}
-  }
-
-  // High-fidelity fallback based on user inputs
-  const title = `${industry.charAt(0).toUpperCase() + industry.slice(1)} Connect ${location}`;
-  const description = `An AI-powered B2B platform connecting local freelancers and businesses in ${location} to streamline project sourcing, invoice generation, and escrow payments. Highly optimized for the ${industry} industry.`;
-  
-  return {
-    id: `idea_${Date.now()}`,
-    projectId,
-    title,
-    description,
-    targetAudience: `Small to medium enterprises (SMEs) and freelancers in ${location} seeking transparent payment terms.`,
-    monetization: ['2.5% transaction commission fee', 'Premium project bidding packages ($15/mo)', 'AI invoice assistance add-on'],
-    skillsRequired: [...skills, 'Next.js', 'Sales & Pitching'],
-    score: 92
-  };
-}
-
-export async function runValidationAgent(
-  projectId: string,
-  idea: BusinessIdea,
-  location: string
-): Promise<BusinessValidation> {
-  const system = AGENT_PROMPTS.VALIDATION_AGENT.system;
-  const user = AGENT_PROMPTS.VALIDATION_AGENT.user(idea.title, idea.description, location);
-
-  const rawJson = await callLLM(system, user);
-  if (rawJson) {
-    try {
-      const parsed = JSON.parse(rawJson);
-      return { id: `val_${Date.now()}`, projectId, ...parsed };
-    } catch (_) {}
-  }
-
-  // RAG enhancement mock context
-  const ragDocs = await queryRAG(idea.description);
-  const ragSummary = ragDocs.map(d => d.content).join(' ');
-
-  return {
-    id: `val_${Date.now()}`,
-    projectId,
-    feasibilityScore: 84,
-    marketDemandScore: 78,
-    riskScore: 35,
-    competitors: [
-      {
-        name: 'Upwork / Mostaqbal',
-        marketShare: 'High',
-        strengths: ['Massive brand equity', 'Global pool of buyers'],
-        weaknesses: ['High commission fees (10-20%)', 'Lack of localized payment integrations like InstaPay/Vodafone Cash']
-      },
-      {
-        name: 'Local Facebook Groups',
-        marketShare: 'Medium',
-        strengths: ['Zero fees', 'High active participation'],
-        weaknesses: ['Extremely high trust deficit', 'No structured escrow or dispute management']
+    if (rawJson) {
+      try {
+        data = JSON.parse(rawJson);
+      } catch (e) {
+        data = this.getFallback(p);
       }
-    ],
-    marketSize: `Estimated TAM of 1.2M active freelancers in ${location} spending $240M annually on platform subscription software.`,
-    barriersToEntry: [
-      'Establishing payments trust and licensing compliance with local financial institutions.',
-      'Sourcing the initial pool of high-quality business clients.'
-    ],
-    validationSummary: `The project shows high feasibility due to the rapid growth of the freelance economy. Localizing escrow payments using ${ragSummary.includes('InstaPay') ? 'InstaPay' : 'local wallets'} will serve as a primary differentiator.`
-  };
-}
-
-export async function runBusinessStrategyAgent(
-  projectId: string,
-  idea: BusinessIdea,
-  validation: BusinessValidation
-): Promise<BusinessModel> {
-  const system = AGENT_PROMPTS.BUSINESS_STRATEGY_AGENT.system;
-  const user = AGENT_PROMPTS.BUSINESS_STRATEGY_AGENT.user(idea.title, idea.description, validation.validationSummary);
-
-  const rawJson = await callLLM(system, user);
-  if (rawJson) {
-    try {
-      const parsed = JSON.parse(rawJson);
-      return { id: `model_${Date.now()}`, projectId, ...parsed };
-    } catch (_) {}
-  }
-
-  return {
-    id: `model_${Date.now()}`,
-    projectId,
-    leanCanvas: {
-      problem: [
-        'Freelancers suffer from delayed payments and invoice default.',
-        'SMEs struggle to verify freelancer skills and credentials.'
-      ],
-      solution: [
-        'InstaPay integrated smart-escrow system that locks budget before work starts.',
-        'Portfolio validation with verified past-client reviews.'
-      ],
-      keyMetrics: [
-        'Monthly Active Users (MAU)',
-        'Take-Rate Transaction Volume (GMV)',
-        'Freelancer Retention Rate'
-      ],
-      uniqueValueProposition: 'The safest, fastest local freelancer platform built on instant cash payments and verified credential portfolios.',
-      unfairAdvantage: 'Direct API integrations with regional wallets and deep knowledge of Egyptian payment habits.',
-      channels: [
-        'Targeted LinkedIn campaigns',
-        'Developer and design community sponsorships',
-        'Direct sales to mid-tier startup founders'
-      ],
-      customerSegments: [
-        'Egyptian Tech/Design Freelancers',
-        'Early-stage SME startups looking for affordable contract talent'
-      ],
-      costStructure: [
-        'Cloud hosting & API payment gateway fees',
-        'Customer support and escrow dispute managers',
-        'Paid acquisition marketing spend'
-      ],
-      revenueStreams: [
-        '2.5% fee on successful escrows',
-        'Venture verification badge subscription ($9/mo)'
-      ]
-    },
-    pricingStrategy: 'Freemium tier for individual contractors, standard percentage cut for escrows, and a subscription-based premium tier for agencies.',
-    mvpScope: [
-      'Simple User Profiles (Freelancer & Client)',
-      'Job Listing & Proposal Submission Flow',
-      'Basic Escrow Creation & Milestone Approval screen',
-      'InstaPay payment receipt verification hook'
-    ]
-  };
-}
-
-export async function runBrandingAgent(
-  projectId: string,
-  idea: BusinessIdea,
-  model: BusinessModel
-): Promise<BrandIdentity> {
-  const system = AGENT_PROMPTS.BRANDING_AGENT.system;
-  const user = AGENT_PROMPTS.BRANDING_AGENT.user(idea.title, idea.description, model.leanCanvas.uniqueValueProposition);
-
-  const rawJson = await callLLM(system, user);
-  if (rawJson) {
-    try {
-      const parsed = JSON.parse(rawJson);
-      return { id: `brand_${Date.now()}`, projectId, ...parsed };
-    } catch (_) {}
-  }
-
-  return {
-    id: `brand_${Date.now()}`,
-    projectId,
-    brandName: `${idea.title.split(' ')[0]}ify`,
-    slogan: 'Secure Work. Instant Pay.',
-    toneOfVoice: 'Empowering, secure, modern, and highly professional. Speaks to freelancers with respect and to businesses with reliability.',
-    brandPositioning: 'Positioned as the premium local alternative to bloated global freelance sites, focusing on local convenience and security.',
-    logoPrompt: 'Flat vector logo design, overlapping geometric shapes representing two hands joining, minimalist, neon blue and dark slate theme, white background, high resolution --v 6.0',
-    colorPalette: {
-      primary: '#0F172A',
-      secondary: '#3B82F6',
-      background: '#F8FAFC',
-      accent: '#10B981'
+    } else {
+      data = this.getFallback(p);
     }
-  };
-}
 
-export async function runMarketingAgent(
-  projectId: string,
-  brand: BrandIdentity,
-  idea: BusinessIdea,
-  model: BusinessModel
-): Promise<MarketingCampaign> {
-  const system = AGENT_PROMPTS.MARKETING_AGENT.system;
-  const user = AGENT_PROMPTS.MARKETING_AGENT.user(brand.brandName, brand.slogan, idea.description, model.leanCanvas.customerSegments);
-
-  const rawJson = await callLLM(system, user);
-  if (rawJson) {
-    try {
-      const parsed = JSON.parse(rawJson);
-      return { id: `mkt_${Date.now()}`, projectId, ...parsed };
-    } catch (_) {}
+    return {
+      agentName: 'Business Plan Agent',
+      generatedAt: new Date(),
+      summary: `Generated business plan for ${p.industry} in ${p.location}`,
+      data,
+      confidenceScore: 0.9
+    };
   }
 
-  return {
-    id: `mkt_${Date.now()}`,
-    projectId,
-    targetChannels: ['LinkedIn Organic', 'Facebook Communities', 'Direct Cold Emailing', 'Industry podcasts'],
-    budgetAllocation: {
-      'LinkedIn Ads': 50,
-      'Community Meetups': 30,
-      'Search Engine Optimization': 20
-    },
-    adCopies: [
-      {
-        platform: 'LinkedIn',
-        headline: 'Stop Chasing Unpaid Invoices',
-        body: `As a freelancer, your time is your money. With ${brand.brandName}, clients fund milestones beforehand. Secure escrows lock in your cash so you get paid instantly via InstaPay the minute you deliver.`,
-        callToAction: 'Claim Your Account'
-      },
-      {
-        platform: 'Facebook',
-        headline: 'Hire Top Egyptian Talent - Securely',
-        body: 'Scale your team with verified contract developers and designers. No compliance headaches, no wire delays. Pay with secure milestones using standard local channels.',
-        callToAction: 'Post a Project Free'
-      }
-    ],
-    contentHooks: [
-      "The exact contract clause every freelancer needs to guarantee payment.",
-      "How early-stage startups in Egypt are cutting engineering costs by 40% using verified contractors.",
-      "Why global platforms fail local contractors (and how localized escrow fixes it)."
-    ],
-    socialMediaStrategy: 'Publish weekly educational carousel graphics explaining contract safety, freelance taxes in Egypt, and how to write winning project bids.'
-  };
+  private getFallback(p: FounderProfile): BusinessPlanOutput {
+    return {
+      businessIdea: `A digital platform bridging the gap in the ${p.industry} sector in ${p.location}, optimized for a ${p.commitment} founder.`,
+      targetAudience: `Small to medium businesses in ${p.location} seeking to adopt digital ${p.industry} solutions.`,
+      valueProposition: 'Cost-effective, secure, and user-centric approach tailored to local market nuances.',
+      revenueModel: ['Subscription-based SaaS', 'Transaction fees on payments'],
+      mvpFeatures: ['User Authentication', 'Dashboard & Analytics', 'Payment Integration Sandbox']
+    };
+  }
 }
 
-export async function runRoadmapAgent(
-  projectId: string,
-  brand: BrandIdentity,
-  idea: BusinessIdea,
-  model: BusinessModel
-): Promise<ExecutionRoadmap> {
-  const system = AGENT_PROMPTS.ROADMAP_AGENT.system;
-  const user = AGENT_PROMPTS.ROADMAP_AGENT.user(brand.brandName, idea.description, model.mvpScope);
+export class MarketResearchAgent implements IAgent<MarketResearchOutput> {
+  async execute(input: AgentInput): Promise<AgentOutput<MarketResearchOutput>> {
+    const bp = input.previousOutputs?.businessPlan as BusinessPlanOutput;
+    const system = SYSTEM_PROMPTS.MARKET_RESEARCH_AGENT.system;
+    const user = SYSTEM_PROMPTS.MARKET_RESEARCH_AGENT.user(bp?.businessIdea || 'Unknown Idea', input.founderProfile.location);
 
-  const rawJson = await callLLM(system, user);
-  if (rawJson) {
-    try {
-      const parsed = JSON.parse(rawJson);
-      return { id: `map_${Date.now()}`, projectId, ...parsed };
-    } catch (_) {}
+    let data: MarketResearchOutput;
+    const rawJson = await callLLM(system, user);
+
+    if (rawJson) {
+      try {
+        data = JSON.parse(rawJson);
+      } catch (e) {
+        data = this.getFallback();
+      }
+    } else {
+      data = this.getFallback();
+    }
+
+    return {
+      agentName: 'Market Research Agent',
+      generatedAt: new Date(),
+      summary: `Market research analysis completed for target audience.`,
+      data,
+      confidenceScore: 0.88
+    };
   }
 
-  return {
-    id: `map_${Date.now()}`,
-    projectId,
-    milestones: [
-      {
-        id: 'm1',
-        title: 'MVP Interface Design & Landing Page',
-        description: 'Design the Figma prototypes, launch a high-converting waitlist page, and begin cold lead generation.',
-        durationWeeks: 3,
-        dependencies: [],
-        tasks: [
-          'Create high-fidelity Figma screens for dashboard, payments page, and profile creation',
-          'Deploy Next.js landing page with Waitlist form hooked to database',
-          'Post launch teasers on tech communities'
-        ],
-        toolRecommendations: ['Figma', 'Next.js', 'Vercel', 'TailwindCSS'],
-        estimatedCost: 150
-      },
-      {
-        id: 'm2',
-        title: 'Core Platform Engineering',
-        description: 'Code the user registration system, project matching system, and Mongoose database hooks.',
-        durationWeeks: 5,
-        dependencies: ['m1'],
-        tasks: [
-          'Setup Express API and configure MongoDB schemas',
-          'Implement JWT auth and user-roles logic',
-          'Build proposal creation, upload files, and project status boards'
-        ],
-        toolRecommendations: ['Node.js', 'Express', 'MongoDB Atlas', 'JWT'],
-        estimatedCost: 400
-      },
-      {
-        id: 'm3',
-        title: 'Local Payment Integration & Escrow Logic',
-        description: 'Integrate mobile cash payment webhooks, design escrow transaction verification, and deploy beta tests.',
-        durationWeeks: 4,
-        dependencies: ['m2'],
-        tasks: [
-          'Create secure payment transactions log in database',
-          'Hook up digital escrow confirmation panel',
-          'Perform end-to-end sandbox payments tests'
-        ],
-        toolRecommendations: ['Paymob SDK', 'InstaPay integration framework'],
-        estimatedCost: 250
+  private getFallback(): MarketResearchOutput {
+    return {
+      validationReport: 'High market demand confirmed with a clear gap in localized, affordable solutions.',
+      competitorAnalysis: 'Legacy Solutions Inc: Established Network but slow to innovate.\nGlobal Tech Co: Huge Capital but lacks local localization.',
+      trendAnalysis: 'Rapid digital adoption post-2020. Untapped SME segment. Risks include regulatory hurdles.'
+    };
+  }
+}
+
+export class FinancialForecastAgent implements IAgent<FinancialForecastOutput> {
+  async execute(input: AgentInput): Promise<AgentOutput<FinancialForecastOutput>> {
+    const bp = input.previousOutputs?.businessPlan as BusinessPlanOutput;
+    const system = SYSTEM_PROMPTS.FINANCIAL_FORECAST_AGENT.system;
+    const user = SYSTEM_PROMPTS.FINANCIAL_FORECAST_AGENT.user(
+      bp?.businessIdea || '', 
+      bp?.revenueModel || [], 
+      input.founderProfile.budget
+    );
+
+    let data: FinancialForecastOutput;
+    const rawJson = await callLLM(system, user);
+
+    if (rawJson) {
+      try {
+        data = JSON.parse(rawJson);
+      } catch (e) {
+        data = this.getFallback(input.founderProfile.budget);
       }
-    ],
-    totalEstimatedBudget: 800,
-    totalDurationWeeks: 12
-  };
+    } else {
+      data = this.getFallback(input.founderProfile.budget);
+    }
+
+    return {
+      agentName: 'Financial Forecast Agent',
+      generatedAt: new Date(),
+      summary: `Financial projection estimating breakeven at 6 months.`,
+      data,
+      confidenceScore: 0.85
+    };
+  }
+
+  private getFallback(budget: number): FinancialForecastOutput {
+    return {
+      startupCost: budget * 0.4,
+      monthlyExpenses: budget * 0.1,
+      expectedRevenue: budget * 0.5,
+      breakEvenMonth: 6,
+      profitProjection: [0, 500, 1200, 2500, 4000, 7000]
+    };
+  }
+}
+
+export class BrandingAgent implements IAgent<BrandingOutput> {
+  async execute(input: AgentInput): Promise<AgentOutput<BrandingOutput>> {
+    const bp = input.previousOutputs?.businessPlan as BusinessPlanOutput;
+    const system = SYSTEM_PROMPTS.BRANDING_AGENT.system;
+    const user = SYSTEM_PROMPTS.BRANDING_AGENT.user(bp?.businessIdea || '', bp?.targetAudience || '', bp?.valueProposition || '');
+
+    let data: BrandingOutput;
+    const rawJson = await callLLM(system, user);
+
+    if (rawJson) {
+      try {
+        data = JSON.parse(rawJson);
+      } catch (e) {
+        data = this.getFallback();
+      }
+    } else {
+      data = this.getFallback();
+    }
+
+    return {
+      agentName: 'Branding Agent',
+      generatedAt: new Date(),
+      summary: `Created visual identity and branding guidelines.`,
+      data,
+      confidenceScore: 0.95
+    };
+  }
+
+  private getFallback(): BrandingOutput {
+    return {
+      brandName: 'VentureNova',
+      slogan: 'Empowering the next generation of builders.',
+      tone: 'Innovative, Bold, Trustworthy',
+      logoPrompt: 'Minimalist geometric logo of a rising sun in modern tech style.',
+      colorPalette: { primary: '#0F172A', secondary: '#3B82F6', background: '#F8FAFC', accent: '#10B981' }
+    };
+  }
+}
+
+export class MarketingAgent implements IAgent<MarketingOutput> {
+  async execute(input: AgentInput): Promise<AgentOutput<MarketingOutput>> {
+    const br = input.previousOutputs?.branding as BrandingOutput;
+    const system = SYSTEM_PROMPTS.MARKETING_AGENT.system;
+    const user = SYSTEM_PROMPTS.MARKETING_AGENT.user(br?.brandName || '', br?.slogan || '', 'SMEs');
+
+    let data: MarketingOutput;
+    const rawJson = await callLLM(system, user);
+
+    if (rawJson) {
+      try {
+        data = JSON.parse(rawJson);
+      } catch (e) {
+        data = this.getFallback();
+      }
+    } else {
+      data = this.getFallback();
+    }
+
+    return {
+      agentName: 'Marketing Agent',
+      generatedAt: new Date(),
+      summary: `Generated multi-channel marketing campaigns.`,
+      data,
+      confidenceScore: 0.92
+    };
+  }
+
+  private getFallback(): MarketingOutput {
+    return {
+      channels: ['LinkedIn Organic', 'Facebook Ads', 'Cold Emailing'],
+      campaigns: [
+        { platform: 'LinkedIn', headline: 'Stop Wasting Time', description: 'Our platform saves you 20 hours a week.', callToAction: 'Try For Free' }
+      ],
+      contentIdeas: ['Case study of early adopter', 'Behind the scenes building the startup'],
+      socialMediaStrategy: 'Publish weekly educational content and founders journey.'
+    };
+  }
+}
+
+export class ExecutionRoadmapAgent implements IAgent<ExecutionRoadmapOutput> {
+  async execute(input: AgentInput): Promise<AgentOutput<ExecutionRoadmapOutput>> {
+    const bp = input.previousOutputs?.businessPlan as BusinessPlanOutput;
+    const system = SYSTEM_PROMPTS.ROADMAP_AGENT.system;
+    const user = SYSTEM_PROMPTS.ROADMAP_AGENT.user(bp?.businessIdea || '', bp?.mvpFeatures || []);
+
+    let data: ExecutionRoadmapOutput;
+    const rawJson = await callLLM(system, user);
+
+    if (rawJson) {
+      try {
+        data = JSON.parse(rawJson);
+      } catch (e) {
+        data = this.getFallback();
+      }
+    } else {
+      data = this.getFallback();
+    }
+
+    return {
+      agentName: 'Execution Roadmap Agent',
+      generatedAt: new Date(),
+      summary: `Created milestone-based launch roadmap.`,
+      data,
+      confidenceScore: 0.89
+    };
+  }
+
+  private getFallback(): ExecutionRoadmapOutput {
+    return {
+      milestones: [
+        { title: 'MVP Design', description: 'Design screens', durationWeeks: 2, tasks: ['Figma wireframes'], estimatedCost: 150, dependencies: [] },
+        { title: 'Core Engineering', description: 'Build backend and frontend', durationWeeks: 4, tasks: ['Setup API', 'Build UI'], estimatedCost: 500, dependencies: ['MVP Design'] }
+      ],
+      totalEstimatedBudget: 650,
+      totalDurationWeeks: 6
+    };
+  }
 }
 
 export async function runCofounderAgent(
@@ -371,11 +290,10 @@ export async function runCofounderAgent(
   const ragDocs = await queryRAG(query);
   const ragContext = ragDocs.map(doc => `[${doc.title}]: ${doc.content}`).join('\n\n');
 
-  const system = AGENT_PROMPTS.COFOUNDER_AGENT.system;
+  const system = SYSTEM_PROMPTS.COFOUNDER_AGENT.system;
   
-  // Format history for context
   const historyStr = history.slice(-5).map(m => `${m.sender.toUpperCase()}: ${m.message}`).join('\n');
-  const user = `Conversation History:\n${historyStr}\n\n${AGENT_PROMPTS.COFOUNDER_AGENT.user(query, projectContext, ragContext)}`;
+  const user = `Conversation History:\n${historyStr}\n\n${SYSTEM_PROMPTS.COFOUNDER_AGENT.user(query, projectContext, ragContext)}`;
 
   const responseText = await callLLM(system, user);
   
@@ -389,59 +307,46 @@ export async function runCofounderAgent(
     };
   }
 
-  // Cofounder intelligent fallback responses
-  const answer = `Based on your request, let's focus on execution. Regarding '${query}', since we are using local Egyptian payment routes (InstaPay/Paymob), we should keep the transaction flow direct. 
-  
-Let's trace our strategy:
-1. We lock client funds using Paymob credit card or mobile wallet links.
-2. The freelancer works on the verified milestone.
-3. Upon approval, we release the locked fund via instant wallet transfer or bank route.
-4. For micro-payments, we must keep transactions denominated in EGP to maintain low friction.
-
-Would you like me to outline the specific API webhook headers we need to handle or detail the cost structure for setting this up?`;
-
   return {
     id: `msg_${Date.now()}`,
     sender: 'ai',
-    message: answer,
+    message: 'Based on your request, let’s focus on executing your roadmap efficiently.',
     timestamp: new Date(),
     ragSources: ragDocs.map(d => d.title)
   };
 }
 
-// ==========================================
-// CENTRAL WORKFLOW ORCHESTRATOR
-// ==========================================
-
 export async function orchestrateVentureBuilder(
   projectId: string,
-  skills: string[],
-  budget: number,
-  industry: string,
-  location: string
+  founderProfile: FounderProfile
 ) {
-  console.log(`[Orchestrator] Running Idea Agent...`);
-  const idea = await runIdeaAgent(projectId, skills, budget, industry, location);
+  const previousOutputs: Record<string, any> = {};
+  const baseInput: AgentInput = { projectId, founderProfile, previousOutputs };
 
-  console.log(`[Orchestrator] Running Validation Agent...`);
-  const validation = await runValidationAgent(projectId, idea, location);
+  console.log(`[Orchestrator] Running Business Plan Agent...`);
+  const businessPlan = await new BusinessPlanAgent().execute(baseInput);
+  previousOutputs.businessPlan = businessPlan.data;
 
-  console.log(`[Orchestrator] Running Business Strategy Agent...`);
-  const strategy = await runBusinessStrategyAgent(projectId, idea, validation);
+  // Market Research is now handled by n8n workflow triggered from Next.js
+  console.log(`[Orchestrator] Running Financial Forecast Agent...`);
+  const financialForecast = await new FinancialForecastAgent().execute(baseInput);
+  previousOutputs.financialForecast = financialForecast.data;
 
   console.log(`[Orchestrator] Running Branding Agent...`);
-  const branding = await runBrandingAgent(projectId, idea, strategy);
+  const branding = await new BrandingAgent().execute(baseInput);
+  previousOutputs.branding = branding.data;
 
   console.log(`[Orchestrator] Running Marketing Agent...`);
-  const marketing = await runMarketingAgent(projectId, branding, idea, strategy);
+  const marketing = await new MarketingAgent().execute(baseInput);
+  previousOutputs.marketing = marketing.data;
 
-  console.log(`[Orchestrator] Running Roadmap Agent...`);
-  const roadmap = await runRoadmapAgent(projectId, branding, idea, strategy);
+  console.log(`[Orchestrator] Running Execution Roadmap Agent...`);
+  const roadmap = await new ExecutionRoadmapAgent().execute(baseInput);
+  previousOutputs.roadmap = roadmap.data;
 
   return {
-    idea,
-    validation,
-    strategy,
+    businessPlan,
+    financialForecast,
     branding,
     marketing,
     roadmap

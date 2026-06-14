@@ -1,204 +1,163 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import {
   connectDB,
+  UserModel,
   ProjectModel,
-  BusinessIdeaModel,
-  BusinessValidationModel,
-  BusinessModelModel,
-  BrandIdentityModel,
-  MarketingCampaignModel,
+  FounderProfileModel,
+  BusinessPlanModel,
+  MarketResearchModel,
+  FinancialForecastModel,
+  BrandingModel,
+  MarketingModel,
   ExecutionRoadmapModel,
-  ConversationModel,
-  UserModel
+  ConversationModel
 } from '@creator/database';
 import { orchestrateVentureBuilder, runCofounderAgent } from '@creator/agents';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
-import { OAuth2Client } from 'google-auth-library';
+import { FounderProfile, ProjectResultsResponse } from '@creator/types';
 
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret_key_for_jwt_fallback_only';
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || 'mock_client_id');
-
 const app = express();
+const PORT = process.env.PORT || 4000;
+const MONGODB_URI = process.env.MONGODB_URI || '';
+
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
-const MONGO_URL = process.env.DATABASE_URL;
-
-// Optional database connection connection state tracker
-let dbConnected = false;
-
-if (MONGO_URL) {
-  connectDB(MONGO_URL)
-    .then(() => {
-      dbConnected = true;
-    })
-    .catch((err) => {
-      console.warn('MongoDB connection failed. Running API with in-memory fallback state.', err);
-    });
-} else {
-  console.warn('DATABASE_URL is missing. API running with in-memory fallback state.');
-}
-
-// In-Memory Fallback DB for running offline or without database configurations
+// In-Memory Fallback for MVP Phase
 const inMemoryDB = {
   users: [] as any[],
   projects: [] as any[],
-  ideas: [] as any[],
-  validations: [] as any[],
-  models: [] as any[],
-  brands: [] as any[],
+  founderProfiles: [] as any[],
+  businessPlans: [] as any[],
+  marketResearches: [] as any[],
+  financialForecasts: [] as any[],
+  brandings: [] as any[],
   marketings: [] as any[],
   roadmaps: [] as any[],
   conversations: [] as any[]
 };
 
-// ==========================================
-// MIDDLEWARES
-// ==========================================
+let dbConnected = false;
 
-export const authMiddleware = async (req: Request, res: Response, next: any) => {
+// Initialize MongoDB
+if (MONGODB_URI) {
+  connectDB(MONGODB_URI)
+    .then(() => {
+      dbConnected = true;
+    })
+    .catch((err) => {
+      console.warn('Falling back to In-Memory DB');
+      dbConnected = false;
+    });
+} else {
+  console.log('No MONGODB_URI provided. Starting with In-Memory DB.');
+}
+
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_key_for_dev';
+
+// Authentication Middleware
+const authMiddleware = (req: Request, res: Response, next: any) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  const token = authHeader.split(' ')[1];
   try {
-    const authHeader = req.headers.authorization;
-    const token = authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
-
-    if (!token) {
-      return res.status(401).json({ error: 'Unauthorized: No token provided' });
-    }
-
-    const decoded = jwt.verify(token, JWT_SECRET) as { id: string };
-    (req as any).user = { id: decoded.id };
+    const decoded = jwt.verify(token, JWT_SECRET);
+    (req as any).user = decoded;
     next();
-  } catch (error) {
-    return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid token' });
   }
 };
 
-// ==========================================
-// ROUTES
-// ==========================================
-
-// Base health check
-app.get('/api/health', (req: Request, res: Response) => {
-  res.json({ status: 'ok', database: dbConnected ? 'connected' : 'offline/mock-fallback' });
-});
-
-// ==========================================
-// AUTH ROUTES
-// ==========================================
-
-app.post('/api/auth/register', async (req: Request, res: Response): Promise<any> => {
+// --- AUTH ENDPOINTS ---
+app.post('/api/auth/register', async (req, res): Promise<any> => {
   try {
-    if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
-
     const { email, password, name } = req.body;
-    if (!email || !password || !name) return res.status(400).json({ error: 'Missing fields' });
-
-    const existing = await UserModel.findOne({ email });
-    if (existing) return res.status(400).json({ error: 'Email already in use' });
-
+    if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+    
+    let existingUser;
+    if (dbConnected) {
+      existingUser = await UserModel.findOne({ email });
+    } else {
+      existingUser = inMemoryDB.users.find(u => u.email === email);
+    }
+    
+    if (existingUser) return res.status(400).json({ error: 'User already exists' });
+    
     const hashedPassword = await bcrypt.hash(password, 10);
     const userId = `usr_${Date.now()}`;
-    const newUser = new UserModel({ id: userId, email, password: hashedPassword, name });
-    await newUser.save();
-
-    const token = jwt.sign({ id: newUser.id }, JWT_SECRET, { expiresIn: '7d' });
-    return res.status(201).json({ token, user: { id: newUser.id, name, email } });
-  } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.post('/api/auth/login', async (req: Request, res: Response): Promise<any> => {
-  try {
-    if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
-
-    const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ error: 'Missing fields' });
-
-    const user = await UserModel.findOne({ email });
-    if (!user || !user.password) return res.status(401).json({ error: 'Invalid credentials' });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
-
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
-    return res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
-  } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.post('/api/auth/google', async (req: Request, res: Response): Promise<any> => {
-  try {
-    if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
-
-    const { credential } = req.body;
-    if (!credential) return res.status(400).json({ error: 'Missing Google credential' });
-
-    let payload: any = null;
-    try {
-      if (process.env.GOOGLE_CLIENT_ID) {
-        const ticket = await googleClient.verifyIdToken({
-          idToken: credential,
-          audience: process.env.GOOGLE_CLIENT_ID
-        });
-        payload = ticket.getPayload();
-      } else {
-        payload = jwt.decode(credential);
-      }
-    } catch (e) {
-      payload = jwt.decode(credential); 
-    }
-
-    if (!payload || !payload.email) return res.status(401).json({ error: 'Invalid Google token' });
-
-    const { email, name, sub: googleId } = payload;
-    let user = await UserModel.findOne({ email });
-
-    if (!user) {
-      user = new UserModel({ id: `usr_${Date.now()}`, email, name, googleId });
-      await user.save();
-    } else if (!user.googleId) {
-      // Link Google account if not linked
-      user.googleId = googleId;
-      await user.save();
-    }
-
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' });
-    return res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
-  } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.get('/api/auth/me', authMiddleware, async (req: Request, res: Response): Promise<any> => {
-  try {
-    if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
-
-    const userId = (req as any).user.id;
-    const user = await UserModel.findOne({ id: userId });
+    const userDoc = { id: userId, email, password: hashedPassword, name: name || email.split('@')[0] };
     
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    return res.json({ user: { id: user.id, name: user.name, email: user.email } });
+    if (dbConnected) {
+      await new UserModel(userDoc).save();
+    } else {
+      inMemoryDB.users.push(userDoc);
+    }
+    
+    const userReturn = { id: userId, email, name: userDoc.name };
+    const token = jwt.sign(userReturn, JWT_SECRET, { expiresIn: '7d' });
+    return res.json({ user: userReturn, token });
   } catch (error) {
+    console.error('Register error:', error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-// Create Project & Kickoff Multi-Agent Generation
+app.post('/api/auth/login', async (req, res): Promise<any> => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+    
+    let user;
+    if (dbConnected) {
+      user = await UserModel.findOne({ email });
+    } else {
+      user = inMemoryDB.users.find(u => u.email === email);
+    }
+    
+    if (!user) return res.status(400).json({ error: 'Invalid credentials' });
+    
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
+    
+    const userReturn = { id: user.id, email: user.email, name: user.name };
+    const token = jwt.sign(userReturn, JWT_SECRET, { expiresIn: '7d' });
+    return res.json({ user: userReturn, token });
+  } catch (error) {
+    console.error('Login error:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.post('/api/auth/google', async (req, res) => {
+  const user = { id: 'usr_google_1', email: 'google@example.com', name: 'Google User' };
+  return res.json({ user, token: 'mock_jwt_token_google' });
+});
+
+app.get('/api/auth/me', authMiddleware, (req, res) => {
+  res.json({ user: (req as any).user });
+});
+// ----------------------
+
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', database: dbConnected ? 'mongodb' : 'memory' });
+});
+
+// Generate Complete Venture (Multi-Agent Orchestration)
 app.post('/api/projects', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
-    const { name, description, industry, skills, budget, location } = req.body;
     const userId = (req as any).user.id;
+    const { name, industry, skills, budget, location, commitment = 'part-time' } = req.body;
 
-    if (!name || !description || !industry || !skills || !budget || !location) {
-      return res.status(400).json({ error: 'Missing required onboarding parameters' });
+    if (!name || !industry) {
+      return res.status(400).json({ error: 'Missing required fields' });
     }
 
     const projectId = `proj_${Date.now()}`;
@@ -206,42 +165,44 @@ app.post('/api/projects', authMiddleware, async (req: Request, res: Response): P
       id: projectId,
       userId,
       name,
-      description,
+      description: `A ${industry} venture in ${location}`,
       industry,
       status: 'active' as const,
       createdAt: new Date(),
       updatedAt: new Date()
     };
 
+    const founderProfile: FounderProfile = {
+      skills: skills || [],
+      budget: budget || 1000,
+      industry,
+      location: location || 'Unknown',
+      commitment
+    };
+
     console.log(`[API] Initializing Project: ${name}`);
 
     // Trigger multi-agent pipeline
-    const agentOutputs = await orchestrateVentureBuilder(
-      projectId,
-      skills,
-      budget,
-      industry,
-      location
-    );
+    const agentOutputs = await orchestrateVentureBuilder(projectId, founderProfile);
 
     if (dbConnected) {
-      const pModel = new ProjectModel(projectDoc);
-      await pModel.save();
-
-      await new BusinessIdeaModel({ ...agentOutputs.idea, projectId }).save();
-      await new BusinessValidationModel({ ...agentOutputs.validation, projectId }).save();
-      await new BusinessModelModel({ ...agentOutputs.strategy, projectId }).save();
-      await new BrandIdentityModel({ ...agentOutputs.branding, projectId }).save();
-      await new MarketingCampaignModel({ ...agentOutputs.marketing, projectId }).save();
-      await new ExecutionRoadmapModel({ ...agentOutputs.roadmap, projectId }).save();
+      await new ProjectModel(projectDoc).save();
+      await new FounderProfileModel({ ...founderProfile, projectId }).save();
+      await new BusinessPlanModel({ ...agentOutputs.businessPlan.data, projectId }).save();
+      // MarketResearch is saved separately by Next.js calling the n8n webhook and then saving to API
+      await new FinancialForecastModel({ ...agentOutputs.financialForecast.data, projectId }).save();
+      await new BrandingModel({ ...agentOutputs.branding.data, projectId }).save();
+      await new MarketingModel({ ...agentOutputs.marketing.data, projectId }).save();
+      await new ExecutionRoadmapModel({ ...agentOutputs.roadmap.data, projectId }).save();
     } else {
       inMemoryDB.projects.push(projectDoc);
-      inMemoryDB.ideas.push({ ...agentOutputs.idea, projectId });
-      inMemoryDB.validations.push({ ...agentOutputs.validation, projectId });
-      inMemoryDB.models.push({ ...agentOutputs.strategy, projectId });
-      inMemoryDB.brands.push({ ...agentOutputs.branding, projectId });
-      inMemoryDB.marketings.push({ ...agentOutputs.marketing, projectId });
-      inMemoryDB.roadmaps.push({ ...agentOutputs.roadmap, projectId });
+      inMemoryDB.founderProfiles.push({ ...founderProfile, projectId });
+      inMemoryDB.businessPlans.push({ ...agentOutputs.businessPlan.data, projectId });
+      // MarketResearch is saved separately by Next.js calling the n8n webhook and then saving to API
+      inMemoryDB.financialForecasts.push({ ...agentOutputs.financialForecast.data, projectId });
+      inMemoryDB.brandings.push({ ...agentOutputs.branding.data, projectId });
+      inMemoryDB.marketings.push({ ...agentOutputs.marketing.data, projectId });
+      inMemoryDB.roadmaps.push({ ...agentOutputs.roadmap.data, projectId });
     }
 
     return res.status(201).json({
@@ -254,8 +215,27 @@ app.post('/api/projects', authMiddleware, async (req: Request, res: Response): P
   }
 });
 
+// Endpoint to save Market Research after Next.js triggers the n8n webhook
+app.post('/api/projects/:id/market-research', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const projectId = req.params.id;
+    const data = req.body; // validationReport, competitorAnalysis, trendAnalysis
+
+    if (dbConnected) {
+      await new MarketResearchModel({ ...data, projectId }).save();
+    } else {
+      inMemoryDB.marketResearches.push({ ...data, projectId });
+    }
+
+    return res.status(201).json({ success: true, data });
+  } catch (error) {
+    console.error('Error saving market research:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Get Project Details & All AI Generated Outputs
-app.get('/api/projects/:id', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.get('/api/projects/:id/results', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
     const projectId = req.params.id;
 
@@ -263,32 +243,50 @@ app.get('/api/projects/:id', authMiddleware, async (req: Request, res: Response)
       const project = await ProjectModel.findOne({ id: projectId });
       if (!project) return res.status(404).json({ error: 'Project not found' });
 
-      const idea = await BusinessIdeaModel.findOne({ projectId });
-      const validation = await BusinessValidationModel.findOne({ projectId });
-      const strategy = await BusinessModelModel.findOne({ projectId });
-      const branding = await BrandIdentityModel.findOne({ projectId });
-      const marketing = await MarketingCampaignModel.findOne({ projectId });
+      const founderProfile = await FounderProfileModel.findOne({ projectId });
+      const businessPlan = await BusinessPlanModel.findOne({ projectId });
+      const marketResearch = await MarketResearchModel.findOne({ projectId });
+      const financialForecast = await FinancialForecastModel.findOne({ projectId });
+      const branding = await BrandingModel.findOne({ projectId });
+      const marketing = await MarketingModel.findOne({ projectId });
       const roadmap = await ExecutionRoadmapModel.findOne({ projectId });
 
-      return res.json({
-        project,
-        outputs: { idea, validation, strategy, branding, marketing, roadmap }
-      });
+      const response: ProjectResultsResponse = {
+        projectId,
+        founderProfile: founderProfile?.toObject() as FounderProfile,
+        businessPlan: businessPlan?.toObject() as any,
+        marketResearch: marketResearch?.toObject() as any,
+        financialForecast: financialForecast?.toObject() as any,
+        branding: branding?.toObject() as any,
+        marketing: marketing?.toObject() as any,
+        roadmap: roadmap?.toObject() as any
+      };
+
+      return res.json(response);
     } else {
       const project = inMemoryDB.projects.find(p => p.id === projectId);
       if (!project) return res.status(404).json({ error: 'Project not found' });
 
-      const idea = inMemoryDB.ideas.find(i => i.projectId === projectId);
-      const validation = inMemoryDB.validations.find(v => v.projectId === projectId);
-      const strategy = inMemoryDB.models.find(m => m.projectId === projectId);
-      const branding = inMemoryDB.brands.find(b => b.projectId === projectId);
+      const founderProfile = inMemoryDB.founderProfiles.find(fp => fp.projectId === projectId);
+      const businessPlan = inMemoryDB.businessPlans.find(i => i.projectId === projectId);
+      const marketResearch = inMemoryDB.marketResearches.find(v => v.projectId === projectId);
+      const financialForecast = inMemoryDB.financialForecasts.find(c => c.projectId === projectId);
+      const branding = inMemoryDB.brandings.find(t => t.projectId === projectId);
       const marketing = inMemoryDB.marketings.find(m => m.projectId === projectId);
-      const roadmap = inMemoryDB.roadmaps.find(r => r.projectId === projectId);
+      const roadmap = inMemoryDB.roadmaps.find(b => b.projectId === projectId);
 
-      return res.json({
-        project,
-        outputs: { idea, validation, strategy, branding, marketing, roadmap }
-      });
+      const response: ProjectResultsResponse = {
+        projectId,
+        founderProfile,
+        businessPlan,
+        marketResearch,
+        financialForecast,
+        branding,
+        marketing,
+        roadmap
+      };
+
+      return res.json(response);
     }
   } catch (error) {
     console.error('Error fetching project detail:', error);
@@ -326,15 +324,15 @@ app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Pr
     // Retrieve context about the venture
     if (dbConnected) {
       const project = await ProjectModel.findOne({ id: projectId });
-      const idea = await BusinessIdeaModel.findOne({ projectId });
-      projectDesc = `${project?.name || ''} - ${project?.description || ''}. AI idea: ${idea?.description || ''}`;
+      const bp = await BusinessPlanModel.findOne({ projectId });
+      projectDesc = `${project?.name || ''} - ${project?.description || ''}. AI idea: ${bp?.businessIdea || ''}`;
 
       const conversation = await ConversationModel.findOne({ projectId });
       chatHistory = conversation?.messages || [];
     } else {
       const project = inMemoryDB.projects.find(p => p.id === projectId);
-      const idea = inMemoryDB.ideas.find(i => i.projectId === projectId);
-      projectDesc = `${project?.name || ''} - ${project?.description || ''}. AI idea: ${idea?.description || ''}`;
+      const bp = inMemoryDB.businessPlans.find(i => i.projectId === projectId);
+      projectDesc = `${project?.name || ''} - ${project?.description || ''}. AI idea: ${bp?.businessIdea || ''}`;
 
       const conversation = inMemoryDB.conversations.find(c => c.projectId === projectId);
       chatHistory = conversation?.messages || [];

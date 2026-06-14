@@ -11,6 +11,8 @@ import MarketingEngine from '../components/MarketingEngine';
 import RoadmapPanel from '../components/RoadmapPanel';
 import CofounderChat from '../components/CofounderChat';
 import AIStudioPanel from '../components/AIStudioPanel';
+import MarketResearchDashboard from '../components/MarketResearchDashboard';
+import CompetitorDashboard from '../components/CompetitorDashboard';
 import AuthModal from '../components/AuthModal';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -105,6 +107,7 @@ export default function AppPage() {
     { id: 'pitch', label: 'Pitch', icon: Presentation, requiresProject: true },
     { id: 'radar', label: 'Radar', icon: Radar, requiresProject: true },
     { id: 'market-research', label: 'Market Research', icon: Clock, requiresProject: true },
+    { id: 'competitors', label: 'Competitors', icon: BarChart3, requiresProject: true },
     { id: 'ai-studio', label: 'AI Studio', icon: ImagePlus, requiresProject: false },
   ] as const;
 
@@ -235,9 +238,11 @@ export default function AppPage() {
             {activeTab === 'marketing' && <MarketingEngine />}
             {activeTab === 'roadmap' && <RoadmapPanel />}
             {activeTab === 'ai-studio' && <AIStudioPanel />}
+            {activeTab === 'market-research' && <MarketResearchDashboard />}
+            {activeTab === 'competitors' && <CompetitorDashboard />}
             
             {/* Fallbacks for new tabs if components don't exist yet */}
-            {['financials', 'guides', 'ai-consultant', 'pitch', 'radar', 'market-research'].includes(activeTab) && (
+            {['financials', 'guides', 'ai-consultant', 'pitch', 'radar'].includes(activeTab) && (
               <div className="p-8 md:p-12 text-center text-slate-500">
                 <h2 className="text-2xl font-semibold mb-2 text-slate-800 capitalize">{activeTab.replace('-', ' ')}</h2>
                 <p>This module is under construction in the new UI.</p>

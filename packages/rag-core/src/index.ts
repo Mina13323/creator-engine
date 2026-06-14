@@ -42,6 +42,24 @@ const KNOWLEDGE_BASE: KnowledgeDocument[] = [
     title: 'Pre-launch Waitlist Playbook',
     category: 'marketing-templates',
     content: 'A pre-launch waitlist is built by offering early-access rewards, beta features, or referral bonuses. Use landing page builders with clear, single call-to-action hooks. Collect emails and phone numbers for WhatsApp marketing, which has over 90% open rates in Egypt.'
+  },
+  {
+    id: 'startup-report-1',
+    title: 'MENA Startup Funding Report 2025',
+    category: 'startup-reports',
+    content: 'Startups in the MENA region saw a 15% increase in seed-stage funding, particularly in AI-driven tools, FinTech, and B2B SaaS. Scalability across local regulatory borders remains the highest barrier to entry.'
+  },
+  {
+    id: 'sme-report-1',
+    title: 'SME Digital Transformation Index',
+    category: 'sme-reports',
+    content: 'Small and Medium Enterprises (SMEs) are prioritizing digital transformations, specifically in payroll automation, freelance contractor management, and localized payment gateway integration.'
+  },
+  {
+    id: 'consumer-behavior-1',
+    title: 'Post-Pandemic Consumer Behavior',
+    category: 'consumer-behavior-reports',
+    content: 'Consumers expect micro-transactions, localized support, and community-driven trust signals (e.g., verified reviews, localized influencer marketing) over large, impersonal global brands.'
   }
 ];
 

@@ -1,155 +1,134 @@
-export const AGENT_PROMPTS = {
-  IDEA_AGENT: {
-    system: `You are the Idea Agent, an expert startup consultant. Your job is to analyze user skills, budget, industry, location, and constraints to generate a personalized, feasible, and profitable business idea.
+export const SYSTEM_PROMPTS = {
+  BUSINESS_PLAN_AGENT: {
+    system: `You are the Business Plan Agent. Your goal is to generate a comprehensive business idea and plan based on the founder's profile.
     
     You must output a JSON object matching this schema:
     {
-      "title": "Business name idea or title",
-      "description": "Detailed description of the business idea",
+      "businessIdea": "Detailed description of the business idea",
       "targetAudience": "Description of the primary customer base",
-      "monetization": ["Stream 1", "Stream 2"],
-      "skillsRequired": ["Skill 1", "Skill 2"],
-      "score": 85
+      "valueProposition": "The unique value proposition",
+      "revenueModel": ["Stream 1", "Stream 2"],
+      "mvpFeatures": ["Feature 1", "Feature 2"]
     }`,
-    user: (skills: string[], budget: number, industry: string, location: string) => 
-      `Generate a business idea for an entrepreneur with the following profile:
+    user: (skills: string[], budget: number, industry: string, location: string, commitment: string) => 
+      `Generate a business plan for an entrepreneur with the following profile:
       - Skills: ${skills.join(', ')}
-      - Budget: $${budget} (or equivalent in local currency)
+      - Budget: $${budget}
       - Preferred Industry: ${industry}
-      - Target Location: ${location}`
+      - Target Location: ${location}
+      - Commitment: ${commitment}`
   },
-  
-  VALIDATION_AGENT: {
-    system: `You are the Validation Agent. Your goal is to critically analyze the feasibility, market demand, barriers to entry, risks, and competitors for a startup idea.
+
+  MARKET_RESEARCH_AGENT: {
+    system: `You are the Market Research Agent. Your goal is to analyze the market size, competitors, opportunities, and risks for the proposed business plan.
     
     You must output a JSON object matching this schema:
     {
-      "feasibilityScore": 75,
-      "marketDemandScore": 80,
-      "riskScore": 40,
+      "marketSize": "Estimated market volume/value",
       "competitors": [
         {
           "name": "Competitor A",
-          "marketShare": "High/Medium/Low",
-          "strengths": ["Strength 1"],
-          "weaknesses": ["Weakness 1"]
+          "strengths": ["Strength 1", "Strength 2"],
+          "weaknesses": ["Weakness 1", "Weakness 2"]
         }
       ],
-      "marketSize": "Estimated market volume/value",
-      "barriersToEntry": ["Barrier 1", "Barrier 2"],
+      "opportunities": ["Opportunity 1", "Opportunity 2"],
+      "risks": ["Risk 1", "Risk 2"],
       "validationSummary": "Detailed analytical assessment of feasibility and market prospects"
     }`,
-    user: (title: string, description: string, location: string) =>
-      `Validate the following business idea:
-      - Title: ${title}
-      - Description: ${description}
+    user: (idea: string, location: string) =>
+      `Validate the following business idea and provide market research:
+      - Idea: ${idea}
       - Location/Market: ${location}`
   },
 
-  BUSINESS_STRATEGY_AGENT: {
-    system: `You are the Business Strategy Agent. Your job is to design a robust business model strategy. You will construct a complete Lean Canvas, formulate a pricing strategy, and define the MVP (Minimum Viable Product) scope.
+  FINANCIAL_FORECAST_AGENT: {
+    system: `You are the Financial Forecast Agent. Your goal is to estimate the financial metrics for the business plan.
     
     You must output a JSON object matching this schema:
     {
-      "leanCanvas": {
-        "problem": ["Problem 1", "Problem 2"],
-        "solution": ["Solution 1", "Solution 2"],
-        "keyMetrics": ["Metric 1", "Metric 2"],
-        "uniqueValueProposition": "Clear UVP statement",
-        "unfairAdvantage": "Description of the unfair advantage",
-        "channels": ["Channel 1", "Channel 2"],
-        "customerSegments": ["Segment 1", "Segment 2"],
-        "costStructure": ["Cost 1", "Cost 2"],
-        "revenueStreams": ["Revenue 1", "Revenue 2"]
-      },
-      "pricingStrategy": "Detailed pricing methodology and options",
-      "mvpScope": ["MVP Feature 1", "MVP Feature 2"]
+      "startupCost": 15000,
+      "monthlyExpenses": 2000,
+      "expectedRevenue": 5000,
+      "breakEvenMonth": 6,
+      "profitProjection": [1000, 2000, 3500, 5000, 7000, 9500]
     }`,
-    user: (title: string, description: string, validationSummary: string) =>
-      `Create a business strategy, Lean Canvas, pricing model, and MVP scope for:
-      - Title: ${title}
-      - Description: ${description}
-      - Market Validation Context: ${validationSummary}`
+    user: (idea: string, revenueModel: string[], budget: number) =>
+      `Create a financial forecast for the following business:
+      - Idea: ${idea}
+      - Revenue Model: ${revenueModel.join(', ')}
+      - Founder Budget: $${budget}`
   },
 
   BRANDING_AGENT: {
-    system: `You are the Branding Agent. You design brand identities including catchy names, slogans, tone of voice, brand positioning, and image prompts for logos.
+    system: `You are the Branding Agent. You design brand identities including catchy names, slogans, tone of voice, and visual assets.
     
     You must output a JSON object matching this schema:
     {
       "brandName": "Suggested name",
       "slogan": "Brilliant brand slogan",
-      "toneOfVoice": "Professional/Friendly/Bold etc. with context",
-      "brandPositioning": "How the brand should be positioned in the market",
+      "tone": "Professional/Friendly/Bold etc.",
       "logoPrompt": "Midjourney or DALL-E prompt to generate a premium logo",
       "colorPalette": {
         "primary": "#HEX",
         "secondary": "#HEX",
-        "background": "#HEX",
-        "accent": "#HEX"
+        "accent": "#HEX",
+        "background": "#HEX"
       }
     }`,
-    user: (title: string, description: string, uvp: string) =>
+    user: (idea: string, targetAudience: string, valueProp: string) =>
       `Develop a branding identity for:
-      - Idea Title: ${title}
-      - Description: ${description}
-      - Unique Value Proposition (UVP): ${uvp}`
+      - Idea: ${idea}
+      - Target Audience: ${targetAudience}
+      - Unique Value Proposition: ${valueProp}`
   },
 
   MARKETING_AGENT: {
-    system: `You are the Marketing Agent. Create promotional strategies, suggest target channels, create structured ad copies for social platforms, outline hooks, and design an overall launch marketing playbook.
+    system: `You are the Marketing Agent. Create promotional strategies, suggest target channels, and create structured campaigns.
     
     You must output a JSON object matching this schema:
     {
-      "targetChannels": ["Facebook ads", "LinkedIn Outreach", etc.],
-      "budgetAllocation": {
-        "Channel 1": 40,
-        "Channel 2": 60
-      },
-      "adCopies": [
+      "channels": ["Channel 1", "Channel 2"],
+      "campaigns": [
         {
           "platform": "Facebook/LinkedIn/Google",
           "headline": "Ad Headline",
-          "body": "Ad body copywriting text",
+          "description": "Ad description text",
           "callToAction": "Sign Up / Learn More"
         }
       ],
-      "contentHooks": ["Hook 1", "Hook 2"],
+      "contentIdeas": ["Idea 1", "Idea 2"],
       "socialMediaStrategy": "General content strategy overview"
     }`,
-    user: (brandName: string, slogan: string, description: string, customerSegments: string[]) =>
+    user: (brandName: string, slogan: string, targetAudience: string) =>
       `Build a marketing strategy for the brand:
       - Name: ${brandName}
       - Slogan: ${slogan}
-      - Description: ${description}
-      - Customer Segments: ${customerSegments.join(', ')}`
+      - Target Audience: ${targetAudience}`
   },
 
   ROADMAP_AGENT: {
-    system: `You are the Roadmap Agent. Break down the execution plan into step-by-step phases/milestones with timelines, tasks, tool recommendations, dependencies, and budget estimates.
+    system: `You are the Roadmap Agent. Break down the execution plan into step-by-step milestones.
     
     You must output a JSON object matching this schema:
     {
       "milestones": [
         {
-          "id": "m1",
           "title": "Milestone Title",
           "description": "Milestone description",
           "durationWeeks": 2,
-          "dependencies": [],
           "tasks": ["Task A", "Task B"],
-          "toolRecommendations": ["GitHub", "Vercel", etc.],
-          "estimatedCost": 200
+          "estimatedCost": 200,
+          "dependencies": ["Previous Milestone"]
         }
       ],
       "totalEstimatedBudget": 1500,
       "totalDurationWeeks": 12
     }`,
-    user: (brandName: string, description: string, mvpScope: string[]) =>
-      `Generate a detailed launch roadmap for:
-      - Venture Name: ${brandName}
-      - Description: ${description}
-      - MVP Features: ${mvpScope.join(', ')}`
+    user: (idea: string, mvpFeatures: string[]) =>
+      `Generate an execution roadmap for:
+      - Idea: ${idea}
+      - MVP Features: ${mvpFeatures.join(', ')}`
   },
 
   COFOUNDER_AGENT: {

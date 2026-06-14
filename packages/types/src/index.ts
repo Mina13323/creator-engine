@@ -10,12 +10,27 @@ export interface User {
   createdAt: Date;
 }
 
-export interface OnboardingData {
+export interface FounderProfile {
   skills: string[];
   budget: number;
   industry: string;
   location: string;
-  commitment: 'part-time' | 'full-time';
+  commitment: "part-time" | "full-time";
+}
+
+export interface AgentInput {
+  projectId: string;
+  founderProfile: FounderProfile;
+  previousOutputs?: Record<string, any>;
+}
+
+export interface AgentOutput<T = any> {
+  agentName: string;
+  generatedAt: Date;
+  summary: string;
+  data: T;
+  confidenceScore?: number;
+  sources?: string[];
 }
 
 export interface Project {
@@ -24,106 +39,79 @@ export interface Project {
   name: string;
   description: string;
   industry: string;
-  status: 'draft' | 'idea' | 'validated' | 'branded' | 'marketing-ready' | 'active';
+  status: "draft" | "idea" | "validated" | "branded" | "marketing-ready" | "active";
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface BusinessIdea {
-  id: string;
-  projectId: string;
-  title: string;
-  description: string;
+export interface BusinessPlanOutput {
+  businessIdea: string;
   targetAudience: string;
-  monetization: string[];
-  skillsRequired: string[];
-  score: number; // Overall matching score
+  valueProposition: string;
+  revenueModel: string[];
+  mvpFeatures: string[];
 }
 
-export interface CompetitorAnalysis {
+export interface Competitor {
   name: string;
-  marketShare: string;
   strengths: string[];
   weaknesses: string[];
 }
 
-export interface BusinessValidation {
-  id: string;
-  projectId: string;
-  feasibilityScore: number; // 0-100
-  marketDemandScore: number; // 0-100
-  riskScore: number; // 0-100
-  competitors: CompetitorAnalysis[];
-  marketSize: string;
-  barriersToEntry: string[];
-  validationSummary: string;
+export interface MarketResearchOutput {
+  validationReport?: string;
+  competitorAnalysis?: string;
+  trendAnalysis?: string;
+  processedAt?: string;
 }
 
-export interface LeanCanvas {
-  problem: string[];
-  solution: string[];
-  keyMetrics: string[];
-  uniqueValueProposition: string;
-  unfairAdvantage: string;
-  channels: string[];
-  customerSegments: string[];
-  costStructure: string[];
-  revenueStreams: string[];
+export interface FinancialForecastOutput {
+  startupCost: number;
+  monthlyExpenses: number;
+  expectedRevenue: number;
+  breakEvenMonth: number;
+  profitProjection: number[];
 }
 
-export interface BusinessModel {
-  id: string;
-  projectId: string;
-  leanCanvas: LeanCanvas;
-  pricingStrategy: string;
-  mvpScope: string[];
+export interface ColorPalette {
+  primary: string;
+  secondary: string;
+  accent: string;
+  background: string;
 }
 
-export interface BrandIdentity {
-  id: string;
-  projectId: string;
+export interface BrandingOutput {
   brandName: string;
   slogan: string;
-  toneOfVoice: string;
-  brandPositioning: string;
+  tone: string;
   logoPrompt: string;
-  colorPalette: {
-    primary: string;
-    secondary: string;
-    background: string;
-    accent: string;
-  };
+  colorPalette: ColorPalette;
 }
 
-export interface MarketingCampaign {
-  id: string;
-  projectId: string;
-  targetChannels: string[];
-  budgetAllocation: Record<string, number>;
-  adCopies: {
-    platform: string;
-    headline: string;
-    body: string;
-    callToAction: string;
-  }[];
-  contentHooks: string[];
+export interface Campaign {
+  platform: string;
+  headline: string;
+  description: string;
+  callToAction: string;
+}
+
+export interface MarketingOutput {
+  channels: string[];
+  campaigns: Campaign[];
+  contentIdeas: string[];
   socialMediaStrategy: string;
 }
 
 export interface RoadmapMilestone {
-  id: string;
   title: string;
   description: string;
   durationWeeks: number;
-  dependencies: string[];
   tasks: string[];
-  toolRecommendations: string[];
   estimatedCost: number;
+  dependencies: string[];
 }
 
-export interface ExecutionRoadmap {
-  id: string;
-  projectId: string;
+export interface ExecutionRoadmapOutput {
   milestones: RoadmapMilestone[];
   totalEstimatedBudget: number;
   totalDurationWeeks: number;
@@ -131,7 +119,7 @@ export interface ExecutionRoadmap {
 
 export interface ChatMessage {
   id: string;
-  sender: 'user' | 'ai';
+  sender: "user" | "ai";
   message: string;
   timestamp: Date;
   ragSources?: string[];
@@ -142,4 +130,29 @@ export interface Conversation {
   projectId: string;
   messages: ChatMessage[];
   updatedAt: Date;
+}
+
+export interface VentureProjectState {
+  founderProfile: FounderProfile;
+  businessPlan?: BusinessPlanOutput;
+  marketResearch?: MarketResearchOutput;
+  financialForecast?: FinancialForecastOutput;
+  branding?: BrandingOutput;
+  marketing?: MarketingOutput;
+  roadmap?: ExecutionRoadmapOutput;
+}
+
+export interface IAgent<TOutput> {
+  execute(input: AgentInput): Promise<AgentOutput<TOutput>>;
+}
+
+export interface ProjectResultsResponse {
+  projectId: string;
+  founderProfile: FounderProfile;
+  businessPlan?: BusinessPlanOutput;
+  marketResearch?: MarketResearchOutput;
+  financialForecast?: FinancialForecastOutput;
+  branding?: BrandingOutput;
+  marketing?: MarketingOutput;
+  roadmap?: ExecutionRoadmapOutput;
 }

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Megaphone, MessageSquareText, BarChart2, CheckSquare, Copy, Check, ImagePlus, Loader2, Info } from 'lucide-react';
+import { Megaphone, MessageSquareText, Copy, Check, ImagePlus, Loader2, Info } from 'lucide-react';
 import { muapi } from '../lib/muapi';
 
 export default function MarketingEngine() {
@@ -26,16 +26,16 @@ export default function MarketingEngine() {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
-  const generateCreative = async (copy: any, idx: number) => {
+  const generateCreative = async (campaign: any, idx: number) => {
     try {
       setGeneratingIndex(idx);
       setErrors(prev => ({ ...prev, [idx]: '' }));
-      const prompt = `A highly engaging, professional marketing ad background for ${copy.platform}. Headline context: ${copy.headline}. Theme: ${copy.body.substring(0, 100)}... Clean, modern, eye-catching, no text layout.`;
+      const prompt = `A highly engaging, professional marketing ad background for ${campaign.platform}. Headline context: ${campaign.headline}. Theme: ${campaign.description.substring(0, 100)}... Clean, modern, eye-catching, no text layout.`;
       
       const result = await muapi.generateImage({
         prompt,
         model: 'flux-schnell',
-        aspect_ratio: copy.platform.toLowerCase().includes('instagram') ? '1:1' : '16:9'
+        aspect_ratio: campaign.platform.toLowerCase().includes('instagram') ? '1:1' : '16:9'
       });
       
       setGeneratedImages(prev => ({ ...prev, [idx]: result.url }));
@@ -66,7 +66,7 @@ export default function MarketingEngine() {
         </p>
 
         <div className="flex flex-wrap gap-2">
-          {marketing.targetChannels.map((ch, idx) => (
+          {marketing.channels.map((ch, idx) => (
             <span key={idx} className="px-3 py-1.5 rounded-xl border border-blue-500/10 bg-blue-500/5 text-blue-300 text-xs font-semibold">
               {ch}
             </span>
@@ -74,82 +74,51 @@ export default function MarketingEngine() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* Budget Allocation Panel */}
+      <div className="grid grid-cols-1 gap-6">
+        {/* Content Ideas */}
         <div className="glass-panel p-6 rounded-2xl border-white/5 space-y-6">
           <div>
-            <h2 className="text-base font-bold text-slate-200">Budget Allocation</h2>
-            <p className="text-slate-400 text-xs mt-0.5">Recommended marketing spend distribution.</p>
-          </div>
-
-          <div className="space-y-4">
-            {Object.entries(marketing.budgetAllocation).map(([channel, percentage], idx) => (
-              <div key={idx} className="space-y-1">
-                <div className="flex justify-between text-xs font-semibold text-slate-300">
-                  <span>{channel}</span>
-                  <span className="text-blue-400">{percentage}%</span>
-                </div>
-                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                  <div 
-                    className="bg-blue-500 h-full rounded-full shadow-lg shadow-blue-500/50" 
-                    style={{ width: `${percentage}%` }}
-                  ></div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="pt-4 border-t border-white/5 flex items-start gap-2 text-[10px] text-slate-400">
-            <BarChart2 className="w-4 h-4 text-blue-400 flex-shrink-0" />
-            <span>Allocations are optimized for local search volumes and startup budgets.</span>
-          </div>
-        </div>
-
-        {/* Content Hooks Checklist */}
-        <div className="glass-panel p-6 rounded-2xl border-white/5 lg:col-span-2 space-y-6">
-          <div>
-            <h2 className="text-base font-bold text-slate-200">High-Converting Content Hooks</h2>
+            <h2 className="text-base font-bold text-slate-200">High-Converting Content Ideas</h2>
             <p className="text-slate-400 text-xs mt-0.5">Use these angles for social carousels, threads, and short-form videos.</p>
           </div>
 
-          <div className="space-y-3">
-            {marketing.contentHooks.map((hook, idx) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {marketing.contentIdeas.map((idea, idx) => (
               <div key={idx} className="p-4 rounded-xl border border-white/5 bg-slate-950/40 flex items-start gap-3">
                 <div className="w-5 h-5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">
                   {idx + 1}
                 </div>
-                <p className="text-xs text-slate-200 leading-normal">{hook}</p>
+                <p className="text-xs text-slate-200 leading-normal">{idea}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Copywriting Ad Copies Section */}
+      {/* Copywriting Templates Section */}
       <div className="space-y-4">
         <h2 className="text-lg font-bold text-slate-200 flex items-center gap-1.5">
           <MessageSquareText className="w-4 h-4 text-slate-400" /> Ready-to-Publish Copywriting Templates
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {marketing.adCopies.map((copy, idx) => {
-            const adString = `[${copy.platform} Ad]\nHeadline: ${copy.headline}\nBody: ${copy.body}\nCall to Action: ${copy.callToAction}`;
+          {marketing.campaigns.map((campaign, idx) => {
+            const adString = `[${campaign.platform} Ad]\nHeadline: ${campaign.headline}\nBody: ${campaign.description}\nCall to Action: ${campaign.callToAction}`;
             return (
               <div key={idx} className="glass-panel p-6 rounded-2xl border-white/5 flex flex-col justify-between space-y-4">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded border border-emerald-500/20">
-                      {copy.platform} Copy
+                      {campaign.platform} Copy
                     </span>
                   </div>
                   
                   <h4 className="text-sm font-bold text-white leading-normal pt-1">
-                    Headline: <span className="text-slate-300 font-normal">{copy.headline}</span>
+                    Headline: <span className="text-slate-300 font-normal">{campaign.headline}</span>
                   </h4>
                   
                   <p className="text-xs text-slate-400 leading-relaxed bg-slate-950/40 p-4 rounded-xl border border-white/5 whitespace-pre-line">
-                    {copy.body}
+                    {campaign.description}
                   </p>
 
                   {errors[idx] && (
@@ -161,7 +130,7 @@ export default function MarketingEngine() {
                   {generatedImages[idx] && (
                     <div className="mt-4 p-2 rounded-xl bg-slate-950/60 border border-white/5 flex flex-col items-center">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={generatedImages[idx]} alt={`${copy.platform} Ad Creative`} className="rounded-lg max-h-48 object-cover shadow-2xl w-full" />
+                      <img src={generatedImages[idx]} alt={`${campaign.platform} Ad Creative`} className="rounded-lg max-h-48 object-cover shadow-2xl w-full" />
                       <div className="w-full flex justify-end mt-2">
                         <a href={generatedImages[idx]} target="_blank" rel="noreferrer" className="text-xs text-blue-400 hover:text-blue-300">
                           Open Original Image
@@ -172,11 +141,11 @@ export default function MarketingEngine() {
                 </div>
 
                 <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                  <span className="text-[11px] text-slate-500">CTA: <strong>{copy.callToAction}</strong></span>
+                  <span className="text-[11px] text-slate-500">CTA: <strong>{campaign.callToAction}</strong></span>
                   
                   <div className="flex gap-2">
                     <button
-                      onClick={() => generateCreative(copy, idx)}
+                      onClick={() => generateCreative(campaign, idx)}
                       disabled={generatingIndex === idx}
                       className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-[10px] font-bold text-white transition-colors flex items-center gap-1.5 shadow-lg shadow-blue-900/50"
                     >

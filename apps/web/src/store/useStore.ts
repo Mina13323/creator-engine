@@ -1,20 +1,11 @@
 import { create } from 'zustand';
-import { Project, BusinessIdea, BusinessValidation, BusinessModel, BrandIdentity, MarketingCampaign, ExecutionRoadmap, ChatMessage } from '@creator/types';
-
-interface ProjectOutputs {
-  idea?: BusinessIdea;
-  validation?: BusinessValidation;
-  strategy?: BusinessModel;
-  branding?: BrandIdentity;
-  marketing?: MarketingCampaign;
-  roadmap?: ExecutionRoadmap;
-}
+import { Project, VentureProjectState, ChatMessage } from '@creator/types';
 
 interface StoreState {
   projects: Project[];
   currentProject: Project | null;
-  currentOutputs: ProjectOutputs | null;
-  activeTab: 'dashboard' | 'business-builder' | 'financials' | 'guides' | 'ai-consultant' | 'pitch' | 'radar' | 'market-research' | 'branding' | 'marketing' | 'roadmap' | 'ai-studio';
+  currentOutputs: VentureProjectState | null;
+  activeTab: 'dashboard' | 'business-builder' | 'financials' | 'guides' | 'ai-consultant' | 'pitch' | 'radar' | 'market-research' | 'competitors' | 'branding' | 'marketing' | 'roadmap' | 'ai-studio';
   isOnboarded: boolean;
   loading: boolean;
   loadingMessage: string;
@@ -105,14 +96,12 @@ export const useStore = create<StoreState>((set, get) => ({
       if (res.ok) {
         const data = await res.json();
         set({ projects: data });
-        // If there are projects, we consider user onboarded to the dashboard
         if (data.length > 0) {
           set({ isOnboarded: true });
         }
       }
     } catch (e) {
       console.warn('Failed to connect to API, running with offline mock projects.', e);
-      // Mock projects list if offline
       set({
         projects: [
           {
@@ -134,7 +123,7 @@ export const useStore = create<StoreState>((set, get) => ({
   selectProject: async (projectId: string) => {
     set({ loading: true, loadingMessage: 'Retrieving venture dossier...' });
     try {
-      const res = await fetch(`${API_BASE}/projects/${projectId}`, {
+      const res = await fetch(`${API_BASE}/projects/${projectId}/results`, {
         headers: {
           ...(get().token ? { Authorization: `Bearer ${get().token}` } : {})
         }
@@ -143,12 +132,11 @@ export const useStore = create<StoreState>((set, get) => ({
         const data = await res.json();
         set({
           currentProject: data.project,
-          currentOutputs: data.outputs,
+          currentOutputs: data,
           activeTab: 'business-builder',
           loading: false
         });
 
-        // Load chat history
         const chatRes = await fetch(`${API_BASE}/ai/chat/${projectId}`, {
           headers: {
             ...(get().token ? { Authorization: `Bearer ${get().token}` } : {})
@@ -163,7 +151,6 @@ export const useStore = create<StoreState>((set, get) => ({
       }
     } catch (e) {
       console.warn('Offline fetch project failed, loading mock venture details.', e);
-      // Hardcoded offline data
       const mockProject = get().projects.find(p => p.id === projectId) || {
         id: projectId,
         userId: 'user_demo',
@@ -175,81 +162,61 @@ export const useStore = create<StoreState>((set, get) => ({
         updatedAt: new Date()
       };
       
+      const mockOutputs: VentureProjectState = {
+        founderProfile: {
+          skills: ['Logistics', 'Management'],
+          budget: 15000,
+          industry: 'Logistics',
+          location: 'Cairo, Egypt',
+          commitment: 'full-time'
+        },
+        businessPlan: {
+          businessIdea: mockProject.description,
+          targetAudience: 'Organic grocers and local supermarkets',
+          valueProposition: 'Affordable, green last-mile delivery using electric tricycles.',
+          revenueModel: ['Per-delivery commission', 'Monthly retainer'],
+          mvpFeatures: ['Dispatcher Dashboard', 'Rider App', 'Client Booking Portal']
+        },
+        marketResearch: {
+          validationReport: 'Strong local market signal. Capitalizing on green-energy branding provides a substantial entry niche.',
+          competitorAnalysis: 'Rabbit Mart: Deep VC funding, but high operational overhead and non-electric fleet.',
+          trendAnalysis: 'Growing demand for sustainable logistics and government incentives for EVs. Main risk is battery degradation in hot weather.'
+        },
+        financialForecast: {
+          startupCost: 12000,
+          monthlyExpenses: 3000,
+          expectedRevenue: 5000,
+          breakEvenMonth: 8,
+          profitProjection: [-2000, -1000, 0, 1500, 3000, 5000]
+        },
+        branding: {
+          brandName: 'EcoKart',
+          slogan: 'Deliver Green. Deliver Fast.',
+          tone: 'Eco-conscious, hyper-efficient, urban, and modern.',
+          logoPrompt: 'Sleek cargo trike icon green and black, vector minimalist, black background --v 6.0',
+          colorPalette: { primary: '#020617', secondary: '#10B981', background: '#0F172A', accent: '#3B82F6' }
+        },
+        marketing: {
+          channels: ['LinkedIn campaigns', 'Local Cairo design events', 'Direct cold call outreach'],
+          campaigns: [
+            { platform: 'LinkedIn', headline: 'Cut Delivery Carbon - and Cost', description: 'Ditch fuel inflation. EcoKart offers robust cargo cycles running on pure electrical grids. Lower rates, faster times, zero emission.', callToAction: 'Request Free Pilot' }
+          ],
+          contentIdeas: ['How Cairo startups bypass gridlock using micro-fleet tricycles.', 'Green branding is converting 15% more premium buyers in Egypt.'],
+          socialMediaStrategy: 'Showcase riders navigating old Cairo streets, metrics comparing electric vs internal combustion engines.'
+        },
+        roadmap: {
+          totalEstimatedBudget: 1200,
+          totalDurationWeeks: 12,
+          milestones: [
+            { title: 'Waitlist Launch & Brand Setup', description: 'Set up landing pages, collect pilot expressions of interest.', durationWeeks: 3, dependencies: [], tasks: ['Setup website', 'Run LinkedIn cold outreach'], estimatedCost: 150 },
+            { title: 'Prototype Assembly', description: 'Procure 2 electric tricycles, set up basic dispatch.', durationWeeks: 5, dependencies: ['Waitlist Launch & Brand Setup'], tasks: ['Lease trikes', 'Launch dispatcher sheet'], estimatedCost: 650 }
+          ]
+        }
+      };
+
       set({
         currentProject: mockProject,
-        currentOutputs: {
-          idea: {
-            id: 'idea_mock',
-            projectId,
-            title: 'EcoKart Logistics',
-            description: mockProject.description,
-            targetAudience: 'Gourmet supermarkets and organic grocers in Cairo.',
-            monetization: ['Per-delivery commission', 'Corporate logistics monthly subscription'],
-            skillsRequired: ['Operations Management', 'Fleet Coordination', 'Next.js'],
-            score: 95
-          },
-          validation: {
-            id: 'val_mock',
-            projectId,
-            feasibilityScore: 88,
-            marketDemandScore: 92,
-            riskScore: 30,
-            competitors: [
-              { name: 'Rabbit Mart', marketShare: 'High', strengths: ['15 min delivery', 'Deep VC funding'], weaknesses: ['High operational overhead', 'Non-electric fleet'] }
-            ],
-            marketSize: '$45M TAM in Cairo premium residential zones.',
-            barriersToEntry: ['Fleet capital expenditure', 'Courier training and retention.'],
-            validationSummary: 'Strong local market signal. Capitalizing on green-energy branding provides a substantial entry niche.'
-          },
-          strategy: {
-            id: 'strategy_mock',
-            projectId,
-            leanCanvas: {
-              problem: ['High courier fuel costs eating margins', 'Cairo traffic stalling traditional bikes'],
-              solution: ['Electric cargo cycles dodging traffic', 'Aggregated dark stores partnerships'],
-              keyMetrics: ['Cost per delivery (CPD)', 'Delivery fulfillment rate'],
-              uniqueValueProposition: 'Eco-friendly cargo cycles offering 20% cheaper last-mile delivery for Cairo green brands.',
-              unfairAdvantage: 'Proprietary custom-built lightweight cargo chassis layout.',
-              channels: ['Direct sales to eco-brands', 'Social media sustainability showcases'],
-              customerSegments: ['High-end organic food suppliers', 'E-commerce fashion boutiques'],
-              costStructure: ['Electric bike leasing', 'Rider wages', 'Platform API maintenance'],
-              revenueStreams: ['Commission per order', 'Corporate delivery retainers']
-            },
-            pricingStrategy: 'Flexible pricing models starting with EGP 35 per delivery or flat EGP 8,000 monthly fleet support tiers.',
-            mvpScope: ['Landing page lead forms', 'Dispatcher Whatsapp coordination portal', '2 operational custom electric tricycles']
-          },
-          branding: {
-            id: 'branding_mock',
-            projectId,
-            brandName: 'EcoKart',
-            slogan: 'Deliver Green. Deliver Fast.',
-            toneOfVoice: 'Eco-conscious, hyper-efficient, urban, and modern.',
-            brandPositioning: 'The preferred green-transport logistics partner for progressive Egyptian retail brands.',
-            logoPrompt: 'Sleek cargo trike icon green and black, vector minimalist, black background --v 6.0',
-            colorPalette: { primary: '#020617', secondary: '#10B981', background: '#0F172A', accent: '#3B82F6' }
-          },
-          marketing: {
-            id: 'mkt_mock',
-            projectId,
-            targetChannels: ['LinkedIn campaigns', 'Local Cairo design events', 'Direct cold call outreach'],
-            budgetAllocation: { 'LinkedIn Advertising': 60, 'Organic Events': 40 },
-            adCopies: [
-              { platform: 'LinkedIn', headline: 'Cut Delivery Carbon - and Cost', body: 'Ditch fuel inflation. EcoKart offers robust cargo cycles running on pure electrical grids. Lower rates, faster times, zero emission.', callToAction: 'Request Free Pilot' }
-            ],
-            contentHooks: ['How Cairo startups bypass gridlock using micro-fleet tricycles.', 'Green branding is converting 15% more premium buyers in Egypt.'],
-            socialMediaStrategy: 'Showcase riders navigating old Cairo streets, metrics comparing electric vs internal combustion engines.'
-          },
-          roadmap: {
-            id: 'roadmap_mock',
-            projectId,
-            totalEstimatedBudget: 1200,
-            totalDurationWeeks: 12,
-            milestones: [
-              { id: 'm1', title: 'Waitlist Launch & Brand Setup', description: 'Set up landing pages, collect pilot expressions of interest.', durationWeeks: 3, dependencies: [], tasks: ['Setup website', 'Run LinkedIn cold outreach'], toolRecommendations: ['Figma', 'Next.js'], estimatedCost: 150 },
-              { id: 'm2', title: 'Prototype Assembly', description: 'Procure 2 electric tricycles, set up basic dispatch.', durationWeeks: 5, dependencies: ['m1'], tasks: ['Lease trikes', 'Launch dispatcher sheet'], toolRecommendations: ['Google Sheets', 'WhatsApp Business'], estimatedCost: 650 }
-            ]
-          }
-        },
+        currentOutputs: mockOutputs,
         activeTab: 'business-builder',
         loading: false
       });
@@ -269,6 +236,33 @@ export const useStore = create<StoreState>((set, get) => ({
       });
       if (res.ok) {
         const responseData = await res.json();
+
+        set({ loadingMessage: 'Running Market Research Workflow (n8n)...' });
+        try {
+          const webhookRes = await fetch('http://localhost:5678/webhook/start-market-research', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ projectId: responseData.project.id })
+          });
+          
+          if (webhookRes.ok) {
+            const mrDataArr = await webhookRes.json();
+            const mrData = Array.isArray(mrDataArr) ? mrDataArr[0] : mrDataArr;
+            
+            await fetch(`${API_BASE}/projects/${responseData.project.id}/market-research`, {
+              method: 'POST',
+              headers: { 
+                'Content-Type': 'application/json',
+                ...(get().token ? { Authorization: `Bearer ${get().token}` } : {})
+              },
+              body: JSON.stringify(mrData)
+            });
+            responseData.outputs.marketResearch = mrData;
+          }
+        } catch (webhookErr) {
+          console.warn('n8n workflow failed, using fallback or skipping.', webhookErr);
+        }
+
         set(state => ({
           projects: [responseData.project, ...state.projects],
           currentProject: responseData.project,
@@ -283,7 +277,6 @@ export const useStore = create<StoreState>((set, get) => ({
       }
     } catch (e) {
       console.warn('API execution failed, generating with local offline simulator.', e);
-      // Simulate slow execution
       await new Promise(resolve => setTimeout(resolve, 2000));
       const newProjectId = `proj_${Date.now()}`;
       const simulatedProject: Project = {
@@ -297,74 +290,54 @@ export const useStore = create<StoreState>((set, get) => ({
         updatedAt: new Date()
       };
 
-      const mockOutputs = {
-        idea: {
-          id: `idea_${Date.now()}`,
-          projectId: newProjectId,
-          title: `${data.name} Startup`,
-          description: `Personalized enterprise leveraging ${data.skills.join(', ')} matching the ${data.industry} space in ${data.location}.`,
+      const mockOutputs: VentureProjectState = {
+        founderProfile: {
+          skills: data.skills,
+          budget: data.budget,
+          industry: data.industry,
+          location: data.location,
+          commitment: 'part-time'
+        },
+        businessPlan: {
+          businessIdea: `Personalized enterprise leveraging ${data.skills.join(', ')} matching the ${data.industry} space in ${data.location}.`,
           targetAudience: `Consumers and service-seekers in ${data.location} with budget sensitivity.`,
-          monetization: ['Subscription commission model', 'Flat fee transaction support'],
-          skillsRequired: [...data.skills, 'Strategy'],
-          score: 89
+          valueProposition: `The most reliable, transparent platform matching ${data.industry} demands.`,
+          revenueModel: ['Subscription commission model', 'Flat fee transaction support'],
+          mvpFeatures: ['Lead collection landing page', 'Client registration portal', 'Core directory dashboard']
         },
-        validation: {
-          id: `val_${Date.now()}`,
-          projectId: newProjectId,
-          feasibilityScore: 78,
-          marketDemandScore: 82,
-          riskScore: 35,
-          competitors: [{ name: 'Global incumbents', marketShare: 'High', strengths: ['Scaling power'], weaknesses: ['High localized overhead'] }],
-          marketSize: 'Growing regional demand with 25% annual user increase.',
-          barriersToEntry: ['Brand awareness', 'Local distribution compliance'],
-          validationSummary: `The venture shows strong signals because it leverages ${data.skills.join(', ')} directly to tackle localized friction.`
+        marketResearch: {
+          validationReport: `The venture shows strong signals because it leverages ${data.skills.join(', ')} directly to tackle localized friction.`,
+          competitorAnalysis: 'Global incumbents have scaling power but suffer from high localized overhead.',
+          trendAnalysis: 'Growing regional demand with 25% annual user increase. Opportunities in Localization and AI integration. Risks include high operational overhead.'
         },
-        strategy: {
-          id: `strategy_${Date.now()}`,
-          projectId: newProjectId,
-          leanCanvas: {
-            problem: [`Limited access to local services in ${data.location}`, 'Opaque and variable pricing structures'],
-            solution: [`Verified digital platform with escrow integrations`, 'Fixed-tier pricing parameters'],
-            keyMetrics: ['Active User Count', 'Transactions completed', 'Retention Rate'],
-            uniqueValueProposition: `The most reliable, transparent platform matching ${data.industry} demands.`,
-            unfairAdvantage: 'High specialization and low cost base',
-            channels: ['Social marketing', 'Direct client referral'],
-            customerSegments: ['Tech-savvy youth', 'SME project managers'],
-            costStructure: ['Platform infrastructure', 'Marketing reach'],
-            revenueStreams: ['Percentage fee per deal', 'Premium upgrades']
-          },
-          pricingStrategy: `A flat transaction fee tier designed for affordability matching the $${data.budget} launch scale.`,
-          mvpScope: ['Lead collection landing page', 'Client registration portal', 'Core directory dashboard']
+        financialForecast: {
+          startupCost: data.budget * 0.4,
+          monthlyExpenses: data.budget * 0.1,
+          expectedRevenue: data.budget * 0.5,
+          breakEvenMonth: 6,
+          profitProjection: [0, 500, 1200, 2500, 4000, 7000]
         },
         branding: {
-          id: `brand_${Date.now()}`,
-          projectId: newProjectId,
           brandName: `${data.name}`,
           slogan: `Transforming ${data.industry} in ${data.location}`,
-          toneOfVoice: 'Reliable, forward-thinking, clean, and customer-first.',
-          brandPositioning: 'The smart digital partner for active builders.',
+          tone: 'Reliable, forward-thinking, clean, and customer-first.',
           logoPrompt: 'Geometric vector design logo, solid background, clean lines --v 6.0',
           colorPalette: { primary: '#030712', secondary: '#3B82F6', background: '#0F172A', accent: '#10B981' }
         },
         marketing: {
-          id: `mkt_${Date.now()}`,
-          projectId: newProjectId,
-          targetChannels: ['Instagram/TikTok reels', 'LinkedIn posts'],
-          budgetAllocation: { 'Direct Ads': 70, 'Content Strategy': 30 },
-          adCopies: [
-            { platform: 'Meta', headline: `Solve ${data.industry} challenges`, body: `Tired of standard bottlenecks? Try ${data.name} and experience seamless work coordination.`, callToAction: 'Get Started' }
+          channels: ['Instagram/TikTok reels', 'LinkedIn posts'],
+          campaigns: [
+            { platform: 'Meta', headline: `Solve ${data.industry} challenges`, description: `Tired of standard bottlenecks? Try ${data.name} and experience seamless work coordination.`, callToAction: 'Get Started' }
           ],
-          contentHooks: ['3 major industry trends in Egypt you should not ignore.', 'Why low-code is changing how startups deploy features.'],
+          contentIdeas: ['3 major industry trends in Egypt you should not ignore.', 'Why low-code is changing how startups deploy features.'],
           socialMediaStrategy: 'Publish video tutorials, student founder diaries, and comparison sheets.'
         },
         roadmap: {
-          id: `roadmap_${Date.now()}`,
-          projectId: newProjectId,
           totalEstimatedBudget: data.budget * 0.8,
           totalDurationWeeks: 10,
           milestones: [
-            { id: 'm1', title: 'Setup & Brand Launch', description: 'Deploy visual landing page and collect first 100 registrations.', durationWeeks: 3, dependencies: [], tasks: ['Setup domains', 'Run social teaser'], toolRecommendations: ['Figma', 'Next.js'], estimatedCost: data.budget * 0.15 },
-            { id: 'm2', title: 'Product Core Engineering', description: 'Build and deploy the directory app.', durationWeeks: 4, dependencies: ['m1'], tasks: ['Build database', 'Hook API routes'], toolRecommendations: ['Vercel', 'Supabase'], estimatedCost: data.budget * 0.4 }
+            { title: 'Setup & Brand Launch', description: 'Deploy visual landing page and collect first 100 registrations.', durationWeeks: 3, dependencies: [], tasks: ['Setup domains', 'Run social teaser'], estimatedCost: data.budget * 0.15 },
+            { title: 'Product Core Engineering', description: 'Build and deploy the directory app.', durationWeeks: 4, dependencies: ['Setup & Brand Launch'], tasks: ['Build database', 'Hook API routes'], estimatedCost: data.budget * 0.4 }
           ]
         }
       };

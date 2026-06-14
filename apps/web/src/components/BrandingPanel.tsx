@@ -66,12 +66,8 @@ export default function BrandingPanel() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-white/5">
           <div>
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Tone of Voice</h3>
-            <p className="text-slate-200 text-sm leading-relaxed">{branding.toneOfVoice}</p>
-          </div>
-          <div>
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Market Positioning</h3>
-            <p className="text-slate-200 text-sm leading-relaxed">{branding.brandPositioning}</p>
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Tone</h3>
+            <p className="text-slate-200 text-sm leading-relaxed">{branding.tone}</p>
           </div>
         </div>
       </div>

@@ -8,12 +8,16 @@ import { Card } from './ui/card';
 import { Crown, BarChart3, Presentation, Radar, Users, FileText, TrendingUp } from 'lucide-react';
 
 export default function Dashboard() {
-  const { currentProject } = useStore();
+  const { currentProject, currentOutputs, user } = useStore();
 
   const projectName = currentProject?.name || 'Fresh Hearth Foods';
+  const financialForecast = currentOutputs?.financialForecast;
 
-  // Mock data for the chart to match the reference screenshot shape
-  const chartData = [
+  // Use real data or mock data for the chart to match the reference screenshot shape
+  const chartData = financialForecast?.profitProjection?.map((profit, index) => ({
+    month: `Month ${index + 1}`,
+    revenue: profit > 0 ? profit : 0
+  })) || [
     { month: 'Jan', revenue: 20 },
     { month: 'Feb', revenue: 30 },
     { month: 'Mar', revenue: 40 },
@@ -28,13 +32,15 @@ export default function Dashboard() {
     { month: 'Dec', revenue: 480 },
   ];
 
-  const maxRevenue = 600;
+  const maxRevenue = financialForecast 
+    ? Math.max(...chartData.map(d => d.revenue)) * 1.2
+    : 600;
 
   return (
     <div className="p-6 md:p-10 max-w-[1200px] mx-auto space-y-8 animate-in fade-in duration-500">
       
       <h1 className="text-2xl font-medium text-slate-800 tracking-tight">
-        Welcome, mena
+        Welcome, {user?.name || user?.email?.split('@')[0] || 'Founder'}
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -43,7 +49,10 @@ export default function Dashboard() {
         <div className="lg:col-span-2 space-y-8">
           
           {/* Business Plan Card */}
-          <Card className="p-6 border-slate-200 shadow-sm flex flex-col md:flex-row items-start gap-6 rounded-xl bg-white overflow-hidden">
+          <Card 
+            onClick={() => useStore.setState({ activeTab: 'business-builder' })}
+            className="p-6 border-slate-200 shadow-sm flex flex-col md:flex-row items-start gap-6 rounded-xl bg-white overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
+          >
             {/* Book Graphic - brownish/cream like reference */}
             <div className="relative w-[100px] h-[130px] flex-shrink-0 rounded-md shadow-lg overflow-hidden" style={{ perspective: '600px' }}>
               {/* Book spine */}
@@ -107,7 +116,10 @@ export default function Dashboard() {
                 <h2 className="text-lg font-medium text-slate-800">Financials</h2>
                 <p className="text-sm text-slate-500">Financial forecasts automatically created for your business</p>
               </div>
-              <Button className="bg-[#1e293b] hover:bg-slate-800 text-white rounded-full px-6 font-semibold shadow-sm text-sm">
+              <Button 
+                onClick={() => useStore.setState({ activeTab: 'financials' })}
+                className="bg-[#1e293b] hover:bg-slate-800 text-white rounded-full px-6 font-semibold shadow-sm text-sm"
+              >
                 Go to Financials
               </Button>
             </div>
@@ -116,22 +128,28 @@ export default function Dashboard() {
               {/* Financial Summary */}
               <div className="flex flex-wrap items-start gap-6 md:gap-10 mb-8">
                 <div>
-                  <h3 className="text-3xl font-bold text-slate-900 tracking-tight">$3,284,407</h3>
-                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mt-1">2026 Revenue</p>
+                  <h3 className="text-3xl font-bold text-slate-900 tracking-tight">
+                    ${financialForecast ? (financialForecast.expectedRevenue * 12).toLocaleString() : '3,284,407'}
+                  </h3>
+                  <p className="text-xs text-slate-500 font-medium uppercase tracking-wider mt-1">1st Year Revenue</p>
                 </div>
                 
                 <div className="opacity-40 filter blur-[2px] select-none">
-                  <h3 className="text-3xl font-bold text-slate-900 tracking-tight">$1,402,100</h3>
+                  <h3 className="text-3xl font-bold text-slate-900 tracking-tight">
+                    ${financialForecast ? (financialForecast.monthlyExpenses * 12).toLocaleString() : '1,402,100'}
+                  </h3>
                   <div className="flex items-center gap-2 mt-1">
-                    <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">2026 Expenses</p>
+                    <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">1st Year Expenses</p>
                     <span className="text-[10px] text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-sm font-bold flex items-center gap-0.5"><Crown className="w-2.5 h-2.5"/> Pro</span>
                   </div>
                 </div>
                 
                 <div className="opacity-40 filter blur-[2px] select-none">
-                  <h3 className="text-3xl font-bold text-slate-900 tracking-tight">$1,882,307</h3>
+                  <h3 className="text-3xl font-bold text-slate-900 tracking-tight">
+                    ${financialForecast ? ((financialForecast.expectedRevenue - financialForecast.monthlyExpenses) * 12).toLocaleString() : '1,882,307'}
+                  </h3>
                   <div className="flex items-center gap-2 mt-1">
-                    <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">2026 Net Profit</p>
+                    <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">1st Year Net Profit</p>
                     <span className="text-[10px] text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-sm font-bold flex items-center gap-0.5"><Crown className="w-2.5 h-2.5"/> Pro</span>
                   </div>
                 </div>
@@ -204,19 +222,19 @@ export default function Dashboard() {
                 title: 'Market Research', 
                 desc: 'Audience demographics, personas, and industry benchmarks.',
                 icon: Users,
-                colors: ['#e2e8f0', '#cbd5e1', '#94a3b8'],
+                tab: 'market-research'
               },
               { 
                 title: 'Pitch Deck', 
                 desc: 'Secure funding and impress partners.',
                 icon: Presentation,
-                colors: ['#e2e8f0', '#cbd5e1', '#94a3b8'],
+                tab: 'pitch'
               },
               { 
                 title: 'Radar', 
                 desc: 'Track competitors, news, social media, and local events.',
                 icon: Radar,
-                colors: ['#e2e8f0', '#cbd5e1', '#94a3b8'],
+                tab: 'competitors'
               },
             ].map((tool, i) => {
               const Icon = tool.icon;
@@ -226,6 +244,7 @@ export default function Dashboard() {
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.6 + i * 0.1 }}
+                  onClick={() => useStore.setState({ activeTab: tool.tab as any })}
                 >
                   <Card className="p-5 border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer rounded-xl bg-white group overflow-hidden">
                     {/* Thumbnail preview */}
@@ -257,15 +276,16 @@ export default function Dashboard() {
 
           <div className="space-y-3">
             {[
-              { title: '50 Marketing Ideas for Your Business', desc: 'A practical list of marketing ideas tailored to your business, budget, and goals.', accent: '#3B82F6' },
-              { title: 'Business Licenses Report', desc: 'A complete guide to the licenses, permits, and filing resources your business may need.', accent: '#8B5CF6' },
-              { title: 'Small Business Grants Guide', desc: 'A targeted guide to grant opportunities, eligibility details, and where to apply.', accent: '#F59E0B' }
+              { title: '50 Marketing Ideas for Your Business', desc: 'A practical list of marketing ideas tailored to your business, budget, and goals.', accent: '#3B82F6', tab: 'marketing' },
+              { title: 'Business Licenses Report', desc: 'A complete guide to the licenses, permits, and filing resources your business may need.', accent: '#8B5CF6', tab: 'guides' },
+              { title: 'Small Business Grants Guide', desc: 'A targeted guide to grant opportunities, eligibility details, and where to apply.', accent: '#F59E0B', tab: 'guides' }
             ].map((guide, i) => (
               <motion.div 
                 key={i}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
+                onClick={() => useStore.setState({ activeTab: guide.tab as any })}
               >
                 <Card 
                   className="p-5 border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer rounded-xl bg-white group relative overflow-hidden"
