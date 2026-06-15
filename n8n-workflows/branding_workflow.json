@@ -1,0 +1,89 @@
+{
+  "name": "Branding Agent Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "branding-flow",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_FIREWORKS_API_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"model\": \"accounts/fireworks/models/deepseek-v4-flash\", \"messages\": [{\"role\": \"system\", \"content\": \"You are the Branding Agent — a world-class brand strategist and creative director. Your task is to craft a complete, investment-grade brand identity for an early-stage startup.\\n\\nBehavioral Guidelines:\\n- Think like a top-tier branding agency (Pentagram, Collins, Wolff Olins).\\n- Generate a brand name that is: memorable, spell-friendly, domain-available (short, ideally one word or compound), and emotionally resonant with the target audience.\\n- The brand story must follow this arc: (1) Origin frustration or insight (2) Mission and what we believe (3) How we show up in the world today.\\n- Brand voice must include explicit DO's and DON'Ts — not just adjectives.\\n- Color palette must include a rationale for each color tied to brand psychology.\\n- Never use generic placeholder names. Every output must feel crafted for this specific venture.\\n\\nYou must output ONLY valid JSON — no markdown, no explanations, no wrapping in backticks.\"}, {\"role\": \"user\", \"content\": \"Develop a complete brand identity for the following venture:\\n\\nOpportunity:\\n\" + JSON.stringify($('Webhook').item.json.body.opportunity) + \"\\n\\nBusiness Plan:\\n\" + JSON.stringify($('Webhook').item.json.body.businessPlan) + \"\\n\\nOutput JSON matching this schema exactly:\\n{\\n  \\\"brandName\\\": \\\"A single strong brand name\\\",\\n  \\\"brandNameVariants\\\": [\\\"Alt 1\\\", \\\"Alt 2\\\", \\\"Alt 3\\\"],\\n  \\\"tagline\\\": \\\"A punchy 4-8 word tagline that captures the UVP\\\",\\n  \\\"slogan\\\": \\\"A slightly longer, emotionally resonant campaign slogan\\\",\\n  \\\"toneOfVoice\\\": \\\"2-3 sentence description of the voice archetype and personality\\\",\\n  \\\"brandVoice\\\": {\\n    \\\"dos\\\": [\\\"Use active verbs\\\", \\\"Lead with outcomes\\\"],\\n    \\\"donts\\\": [\\\"Avoid jargon like synergy\\\", \\\"Never be passive\\\"]\\n  },\\n  \\\"brandPositioning\\\": \\\"2-3 sentences: who we are for, what we do, and how we differ\\\",\\n  \\\"brandPersonality\\\": [\\\"Trait 1\\\", \\\"Trait 2\\\", \\\"Trait 3\\\", \\\"Trait 4\\\"],\\n  \\\"brandStory\\\": \\\"3 paragraphs: origin frustration, mission, how we exist today\\\",\\n  \\\"brandArchetype\\\": \\\"e.g. The Creator — and a 1-sentence explanation\\\",\\n  \\\"logoPrompt\\\": \\\"A detailed Midjourney/DALL-E optimized prompt for a premium minimalist logo\\\",\\n  \\\"colorPalette\\\": {\\n    \\\"primary\\\": \\\"#HEX\\\",\\n    \\\"primaryRationale\\\": \\\"Psychology and brand alignment\\\",\\n    \\\"secondary\\\": \\\"#HEX\\\",\\n    \\\"secondaryRationale\\\": \\\"Why this color\\\",\\n    \\\"background\\\": \\\"#HEX\\\",\\n    \\\"accent\\\": \\\"#HEX\\\",\\n    \\\"accentRationale\\\": \\\"Why this accent color\\\"\\n  }\\n}\"}], \"temperature\": 0.75, \"max_tokens\": 3000, \"response_format\": {\"type\": \"json_object\"}}"
+      },
+      "id": "fireworks",
+      "name": "Fireworks AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [300, 300]
+    },
+    {
+      "parameters": {
+        "language": "javaScript",
+        "jsCode": "const content = $input.first().json.choices[0].message.content.trim();\nlet parsed;\ntry {\n  parsed = JSON.parse(content);\n} catch (e) {\n  const match = content.match(/\\{[\\s\\S]*\\}/);\n  parsed = JSON.parse(match ? match[0] : content);\n}\nconst projectId = $('Webhook').item.json.body.projectId || 'unknown';\nreturn { json: { success: true, workflow: 'branding-flow', projectId, generatedAt: new Date().toISOString(), data: parsed } };"
+      },
+      "id": "parser",
+      "name": "Parse JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [700, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [{ "node": "Fireworks AI", "type": "main", "index": 0 }]
+      ]
+    },
+    "Fireworks AI": {
+      "main": [
+        [{ "node": "Parse JSON", "type": "main", "index": 0 }]
+      ]
+    },
+    "Parse JSON": {
+      "main": [
+        [{ "node": "Respond", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

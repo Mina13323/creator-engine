@@ -152,7 +152,7 @@ export default function Onboarding() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-700">Experience Level</label>
-                  <Select value={formData.experience} onValueChange={(v) => setFormData({...formData, experience: v})}>
+                  <Select value={formData.experience} onValueChange={(v) => setFormData({...formData, experience: v || ''})}>
                     <SelectTrigger className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200"><SelectValue placeholder="Select level" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Beginner">Beginner</SelectItem>
@@ -180,7 +180,7 @@ export default function Onboarding() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-700">Team Size</label>
-                  <Select value={formData.teamSize} onValueChange={(v) => setFormData({...formData, teamSize: v})}>
+                  <Select value={formData.teamSize} onValueChange={(v) => setFormData({...formData, teamSize: v || ''})}>
                     <SelectTrigger className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200"><SelectValue placeholder="Select team size" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Solo">Solo Founder</SelectItem>
@@ -196,7 +196,7 @@ export default function Onboarding() {
               <>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-700">Available Time</label>
-                  <Select value={formData.availableTime} onValueChange={(v) => setFormData({...formData, availableTime: v})}>
+                  <Select value={formData.availableTime} onValueChange={(v) => setFormData({...formData, availableTime: v || ''})}>
                     <SelectTrigger className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200"><SelectValue placeholder="Select time" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Part-time (10-20 hrs/wk)">Part-time (10-20 hrs/wk)</SelectItem>
@@ -206,7 +206,7 @@ export default function Onboarding() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-slate-700">Risk Tolerance</label>
-                  <Select value={formData.riskTolerance} onValueChange={(v) => setFormData({...formData, riskTolerance: v})}>
+                  <Select value={formData.riskTolerance} onValueChange={(v) => setFormData({...formData, riskTolerance: v || ''})}>
                     <SelectTrigger className="w-full rounded-xl py-6 px-4 bg-slate-50 border-slate-200"><SelectValue placeholder="Select risk" /></SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Low (Bootstrapped, profitable from day 1)">Low (Bootstrapped, profitable from day 1)</SelectItem>
