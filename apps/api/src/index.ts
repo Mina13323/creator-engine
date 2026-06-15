@@ -27,8 +27,8 @@ import {
   UploadedDocumentModel
 } from '@creator/database';
 import { LoginRequest, SignupRequest, AuthResponse, AuthUser, FounderProfile, SelectedOpportunity, BusinessPlan, PitchDeck } from '@creator/types';
-import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent, runBrandingAgent, runMarketingAgent, runPitchAgent } from '@creator/agents';
 import { queryRAG } from '@creator/rag-core';
+import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent, runBrandingAgent, runMarketingAgent, runPitchAgent } from '@creator/agents';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
@@ -666,7 +666,8 @@ app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Pr
 
     const state = await VentureStateModel.findOne({ projectId });
     let chatHistory: any[] = [];
-    
+
+
     let activeConversationId = conversationId;
     let isNewConversation = false;
 
@@ -686,12 +687,12 @@ app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Pr
     const ragContext = JSON.stringify(ragResults);
 
     const aiResponse = await runCofounderAgent(message, JSON.stringify(state), chatHistory, ragContext);
-    
+
     // Attach RAG sources to AI response for UI transparency
     if (aiResponse) {
       aiResponse.ragSources = ragResults.map((r: any) => r.title);
     }
-    
+
     chatHistory.push(aiResponse);
 
     if (dbConnected) {
