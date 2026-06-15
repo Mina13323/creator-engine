@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useStore } from '../store/useStore';
-import { Compass, Calendar, DollarSign, Wrench, CheckSquare, Clock } from 'lucide-react';
+import { Compass, Calendar, DollarSign, CheckSquare, Clock } from 'lucide-react';
 
 export default function RoadmapPanel() {
   const { currentOutputs } = useStore();
@@ -48,7 +48,7 @@ export default function RoadmapPanel() {
 
         <div className="relative border-l border-white/10 pl-6 ml-3 space-y-8">
           {roadmap.milestones.map((milestone, idx) => (
-            <div key={milestone.id} className="relative">
+            <div key={idx} className="relative">
               {/* Timeline Indicator Ring */}
               <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full border border-blue-500 bg-[#040814] flex items-center justify-center">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
@@ -97,22 +97,6 @@ export default function RoadmapPanel() {
                     ))}
                   </div>
                 </div>
-
-                {/* Recommended Tools */}
-                {milestone.toolRecommendations && milestone.toolRecommendations.length > 0 && (
-                  <div className="space-y-2 pt-2 border-t border-white/5">
-                    <h4 className="text-[10px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                      <Wrench className="w-3.5 h-3.5 text-slate-400" /> Recommended Launch Stack
-                    </h4>
-                    <div className="flex flex-wrap gap-1.5">
-                      {milestone.toolRecommendations.map((tool, rIdx) => (
-                        <span key={rIdx} className="text-[10px] font-medium text-slate-400 bg-slate-900 border border-white/5 px-2.5 py-1 rounded-lg">
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           ))}
