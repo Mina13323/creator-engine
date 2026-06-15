@@ -294,6 +294,13 @@ export interface ChatMessage {
   ragSources?: string[];
 }
 
+export interface MarketResearchOutput {
+  validationReport?: string;
+  competitorAnalysis?: string;
+  trendAnalysis?: string;
+  processedAt?: string;
+}
+
 export interface Conversation {
   id: string;
   userId: string;
@@ -310,6 +317,7 @@ export interface VentureState {
   founderProfile?: FounderProfile;
   selectedOpportunity?: SelectedOpportunity;
   businessPlan?: BusinessPlan;
+  marketResearch?: MarketResearchOutput;
   latestBusinessPlan?: {
     id: string;
     version: number;
