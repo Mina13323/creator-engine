@@ -1,34 +1,66 @@
 {
-  "id": "cofounder-chat-flow",
   "name": "Cofounder Chat RAG Flow",
-  "description": "Runs query embeddings search and injects context into the cofounder prompt.",
   "nodes": [
     {
       "parameters": {
+        "httpMethod": "POST",
         "path": "cofounder-chat-flow",
+        "responseMode": "lastNode",
         "options": {}
       },
       "id": "webhook-node",
       "name": "Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
-      "position": [
-        100,
-        200
-      ]
+      "position": [100, 200]
     },
     {
       "parameters": {
-        "jsCode": "const input = $input.item.json;\nconst query = input.message || \"\";\nconst state = input.state || \"\";\nconst ragData = input.rag_data || \"\";\n\nreturn {\n  json: {\n    prompt: `System: You are an active startup cofounder. Venture state: ${state}. Market data context: ${ragData}. Answer user: ${query}`,\n    model: \"gpt-4o-mini\"\n  }\n};\n"
+        "jsCode": "const input = $input.item.json.body || $input.item.json;\nconst query = input.message || '';\nconst state = input.state || '';\nconst ragData = input.rag_data || '';\n\nreturn {\n  json: {\n    prompt: `System: You are an active startup cofounder. Venture state: ${state}. Market data context: ${ragData}. Answer user: ${query}`\n  }\n};\n"
       },
       "id": "code-node",
       "name": "Generate Chat Prompt",
       "type": "n8n-nodes-base.code",
       "typeVersion": 1,
-      "position": [
-        300,
-        200
-      ]
+      "position": [300, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ={{ $env.FIREWORKS_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { model: 'accounts/fireworks/models/deepseek-v4-pro', messages: [ { role: 'user', content: $json.prompt } ] } }}",
+        "options": {}
+      },
+      "id": "http-node",
+      "name": "Call LLM (OpenAI)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [500, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "const response = $input.item.json;\nconst aiMessage = response.choices[0].message.content;\n\nreturn {\n  json: {\n    success: true,\n    workflow: 'cofounder-chat-flow',\n    projectId: 'unknown',\n    generatedAt: new Date().toISOString(),\n    data: aiMessage\n  }\n};"
+      },
+      "id": "format-node",
+      "name": "Format Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [700, 200]
     }
   ],
   "connections": {
@@ -37,6 +69,28 @@
         [
           {
             "node": "Generate Chat Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Chat Prompt": {
+      "main": [
+        [
+          {
+            "node": "Call LLM (OpenAI)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call LLM (OpenAI)": {
+      "main": [
+        [
+          {
+            "node": "Format Response",
             "type": "main",
             "index": 0
           }

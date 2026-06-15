@@ -97,6 +97,12 @@ async function post<T>(path: string, body: any): Promise<T> {
   });
 }
 
+async function del<T>(path: string): Promise<T> {
+  return request<T>(path, {
+    method: 'DELETE',
+  });
+}
+
 export const authClient = {
   checkEmail,
   login,
@@ -106,4 +112,5 @@ export const authClient = {
   getMe,
   get,
   post,
+  delete: del,
 };

@@ -364,6 +364,7 @@ const ConversationSchema = new Schema<Conversation & Document>(
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
+    title: { type: String },
     messages: [ChatMessageSchema]
   },
   { timestamps: true }

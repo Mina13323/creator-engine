@@ -1,12 +1,12 @@
 import { create } from 'zustand';
-import { Project, ChatMessage, AuthUser, FounderProfile, BusinessOpportunity, SelectedOpportunity, BusinessPlan, VentureState, OnboardingData, BrandIdentity, MarketingCampaign, PitchDeck } from '@creator/types';
+import { Project, ChatMessage, Conversation, AuthUser, FounderProfile, BusinessOpportunity, SelectedOpportunity, BusinessPlan, VentureState, OnboardingData, BrandIdentity, MarketingCampaign, PitchDeck } from '@creator/types';
 import { authClient } from '../lib/authClient';
 
 interface StoreState {
   projects: Project[];
   currentProject: Project | null;
   ventureState: VentureState | null;
-  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'marketing-ai' | 'pitch' | 'roadmap' | 'ai-studio';
+  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'marketing-ai' | 'pitch' | 'roadmap' | 'ai-consultant' | 'ai-studio';
   isOnboarded: boolean;
   
   // Async states
@@ -14,6 +14,8 @@ interface StoreState {
   loadingMessage: string;
   chatMessages: ChatMessage[];
   chatLoading: boolean;
+  conversations: Conversation[];
+  activeConversationId: string | null;
 
   // Lifecycle Output States (for currently generating views)
   opportunities: BusinessOpportunity[];
@@ -50,11 +52,15 @@ interface StoreState {
   selectOpportunity: (projectId: string, opportunityId: string) => Promise<void>;
   generateBusinessPlan: (projectId: string) => Promise<void>;
   uploadDocument: (projectId: string, fileData: { fileName: string, fileType: string, storageUrl: string, fileSize: number }) => Promise<void>;
+  generateImage: (prompt: string, style: string) => Promise<string>;
   generateBranding: (projectId: string) => Promise<void>;
   generateMarketing: (projectId: string) => Promise<void>;
   generatePitch: (projectId: string) => Promise<void>;
 
   sendChatMessage: (message: string) => Promise<void>;
+  clearChat: () => void;
+  loadConversations: (projectId: string) => Promise<void>;
+  setActiveConversation: (conversationId: string) => void;
   resetToDashboard: () => void;
   startNewVenture: () => void;
   setActiveTab: (tab: StoreState['activeTab']) => void;
@@ -70,6 +76,8 @@ export const useStore = create<StoreState>((set, get) => ({
   loadingMessage: '',
   chatMessages: [],
   chatLoading: false,
+  conversations: [],
+  activeConversationId: null,
   opportunities: [],
   selectedOpportunity: null,
   isSelecting: false,
@@ -131,7 +139,7 @@ export const useStore = create<StoreState>((set, get) => ({
       const data = await authClient.get<Project[]>('/projects');
       set({ projects: data });
       if (data.length > 0) {
-        await get().selectProject(data[0].id || data[0]._id as any);
+        await get().selectProject(data[0].id || (data[0] as any)._id);
         set({ isOnboarded: true });
       }
     } catch (e) {
@@ -266,6 +274,16 @@ export const useStore = create<StoreState>((set, get) => ({
     }
   },
 
+  generateImage: async (prompt: string, style: string) => {
+    try {
+      const res = await authClient.post<{ imageUrl: string }>('/studio/generate-image', { prompt, style });
+      return res.imageUrl;
+    } catch (e) {
+      console.error('generateImage failed', e);
+      throw e;
+    }
+  },
+
   generateBranding: async (projectId) => {
     set({ brandingLoading: true });
     try {
@@ -340,17 +358,50 @@ export const useStore = create<StoreState>((set, get) => ({
     }));
 
     try {
-      const data = await authClient.post<{ history: ChatMessage[] }>('/ai/chat', {
+      const data = await authClient.post<{ history: ChatMessage[], conversationId: string }>('/ai/chat', {
         projectId: currentProject.id,
-        message
+        message,
+        conversationId: get().activeConversationId
       });
       set({
         chatMessages: data.history,
+        activeConversationId: data.conversationId,
         chatLoading: false
       });
+      
+      // Reload conversations to update titles and list
+      get().loadConversations(currentProject.id);
     } catch (e) {
       set({ chatLoading: false });
     }
+  },
+
+  loadConversations: async (projectId: string) => {
+    try {
+      const data = await authClient.get<{ conversations: Conversation[] }>(`/projects/${projectId}/memory`);
+      set({ conversations: data.conversations });
+      const currentActiveId = get().activeConversationId;
+      if (!currentActiveId && data.conversations.length > 0) {
+        set({ 
+          activeConversationId: data.conversations[0].id,
+          chatMessages: data.conversations[0].messages 
+        });
+      }
+    } catch (e) {
+      console.error('Failed to load conversations', e);
+    }
+  },
+
+  setActiveConversation: (conversationId: string) => {
+    const { conversations } = get();
+    const conv = conversations.find(c => c.id === conversationId);
+    if (conv) {
+      set({ activeConversationId: conversationId, chatMessages: conv.messages });
+    }
+  },
+
+  clearChat: () => {
+    set({ chatMessages: [], activeConversationId: null });
   },
 
   resetToDashboard: () => {

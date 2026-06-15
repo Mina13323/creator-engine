@@ -1,7 +1,11 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
+import path from 'path';
+const envPath = path.resolve(__dirname, '../../../.env');
+dotenv.config({ path: envPath });
+console.log('[API] Resolved .env path:', envPath, 'Loaded Fireworks Key:', process.env.FIREWORKS_API_KEY ? 'YES' : 'NO');
 import {
   connectDB,
   ProjectModel,
@@ -23,6 +27,7 @@ import {
   UploadedDocumentModel
 } from '@creator/database';
 import { LoginRequest, SignupRequest, AuthResponse, AuthUser, FounderProfile, SelectedOpportunity, BusinessPlan, PitchDeck } from '@creator/types';
+import { queryRAG } from '@creator/rag-core';
 import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent, runBrandingAgent, runMarketingAgent, runPitchAgent } from '@creator/agents';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -655,31 +660,140 @@ app.get('/api/projects', authMiddleware, async (req: Request, res: Response) => 
 // AI Cofounder Chat Endpoint
 app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
-    const { projectId, message } = req.body;
+    const { projectId, message, conversationId } = req.body;
+    const userId = (req as any).user.id;
     if (!projectId || !message) return res.status(400).json({ error: 'Missing projectId or message' });
 
     const state = await VentureStateModel.findOne({ projectId });
     let chatHistory: any[] = [];
-    const conversation = await ConversationModel.findOne({ projectId });
-    if (conversation) chatHistory = conversation.messages;
+
+
+    let activeConversationId = conversationId;
+    let isNewConversation = false;
+
+    if (activeConversationId) {
+      const conversation = await ConversationModel.findOne({ id: activeConversationId });
+      if (conversation) chatHistory = conversation.messages;
+    } else {
+      activeConversationId = `conv_${Date.now()}`;
+      isNewConversation = true;
+    }
 
     const userMessage = { id: `msg_user_${Date.now()}`, sender: 'user' as const, message, timestamp: new Date() };
     chatHistory.push(userMessage);
 
-    const aiResponse = await runCofounderAgent(message, JSON.stringify(state), chatHistory);
+    // Fetch relevant context from Knowledge Base
+    const ragResults = await queryRAG(message, 2);
+    const ragContext = JSON.stringify(ragResults);
+
+    const aiResponse = await runCofounderAgent(message, JSON.stringify(state), chatHistory, ragContext);
+
+    // Attach RAG sources to AI response for UI transparency
+    if (aiResponse) {
+      aiResponse.ragSources = ragResults.map((r: any) => r.title);
+    }
+
     chatHistory.push(aiResponse);
 
     if (dbConnected) {
-      await ConversationModel.findOneAndUpdate(
-        { projectId },
-        { $push: { messages: { $each: [userMessage, aiResponse] } } },
-        { upsert: true, new: true }
-      );
+      if (isNewConversation) {
+        const title = message.length > 30 ? message.substring(0, 30) + '...' : message;
+        await ConversationModel.create({
+          id: activeConversationId,
+          userId,
+          projectId,
+          title,
+          messages: [userMessage, aiResponse]
+        });
+
+        // Enforce limit of 3
+        const projectConversations = await ConversationModel.find({ projectId }).sort({ createdAt: -1 });
+        if (projectConversations.length > 3) {
+          const toDelete = projectConversations.slice(3);
+          for (const conv of toDelete) {
+            await ConversationModel.deleteOne({ id: conv.id });
+          }
+        }
+      } else {
+        await ConversationModel.findOneAndUpdate(
+          { id: activeConversationId },
+          { $push: { messages: { $each: [userMessage, aiResponse] } } }
+        );
+      }
     }
 
-    return res.json({ userMessage, aiResponse, history: chatHistory });
+    return res.json({ userMessage, aiResponse, history: chatHistory, conversationId: activeConversationId });
   } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Chat error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Memory Retrieval Endpoint
+app.get('/api/projects/:projectId/memory', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { projectId } = req.params;
+    const conversations = await ConversationModel.find({ projectId }).sort({ createdAt: -1 });
+    return res.json({ conversations });
+  } catch (error) {
+    console.error('Memory retrieval error:', error);
+    res.status(500).json({ error: 'Failed to retrieve memory' });
+  }
+});
+
+// Clear Memory Endpoint
+app.delete('/api/projects/:projectId/memory', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { projectId } = req.params;
+    await ConversationModel.findOneAndUpdate({ projectId }, { messages: [] });
+    return res.json({ success: true });
+  } catch (error) {
+    console.error('Memory clear error:', error);
+    res.status(500).json({ error: 'Failed to clear memory' });
+  }
+});
+
+// Image Generation Endpoint (AI Studio)
+app.post('/api/studio/generate-image', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { prompt, style } = req.body;
+    if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
+
+    const fireworksKey = process.env.FIREWORKS_API_KEY;
+    if (!fireworksKey) {
+      return res.status(500).json({ error: 'Fireworks API key not configured' });
+    }
+
+    const enhancedPrompt = `${prompt}, ${style} style, high quality, highly detailed`;
+    const url = "https://api.fireworks.ai/inference/v1/workflows/accounts/fireworks/models/flux-1-schnell-fp8/text_to_image";
+
+    const imageRes = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${fireworksKey}`,
+        'Accept': 'image/jpeg'
+      },
+      body: JSON.stringify({
+        prompt: enhancedPrompt,
+        aspect_ratio: "16:9"
+      })
+    });
+
+    if (!imageRes.ok) {
+      const errText = await imageRes.text();
+      console.error('Fireworks image error:', errText);
+      throw new Error('Image generation failed');
+    }
+
+    const buffer = await imageRes.arrayBuffer();
+    const base64Image = Buffer.from(buffer).toString('base64');
+    const dataUrl = `data:image/jpeg;base64,${base64Image}`;
+
+    return res.json({ imageUrl: dataUrl });
+  } catch (error) {
+    console.error('Image generation error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
