@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { Briefcase, DollarSign, Clock, ShieldAlert, Users, Target, Rocket } from 'lucide-react';
+import { fadeInUp, fadeIn, staggerContainer } from '../lib/motion-presets';
 
 export default function Dashboard() {
   const { currentProject, ventureState, discoverOpportunities, loading, loadingMessage } = useStore();
@@ -29,7 +30,13 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-6 md:p-10 max-w-[1200px] mx-auto space-y-8 animate-in fade-in duration-500">
+    <motion.div 
+      variants={fadeIn}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="p-6 md:p-10 max-w-[1200px] mx-auto space-y-8"
+    >
       
       <div className="flex justify-between items-end">
         <div>
@@ -48,11 +55,16 @@ export default function Dashboard() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <motion.div 
+        variants={staggerContainer}
+        initial="initial"
+        animate="animate"
+        className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+      >
         
         {/* Left Column */}
-        <div className="lg:col-span-2 space-y-6">
-          <Card className="p-6 md:p-8 border-slate-200 shadow-sm rounded-xl bg-white space-y-6">
+        <motion.div variants={fadeInUp} className="lg:col-span-2 space-y-6">
+          <Card className="p-6 md:p-8 border-slate-200 shadow-sm rounded-2xl bg-white space-y-6 hover:shadow-md transition-all">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-slate-800">Your Archetype</h3>
@@ -83,7 +95,7 @@ export default function Dashboard() {
             </div>
           </Card>
 
-          <Card className="p-6 border-slate-200 shadow-sm rounded-xl bg-white">
+          <Card className="p-6 border-slate-200 shadow-sm rounded-2xl bg-white hover:shadow-md transition-all">
             <h3 className="text-lg font-semibold text-slate-800 mb-4">Recommended Models & Industries</h3>
             <div className="space-y-4">
               <div>
@@ -104,11 +116,11 @@ export default function Dashboard() {
               </div>
             </div>
           </Card>
-        </div>
+        </motion.div>
 
         {/* Right Column */}
-        <div className="lg:col-span-1 space-y-6">
-          <Card className="p-6 border-slate-200 shadow-sm rounded-xl bg-white space-y-5">
+        <motion.div variants={fadeInUp} className="lg:col-span-1 space-y-6">
+          <Card className="p-6 border-slate-200 shadow-sm rounded-2xl bg-white space-y-5 hover:shadow-md transition-all">
             <h3 className="text-base font-semibold text-slate-800 border-b border-slate-100 pb-3">Input Parameters</h3>
             
             <div className="space-y-4">
@@ -163,9 +175,9 @@ export default function Dashboard() {
               </div>
             </div>
           </Card>
-        </div>
+        </motion.div>
 
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

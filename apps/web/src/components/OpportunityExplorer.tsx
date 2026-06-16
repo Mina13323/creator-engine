@@ -1,11 +1,14 @@
 'use client';
 
+import { AILoadingOverlay } from './ui/AILoadingOverlay';
 import React from 'react';
 import { useStore } from '../store/useStore';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 import { Radar, Trophy, Users, Zap, TrendingUp, CheckCircle, Loader2, SplitSquareHorizontal, ArrowLeft, ChevronRight } from 'lucide-react';
 import { Checkbox } from './ui/checkbox';
+import { motion, AnimatePresence } from 'framer-motion';
+import { staggerContainer, cardReveal, fadeInUp, fadeIn, modalTransition } from '../lib/motion-presets';
 
 export default function OpportunityExplorer() {
   const { 
@@ -24,15 +27,7 @@ export default function OpportunityExplorer() {
   const [confirmingOppId, setConfirmingOppId] = React.useState<string | null>(null);
 
   if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[60vh] gap-6 animate-in fade-in">
-        <Loader2 className="w-12 h-12 text-emerald-500 animate-spin" />
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-slate-800">{loadingMessage || 'Discovering Opportunities...'}</h2>
-          <p className="text-slate-500 mt-2">Our AI is analyzing the market against your founder profile.</p>
-        </div>
-      </div>
-    );
+    return <AILoadingOverlay message={loadingMessage || "Discovering Opportunities..."} />;
   }
 
   if (!opportunities || opportunities.length === 0) {
@@ -77,7 +72,13 @@ export default function OpportunityExplorer() {
   if (isComparing) {
     const comparingOpps = opportunities.filter(o => selectedToCompare.includes(o.id));
     return (
-      <div className="p-6 md:p-10 max-w-[1200px] mx-auto space-y-8 animate-in fade-in duration-500">
+      <motion.div 
+        variants={fadeIn}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        className="p-6 md:p-10 max-w-[1200px] mx-auto space-y-8"
+      >
         <div>
           <Button variant="ghost" onClick={() => setIsComparing(false)} className="mb-4 text-slate-500 hover:text-slate-800 -ml-4">
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to list
@@ -88,12 +89,18 @@ export default function OpportunityExplorer() {
           </h1>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {comparingOpps.map((opp) => {
             const isSelected = selectedOpportunity?.opportunityId === opp.id;
             return (
-              <Card key={opp.id} className={`p-6 border-slate-200 shadow-sm rounded-xl bg-white flex flex-col h-full transition-all ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/10' : ''}`}>
-                <div className="flex-1 space-y-4 mb-6">
+              <motion.div variants={cardReveal} key={opp.id}>
+                <Card className={`p-6 border-slate-200 shadow-sm rounded-2xl bg-white flex flex-col h-full hover:shadow-lg transition-all duration-300 ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/10' : 'hover:-translate-y-1'}`}>
+                  <div className="flex-1 space-y-4 mb-6">
                   <h2 className="text-xl font-bold text-slate-900">{opp.title}</h2>
                   <p className="text-slate-600 text-sm">{opp.description}</p>
                   <div className="space-y-2 pt-4 border-t border-slate-100">
@@ -127,15 +134,22 @@ export default function OpportunityExplorer() {
                   )}
                 </Button>
               </Card>
+              </motion.div>
             );
           })}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="p-6 md:p-10 max-w-[1200px] mx-auto space-y-8 animate-in fade-in duration-500">
+    <motion.div 
+      variants={fadeIn}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="p-6 md:p-10 max-w-[1200px] mx-auto space-y-8"
+    >
       
       <div className="flex justify-between items-end">
         <div>
@@ -164,13 +178,21 @@ export default function OpportunityExplorer() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6">
-        {opportunities.map((opp, idx) => {
+      {/* Main List */}
+      <motion.div 
+        variants={staggerContainer}
+        initial="initial"
+        animate="animate"
+        className="space-y-6"
+      >
+        {opportunities.map((opp) => {
           const isSelected = selectedOpportunity?.opportunityId === opp.id;
           return (
-            <Card key={opp.id || idx} className={`p-6 md:p-8 border-slate-200 shadow-sm rounded-xl bg-white hover:border-emerald-200 transition-all ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/10' : ''}`}>
-              <div className="flex flex-col md:flex-row gap-8 justify-between">
+            <motion.div variants={fadeInUp} key={opp.id}>
+            <Card className={`p-6 md:p-8 border-slate-200 shadow-sm rounded-2xl bg-white transition-all duration-300 hover:shadow-lg ${isSelected ? 'border-emerald-500 ring-2 ring-emerald-500/10' : 'hover:-translate-y-1'}`}>
+              <div className="flex flex-col lg:flex-row gap-8">
                 
+                {/* Left Column: Core Info */}
                 <div className="flex-1 space-y-4">
                   <div className="flex items-start gap-4">
                     <Checkbox 
@@ -252,9 +274,10 @@ export default function OpportunityExplorer() {
 
               </div>
             </Card>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
 
       {selectedOpportunity && (
         <div className="flex justify-center pt-8 border-t border-slate-100">
@@ -269,9 +292,17 @@ export default function OpportunityExplorer() {
       )}
 
       {/* Confirmation Modal */}
+      <AnimatePresence>
       {confirmingOppId && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <Card className="p-6 max-w-md w-full bg-white space-y-6 shadow-xl border-slate-200 rounded-2xl animate-in zoom-in duration-200">
+          <motion.div 
+            variants={modalTransition}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="max-w-md w-full"
+          >
+            <Card className="p-6 bg-white space-y-6 shadow-xl border-slate-200 rounded-2xl">
             <div>
               <h2 className="text-xl font-bold text-slate-900">Change Startup Concept?</h2>
               <p className="text-sm text-slate-500 mt-2">
@@ -283,11 +314,12 @@ export default function OpportunityExplorer() {
               <Button onClick={confirmSelection} disabled={isSelecting} className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl px-5">
                 {isSelecting ? 'Selecting...' : 'Yes, Change Concept'}
               </Button>
-            </div>
-          </Card>
+              </div>
+            </Card>
+          </motion.div>
         </div>
       )}
-
-    </div>
+      </AnimatePresence>
+    </motion.div>
   );
 }

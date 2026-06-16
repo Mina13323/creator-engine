@@ -1,11 +1,28 @@
-import express, { Request, Response } from 'express';
+import 'express-async-errors';
+import { env } from './env';
+import * as Sentry from '@sentry/node';
+import { nodeProfilingIntegration } from '@sentry/profiling-node';
+
+if (env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: env.SENTRY_DSN,
+    environment: env.NODE_ENV,
+    integrations: [
+      nodeProfilingIntegration(),
+    ],
+    tracesSampleRate: 1.0,
+    profilesSampleRate: 1.0,
+  });
+}
+
+import express, { Request, Response, NextFunction } from 'express';
+import { errorHandler, AppError } from './errorHandler';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import * as dotenv from 'dotenv';
-import path from 'path';
-const envPath = path.resolve(__dirname, '../../../.env');
-dotenv.config({ path: envPath });
-console.log('[API] Resolved .env path:', envPath, 'Loaded Fireworks Key:', process.env.FIREWORKS_API_KEY ? 'YES' : 'NO');
+import multer from 'multer';
+import { processAndIngestDocument } from '@creator/rag-core';
+import helmet from 'helmet';
+console.log('[API] Loaded Fireworks Key:', env.FIREWORKS_API_KEY ? 'YES' : 'NO');
 import {
   connectDB,
   ProjectModel,
@@ -24,27 +41,68 @@ import {
   FounderProfileModel,
   VentureStateModel,
   AgentRunModel,
-  UploadedDocumentModel
+  UploadedDocumentModel,
+  FinancialForecast,
+  PricingStrategy,
+  KnowledgeDocumentModel,
+  getProjectContext,
+  buildContextString
 } from '@creator/database';
 import { LoginRequest, SignupRequest, AuthResponse, AuthUser, FounderProfile, SelectedOpportunity, BusinessPlan, PitchDeck } from '@creator/types';
 import { queryRAG } from '@creator/rag-core';
-import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent, runBrandingAgent, runMarketingAgent, runPitchAgent } from '@creator/agents';
+import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent, runBrandingAgent, runMarketingAgent, runPitchAgent, callFireworksImage, runFinancialAgent } from '@creator/agents';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
+import { generalRateLimiter, authRateLimiter, aiRateLimiter } from './rateLimit';
+import { validateRequest } from './validate';
+import {
+  signupSchema, loginSchema, googleAuthSchema, checkEmailSchema,
+  createProjectSchema, projectIdParamSchema, analyzeFounderSchema,
+  discoverOpportunitySchema, selectOpportunitySchema,
+  generateBusinessPlanSchema, uploadDocumentSchema, aiChatSchema, generateImageSchema
+} from './schemas';
 
-dotenv.config();
+const JWT_SECRET = env.JWT_SECRET;
+const googleClient = new OAuth2Client(env.GOOGLE_CLIENT_ID);
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret_key_for_jwt_fallback_only';
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || 'mock_client_id');
+export const app = express();
 
-const app = express();
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000', credentials: true }));
+if (env.SENTRY_DSN) {
+  Sentry.setupExpressErrorHandler(app);
+}
+
+app.use(helmet());
+app.set('trust proxy', 1); // Support reverse proxies
+
+app.use(cors({ origin: env.FRONTEND_URL, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-const PORT = process.env.PORT || 5000;
-const MONGO_URL = process.env.DATABASE_URL;
+// Apply rate limiting policies
+app.use('/api', generalRateLimiter);
+app.use('/api/auth', authRateLimiter);
+app.use('/api/founder/analyze', aiRateLimiter);
+app.use('/api/opportunities/discover', aiRateLimiter);
+app.use('/api/business-plan/generate', aiRateLimiter);
+app.use('/api/ai', aiRateLimiter);
+app.use('/api/studio', aiRateLimiter);
+
+// Internal routes (not prefixed with /api, exempt from general rate limit but protected by local network conceptually)
+app.post('/internal/alerts', (req: Request, res: Response) => {
+  const { workflowName, errorMsg } = req.body;
+  if (env.SENTRY_DSN && Sentry) {
+    Sentry.captureMessage(`[n8n Failure] ${workflowName}: ${errorMsg}`, {
+      level: 'error',
+      tags: { source: 'n8n_webhook', workflow: workflowName }
+    });
+  }
+  console.error(`[n8n Alert] Workflow: ${workflowName} | Error: ${errorMsg}`);
+  res.status(200).json({ success: true, message: 'Alert ingested' });
+});
+
+const PORT = env.PORT;
+const MONGO_URL = env.MONGODB_URI;
 
 let dbConnected = false;
 
@@ -78,13 +136,13 @@ export const authMiddleware = async (req: Request, res: Response, next: any) => 
   try {
     const authHeader = req.headers.authorization;
     const token = req.cookies.token || (authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null);
-    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+    if (!token) throw new AppError('Unauthorized: No token provided', 401, 'UNAUTHORIZED');
 
     const decoded = verifyToken(token);
     (req as any).user = { id: decoded.id, email: decoded.email };
     next();
   } catch (error) {
-    return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    throw new AppError('Unauthorized: Invalid token', 401, 'UNAUTHORIZED');
   }
 };
 
@@ -94,15 +152,15 @@ app.get('/api/health', (req: Request, res: Response) => {
 });
 
 // AUTH ROUTES
-app.post('/api/auth/signup', async (req: Request, res: Response): Promise<any> => {
+app.post('/api/auth/signup', validateRequest(signupSchema), async (req: Request, res: Response): Promise<any> => {
   try {
-    if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
+    if (!dbConnected) throw new AppError('Database connection required for authentication', 503, 'SERVICE_UNAVAILABLE');
     const { email, password, name } = req.body as SignupRequest;
-    if (!email || !password || !name) return res.status(400).json({ error: 'Missing fields: email, password, and name are required' });
-    if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
+    if (!email || !password || !name) throw new AppError('Missing fields: email, password, and name are required', 400, 'BAD_REQUEST');
+    if (password.length < 6) throw new AppError('Password must be at least 6 characters', 400, 'BAD_REQUEST');
 
     const existing = await UserModel.findOne({ email });
-    if (existing) return res.status(400).json({ error: 'Email already in use' });
+    if (existing) throw new AppError('Email already in use', 400, 'BAD_REQUEST');
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const userId = `usr_${Date.now()}`;
@@ -110,48 +168,48 @@ app.post('/api/auth/signup', async (req: Request, res: Response): Promise<any> =
     await newUser.save();
 
     const token = generateToken(newUser.id, email);
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
+    res.cookie('token', token, { httpOnly: true, secure: env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
     return res.status(201).json({ token, user: toAuthUser(newUser) });
   } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
+    throw error;
   }
 });
 
-app.post('/api/auth/register', async (req: Request, res: Response): Promise<any> => {
+app.post('/api/auth/register', validateRequest(signupSchema), async (req: Request, res: Response): Promise<any> => {
   // Alias
   return app._router.handle(req, res, () => { });
 });
 
-app.post('/api/auth/login', async (req: Request, res: Response): Promise<any> => {
+app.post('/api/auth/login', validateRequest(loginSchema), async (req: Request, res: Response): Promise<any> => {
   try {
-    if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
+    if (!dbConnected) throw new AppError('Database connection required for authentication', 503, 'SERVICE_UNAVAILABLE');
     const { email, password } = req.body as LoginRequest;
-    if (!email || !password) return res.status(400).json({ error: 'Missing fields: email and password are required' });
+    if (!email || !password) throw new AppError('Missing fields: email and password are required', 400, 'BAD_REQUEST');
 
     const user = await UserModel.findOne({ email });
-    if (!user || !user.password) return res.status(401).json({ error: 'Invalid credentials' });
+    if (!user || !user.password) throw new AppError('Invalid credentials', 401, 'UNAUTHORIZED');
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
+    if (!isMatch) throw new AppError('Invalid credentials', 401, 'UNAUTHORIZED');
 
     const token = generateToken(user.id, email);
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
+    res.cookie('token', token, { httpOnly: true, secure: env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
     return res.json({ token, user: toAuthUser(user) });
   } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
+    throw error;
   }
 });
 
-app.post('/api/auth/google', async (req: Request, res: Response): Promise<any> => {
+app.post('/api/auth/google', validateRequest(googleAuthSchema), async (req: Request, res: Response): Promise<any> => {
   try {
-    if (!dbConnected) return res.status(503).json({ error: 'Database connection required' });
+    if (!dbConnected) throw new AppError('Database connection required', 503, 'SERVICE_UNAVAILABLE');
     const { credential } = req.body;
-    if (!credential) return res.status(400).json({ error: 'Missing Google credential' });
+    if (!credential) throw new AppError('Missing Google credential', 400, 'BAD_REQUEST');
 
     let payload: any = null;
     try {
-      if (process.env.GOOGLE_CLIENT_ID) {
-        const ticket = await googleClient.verifyIdToken({ idToken: credential, audience: process.env.GOOGLE_CLIENT_ID });
+      if (env.GOOGLE_CLIENT_ID) {
+        const ticket = await googleClient.verifyIdToken({ idToken: credential, audience: env.GOOGLE_CLIENT_ID });
         payload = ticket.getPayload();
       } else {
         payload = jwt.decode(credential);
@@ -160,7 +218,7 @@ app.post('/api/auth/google', async (req: Request, res: Response): Promise<any> =
       payload = jwt.decode(credential);
     }
 
-    if (!payload || !payload.email) return res.status(401).json({ error: 'Invalid Google token' });
+    if (!payload || !payload.email) throw new AppError('Invalid Google token', 401, 'UNAUTHORIZED');
 
     const { email, name, sub: googleId, picture } = payload;
     let user = await UserModel.findOne({ email });
@@ -176,10 +234,10 @@ app.post('/api/auth/google', async (req: Request, res: Response): Promise<any> =
     }
 
     const token = generateToken(user.id, email);
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
+    res.cookie('token', token, { httpOnly: true, secure: env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
     return res.json({ token, user: toAuthUser(user) });
   } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
+    throw error;
   }
 });
 
@@ -188,27 +246,27 @@ app.post('/api/auth/logout', (req: Request, res: Response) => {
   return res.json({ message: 'Logged out successfully' });
 });
 
-app.post('/api/auth/check-email', async (req: Request, res: Response): Promise<any> => {
+app.post('/api/auth/check-email', validateRequest(checkEmailSchema), async (req: Request, res: Response): Promise<any> => {
   try {
-    if (!dbConnected) return res.status(503).json({ error: 'Database connection required' });
+    if (!dbConnected) throw new AppError('Database connection required', 503, 'SERVICE_UNAVAILABLE');
     const { email } = req.body;
-    if (!email) return res.status(400).json({ error: 'Missing email' });
+    if (!email) throw new AppError('Missing email', 400, 'BAD_REQUEST');
     const user = await UserModel.findOne({ email });
     return res.json({ exists: !!user });
   } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
+    throw error;
   }
 });
 
 app.get('/api/auth/me', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
-    if (!dbConnected) return res.status(503).json({ error: 'Database connection required' });
+    if (!dbConnected) throw new AppError('Database connection required', 503, 'SERVICE_UNAVAILABLE');
     const userId = (req as any).user.id;
     const user = await UserModel.findOne({ id: userId });
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (!user) throw new AppError('User not found', 404, 'NOT_FOUND');
     return res.json({ user: toAuthUser(user) });
   } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
+    throw error;
   }
 });
 
@@ -243,7 +301,7 @@ async function trackAgentRun(
     projectId,
     workflow,
     status: 'running',
-    aiModel: aiModel || 'deepseek-v3',
+    aiModel: aiModel || 'deepseek-v4-flash',
     provider: 'fireworks',
     startedAt: new Date(),
     input
@@ -269,12 +327,12 @@ async function trackAgentRun(
 }
 
 // 0. Create Project (Decoupled)
-app.post('/api/projects', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/projects', authMiddleware, validateRequest(createProjectSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { name } = req.body;
 
-    if (!name) return res.status(400).json({ error: 'Missing project name' });
+    if (!name) throw new AppError('Missing project name', 400, 'BAD_REQUEST');
 
     const projectId = `proj_${Date.now()}`;
     const project = new ProjectModel({
@@ -293,20 +351,23 @@ app.post('/api/projects', authMiddleware, async (req: Request, res: Response): P
     return res.status(201).json({ projectId, status: 'draft', project });
   } catch (err: any) {
     console.error('Project creation error:', err);
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
 // 1. Founder Analysis
-app.post('/api/founder/analyze', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/founder/analyze', authMiddleware, validateRequest(analyzeFounderSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId, data } = req.body;
 
-    if (!projectId || !data) return res.status(400).json({ error: 'Missing projectId or data' });
+    if (!projectId || !data) throw new AppError('Missing projectId or data', 400, 'BAD_REQUEST');
+
+    const projectContext = await getProjectContext(projectId, userId);
+    const contextStr = buildContextString(projectContext);
 
     // Call Agent with tracking
-    const analysis = await trackAgentRun(userId, projectId, 'founder-analysis', data, () => runFounderAgent(projectId, data));
+    const analysis = await trackAgentRun(userId, projectId, 'founder-analysis', data, () => runFounderAgent(projectId, data, contextStr));
 
     const founderProfile = new FounderProfileModel({
       id: `fp_${Date.now()}`,
@@ -324,19 +385,22 @@ app.post('/api/founder/analyze', authMiddleware, async (req: Request, res: Respo
     return res.status(201).json({ founderProfile });
   } catch (err: any) {
     console.error('Founder analysis error:', err);
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
 // 2. Opportunity Discovery
-app.post('/api/opportunities/discover', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/opportunities/discover', authMiddleware, validateRequest(discoverOpportunitySchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
-    if (!projectId) return res.status(400).json({ error: 'Missing projectId' });
+    if (!projectId) throw new AppError('Missing projectId', 400, 'BAD_REQUEST');
 
     const founderProfile = await FounderProfileModel.findOne({ projectId, userId });
-    if (!founderProfile) return res.status(404).json({ error: 'Founder profile not found' });
+    if (!founderProfile) throw new AppError('Founder profile not found', 404, 'NOT_FOUND');
+
+    const projectContext = await getProjectContext(projectId, userId);
+    const contextStr = buildContextString(projectContext);
 
     // Call Agent with tracking (Model: deepseek-v4-flash)
     const rawOpportunities = await trackAgentRun(
@@ -344,7 +408,7 @@ app.post('/api/opportunities/discover', authMiddleware, async (req: Request, res
       projectId,
       'opportunity-discovery',
       founderProfile.toObject(),
-      () => runOpportunityAgent(projectId, founderProfile.toObject()),
+      () => runOpportunityAgent(projectId, founderProfile.toObject(), contextStr),
       'deepseek-v4-flash'
     );
 
@@ -387,22 +451,22 @@ app.post('/api/opportunities/discover', authMiddleware, async (req: Request, res
     return res.json({ opportunities: formattedOpportunities });
   } catch (err: any) {
     console.error('Opportunity discovery error:', err);
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
 // 3. Select Opportunity
-app.post('/api/opportunities/select', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/opportunities/select', authMiddleware, validateRequest(selectOpportunitySchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId, opportunityId } = req.body;
-    if (!projectId || !opportunityId) return res.status(400).json({ error: 'Missing projectId or opportunityId' });
+    if (!projectId || !opportunityId) throw new AppError('Missing projectId or opportunityId', 400, 'BAD_REQUEST');
 
     const project = await ProjectModel.findOne({ id: projectId, userId });
-    if (!project) return res.status(404).json({ error: 'Project not found' });
+    if (!project) throw new AppError('Project not found', 404, 'NOT_FOUND');
 
     const opportunity = await BusinessOpportunityModel.findOne({ id: opportunityId, projectId });
-    if (!opportunity) return res.status(404).json({ error: 'Opportunity not found' });
+    if (!opportunity) throw new AppError('Opportunity not found', 404, 'NOT_FOUND');
 
     // Wrap in trackAgentRun to audit opportunity selection (workflow: 'opportunity-selection', model: 'system')
     const selected = await trackAgentRun(
@@ -447,21 +511,24 @@ app.post('/api/opportunities/select', authMiddleware, async (req: Request, res: 
     return res.json({ success: true, selectedOpportunity: selected });
   } catch (err: any) {
     console.error('Opportunity selection error:', err);
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
 // 4. Generate Business Plan
-app.post('/api/business-plan/generate', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/business-plan/generate', authMiddleware, validateRequest(generateBusinessPlanSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
 
     const selected = await SelectedOpportunityModel.findOne({ projectId, userId });
-    if (!selected) return res.status(400).json({ error: 'No opportunity selected for this project' });
+    if (!selected) throw new AppError('No opportunity selected for this project', 400, 'BAD_REQUEST');
 
     const founderProfile = await FounderProfileModel.findOne({ projectId, userId });
-    if (!founderProfile) return res.status(400).json({ error: 'Founder profile not found for this project' });
+    if (!founderProfile) throw new AppError('Founder profile not found for this project', 400, 'BAD_REQUEST');
+
+    const projectContext = await getProjectContext(projectId, userId);
+    const contextStr = buildContextString(projectContext);
 
     // Call Agent with tracking (workflow: 'business-plan', model: 'deepseek-v4-flash')
     const planData = await trackAgentRun(
@@ -469,7 +536,7 @@ app.post('/api/business-plan/generate', authMiddleware, async (req: Request, res
       projectId,
       'business-plan',
       selected.toObject(),
-      () => runBusinessPlanAgent(projectId, selected.toObject(), founderProfile.toObject()),
+      () => runBusinessPlanAgent(projectId, selected.toObject(), founderProfile.toObject(), contextStr),
       'deepseek-v4-flash'
     );
 
@@ -510,35 +577,35 @@ app.post('/api/business-plan/generate', authMiddleware, async (req: Request, res
 
     return res.json({ businessPlan: plan });
   } catch (err: any) {
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
 // 4.5 Get Business Plans
-app.get('/api/projects/:projectId/business-plans', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.get('/api/projects/:projectId/business-plans', authMiddleware, validateRequest(projectIdParamSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.params;
 
-    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    if (!dbConnected) throw new AppError('DB required', 503, 'SERVICE_UNAVAILABLE');
 
     const plans = await BusinessPlanModel.find({ projectId, userId }).sort({ version: -1 });
     return res.json({ businessPlans: plans });
   } catch (err: any) {
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
 // 5. Get Venture State
-app.get('/api/projects/:projectId/state', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.get('/api/projects/:projectId/state', authMiddleware, validateRequest(projectIdParamSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.params;
 
-    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    if (!dbConnected) throw new AppError('DB required', 503, 'SERVICE_UNAVAILABLE');
 
     const state = await VentureStateModel.findOne({ projectId, userId });
-    if (!state) return res.status(404).json({ error: 'Venture state not found' });
+    if (!state) throw new AppError('Venture state not found', 404, 'NOT_FOUND');
 
     const stateObj = state.toObject();
     if (stateObj.latestBusinessPlan && stateObj.latestBusinessPlan.id) {
@@ -550,17 +617,17 @@ app.get('/api/projects/:projectId/state', authMiddleware, async (req: Request, r
 
     return res.json(stateObj);
   } catch (err: any) {
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
 // 6. AI Cofounder Context Endpoint
-app.get('/api/projects/:projectId/context', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.get('/api/projects/:projectId/context', authMiddleware, validateRequest(projectIdParamSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.params;
 
-    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    if (!dbConnected) throw new AppError('DB required', 503, 'SERVICE_UNAVAILABLE');
 
     const project = await ProjectModel.findOne({ id: projectId, userId });
     const founderProfile = await FounderProfileModel.findOne({ projectId, userId });
@@ -587,54 +654,96 @@ app.get('/api/projects/:projectId/context', authMiddleware, async (req: Request,
       ventureState: ventureStateObj
     });
   } catch (err: any) {
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
+// 6.5 Generate Financial Model
+app.post('/api/financial-engine', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId, businessIdea, businessModel } = req.body;
+
+    if (!dbConnected) throw new AppError('DB required', 503, 'SERVICE_UNAVAILABLE');
+
+    const projectContext = await getProjectContext(projectId || 'demo-project', userId);
+    const contextStr = buildContextString(projectContext);
+
+    const result = await trackAgentRun(
+      userId,
+      projectId || 'demo-project',
+      'financial-engine',
+      { businessIdea, businessModel },
+      async () => await runFinancialAgent(projectId || 'demo-project', businessIdea, businessModel, contextStr)
+    );
+
+    if (dbConnected) {
+      await FinancialForecast.findOneAndUpdate(
+        { projectId: projectId || 'demo-project' },
+        {
+          id: `fin_${Date.now()}`,
+          userId,
+          projectId: projectId || 'demo-project',
+          financialForecast: result,
+          generatedByModel: 'n8n-workflow',
+          generatedAt: new Date()
+        },
+        { upsert: true, new: true }
+      );
+    }
+
+    return res.json(result);
+  } catch (err: any) {
+    console.error('Financial Engine Error:', err);
+    throw err;
+  }
+});
+
+
+const upload = multer({ storage: multer.memoryStorage() });
+
 // 7. Upload Document Pipeline
-app.post('/api/projects/:projectId/documents/upload', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/projects/:projectId/documents/upload', authMiddleware, aiRateLimiter, upload.single('file'), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.params;
-    const { fileName, fileType, storageUrl, fileSize } = req.body;
 
-    if (!fileName || !fileType || !storageUrl) {
-      return res.status(400).json({ error: 'Missing required file details (fileName, fileType, storageUrl)' });
+    if (!req.file) {
+      throw new AppError('No file uploaded', 400, 'BAD_REQUEST');
     }
 
-    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    if (!dbConnected) throw new AppError('DB required', 503, 'SERVICE_UNAVAILABLE');
 
     const project = await ProjectModel.findOne({ id: projectId, userId });
-    if (!project) return res.status(404).json({ error: 'Project not found' });
+    if (!project) throw new AppError('Project not found', 404, 'NOT_FOUND');
 
     const documentId = `doc_${Date.now()}`;
     const uploadedDoc = new UploadedDocumentModel({
       id: documentId,
       userId,
       projectId,
-      fileName,
-      fileType,
-      fileSize: fileSize || 0,
-      storageUrl,
-      processingStatus: 'pending'
+      fileName: req.file.originalname,
+      fileType: req.file.mimetype,
+      fileSize: req.file.size || 0,
+      storageUrl: 'local-memory',
+      processingStatus: 'processing'
     });
 
     await uploadedDoc.save();
 
-    // The actual triggering of the n8n webhook would happen here.
-    // We wrap it in trackAgentRun to track it.
-    // For now we don't have an agent method implemented in packages/agents, so we just mock it.
-    await trackAgentRun(userId, projectId, 'document-processing', { documentId, storageUrl }, async () => {
-      // Simulate n8n trigger
-      console.log(`[Webhook] Triggering n8n processing for doc ${documentId}`);
-      uploadedDoc.processingStatus = 'processing';
-      await uploadedDoc.save();
-      // Assume completed later...
-    });
+    // Trigger ingestion pipeline asynchronously
+    processAndIngestDocument(
+      req.file.buffer,
+      req.file.originalname,
+      req.file.mimetype,
+      userId,
+      projectId,
+      documentId
+    ).catch(console.error);
 
     return res.status(201).json({ document: uploadedDoc });
   } catch (err: any) {
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
@@ -653,16 +762,106 @@ app.get('/api/projects', authMiddleware, async (req: Request, res: Response) => 
       res.json([]);
     }
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    throw error;
   }
 });
 
+// Get Project
+app.get('/api/projects/:projectId', authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const { projectId } = req.params;
+    const userId = (req as any).user.id;
+    if (!dbConnected) return res.json(null);
+    const project = await ProjectModel.findOne({ id: projectId, userId });
+    res.json(project ? { ...project.toObject(), id: project.id || project._id.toString() } : null);
+  } catch (error) {
+    throw error;
+  }
+});
+
+// Update Project
+app.patch('/api/projects/:projectId', authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const { projectId } = req.params;
+    const userId = (req as any).user.id;
+    const updates = req.body;
+    if (!dbConnected) return res.json(null);
+    const project = await ProjectModel.findOneAndUpdate({ id: projectId, userId }, updates, { new: true });
+    res.json(project ? { ...project.toObject(), id: project.id || project._id.toString() } : null);
+  } catch (error) {
+    throw error;
+  }
+});
+
+// Delete Project
+app.delete('/api/projects/:projectId', authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const { projectId } = req.params;
+    const userId = (req as any).user.id;
+    if (!dbConnected) return res.json({ success: true });
+    
+    // Check ownership
+    const project = await ProjectModel.findOne({ id: projectId, userId });
+    if (!project) throw new AppError('Project not found', 404, 'NOT_FOUND');
+
+    await Promise.all([
+      ProjectModel.deleteOne({ id: projectId, userId }),
+      FounderProfileModel.deleteMany({ projectId, userId }),
+      BusinessOpportunityModel.deleteMany({ projectId, userId }),
+      SelectedOpportunityModel.deleteMany({ projectId, userId }),
+      BusinessPlanModel.deleteMany({ projectId, userId }),
+      FinancialForecast.deleteMany({ projectId }),
+      PricingStrategy.deleteMany({ projectId }),
+      BrandIdentityModel.deleteMany({ projectId, userId }),
+      MarketingCampaignModel.deleteMany({ projectId, userId }),
+      PitchDeckModel.deleteMany({ projectId, userId }),
+      ExecutionRoadmapModel.deleteMany({ projectId, userId }),
+      UploadedDocumentModel.deleteMany({ projectId, userId }),
+      KnowledgeDocumentModel.deleteMany({ projectId, userId }),
+      VentureStateModel.deleteMany({ projectId, userId }),
+      AgentRunModel.deleteMany({ projectId, userId }),
+      ConversationModel.deleteMany({ projectId, userId })
+    ]);
+
+    res.json({ success: true });
+  } catch (error) {
+    throw error;
+  }
+});
+
+// Archive Project
+app.post('/api/projects/:projectId/archive', authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const { projectId } = req.params;
+    const userId = (req as any).user.id;
+    if (!dbConnected) return res.json({ success: true });
+    const project = await ProjectModel.findOneAndUpdate({ id: projectId, userId }, { status: 'archived' }, { new: true });
+    res.json(project ? { ...project.toObject(), id: project.id || project._id.toString() } : null);
+  } catch (error) {
+    throw error;
+  }
+});
+
+// Restore Project
+app.post('/api/projects/:projectId/restore', authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const { projectId } = req.params;
+    const userId = (req as any).user.id;
+    if (!dbConnected) return res.json({ success: true });
+    const project = await ProjectModel.findOneAndUpdate({ id: projectId, userId }, { status: 'active' }, { new: true });
+    res.json(project ? { ...project.toObject(), id: project.id || project._id.toString() } : null);
+  } catch (error) {
+    throw error;
+  }
+});
+
+
 // AI Cofounder Chat Endpoint
-app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/ai/chat', authMiddleware, validateRequest(aiChatSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const { projectId, message, conversationId } = req.body;
     const userId = (req as any).user.id;
-    if (!projectId || !message) return res.status(400).json({ error: 'Missing projectId or message' });
+    if (!projectId || !message) throw new AppError('Missing projectId or message', 400, 'BAD_REQUEST');
 
     const state = await VentureStateModel.findOne({ projectId });
     let chatHistory: any[] = [];
@@ -686,14 +885,23 @@ app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Pr
     const ragResults = await queryRAG(message, 2);
     const ragContext = JSON.stringify(ragResults);
 
-    const aiResponse = await runCofounderAgent(message, JSON.stringify(state), chatHistory, ragContext);
+    const projectContext = await getProjectContext(projectId, userId);
+    const contextStr = buildContextString(projectContext);
+
+    const aiResponse = await runCofounderAgent(message, projectContext, contextStr);
 
     // Attach RAG sources to AI response for UI transparency
     if (aiResponse) {
       aiResponse.ragSources = ragResults.map((r: any) => r.title);
+      chatHistory.push(aiResponse);
+    } else {
+      chatHistory.push({
+        id: `msg_ai_${Date.now()}`,
+        sender: 'ai',
+        message: 'Sorry, I am currently unable to process your request. Please try again later.',
+        timestamp: new Date()
+      });
     }
-
-    chatHistory.push(aiResponse);
 
     if (dbConnected) {
       if (isNewConversation) {
@@ -724,80 +932,63 @@ app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Pr
 
     return res.json({ userMessage, aiResponse, history: chatHistory, conversationId: activeConversationId });
   } catch (error) {
-    console.error('Chat error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    throw error;
   }
 });
 
 // Memory Retrieval Endpoint
-app.get('/api/projects/:projectId/memory', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.get('/api/projects/:projectId/memory', authMiddleware, validateRequest(projectIdParamSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const { projectId } = req.params;
     const conversations = await ConversationModel.find({ projectId }).sort({ createdAt: -1 });
     return res.json({ conversations });
   } catch (error) {
-    console.error('Memory retrieval error:', error);
-    res.status(500).json({ error: 'Failed to retrieve memory' });
+    throw error;
   }
 });
 
 // Clear Memory Endpoint
-app.delete('/api/projects/:projectId/memory', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.delete('/api/projects/:projectId/memory', authMiddleware, validateRequest(projectIdParamSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const { projectId } = req.params;
     await ConversationModel.findOneAndUpdate({ projectId }, { messages: [] });
     return res.json({ success: true });
   } catch (error) {
-    console.error('Memory clear error:', error);
-    res.status(500).json({ error: 'Failed to clear memory' });
+    throw error;
   }
 });
 
 // Image Generation Endpoint (AI Studio)
-app.post('/api/studio/generate-image', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/studio/generate-image', authMiddleware, validateRequest(generateImageSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const { prompt, style } = req.body;
-    if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
+    if (!prompt) throw new AppError('Missing prompt', 400, 'BAD_REQUEST');
 
-    const fireworksKey = process.env.FIREWORKS_API_KEY;
+    const fireworksKey = env.FIREWORKS_API_KEY;
     if (!fireworksKey) {
-      return res.status(500).json({ error: 'Fireworks API key not configured' });
+      throw new AppError('Fireworks API key not configured', 500, 'INTERNAL_SERVER_ERROR');
     }
 
     const enhancedPrompt = `${prompt}, ${style} style, high quality, highly detailed`;
-    const url = "https://api.fireworks.ai/inference/v1/workflows/accounts/fireworks/models/flux-1-schnell-fp8/text_to_image";
 
-    const imageRes = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${fireworksKey}`,
-        'Accept': 'image/jpeg'
-      },
-      body: JSON.stringify({
-        prompt: enhancedPrompt,
-        aspect_ratio: "16:9"
-      })
-    });
-
-    if (!imageRes.ok) {
-      const errText = await imageRes.text();
-      console.error('Fireworks image error:', errText);
-      throw new Error('Image generation failed');
+    try {
+      const imageBuffer = await callFireworksImage(enhancedPrompt, "16:9");
+      if (!imageBuffer) {
+        throw new AppError('Image generation returned empty', 502, 'AI_PROVIDER_ERROR');
+      }
+      const base64Image = imageBuffer.toString('base64');
+      const dataUrl = `data:image/jpeg;base64,${base64Image}`;
+      return res.json({ imageUrl: dataUrl });
+    } catch (error) {
+      console.error('Fireworks image error:', error);
+      throw new AppError('Image generation failed', 502, 'AI_PROVIDER_ERROR');
     }
-
-    const buffer = await imageRes.arrayBuffer();
-    const base64Image = Buffer.from(buffer).toString('base64');
-    const dataUrl = `data:image/jpeg;base64,${base64Image}`;
-
-    return res.json({ imageUrl: dataUrl });
   } catch (error) {
-    console.error('Image generation error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    throw error;
   }
 });
 
-app.get('/api/ai/chat/:projectId', authMiddleware, async (req: Request, res: Response) => {
+app.get('/api/ai/chat/:projectId', authMiddleware, validateRequest(projectIdParamSchema), async (req: Request, res: Response) => {
   try {
     const { projectId } = req.params;
     if (dbConnected) {
@@ -807,7 +998,7 @@ app.get('/api/ai/chat/:projectId', authMiddleware, async (req: Request, res: Res
       res.json([]);
     }
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    throw error;
   }
 });
 
@@ -815,19 +1006,22 @@ app.get('/api/ai/chat/:projectId', authMiddleware, async (req: Request, res: Res
 // BRANDING ROUTES
 // ==========================================
 
-app.post('/api/branding/generate', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/branding/generate', authMiddleware, validateRequest(generateBusinessPlanSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
-    if (!projectId) return res.status(400).json({ error: 'Missing projectId' });
+    if (!projectId) throw new AppError('Missing projectId', 400, 'BAD_REQUEST');
 
     const selected = await SelectedOpportunityModel.findOne({ projectId, userId });
     const businessPlan = await BusinessPlanModel.findOne({ projectId, userId, isLatest: true });
 
+    const projectContext = await getProjectContext(projectId, userId);
+    const contextStr = buildContextString(projectContext);
+
     const brandData = await trackAgentRun(
       userId, projectId, 'branding', { projectId },
-      () => runBrandingAgent(projectId, businessPlan?.toObject() || {}, selected?.toObject() || {}),
-      'deepseek-v3'
+      () => runBrandingAgent(projectId, selected?.toObject() || {}, businessPlan?.toObject() || {}, contextStr),
+      'deepseek-v4-flash'
     );
 
     // Versioning
@@ -847,7 +1041,7 @@ app.post('/api/branding/generate', authMiddleware, async (req: Request, res: Res
       ...brandData,
       version,
       isLatest: true,
-      generatedByModel: 'deepseek-v3',
+      generatedByModel: 'deepseek-v4-flash',
       generatedAt: new Date()
     });
 
@@ -858,20 +1052,20 @@ app.post('/api/branding/generate', authMiddleware, async (req: Request, res: Res
 
     return res.json({ brandIdentity: brand });
   } catch (err: any) {
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
-app.get('/api/projects/:projectId/branding', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.get('/api/projects/:projectId/branding', authMiddleware, validateRequest(projectIdParamSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.params;
-    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    if (!dbConnected) throw new AppError('DB required', 503, 'SERVICE_UNAVAILABLE');
     const brand = await BrandIdentityModel.findOne({ projectId, userId, isLatest: true });
-    if (!brand) return res.status(404).json({ error: 'Brand identity not found' });
+    if (!brand) throw new AppError('Brand identity not found', 404, 'NOT_FOUND');
     return res.json({ brandIdentity: brand });
   } catch (err: any) {
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
@@ -879,19 +1073,22 @@ app.get('/api/projects/:projectId/branding', authMiddleware, async (req: Request
 // MARKETING ROUTES
 // ==========================================
 
-app.post('/api/marketing/generate', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/marketing/generate', authMiddleware, validateRequest(generateBusinessPlanSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
-    if (!projectId) return res.status(400).json({ error: 'Missing projectId' });
+    if (!projectId) throw new AppError('Missing projectId', 400, 'BAD_REQUEST');
 
     const brand = await BrandIdentityModel.findOne({ projectId, userId, isLatest: true });
     const businessPlan = await BusinessPlanModel.findOne({ projectId, userId, isLatest: true });
 
+    const projectContext = await getProjectContext(projectId, userId);
+    const contextStr = buildContextString(projectContext);
+
     const marketingData = await trackAgentRun(
       userId, projectId, 'marketing', { projectId },
-      () => runMarketingAgent(projectId, brand?.toObject() || {}, businessPlan?.toObject() || {}),
-      'deepseek-v3'
+      () => runMarketingAgent(projectId, brand?.toObject() || {}, businessPlan?.toObject() || {}, contextStr),
+      'deepseek-v4-flash'
     );
 
     let version = 1;
@@ -910,7 +1107,7 @@ app.post('/api/marketing/generate', authMiddleware, async (req: Request, res: Re
       ...marketingData,
       version,
       isLatest: true,
-      generatedByModel: 'deepseek-v3',
+      generatedByModel: 'deepseek-v4-flash',
       generatedAt: new Date()
     });
 
@@ -921,20 +1118,20 @@ app.post('/api/marketing/generate', authMiddleware, async (req: Request, res: Re
 
     return res.json({ marketingCampaign: marketing });
   } catch (err: any) {
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
-app.get('/api/projects/:projectId/marketing', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.get('/api/projects/:projectId/marketing', authMiddleware, validateRequest(projectIdParamSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.params;
-    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    if (!dbConnected) throw new AppError('DB required', 503, 'SERVICE_UNAVAILABLE');
     const marketing = await MarketingCampaignModel.findOne({ projectId, userId, isLatest: true });
-    if (!marketing) return res.status(404).json({ error: 'Marketing campaign not found' });
+    if (!marketing) throw new AppError('Marketing campaign not found', 404, 'NOT_FOUND');
     return res.json({ marketingCampaign: marketing });
   } catch (err: any) {
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
@@ -942,19 +1139,22 @@ app.get('/api/projects/:projectId/marketing', authMiddleware, async (req: Reques
 // PITCH ROUTES
 // ==========================================
 
-app.post('/api/pitch/generate', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/pitch/generate', authMiddleware, validateRequest(generateBusinessPlanSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
-    if (!projectId) return res.status(400).json({ error: 'Missing projectId' });
+    if (!projectId) throw new AppError('Missing projectId', 400, 'BAD_REQUEST');
 
     const businessPlan = await BusinessPlanModel.findOne({ projectId, userId, isLatest: true });
     const brand = await BrandIdentityModel.findOne({ projectId, userId, isLatest: true });
 
+    const projectContext = await getProjectContext(projectId, userId);
+    const contextStr = buildContextString(projectContext);
+
     const pitchData = await trackAgentRun(
       userId, projectId, 'pitch', { projectId },
-      () => runPitchAgent(projectId, businessPlan?.toObject() || {}, brand?.toObject() || {}),
-      'deepseek-v3'
+      () => runPitchAgent(projectId, businessPlan?.toObject() || {}, brand?.toObject() || {}, contextStr),
+      'deepseek-v4-flash'
     );
 
     let version = 1;
@@ -973,7 +1173,7 @@ app.post('/api/pitch/generate', authMiddleware, async (req: Request, res: Respon
       ...pitchData,
       version,
       isLatest: true,
-      generatedByModel: 'deepseek-v3',
+      generatedByModel: 'deepseek-v4-flash',
       generatedAt: new Date()
     });
 
@@ -984,22 +1184,24 @@ app.post('/api/pitch/generate', authMiddleware, async (req: Request, res: Respon
 
     return res.json({ pitchDeck: pitch });
   } catch (err: any) {
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
 
-app.get('/api/projects/:projectId/pitch', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.get('/api/projects/:projectId/pitch', authMiddleware, validateRequest(projectIdParamSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.params;
-    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    if (!dbConnected) throw new AppError('DB required', 503, 'SERVICE_UNAVAILABLE');
     const pitch = await PitchDeckModel.findOne({ projectId, userId, isLatest: true });
-    if (!pitch) return res.status(404).json({ error: 'Pitch deck not found' });
+    if (!pitch) throw new AppError('Pitch deck not found', 404, 'NOT_FOUND');
     return res.json({ pitchDeck: pitch });
   } catch (err: any) {
-    return res.status(500).json({ error: err.message });
+    throw err;
   }
 });
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Creator Engine backend running on http://localhost:${PORT}`);

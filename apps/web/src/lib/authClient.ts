@@ -32,7 +32,10 @@ async function request<T>(
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.error || `Request failed with status ${res.status}`);
+    const errorMsg = typeof data.error === 'object' && data.error !== null 
+      ? data.error.message || JSON.stringify(data.error)
+      : data.error;
+    throw new Error(errorMsg || `Request failed with status ${res.status}`);
   }
 
   return data as T;

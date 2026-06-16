@@ -6,7 +6,8 @@
         "httpMethod": "POST",
         "path": "opportunity-discovery-flow",
         "responseMode": "responseNode",
-        "options": {}
+        "options": {},
+        "authentication": "headerAuth"
       },
       "id": "webhook",
       "name": "Webhook",
@@ -15,7 +16,13 @@
       "position": [
         100,
         300
-      ]
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Creator Engine API Key"
+        }
+      }
     },
     {
       "parameters": {
@@ -52,7 +59,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer YOUR_FIREWORKS_API_KEY"
+              "value": "={{\"Bearer \" + $env.FIREWORKS_API_KEY_CHAT}}"
             },
             {
               "name": "Content-Type",
@@ -71,7 +78,11 @@
       "position": [
         500,
         300
-      ]
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "continueOnFail": false
     },
     {
       "parameters": {
@@ -100,6 +111,58 @@
       "position": [
         900,
         300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "error-trigger-node-uuid",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const errorData = $input.all()[0].json.execution.error;\nreturn {\n  success: false,\n  error: 'An internal workflow error occurred.',\n  log: errorData.message || 'Unknown error'\n};"
+      },
+      "id": "sanitize-error-node-uuid",
+      "name": "Sanitize Error & Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        450,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api.creatorengine.local/internal/alerts",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflowName",
+              "value": "={{$workflow.name}}"
+            },
+            {
+              "name": "errorMsg",
+              "value": "={{$json.log}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "notify-failure-node-uuid",
+      "name": "Notify Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        700,
+        1000
       ]
     }
   ],
@@ -147,8 +210,36 @@
           }
         ]
       ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sanitize Error & Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sanitize Error & Log": {
+      "main": [
+        [
+          {
+            "node": "Notify Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
-  "settings": {}
+  "settings": {
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  }
 }

@@ -6,13 +6,23 @@
         "httpMethod": "POST",
         "path": "branding-flow",
         "responseMode": "responseNode",
-        "options": {}
+        "options": {},
+        "authentication": "headerAuth"
       },
       "id": "webhook",
       "name": "Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
-      "position": [100, 300]
+      "position": [
+        100,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Creator Engine API Key"
+        }
+      }
     },
     {
       "parameters": {
@@ -23,7 +33,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer YOUR_FIREWORKS_API_KEY"
+              "value": "={{\"Bearer \" + $env.FIREWORKS_API_KEY_CHAT}}"
             },
             {
               "name": "Content-Type",
@@ -33,13 +43,20 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\"model\": \"accounts/fireworks/models/deepseek-v4-flash\", \"messages\": [{\"role\": \"system\", \"content\": \"You are the Branding Agent — a world-class brand strategist and creative director. Your task is to craft a complete, investment-grade brand identity for an early-stage startup.\\n\\nBehavioral Guidelines:\\n- Think like a top-tier branding agency (Pentagram, Collins, Wolff Olins).\\n- Generate a brand name that is: memorable, spell-friendly, domain-available (short, ideally one word or compound), and emotionally resonant with the target audience.\\n- The brand story must follow this arc: (1) Origin frustration or insight (2) Mission and what we believe (3) How we show up in the world today.\\n- Brand voice must include explicit DO's and DON'Ts — not just adjectives.\\n- Color palette must include a rationale for each color tied to brand psychology.\\n- Never use generic placeholder names. Every output must feel crafted for this specific venture.\\n\\nYou must output ONLY valid JSON — no markdown, no explanations, no wrapping in backticks.\"}, {\"role\": \"user\", \"content\": \"Develop a complete brand identity for the following venture:\\n\\nOpportunity:\\n\" + JSON.stringify($('Webhook').item.json.body.opportunity) + \"\\n\\nBusiness Plan:\\n\" + JSON.stringify($('Webhook').item.json.body.businessPlan) + \"\\n\\nOutput JSON matching this schema exactly:\\n{\\n  \\\"brandName\\\": \\\"A single strong brand name\\\",\\n  \\\"brandNameVariants\\\": [\\\"Alt 1\\\", \\\"Alt 2\\\", \\\"Alt 3\\\"],\\n  \\\"tagline\\\": \\\"A punchy 4-8 word tagline that captures the UVP\\\",\\n  \\\"slogan\\\": \\\"A slightly longer, emotionally resonant campaign slogan\\\",\\n  \\\"toneOfVoice\\\": \\\"2-3 sentence description of the voice archetype and personality\\\",\\n  \\\"brandVoice\\\": {\\n    \\\"dos\\\": [\\\"Use active verbs\\\", \\\"Lead with outcomes\\\"],\\n    \\\"donts\\\": [\\\"Avoid jargon like synergy\\\", \\\"Never be passive\\\"]\\n  },\\n  \\\"brandPositioning\\\": \\\"2-3 sentences: who we are for, what we do, and how we differ\\\",\\n  \\\"brandPersonality\\\": [\\\"Trait 1\\\", \\\"Trait 2\\\", \\\"Trait 3\\\", \\\"Trait 4\\\"],\\n  \\\"brandStory\\\": \\\"3 paragraphs: origin frustration, mission, how we exist today\\\",\\n  \\\"brandArchetype\\\": \\\"e.g. The Creator — and a 1-sentence explanation\\\",\\n  \\\"logoPrompt\\\": \\\"A detailed Midjourney/DALL-E optimized prompt for a premium minimalist logo\\\",\\n  \\\"colorPalette\\\": {\\n    \\\"primary\\\": \\\"#HEX\\\",\\n    \\\"primaryRationale\\\": \\\"Psychology and brand alignment\\\",\\n    \\\"secondary\\\": \\\"#HEX\\\",\\n    \\\"secondaryRationale\\\": \\\"Why this color\\\",\\n    \\\"background\\\": \\\"#HEX\\\",\\n    \\\"accent\\\": \\\"#HEX\\\",\\n    \\\"accentRationale\\\": \\\"Why this accent color\\\"\\n  }\\n}\"}], \"temperature\": 0.75, \"max_tokens\": 3000, \"response_format\": {\"type\": \"json_object\"}}"
+        "jsonBody": "={\"model\": \"accounts/fireworks/models/deepseek-v4-flash\", \"messages\": [{\"role\": \"system\", \"content\": \"You are the Branding Agent \u2014 a world-class brand strategist and creative director. Your task is to craft a complete, investment-grade brand identity for an early-stage startup.\\n\\nBehavioral Guidelines:\\n- Think like a top-tier branding agency (Pentagram, Collins, Wolff Olins).\\n- Generate a brand name that is: memorable, spell-friendly, domain-available (short, ideally one word or compound), and emotionally resonant with the target audience.\\n- The brand story must follow this arc: (1) Origin frustration or insight (2) Mission and what we believe (3) How we show up in the world today.\\n- Brand voice must include explicit DO's and DON'Ts \u2014 not just adjectives.\\n- Color palette must include a rationale for each color tied to brand psychology.\\n- Never use generic placeholder names. Every output must feel crafted for this specific venture.\\n\\nYou must output ONLY valid JSON \u2014 no markdown, no explanations, no wrapping in backticks.\"}, {\"role\": \"user\", \"content\": \"Develop a complete brand identity for the following venture:\\n\\nOpportunity:\\n\" + JSON.stringify($('Webhook').item.json.body.opportunity) + \"\\n\\nBusiness Plan:\\n\" + JSON.stringify($('Webhook').item.json.body.businessPlan) + \"\\n\\nOutput JSON matching this schema exactly:\\n{\\n  \\\"brandName\\\": \\\"A single strong brand name\\\",\\n  \\\"brandNameVariants\\\": [\\\"Alt 1\\\", \\\"Alt 2\\\", \\\"Alt 3\\\"],\\n  \\\"tagline\\\": \\\"A punchy 4-8 word tagline that captures the UVP\\\",\\n  \\\"slogan\\\": \\\"A slightly longer, emotionally resonant campaign slogan\\\",\\n  \\\"toneOfVoice\\\": \\\"2-3 sentence description of the voice archetype and personality\\\",\\n  \\\"brandVoice\\\": {\\n    \\\"dos\\\": [\\\"Use active verbs\\\", \\\"Lead with outcomes\\\"],\\n    \\\"donts\\\": [\\\"Avoid jargon like synergy\\\", \\\"Never be passive\\\"]\\n  },\\n  \\\"brandPositioning\\\": \\\"2-3 sentences: who we are for, what we do, and how we differ\\\",\\n  \\\"brandPersonality\\\": [\\\"Trait 1\\\", \\\"Trait 2\\\", \\\"Trait 3\\\", \\\"Trait 4\\\"],\\n  \\\"brandStory\\\": \\\"3 paragraphs: origin frustration, mission, how we exist today\\\",\\n  \\\"brandArchetype\\\": \\\"e.g. The Creator \u2014 and a 1-sentence explanation\\\",\\n  \\\"logoPrompt\\\": \\\"A detailed Midjourney/DALL-E optimized prompt for a premium minimalist logo\\\",\\n  \\\"colorPalette\\\": {\\n    \\\"primary\\\": \\\"#HEX\\\",\\n    \\\"primaryRationale\\\": \\\"Psychology and brand alignment\\\",\\n    \\\"secondary\\\": \\\"#HEX\\\",\\n    \\\"secondaryRationale\\\": \\\"Why this color\\\",\\n    \\\"background\\\": \\\"#HEX\\\",\\n    \\\"accent\\\": \\\"#HEX\\\",\\n    \\\"accentRationale\\\": \\\"Why this accent color\\\"\\n  }\\n}\"}], \"temperature\": 0.75, \"max_tokens\": 3000, \"response_format\": {\"type\": \"json_object\"}}"
       },
       "id": "fireworks",
       "name": "Fireworks AI",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4,
-      "position": [300, 300]
+      "position": [
+        300,
+        300
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "continueOnFail": false
     },
     {
       "parameters": {
@@ -50,7 +67,10 @@
       "name": "Parse JSON",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [500, 300]
+      "position": [
+        500,
+        300
+      ]
     },
     {
       "parameters": {
@@ -62,28 +82,128 @@
       "name": "Respond",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [700, 300]
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "error-trigger-node-uuid",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const errorData = $input.all()[0].json.execution.error;\nreturn {\n  success: false,\n  error: 'An internal workflow error occurred.',\n  log: errorData.message || 'Unknown error'\n};"
+      },
+      "id": "sanitize-error-node-uuid",
+      "name": "Sanitize Error & Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        450,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api.creatorengine.local/internal/alerts",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflowName",
+              "value": "={{$workflow.name}}"
+            },
+            {
+              "name": "errorMsg",
+              "value": "={{$json.log}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "notify-failure-node-uuid",
+      "name": "Notify Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        700,
+        1000
+      ]
     }
   ],
   "connections": {
     "Webhook": {
       "main": [
-        [{ "node": "Fireworks AI", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "Fireworks AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Fireworks AI": {
       "main": [
-        [{ "node": "Parse JSON", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "Parse JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Parse JSON": {
       "main": [
-        [{ "node": "Respond", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sanitize Error & Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sanitize Error & Log": {
+      "main": [
+        [
+          {
+            "node": "Notify Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
   }
 }

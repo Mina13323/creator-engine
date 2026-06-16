@@ -1,5 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import { ToastContainer } from '@/components/ui/Toast';
 
 export const metadata: Metadata = {
   title: 'Creator Engine – AI Venture Builder',
@@ -15,6 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased text-slate-100 bg-[#040814]">
         {children}
+        <ToastContainer />
       </body>
     </html>
   );

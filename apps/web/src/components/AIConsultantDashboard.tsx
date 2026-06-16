@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { Send, Sparkles, User, Brain, ExternalLink, Lightbulb, History, HistoryIcon, FileText, Megaphone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { fadeInUp, fadeIn, staggerContainer } from '../lib/motion-presets';
 import ReactMarkdown from 'react-markdown';
 
 export default function AIConsultantDashboard() {
@@ -53,14 +54,19 @@ export default function AIConsultantDashboard() {
               <Brain className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-800">AI Co-Founder</h1>
+              <h1 className="text-xl font-bold text-slate-800">CEO Copilot</h1>
               <p className="text-sm text-slate-500">Your dedicated startup mentor and strategist</p>
             </div>
           </div>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <motion.div 
+          className="flex-1 overflow-y-auto p-6 space-y-6"
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+        >
           {chatMessages.length === 0 ? (
             <div className="h-full flex flex-col justify-center items-center text-center max-w-lg mx-auto">
               <div className="w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center mb-6">
@@ -97,9 +103,11 @@ export default function AIConsultantDashboard() {
             </div>
           ) : (
             chatMessages.map((msg) => {
+              if (!msg) return null;
               const isUser = msg.sender === 'user';
               return (
-                <div 
+                <motion.div 
+                  variants={fadeInUp}
                   key={msg.id}
                   className={`flex gap-4 max-w-[85%] ${isUser ? 'ml-auto flex-row-reverse' : ''}`}
                 >
@@ -139,13 +147,13 @@ export default function AIConsultantDashboard() {
                       </div>
                     )}
                   </div>
-                </div>
+                </motion.div>
               );
             })
           )}
 
           {chatLoading && (
-            <div className="flex gap-4 max-w-[85%]">
+            <motion.div variants={fadeInUp} className="flex gap-4 max-w-[85%]">
               <div className="w-10 h-10 rounded-full flex items-center justify-center border border-emerald-200 bg-emerald-50 text-emerald-600 flex-shrink-0">
                 <Brain className="w-5 h-5 animate-pulse" />
               </div>
@@ -157,10 +165,10 @@ export default function AIConsultantDashboard() {
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '300ms' }}></span>
                 </span>
               </div>
-            </div>
+            </motion.div>
           )}
           <div ref={messagesEndRef} />
-        </div>
+        </motion.div>
 
         {/* Input Form */}
         <div className="p-4 border-t border-slate-200 bg-white">
@@ -170,7 +178,7 @@ export default function AIConsultantDashboard() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={chatLoading}
-              placeholder="Ask your AI Co-founder anything..."
+              placeholder="Ask CEO Copilot anything..."
               className="w-full pl-5 pr-14 py-4 rounded-full border border-slate-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 text-slate-700 placeholder-slate-400 shadow-sm transition-all"
             />
             <button
@@ -182,7 +190,7 @@ export default function AIConsultantDashboard() {
             </button>
           </form>
           <div className="text-center mt-2">
-             <span className="text-xs text-slate-400">AI Co-founder has full context of your venture and documents.</span>
+             <span className="text-xs text-slate-400">CEO Copilot has full context of your venture and documents.</span>
           </div>
         </div>
       </div>

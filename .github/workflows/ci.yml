@@ -2,27 +2,43 @@ name: Creator Engine CI
 
 on:
   pull_request:
+    branches: [ main, develop ]
   push:
-    branches:
-      - main
-      - develop
+    branches: [ main, develop ]
 
 jobs:
-  build:
+  validate:
+    name: Code Quality & Testing
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
           version: 11.1.0
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: pnpm
+          cache: 'pnpm'
 
-      - run: pnpm install --ignore-scripts
+      - name: Install Dependencies
+        run: pnpm install --ignore-scripts
 
-      - run: pnpm build
+      - name: Type Check
+        run: npx tsc --noEmit
+        
+      - name: Lint
+        run: pnpm lint
+
+      - name: Run Backend Tests & Coverage
+        working-directory: apps/api
+        # This will fail the step if coverage falls below 70% as configured in vitest.config.ts
+        run: npx vitest run --coverage
+
+      - name: Build Application
+        run: pnpm build

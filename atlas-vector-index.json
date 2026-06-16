@@ -1,0 +1,16 @@
+{
+  "name": "vector_index",
+  "type": "vectorSearch",
+  "collectionName": "knowledge_vectors",
+  "database": "creator_engine",
+  "mappings": {
+    "dynamic": true,
+    "fields": {
+      "embedding": {
+        "dimensions": 4096,
+        "similarity": "cosine",
+        "type": "knnVector"
+      }
+    }
+  }
+}

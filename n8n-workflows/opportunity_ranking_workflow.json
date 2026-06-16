@@ -1,175 +1,267 @@
 {
-    "name": "Opportunity Ranking Workflow",
-    "nodes": [
-        {
-            "parameters": {
-                "httpMethod": "POST",
-                "path": "opportunity-ranking",
-                "responseMode": "responseNode",
-                "options": {}
-            },
-            "id": "webhook",
-            "name": "Webhook",
-            "type": "n8n-nodes-base.webhook",
-            "typeVersion": 1,
-            "position": [
-                -400,
-                -200
-            ]
-        },
-        {
-            "parameters": {},
-            "id": "getOpportunities",
-            "name": "Get Opportunities",
-            "type": "n8n-nodes-base.mongoDb",
-            "typeVersion": 1.3,
-            "position": [
-                -100,
-                -200
-            ],
-            "credentials": {
-                "mongoDb": {
-                    "id": "YOUR_MONGODB_CREDENTIAL_ID",
-                    "name": "MongoDB account"
-                }
-            }
-        },
-        {
-            "parameters": {
-                "method": "POST",
-                "url": "https://api.fireworks.ai/inference/v1/chat/completions",
-                "sendHeaders": true,
-                "headerParameters": {
-                    "parameters": [
-                        {
-                            "name": "Authorization",
-                            "value": "Bearer YOUR_FIREWORKS_API_KEY"
-                        },
-                        {
-                            "name": "Content-Type",
-                            "value": "application/json"
-                        }
-                    ]
-                },
-                "sendBody": true,
-                "specifyBody": "json",
-                "jsonBody": "={\n  \"model\": \"accounts/fireworks/models/deepseek-v4-flash\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are Creator Engine Opportunity Ranking Agent. Return ONLY valid JSON.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Analyze and rank these startup opportunities: \" + JSON.stringify($json) + \". Return ONLY valid JSON in this format: {\\\"rankedOpportunities\\\": [ { \\\"title\\\": \\\"\\\", \\\"founderFit\\\": 0, \\\"marketSize\\\": 0, \\\"revenuePotential\\\": 0, \\\"competition\\\": 0, \\\"mvpDifficulty\\\": 0, \\\"aiAdvantage\\\": 0, \\\"finalScore\\\": 0, \\\"recommendation\\\": \\\"\\\" } ] }\"\n    }\n  ],\n  \"temperature\": 0.3,\n  \"max_tokens\": 4000,\n  \"response_format\": {\n    \"type\": \"json_object\"\n  }\n}"
-            },
-            "id": "fireworks",
-            "name": "Fireworks AI",
-            "type": "n8n-nodes-base.httpRequest",
-            "typeVersion": 4,
-            "position": [
-                200,
-                -200
-            ]
-        },
-        {
-            "parameters": {
-                "jsCode": "const raw = $input.first().json.choices[0].message.content.trim();\nconst parsed = JSON.parse(raw);\n\nreturn parsed.rankedOpportunities.map(item => ({\n  json: {\n    userId: 'mina_001',\n    projectId: 'creator_engine',\n    ...item,\n    createdAt: new Date().toISOString()\n  }\n}));"
-            },
-            "id": "parser",
-            "name": "Parse Rankings",
-            "type": "n8n-nodes-base.code",
-            "typeVersion": 2,
-            "position": [
-                500,
-                -200
-            ]
-        },
-        {
-            "parameters": {
-                "operation": "insert",
-                "collection": "ranked_opportunities",
-                "fields": "userId, projectId, title, founderFit, marketSize, revenuePotential, competition, mvpDifficulty, aiAdvantage, finalScore, recommendation, createdAt",
-                "options": {}
-            },
-            "id": "save",
-            "name": "Insert Rankings",
-            "type": "n8n-nodes-base.mongoDb",
-            "typeVersion": 1.3,
-            "position": [
-                800,
-                -200
-            ],
-            "credentials": {
-                "mongoDb": {
-                    "id": "YOUR_MONGODB_CREDENTIAL_ID",
-                    "name": "MongoDB account"
-                }
-            }
-        },
-        {
-            "parameters": {
-                "respondWith": "json",
-                "responseBody": "={{$json}}",
-                "options": {}
-            },
-            "id": "response",
-            "name": "Respond",
-            "type": "n8n-nodes-base.respondToWebhook",
-            "typeVersion": 1,
-            "position": [
-                1100,
-                -200
-            ]
+  "name": "Opportunity Ranking Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "opportunity-ranking",
+        "responseMode": "responseNode",
+        "options": {},
+        "authentication": "headerAuth"
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        -200
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Creator Engine API Key"
         }
-    ],
-    "connections": {
-        "Webhook": {
-            "main": [
-                [
-                    {
-                        "node": "Get Opportunities",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "Get Opportunities": {
-            "main": [
-                [
-                    {
-                        "node": "Fireworks AI",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "Fireworks AI": {
-            "main": [
-                [
-                    {
-                        "node": "Parse Rankings",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "Parse Rankings": {
-            "main": [
-                [
-                    {
-                        "node": "Insert Rankings",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "Insert Rankings": {
-            "main": [
-                [
-                    {
-                        "node": "Respond",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
+      }
+    },
+    {
+      "parameters": {},
+      "id": "getOpportunities",
+      "name": "Get Opportunities",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.3,
+      "position": [
+        -100,
+        -200
+      ],
+      "credentials": {
+        "mongoDb": {
+          "id": "YOUR_MONGODB_CREDENTIAL_ID",
+          "name": "MongoDB account"
         }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.fireworks.ai/inference/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{\"Bearer \" + $env.FIREWORKS_API_KEY_CHAT}}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"accounts/fireworks/models/deepseek-v4-flash\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are Creator Engine Opportunity Ranking Agent. Return ONLY valid JSON.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Analyze and rank these startup opportunities: \" + JSON.stringify($json) + \". Return ONLY valid JSON in this format: {\\\"rankedOpportunities\\\": [ { \\\"title\\\": \\\"\\\", \\\"founderFit\\\": 0, \\\"marketSize\\\": 0, \\\"revenuePotential\\\": 0, \\\"competition\\\": 0, \\\"mvpDifficulty\\\": 0, \\\"aiAdvantage\\\": 0, \\\"finalScore\\\": 0, \\\"recommendation\\\": \\\"\\\" } ] }\"\n    }\n  ],\n  \"temperature\": 0.3,\n  \"max_tokens\": 4000,\n  \"response_format\": {\n    \"type\": \"json_object\"\n  }\n}"
+      },
+      "id": "fireworks",
+      "name": "Fireworks AI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        200,
+        -200
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "continueOnFail": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.choices[0].message.content.trim();\nconst parsed = JSON.parse(raw);\n\nreturn parsed.rankedOpportunities.map(item => ({\n  json: {\n    userId: 'mina_001',\n    projectId: 'creator_engine',\n    ...item,\n    createdAt: new Date().toISOString()\n  }\n}));"
+      },
+      "id": "parser",
+      "name": "Parse Rankings",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        -200
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "collection": "ranked_opportunities",
+        "fields": "userId, projectId, title, founderFit, marketSize, revenuePotential, competition, mvpDifficulty, aiAdvantage, finalScore, recommendation, createdAt",
+        "options": {}
+      },
+      "id": "save",
+      "name": "Insert Rankings",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1.3,
+      "position": [
+        800,
+        -200
+      ],
+      "credentials": {
+        "mongoDb": {
+          "id": "YOUR_MONGODB_CREDENTIAL_ID",
+          "name": "MongoDB account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json}}",
+        "options": {}
+      },
+      "id": "response",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -200
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "error-trigger-node-uuid",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const errorData = $input.all()[0].json.execution.error;\nreturn {\n  success: false,\n  error: 'An internal workflow error occurred.',\n  log: errorData.message || 'Unknown error'\n};"
+      },
+      "id": "sanitize-error-node-uuid",
+      "name": "Sanitize Error & Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        450,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api.creatorengine.local/internal/alerts",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflowName",
+              "value": "={{$workflow.name}}"
+            },
+            {
+              "name": "errorMsg",
+              "value": "={{$json.log}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "notify-failure-node-uuid",
+      "name": "Notify Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        700,
+        1000
+      ]
     }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get Opportunities",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Opportunities": {
+      "main": [
+        [
+          {
+            "node": "Fireworks AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fireworks AI": {
+      "main": [
+        [
+          {
+            "node": "Parse Rankings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Rankings": {
+      "main": [
+        [
+          {
+            "node": "Insert Rankings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Rankings": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sanitize Error & Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sanitize Error & Log": {
+      "main": [
+        [
+          {
+            "node": "Notify Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  }
 }

@@ -6,7 +6,8 @@
         "httpMethod": "POST",
         "path": "financial-engine",
         "responseMode": "responseNode",
-        "options": {}
+        "options": {},
+        "authentication": "headerAuth"
       },
       "id": "1",
       "name": "Webhook Node (Trigger)",
@@ -15,7 +16,13 @@
       "position": [
         250,
         300
-      ]
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Creator Engine API Key"
+        }
+      }
     },
     {
       "parameters": {
@@ -74,6 +81,58 @@
         1050,
         300
       ]
+    },
+    {
+      "parameters": {},
+      "id": "error-trigger-node-uuid",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const errorData = $input.all()[0].json.execution.error;\nreturn {\n  success: false,\n  error: 'An internal workflow error occurred.',\n  log: errorData.message || 'Unknown error'\n};"
+      },
+      "id": "sanitize-error-node-uuid",
+      "name": "Sanitize Error & Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        450,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api.creatorengine.local/internal/alerts",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflowName",
+              "value": "={{$workflow.name}}"
+            },
+            {
+              "name": "errorMsg",
+              "value": "={{$json.log}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "notify-failure-node-uuid",
+      "name": "Notify Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        700,
+        1000
+      ]
     }
   ],
   "connections": {
@@ -120,6 +179,35 @@
           }
         ]
       ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sanitize Error & Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sanitize Error & Log": {
+      "main": [
+        [
+          {
+            "node": "Notify Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
+  },
+  "settings": {
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
   }
 }

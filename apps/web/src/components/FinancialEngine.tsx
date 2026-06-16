@@ -3,23 +3,33 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calculator, Zap, DollarSign, TrendingUp, AlertCircle, Building, Server, ArrowRight } from 'lucide-react';
+import { authClient } from '../lib/authClient';
+import { useStore } from '../store/useStore';
 
 export default function FinancialEngine() {
-  const [businessIdea, setBusinessIdea] = useState('');
+  const currentProject = useStore(state => state.currentProject);
+  const ventureState = useStore(state => state.ventureState);
+  
+  const [businessIdea, setBusinessIdea] = useState(ventureState?.selectedOpportunity?.description || '');
   const [businessModel, setBusinessModel] = useState('SaaS');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any>(null);
+
+  React.useEffect(() => {
+    if (ventureState?.selectedOpportunity && !businessIdea) {
+      setBusinessIdea(ventureState.selectedOpportunity.title + ': ' + ventureState.selectedOpportunity.description);
+    }
+  }, [ventureState?.selectedOpportunity, businessIdea]);
 
   const handleGenerate = async () => {
     if (!businessIdea) return;
     setLoading(true);
     try {
-      const response = await fetch('/api/financial-engine', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ businessIdea, businessModel })
+      const data = await authClient.post<any>('/financial-engine', {
+        projectId: currentProject?.id || 'demo-project',
+        businessIdea,
+        businessModel
       });
-      const data = await response.json();
       setResults(data);
     } catch (error) {
       console.error('Failed to generate financials', error);

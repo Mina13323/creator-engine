@@ -6,7 +6,8 @@
         "httpMethod": "POST",
         "path": "financial-engine",
         "responseMode": "responseNode",
-        "options": {}
+        "options": {},
+        "authentication": "headerAuth"
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
@@ -16,7 +17,13 @@
       ],
       "id": "e11fbb2e-873f-44a1-8467-2853f84ec1bb",
       "name": "Webhook",
-      "webhookId": "034fad9c-fd4b-49d3-a853-d745990f9069"
+      "webhookId": "034fad9c-fd4b-49d3-a853-d745990f9069",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Creator Engine API Key"
+        }
+      }
     },
     {
       "parameters": {
@@ -84,7 +91,7 @@
     },
     {
       "parameters": {
-        "model": "=accounts/fireworks/models/qwen3-embedding-8b",
+        "model": "=nomic-ai/nomic-embed-text-v1.5",
         "options": {
           "dimensions": 3072
         }
@@ -132,6 +139,58 @@
           "name": "MongoDB account"
         }
       }
+    },
+    {
+      "parameters": {},
+      "id": "error-trigger-node-uuid",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const errorData = $input.all()[0].json.execution.error;\nreturn {\n  success: false,\n  error: 'An internal workflow error occurred.',\n  log: errorData.message || 'Unknown error'\n};"
+      },
+      "id": "sanitize-error-node-uuid",
+      "name": "Sanitize Error & Log",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        450,
+        1000
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://api.creatorengine.local/internal/alerts",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "workflowName",
+              "value": "={{$workflow.name}}"
+            },
+            {
+              "name": "errorMsg",
+              "value": "={{$json.log}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "notify-failure-node-uuid",
+      "name": "Notify Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        700,
+        1000
+      ]
     }
   ],
   "pinData": {},
@@ -190,12 +249,39 @@
           }
         ]
       ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Sanitize Error & Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sanitize Error & Log": {
+      "main": [
+        [
+          {
+            "node": "Notify Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate"
+    "binaryMode": "separate",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
   },
   "versionId": "89dc6dda-9c41-4bca-820f-b8c6274bb0da",
   "meta": {

@@ -1,14 +1,48 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useStore } from '../store/useStore';
 import { ImagePlus, Video, FileAudio, FolderHeart, Sparkles, Download, Layers } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { fadeInUp, fadeIn, staggerContainer } from '../lib/motion-presets';
 
 type StudioTab = 'image' | 'media' | 'library';
 
 export default function AIStudioPanel() {
   const { currentProject, generateImage } = useStore();
   const [activeTab, setActiveTab] = useState<StudioTab>('image');
+  
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !currentProject) return;
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const API_BASE = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/api` : 'http://localhost:5000/api';
+
+    try {
+      const response = await fetch(`${API_BASE}/projects/${currentProject.id}/documents/upload`, {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+      });
+      if (response.ok) {
+        alert('File uploaded and chunking/embedding started!');
+      } else {
+        alert('Failed to upload file');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Upload error');
+    } finally {
+      setUploading(false);
+    }
+  };
   
   // Image Gen State
   const [imagePrompt, setImagePrompt] = useState('');
@@ -42,7 +76,13 @@ export default function AIStudioPanel() {
   };
 
   return (
-    <div className="h-full flex flex-col space-y-4 animate-in fade-in duration-500 p-6 md:p-10 max-w-7xl mx-auto">
+    <motion.div 
+      variants={fadeIn}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="h-full flex flex-col space-y-4 p-6 md:p-10 max-w-7xl mx-auto"
+    >
       <div className="flex items-center justify-between">
         <div className="space-y-1">
           <h1 className="text-2xl font-bold text-slate-800">Advanced AI Studio</h1>
@@ -97,8 +137,16 @@ export default function AIStudioPanel() {
 
         {/* Content Area */}
         <div className="flex-1 p-6 md:p-8 overflow-y-auto">
+          <AnimatePresence mode="wait">
           {activeTab === 'image' && (
-            <div className="space-y-6 max-w-4xl">
+            <motion.div 
+              key="image-tab"
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="space-y-6 max-w-4xl"
+            >
               <div>
                 <h2 className="text-lg font-bold text-slate-800">Create an Image</h2>
                 <p className="text-sm text-slate-500">Describe the asset you want to generate for your venture.</p>
@@ -160,7 +208,7 @@ export default function AIStudioPanel() {
 
               {/* Result Area */}
               {generatedImageUrl && !isGenerating && (
-                <div className="pt-8 border-t border-slate-200 animate-in slide-in-from-bottom-4 duration-500">
+                <motion.div variants={fadeInUp} className="pt-8 border-t border-slate-200">
                   <h3 className="text-sm font-bold text-slate-800 mb-4">Generated Result</h3>
                   <div className="relative group rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 aspect-[16/9] md:aspect-[21/9]">
                     <img 
@@ -174,13 +222,20 @@ export default function AIStudioPanel() {
                       </button>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
           )}
 
           {activeTab === 'media' && (
-            <div className="h-full flex flex-col items-center justify-center text-center max-w-md mx-auto py-12">
+            <motion.div 
+              key="media-tab"
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="h-full flex flex-col items-center justify-center text-center max-w-md mx-auto py-12"
+            >
               <div className="w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center mb-6">
                 <Video className="w-8 h-8 text-indigo-500" />
               </div>
@@ -192,11 +247,18 @@ export default function AIStudioPanel() {
                 <FileAudio className="w-5 h-5" />
                 Coming Soon
               </button>
-            </div>
+            </motion.div>
           )}
 
           {activeTab === 'library' && (
-            <div className="space-y-6">
+            <motion.div 
+              key="library-tab"
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="space-y-6"
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-bold text-slate-800">Project Asset Library</h2>
@@ -207,7 +269,7 @@ export default function AIStudioPanel() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Mock saved assets */}
                 {[1, 2, 3].map((item) => (
-                  <div key={item} className="group rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow">
+                  <motion.div variants={fadeInUp} key={item} className="group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all">
                     <div className="aspect-square bg-slate-100 relative">
                       <img 
                         src={`https://images.unsplash.com/photo-${1618005182384 + item}-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop`} 
@@ -227,20 +289,32 @@ export default function AIStudioPanel() {
                       <p className="text-xs font-semibold text-slate-700 truncate">Asset_{item}.png</p>
                       <p className="text-[10px] text-slate-400 mt-0.5">Generated via Image Studio</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
                 
                 {/* Upload new placeholder */}
-                <button className="aspect-square rounded-xl border-2 border-dashed border-slate-300 hover:border-indigo-400 hover:bg-indigo-50 transition-colors flex flex-col items-center justify-center text-slate-500 hover:text-indigo-600 gap-3">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  accept=".pdf,.txt,.docx"
+                  onChange={handleFileUpload}
+                />
+                <button
+                  disabled={uploading}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="aspect-square rounded-xl border-2 border-dashed border-slate-300 hover:border-indigo-400 hover:bg-indigo-50 transition-colors flex flex-col items-center justify-center text-slate-500 hover:text-indigo-600 gap-3 disabled:opacity-50"
+                >
                   <Layers className="w-8 h-8" />
-                  <span className="text-sm font-medium">Upload Asset</span>
+                  <span className="text-sm font-medium">{uploading ? 'Uploading...' : 'Upload Asset'}</span>
                 </button>
               </div>
-            </div>
+            </motion.div>
           )}
+          </AnimatePresence>
         </div>
 
       </div>
-    </div>
+    </motion.div>
   );
 }

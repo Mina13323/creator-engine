@@ -17,7 +17,8 @@ import AIConsultantDashboard from '../components/AIConsultantDashboard';
 import AIStudioPanel from '../components/AIStudioPanel';
 import AuthModal from '../components/AuthModal';
 import FinancialEngine from '../components/FinancialEngine';
-import { motion, AnimatePresence } from 'framer-motion';
+import ProjectSwitcher from '../components/ProjectSwitcher';
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 
 import { 
   Home, 
@@ -52,8 +53,11 @@ export default function AppPage() {
     startNewVenture,
     user,
     isAuthenticated,
-    logout
+    logout,
+    ventureState
   } = useStore();
+
+  const selectedOpportunity = ventureState?.selectedOpportunity;
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
@@ -159,49 +163,51 @@ export default function AppPage() {
           </div>
 
           {/* Project Selector */}
-          {currentProject && (
-            <div className="flex items-center justify-between p-2 mb-6 rounded-lg hover:bg-slate-50 cursor-pointer group">
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded bg-slate-800 text-white flex items-center justify-center font-bold text-xs">
-                  {currentProject.name.charAt(0).toUpperCase()}
-                </div>
-                <span className="text-sm font-semibold text-slate-700 truncate max-w-[120px]">
-                  {currentProject.name}
-                </span>
-              </div>
-              <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600" />
-            </div>
-          )}
+          <ProjectSwitcher />
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto px-4 pb-4 space-y-1">
-          {sidebarItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            const isDisabled = item.requiresProject && !currentProject;
+        <nav className="flex-1 overflow-y-auto px-4 pb-4 space-y-1 relative">
+          <LayoutGroup>
+            {sidebarItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              const isDisabled = item.requiresProject && !currentProject;
 
-            return (
-              <button
-                key={item.id}
-                disabled={isDisabled}
-                onClick={() => {
-                  useStore.setState({ activeTab: item.id });
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
-                  ${isDisabled ? 'opacity-40 cursor-not-allowed' : ''}
-                  ${isActive 
-                    ? 'bg-slate-100 text-slate-900 font-semibold' 
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                  }
-                `}
-              >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-slate-900' : 'text-slate-500'}`} />
-                {item.label}
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={item.id}
+                  disabled={isDisabled}
+                  onClick={() => {
+                    useStore.setState({ activeTab: item.id });
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors relative z-10
+                    ${isDisabled ? 'opacity-40 cursor-not-allowed' : ''}
+                    ${isActive 
+                      ? 'text-slate-900 font-semibold' 
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50/50'
+                    }
+                  `}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="sidebar-active-indicator"
+                      className="absolute inset-0 bg-slate-100 rounded-lg -z-10"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                  <motion.div
+                    animate={isActive ? { scale: 1.1 } : { scale: 1 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-slate-900' : 'text-slate-500'}`} />
+                  </motion.div>
+                  {item.label}
+                </button>
+              );
+            })}
+          </LayoutGroup>
         </nav>
 
         {/* Bottom Actions */}
@@ -246,6 +252,31 @@ export default function AppPage() {
 
       {/* Main Content Area */}
       <main className="flex-1 relative flex flex-col h-screen overflow-y-auto pt-16 md:pt-0">
+        
+        {/* Persistent Project Status Bar */}
+        {currentProject && (
+          <div className="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+            <div className="flex items-center gap-6">
+              <div className="flex flex-col">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Active Venture</span>
+                <span className="text-sm font-bold text-slate-800">{currentProject.name}</span>
+              </div>
+              {selectedOpportunity && (
+                <>
+                  <div className="h-6 w-px bg-slate-200"></div>
+                  <div className="flex flex-col max-w-[150px] md:max-w-md">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Opportunity</span>
+                    <span className="text-sm font-medium text-slate-700 truncate">{selectedOpportunity.title}</span>
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-full text-xs font-medium">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+              Context Synchronized
+            </div>
+          </div>
+        )}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}

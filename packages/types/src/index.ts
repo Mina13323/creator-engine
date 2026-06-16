@@ -56,7 +56,7 @@ export interface Project {
   name: string;
   description: string;
   industry: string;
-  status: 'draft' | 'idea' | 'validated' | 'branded' | 'marketing-ready' | 'active';
+  status: 'draft' | 'idea' | 'validated' | 'branded' | 'marketing-ready' | 'active' | 'archived';
   selectedOpportunityId?: string;
   createdAt: Date;
   updatedAt: Date;
@@ -154,21 +154,106 @@ export interface BusinessPlan {
   id: string;
   userId: string;
   projectId: string;
-  executiveSummary: string;
-  problemStatement: string;
-  solution: string;
-  targetAudience: string;
-  marketOpportunity: string;
-  leanCanvas: LeanCanvas;
-  customerSegments: string[];
-  businessModel: string;
-  revenueModel?: string;
-  pricingStrategy: string;
-  goToMarketStrategy: string;
-  mvpScope: string[];
-  successMetrics: string[];
-  growthStrategy: string;
-  marketResearchSummary?: string;
+
+  // SECTION 1 — EXECUTIVE SUMMARY
+  executiveSummary: {
+    startupName: string;
+    mission: string;
+    vision: string;
+    valueProposition: string;
+    executiveSummary: string;
+    strategicPositioning: string;
+  };
+
+  // SECTION 2 — PROBLEM & SOLUTION
+  problemAndSolution: {
+    problem: string;
+    solution: string;
+    targetPainPoints: string[];
+    customerNeeds: string[];
+    uniqueAdvantages: string[];
+    unfairAdvantage: string;
+  };
+
+  // SECTION 3 — BUSINESS MODEL
+  businessModel: {
+    revenueStreams: string[];
+    pricingStrategy: string;
+    acquisitionModel: string;
+    salesModel: string;
+    distributionChannels: string[];
+    partnerships: string[];
+    subscriptions: string[];
+  };
+
+  // SECTION 4 — VIABILITY ANALYSIS
+  viabilityAnalysis: {
+    marketOpportunityScore: number;
+    founderFitScore: number;
+    profitabilityScore: number;
+    scalabilityScore: number;
+    executionScore: number;
+    overallScore: number;
+    reasoning: string;
+  };
+
+  // SECTION 5 — MARKET RESEARCH
+  marketResearch: {
+    marketSize: string;
+    industryGrowthRate: string;
+    trends: string[];
+    competitors: { name: string; strengths: string; weaknesses: string }[];
+    marketGaps: string[];
+    targetSegments: string[];
+    customerBehavior: string;
+  };
+
+  // SECTION 6 — PRODUCTS & SERVICES
+  productsAndServices: {
+    coreOfferings: string[];
+    premiumOfferings: string[];
+    supportServices: string[];
+    futureExpansionOpportunities: string[];
+  };
+
+  // SECTION 7 — SALES & MARKETING
+  salesAndMarketing: {
+    acquisitionChannels: string[];
+    marketingFunnel: { awareness: string; interest: string; consideration: string; purchase: string; retention: string };
+    customerRetention: string;
+    onlinePresence: string;
+    contentStrategy: string;
+    growthStrategy: string;
+  };
+
+  // SECTION 8 — FINANCIAL INSIGHTS
+  financialInsights: {
+    revenueProjection: string;
+    monthlyGrowth: string;
+    breakEvenPoint: string;
+    profitabilityTimeline: string;
+    unitEconomics: string;
+    keyRisks: string[];
+    chartData: { month: string; revenue: number; cost: number }[];
+  };
+
+  // SECTION 9 — SWOT ANALYSIS
+  swotAnalysis: {
+    strengths: string[];
+    weaknesses: string[];
+    opportunities: string[];
+    threats: string[];
+  };
+
+  // SECTION 10 — RISK ASSESSMENT
+  riskAssessment: {
+    marketRisks: string[];
+    operationalRisks: string[];
+    technicalRisks: string[];
+    financialRisks: string[];
+    mitigationStrategies: string[];
+  };
+
   generatedByModel?: string;
   generatedAt?: Date;
   version: number;
@@ -365,6 +450,7 @@ export interface N8nWebhookResponse<T = any> {
   projectId: string;
   generatedAt: string;
   data: T;
+  error?: string;
 }
 
 export interface AgentRun {

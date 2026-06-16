@@ -85,13 +85,15 @@ const ProjectSchema = new Schema<Project & Document>(
     industry: { type: String, required: true },
     status: {
       type: String,
-      enum: ['draft', 'idea', 'validated', 'branded', 'marketing-ready', 'active'],
+      enum: ['draft', 'idea', 'validated', 'branded', 'marketing-ready', 'active', 'archived'],
       default: 'draft'
     },
     selectedOpportunityId: { type: String }
   },
   { timestamps: true }
 );
+
+ProjectSchema.index({ userId: 1, status: 1 });
 
 // 2. Business Idea Model (Legacy, kept per spec)
 const BusinessIdeaSchema = new Schema<BusinessIdea & Document>(
@@ -206,25 +208,124 @@ const BusinessPlanSchema = new Schema<BusinessPlan & Document>(
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
-    executiveSummary: { type: String, required: true },
-    problemStatement: { type: String, required: true },
-    solution: { type: String, required: true },
-    targetAudience: { type: String, required: true },
-    marketOpportunity: { type: String, required: true },
-    leanCanvas: { type: LeanCanvasSchema, required: true },
-    customerSegments: [{ type: String }],
-    businessModel: { type: String, required: true },
-    revenueModel: { type: String },
-    pricingStrategy: { type: String, required: true },
-    goToMarketStrategy: { type: String, required: true },
-    mvpScope: [{ type: String }],
-    successMetrics: [{ type: String }],
-    growthStrategy: { type: String, required: true },
-    marketResearchSummary: { type: String },
-    generatedByModel: { type: String },
-    generatedAt: { type: Date, default: Date.now },
+    
+    // SECTION 1 — EXECUTIVE SUMMARY
+    executiveSummary: {
+      startupName: { type: String },
+      mission: { type: String },
+      vision: { type: String },
+      valueProposition: { type: String },
+      executiveSummary: { type: String },
+      strategicPositioning: { type: String },
+    },
+
+    // SECTION 2 — PROBLEM & SOLUTION
+    problemAndSolution: {
+      problem: { type: String },
+      solution: { type: String },
+      targetPainPoints: [{ type: String }],
+      customerNeeds: [{ type: String }],
+      uniqueAdvantages: [{ type: String }],
+      unfairAdvantage: { type: String },
+    },
+
+    // SECTION 3 — BUSINESS MODEL
+    businessModel: {
+      revenueStreams: [{ type: String }],
+      pricingStrategy: { type: String },
+      acquisitionModel: { type: String },
+      salesModel: { type: String },
+      distributionChannels: [{ type: String }],
+      partnerships: [{ type: String }],
+      subscriptions: [{ type: String }],
+    },
+
+    // SECTION 4 — VIABILITY ANALYSIS
+    viabilityAnalysis: {
+      marketOpportunityScore: { type: Number },
+      founderFitScore: { type: Number },
+      profitabilityScore: { type: Number },
+      scalabilityScore: { type: Number },
+      executionScore: { type: Number },
+      overallScore: { type: Number },
+      reasoning: { type: String },
+    },
+
+    // SECTION 5 — MARKET RESEARCH
+    marketResearch: {
+      marketSize: { type: String },
+      industryGrowthRate: { type: String },
+      trends: [{ type: String }],
+      competitors: [{
+        name: { type: String },
+        strengths: { type: String },
+        weaknesses: { type: String }
+      }],
+      marketGaps: [{ type: String }],
+      targetSegments: [{ type: String }],
+      customerBehavior: { type: String }
+    },
+
+    // SECTION 6 — PRODUCTS & SERVICES
+    productsAndServices: {
+      coreOfferings: [{ type: String }],
+      premiumOfferings: [{ type: String }],
+      supportServices: [{ type: String }],
+      futureExpansionOpportunities: [{ type: String }]
+    },
+
+    // SECTION 7 — SALES & MARKETING
+    salesAndMarketing: {
+      acquisitionChannels: [{ type: String }],
+      marketingFunnel: {
+        awareness: { type: String },
+        interest: { type: String },
+        consideration: { type: String },
+        purchase: { type: String },
+        retention: { type: String }
+      },
+      customerRetention: { type: String },
+      onlinePresence: { type: String },
+      contentStrategy: { type: String },
+      growthStrategy: { type: String }
+    },
+
+    // SECTION 8 — FINANCIAL INSIGHTS
+    financialInsights: {
+      revenueProjection: { type: String },
+      monthlyGrowth: { type: String },
+      breakEvenPoint: { type: String },
+      profitabilityTimeline: { type: String },
+      unitEconomics: { type: String },
+      keyRisks: [{ type: String }],
+      chartData: [{
+        month: { type: String },
+        revenue: { type: Number },
+        cost: { type: Number }
+      }]
+    },
+
+    // SECTION 9 — SWOT ANALYSIS
+    swotAnalysis: {
+      strengths: [{ type: String }],
+      weaknesses: [{ type: String }],
+      opportunities: [{ type: String }],
+      threats: [{ type: String }]
+    },
+
+    // SECTION 10 — RISK ASSESSMENT
+    riskAssessment: {
+      marketRisks: [{ type: String }],
+      operationalRisks: [{ type: String }],
+      technicalRisks: [{ type: String }],
+      financialRisks: [{ type: String }],
+      mitigationStrategies: [{ type: String }]
+    },
+
+    isLatest: { type: Boolean, default: false },
     version: { type: Number, default: 1 },
-    isLatest: { type: Boolean, default: true }
+    generatedByModel: { type: String },
+    generatedAt: { type: Date, default: Date.now }
   },
   { timestamps: true, collection: 'business_plans' }
 );
@@ -235,23 +336,23 @@ const BrandIdentitySchema = new Schema<BrandIdentity & Document>(
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
-    brandName: { type: String, required: true },
+    brandName: { type: String, default: '' },
     tagline: { type: String, default: '' },
-    slogan: { type: String, required: true },
-    toneOfVoice: { type: String, required: true },
-    brandPositioning: { type: String, required: true },
+    slogan: { type: String, default: '' },
+    toneOfVoice: { type: String, default: '' },
+    brandPositioning: { type: String, default: '' },
     brandPersonality: [{ type: String }],
     brandStory: { type: String, default: '' },
     brandVoice: {
       dos: [{ type: String }],
       donts: [{ type: String }]
     },
-    logoPrompt: { type: String, required: true },
+    logoPrompt: { type: String, default: '' },
     colorPalette: {
-      primary: { type: String, required: true },
-      secondary: { type: String, required: true },
-      background: { type: String, required: true },
-      accent: { type: String, required: true }
+      primary: { type: String, default: '' },
+      secondary: { type: String, default: '' },
+      background: { type: String, default: '' },
+      accent: { type: String, default: '' }
     },
     generatedByModel: { type: String },
     generatedAt: { type: Date, default: Date.now },
@@ -290,7 +391,7 @@ const MarketingCampaignSchema = new Schema<MarketingCampaign & Document>(
       }
     ],
     contentHooks: [{ type: String }],
-    socialMediaStrategy: { type: String, required: true },
+    socialMediaStrategy: { type: String, default: '' },
     generatedByModel: { type: String },
     generatedAt: { type: Date, default: Date.now },
     version: { type: Number, default: 1 },
@@ -305,9 +406,9 @@ const PitchDeckSchema = new Schema<PitchDeck & Document>(
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
-    startupPitch: { type: String, required: true },
-    investorSummary: { type: String, required: true },
-    elevatorPitch: { type: String, required: true },
+    startupPitch: { type: String, default: '' },
+    investorSummary: { type: String, default: '' },
+    elevatorPitch: { type: String, default: '' },
     problemStatement: { type: String, default: '' },
     solution: { type: String, default: '' },
     keyMetrics: {
@@ -435,6 +536,16 @@ const OpportunityComparisonSchema = new Schema<OpportunityComparison & Document>
   { timestamps: true }
 );
 
+const schemasWithIsLatest = [
+  FounderProfileSchema, BusinessPlanSchema, BrandIdentitySchema, 
+  MarketingCampaignSchema, PitchDeckSchema, ExecutionRoadmapSchema
+];
+schemasWithIsLatest.forEach(schema => {
+  schema.index({ projectId: 1, userId: 1 });
+  schema.index({ projectId: 1, isLatest: 1 });
+  schema.index({ projectId: 1, userId: 1, isLatest: 1 });
+});
+
 // Export Mongoose Models
 export const UserModel = mongoose.models.User || mongoose.model<UserDocument & Document>('User', UserSchema);
 export const FounderProfileModel = mongoose.models.FounderProfile || mongoose.model<FounderProfile & Document>('FounderProfile', FounderProfileSchema);
@@ -501,7 +612,7 @@ export interface IRevenueProjection {
 }
 
 export interface IFinancialForecast extends Document {
-  projectId: mongoose.Types.ObjectId;
+  projectId: string;
   startupCosts: IStartupCost[];
   totalStartupCost: number;
   monthlyCosts: IMonthlyCost[];
@@ -523,7 +634,7 @@ export interface IPriceTier {
 }
 
 export interface IPricingStrategy extends Document {
-  projectId: mongoose.Types.ObjectId;
+  projectId: string;
   businessModel: 'SaaS' | 'Agency retainer' | 'E-commerce' | 'Freelance' | string;
   recommendedStrategyType: string;
   currency: 'EGP' | 'USD';
@@ -553,7 +664,7 @@ export const RevenueProjectionSchema = new Schema<IRevenueProjection>({
 }, { _id: false });
 
 export const FinancialForecastSchema = new Schema<IFinancialForecast>({
-  projectId: { type: Schema.Types.ObjectId, required: true, unique: true, index: true },
+  projectId: { type: String, required: true, index: true },
   startupCosts: [StartupCostSchema],
   totalStartupCost: { type: Number, required: true, default: 0 },
   monthlyCosts: [MonthlyCostSchema],
@@ -574,7 +685,7 @@ export const PriceTierSchema = new Schema<IPriceTier>({
 }, { _id: false });
 
 export const PricingStrategySchema = new Schema<IPricingStrategy>({
-  projectId: { type: Schema.Types.ObjectId, required: true, unique: true, index: true },
+  projectId: { type: String, required: true, index: true },
   businessModel: { type: String, required: true },
   recommendedStrategyType: { type: String, required: true },
   currency: { type: String, enum: ['EGP', 'USD'], default: 'EGP' },
@@ -590,3 +701,5 @@ FinancialForecastSchema.pre<IFinancialForecast>('save', function () {
 
 export const FinancialForecast = mongoose.models.FinancialForecast || mongoose.model<IFinancialForecast>('FinancialForecast', FinancialForecastSchema);
 export const PricingStrategy = mongoose.models.PricingStrategy || mongoose.model<IPricingStrategy>('PricingStrategy', PricingStrategySchema);
+
+export * from './services/projectContext';

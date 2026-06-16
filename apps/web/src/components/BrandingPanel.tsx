@@ -1,5 +1,6 @@
 'use client';
 
+import { AILoadingOverlay } from './ui/AILoadingOverlay';
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
 import { Button } from './ui/button';
@@ -9,6 +10,8 @@ import {
   RefreshCw, BookOpen, Quote, Shield, Compass, Heart, Wand2
 } from 'lucide-react';
 import { api } from '../lib/api';
+import { motion, AnimatePresence } from 'framer-motion';
+import { fadeInUp, fadeIn, staggerContainer } from '../lib/motion-presets';
 
 export default function BrandingPanel() {
   const { currentProject, brandIdentity, brandingLoading, generateBranding } = useStore();
@@ -51,15 +54,7 @@ export default function BrandingPanel() {
 
   // 1. Loading State
   if (brandingLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[60vh] gap-6 animate-in fade-in">
-        <Loader2 className="w-12 h-12 text-emerald-500 animate-spin" />
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-slate-800">Generating Brand Identity...</h2>
-          <p className="text-slate-500 mt-2">Building your visual identity and brand voice.</p>
-        </div>
-      </div>
-    );
+    return <AILoadingOverlay message="Generating Brand Identity..." />;
   }
 
   // 2. Empty State
@@ -76,7 +71,7 @@ export default function BrandingPanel() {
         </p>
         <div className="pt-8">
           <Button
-            onClick={handleGenerateBranding}
+            onClick={handleGenerateBranding} disabled={brandingLoading}
             className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl px-8 py-6 text-lg font-semibold shadow-md"
           >
             <Wand2 className="w-5 h-5 mr-3" />
@@ -89,7 +84,13 @@ export default function BrandingPanel() {
 
   // 3. Complete Dashboard
   return (
-    <div className="p-6 md:p-10 max-w-[1200px] mx-auto space-y-8 animate-in fade-in duration-500">
+    <motion.div 
+      variants={fadeIn}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className="p-6 md:p-10 max-w-[1200px] mx-auto space-y-8"
+    >
 
       {/* Page Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -101,17 +102,23 @@ export default function BrandingPanel() {
           <p className="text-slate-500 mt-1">{brandIdentity.brandName}</p>
         </div>
         <button
-          onClick={handleGenerateBranding}
+          onClick={handleGenerateBranding} disabled={brandingLoading}
           className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-colors"
         >
           <RefreshCw className="w-3.5 h-3.5" /> Regenerate Brand
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-6">
+      <motion.div 
+        variants={staggerContainer}
+        initial="initial"
+        animate="animate"
+        className="grid grid-cols-1 gap-6"
+      >
 
         {/* Brand Overview */}
-        <Card className="p-6 md:p-8 border-slate-200 shadow-sm rounded-xl bg-white">
+        <motion.div variants={fadeInUp}>
+        <Card className="p-6 md:p-8 border-slate-200 shadow-sm rounded-2xl bg-white hover:shadow-md transition-all">
           <h2 className="text-xl font-bold text-slate-900 mb-1 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-emerald-500" />
             {brandIdentity.brandName}
@@ -121,10 +128,12 @@ export default function BrandingPanel() {
             &ldquo;{brandIdentity.slogan}&rdquo;
           </blockquote>
         </Card>
+        </motion.div>
 
         {/* Brand Story & Personality */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="p-6 border-slate-200 shadow-sm rounded-xl bg-white">
+          <motion.div variants={fadeInUp}>
+          <Card className="p-6 border-slate-200 shadow-sm rounded-2xl bg-white h-full hover:shadow-md transition-all">
             <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-indigo-500" />
               Brand Story
@@ -133,8 +142,10 @@ export default function BrandingPanel() {
               {brandIdentity.brandStory}
             </p>
           </Card>
+          </motion.div>
 
-          <Card className="p-6 border-slate-200 shadow-sm rounded-xl bg-white">
+          <motion.div variants={fadeInUp}>
+          <Card className="p-6 border-slate-200 shadow-sm rounded-2xl bg-white h-full hover:shadow-md transition-all">
             <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
               <Heart className="w-5 h-5 text-rose-500" />
               Brand Personality
@@ -150,10 +161,12 @@ export default function BrandingPanel() {
               ))}
             </div>
           </Card>
+          </motion.div>
         </div>
 
         {/* Brand Voice */}
-        <Card className="p-6 md:p-8 border-slate-200 shadow-sm rounded-xl bg-white">
+        <motion.div variants={fadeInUp}>
+        <Card className="p-6 md:p-8 border-slate-200 shadow-sm rounded-2xl bg-white hover:shadow-md transition-all">
           <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
             <Quote className="w-5 h-5 text-amber-500" />
             Brand Voice
@@ -193,12 +206,14 @@ export default function BrandingPanel() {
             </p>
           )}
         </Card>
+        </motion.div>
 
         {/* Color System & AI Logo Studio */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
           {/* Color Palette */}
-          <Card className="p-6 border-slate-200 shadow-sm rounded-xl bg-white space-y-4">
+          <motion.div variants={fadeInUp}>
+          <Card className="p-6 border-slate-200 shadow-sm rounded-2xl bg-white space-y-4 h-full hover:shadow-md transition-all">
             <div>
               <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2 mb-1">
                 <Palette className="w-5 h-5 text-blue-500" />
@@ -231,8 +246,11 @@ export default function BrandingPanel() {
             <p className="text-[10px] text-slate-400 text-center">Click swatches to copy hex values.</p>
           </Card>
 
+          </motion.div>
+
           {/* AI Logo Studio */}
-          <Card className="p-6 border-slate-200 shadow-sm rounded-xl bg-white lg:col-span-2 space-y-4">
+          <motion.div variants={fadeInUp} className="lg:col-span-2">
+          <Card className="p-6 border-slate-200 shadow-sm rounded-2xl bg-white space-y-4 h-full hover:shadow-md transition-all">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
@@ -301,8 +319,9 @@ export default function BrandingPanel() {
               </div>
             </div>
           </Card>
+          </motion.div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

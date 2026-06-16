@@ -43,7 +43,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ { model: 'accounts/fireworks/models/deepseek-v4-pro', messages: [ { role: 'user', content: $json.prompt } ] } }}",
+        "jsonBody": "={{ { model: 'accounts/fireworks/models/deepseek-v4-flash', messages: [ { role: 'user', content: $json.prompt } ] } }}",
         "options": {}
       },
       "id": "http-node",
