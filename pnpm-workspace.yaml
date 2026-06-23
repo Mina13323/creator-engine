@@ -4,7 +4,8 @@ packages:
 
 allowBuilds:
   '@sentry-internal/node-cpu-profiler': set this to true or false
-  '@sentry/cli': set this to true or false
+  '@sentry/cli': true
+  '@sentry/node-cpu-profiler': true
   electron: true
   esbuild: true
   msw: true

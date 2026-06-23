@@ -1,14 +1,12 @@
-import { useErrorStore } from './errorStore';
 import { create } from 'zustand';
-import { Project, ChatMessage, Conversation, AuthUser, FounderProfile, BusinessOpportunity, SelectedOpportunity, BusinessPlan, VentureState, OnboardingData, BrandIdentity, MarketingCampaign, PitchDeck } from '@creator/types';
+import { Project, ChatMessage, AuthUser, FounderProfile, BusinessOpportunity, SelectedOpportunity, BusinessPlan, VentureState, OnboardingData } from '@creator/types';
 import { authClient } from '../lib/authClient';
 
 interface StoreState {
   projects: Project[];
   currentProject: Project | null;
-  selectedProjectId: string | null;
   ventureState: VentureState | null;
-  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'marketing-ai' | 'pitch' | 'roadmap' | 'ai-consultant' | 'ai-studio';
+  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'roadmap' | 'ai-studio' | 'account';
   isOnboarded: boolean;
   
   // Async states
@@ -16,22 +14,12 @@ interface StoreState {
   loadingMessage: string;
   chatMessages: ChatMessage[];
   chatLoading: boolean;
-  conversations: Conversation[];
-  activeConversationId: string | null;
 
   // Lifecycle Output States (for currently generating views)
   opportunities: BusinessOpportunity[];
   selectedOpportunity: SelectedOpportunity | null;
   isSelecting: boolean;
   selectionError: string | null;
-
-  // Branding / Marketing / Pitch
-  brandIdentity: BrandIdentity | null;
-  marketingCampaign: MarketingCampaign | null;
-  pitchDeck: PitchDeck | null;
-  brandingLoading: boolean;
-  marketingLoading: boolean;
-  pitchLoading: boolean;
 
   // Auth State
   user: AuthUser | null;
@@ -54,28 +42,16 @@ interface StoreState {
   selectOpportunity: (projectId: string, opportunityId: string) => Promise<void>;
   generateBusinessPlan: (projectId: string) => Promise<void>;
   uploadDocument: (projectId: string, fileData: { fileName: string, fileType: string, storageUrl: string, fileSize: number }) => Promise<void>;
-  generateImage: (prompt: string, style: string) => Promise<string>;
-  generateBranding: (projectId: string) => Promise<void>;
-  generateMarketing: (projectId: string) => Promise<void>;
-  generatePitch: (projectId: string) => Promise<void>;
 
   sendChatMessage: (message: string) => Promise<void>;
-  clearChat: () => void;
-  loadConversations: (projectId: string) => Promise<void>;
-  setActiveConversation: (conversationId: string) => void;
   resetToDashboard: () => void;
   startNewVenture: () => void;
-  resetProjectState: () => void;
-  archiveProject: (projectId: string) => Promise<void>;
-  restoreProject: (projectId: string) => Promise<void>;
-  deleteProject: (projectId: string) => Promise<void>;
   setActiveTab: (tab: StoreState['activeTab']) => void;
 }
 
 export const useStore = create<StoreState>((set, get) => ({
   projects: [],
   currentProject: null,
-  selectedProjectId: null,
   ventureState: null,
   activeTab: 'dashboard',
   isOnboarded: false,
@@ -83,19 +59,10 @@ export const useStore = create<StoreState>((set, get) => ({
   loadingMessage: '',
   chatMessages: [],
   chatLoading: false,
-  conversations: [],
-  activeConversationId: null,
   opportunities: [],
   selectedOpportunity: null,
   isSelecting: false,
   selectionError: null,
-
-  brandIdentity: null,
-  marketingCampaign: null,
-  pitchDeck: null,
-  brandingLoading: false,
-  marketingLoading: false,
-  pitchLoading: false,
 
   user: null,
   isAuthModalOpen: false,
@@ -119,13 +86,7 @@ export const useStore = create<StoreState>((set, get) => ({
       opportunities: [],
       selectedOpportunity: null,
       isSelecting: false,
-      selectionError: null,
-      brandIdentity: null,
-      marketingCampaign: null,
-      pitchDeck: null,
-      brandingLoading: false,
-      marketingLoading: false,
-      pitchLoading: false
+      selectionError: null
     });
   },
   verifyAuth: async () => {
@@ -146,15 +107,8 @@ export const useStore = create<StoreState>((set, get) => ({
       const data = await authClient.get<Project[]>('/projects');
       set({ projects: data });
       if (data.length > 0) {
-        const activeProjects = data.filter(p => p.status !== 'archived');
-        const selectedId = get().selectedProjectId;
-        if (!selectedId || !data.find(p => p.id === selectedId)) {
-          const projectToSelect = activeProjects[0] || data[0];
-          await get().selectProject(projectToSelect.id || (projectToSelect as any)._id);
-        }
+        await get().selectProject(data[0].id || data[0]._id as any);
         set({ isOnboarded: true });
-      } else {
-        set({ isOnboarded: false });
       }
     } catch (e) {
       console.warn('Failed to connect to API.', e);
@@ -170,12 +124,8 @@ export const useStore = create<StoreState>((set, get) => ({
       
       set({
         currentProject: proj || null,
-        selectedProjectId: projectId,
         ventureState: stateData,
         selectedOpportunity: stateData?.selectedOpportunity || null,
-        brandIdentity: stateData?.branding || null,
-        marketingCampaign: stateData?.marketing || null,
-        pitchDeck: stateData?.pitchDeck || null,
         activeTab: 'dashboard',
         loading: false
       });
@@ -201,7 +151,6 @@ export const useStore = create<StoreState>((set, get) => ({
       set(state => ({
         projects: [res.project, ...state.projects],
         currentProject: res.project,
-        selectedProjectId: res.projectId,
         loading: false
       }));
       return res.projectId;
@@ -229,7 +178,6 @@ export const useStore = create<StoreState>((set, get) => ({
         loading: false
       }));
     } catch (e) {
-      useErrorStore.getState().addError({ title: 'AI Analysis Failed', message: e?.message || 'Could not analyze founder profile.', retryAction: () => get().analyzeFounder(projectId, data) });
       console.error('analyzeFounder failed', e);
       set({ loading: false });
       throw e;
@@ -242,7 +190,6 @@ export const useStore = create<StoreState>((set, get) => ({
       const res = await authClient.post<{ opportunities: BusinessOpportunity[] }>('/opportunities/discover', { projectId });
       set({ opportunities: res.opportunities, activeTab: 'opportunities', loading: false });
     } catch (e) {
-      useErrorStore.getState().addError({ title: 'Discovery Failed', message: e?.message || 'Could not discover opportunities.', retryAction: () => get().discoverOpportunities(projectId) });
       console.error('discoverOpportunities failed', e);
       set({ loading: false });
       throw e;
@@ -262,7 +209,6 @@ export const useStore = create<StoreState>((set, get) => ({
         };
       });
     } catch (e: any) {
-      useErrorStore.getState().addError({ title: 'Selection Failed', message: e?.message || 'Could not select opportunity.', retryAction: () => get().selectOpportunity(projectId, opportunityId) });
       console.error('selectOpportunity failed', e);
       set({ isSelecting: false, selectionError: e.message || 'Failed to select opportunity' });
       throw e;
@@ -278,7 +224,6 @@ export const useStore = create<StoreState>((set, get) => ({
         return { ventureState: updatedState as VentureState, activeTab: 'business-plan', loading: false };
       });
     } catch (e) {
-      useErrorStore.getState().addError({ title: 'Generation Failed', message: e?.message || 'Could not generate business plan.', retryAction: () => get().generateBusinessPlan(projectId) });
       console.error('generateBusinessPlan failed', e);
       set({ loading: false });
       throw e;
@@ -289,78 +234,7 @@ export const useStore = create<StoreState>((set, get) => ({
     try {
       await authClient.post(`/projects/${projectId}/documents/upload`, fileData);
     } catch (e) {
-      useErrorStore.getState().addError({ title: 'Upload Failed', message: e?.message || 'Could not upload document.' });
       console.error('uploadDocument failed', e);
-      throw e;
-    }
-  },
-
-  generateImage: async (prompt: string, style: string) => {
-    try {
-      const res = await authClient.post<{ imageUrl: string }>('/studio/generate-image', { prompt, style });
-      return res.imageUrl;
-    } catch (e) {
-      console.error('generateImage failed', e);
-      throw e;
-    }
-  },
-
-  generateBranding: async (projectId) => {
-    set({ brandingLoading: true });
-    try {
-      const res = await authClient.post<{ brandIdentity: BrandIdentity }>('/branding/generate', { projectId });
-      set(state => {
-        const updatedState = state.ventureState ? { ...state.ventureState, branding: res.brandIdentity } : state.ventureState;
-        return {
-          brandIdentity: res.brandIdentity,
-          ventureState: updatedState as VentureState,
-          brandingLoading: false
-        };
-      });
-    } catch (e) {
-      useErrorStore.getState().addError({ title: 'Branding Engine Failed', message: e?.message || 'Could not generate branding.', retryAction: () => get().generateBranding(projectId) });
-      console.error('generateBranding failed', e);
-      set({ brandingLoading: false });
-      throw e;
-    }
-  },
-
-  generateMarketing: async (projectId) => {
-    set({ marketingLoading: true });
-    try {
-      const res = await authClient.post<{ marketingCampaign: MarketingCampaign }>('/marketing/generate', { projectId });
-      set(state => {
-        const updatedState = state.ventureState ? { ...state.ventureState, marketing: res.marketingCampaign } : state.ventureState;
-        return {
-          marketingCampaign: res.marketingCampaign,
-          ventureState: updatedState as VentureState,
-          marketingLoading: false
-        };
-      });
-    } catch (e) {
-      useErrorStore.getState().addError({ title: 'Marketing Engine Failed', message: e?.message || 'Could not generate marketing campaign.', retryAction: () => get().generateMarketing(projectId) });
-      console.error('generateMarketing failed', e);
-      set({ marketingLoading: false });
-      throw e;
-    }
-  },
-
-  generatePitch: async (projectId) => {
-    set({ pitchLoading: true });
-    try {
-      const res = await authClient.post<{ pitchDeck: PitchDeck }>('/pitch/generate', { projectId });
-      set(state => {
-        const updatedState = state.ventureState ? { ...state.ventureState, pitchDeck: res.pitchDeck } : state.ventureState;
-        return {
-          pitchDeck: res.pitchDeck,
-          ventureState: updatedState as VentureState,
-          pitchLoading: false
-        };
-      });
-    } catch (e) {
-      useErrorStore.getState().addError({ title: 'Pitch Engine Failed', message: e?.message || 'Could not generate pitch deck.', retryAction: () => get().generatePitch(projectId) });
-      console.error('generatePitch failed', e);
-      set({ pitchLoading: false });
       throw e;
     }
   },
@@ -382,50 +256,17 @@ export const useStore = create<StoreState>((set, get) => ({
     }));
 
     try {
-      const data = await authClient.post<{ history: ChatMessage[], conversationId: string }>('/ai/chat', {
+      const data = await authClient.post<{ history: ChatMessage[] }>('/ai/chat', {
         projectId: currentProject.id,
-        message,
-        conversationId: get().activeConversationId
+        message
       });
       set({
         chatMessages: data.history,
-        activeConversationId: data.conversationId,
         chatLoading: false
       });
-      
-      // Reload conversations to update titles and list
-      get().loadConversations(currentProject.id);
     } catch (e) {
       set({ chatLoading: false });
     }
-  },
-
-  loadConversations: async (projectId: string) => {
-    try {
-      const data = await authClient.get<{ conversations: Conversation[] }>(`/projects/${projectId}/memory`);
-      set({ conversations: data.conversations });
-      const currentActiveId = get().activeConversationId;
-      if (!currentActiveId && data.conversations.length > 0) {
-        set({ 
-          activeConversationId: data.conversations[0].id,
-          chatMessages: data.conversations[0].messages 
-        });
-      }
-    } catch (e) {
-      console.error('Failed to load conversations', e);
-    }
-  },
-
-  setActiveConversation: (conversationId: string) => {
-    const { conversations } = get();
-    const conv = conversations.find(c => c.id === conversationId);
-    if (conv) {
-      set({ activeConversationId: conversationId, chatMessages: conv.messages });
-    }
-  },
-
-  clearChat: () => {
-    set({ chatMessages: [], activeConversationId: null });
   },
 
   resetToDashboard: () => {
@@ -433,10 +274,7 @@ export const useStore = create<StoreState>((set, get) => ({
       currentProject: null,
       ventureState: null,
       activeTab: 'dashboard',
-      chatMessages: [],
-      brandIdentity: null,
-      marketingCampaign: null,
-      pitchDeck: null
+      chatMessages: []
     });
   },
 
@@ -447,58 +285,7 @@ export const useStore = create<StoreState>((set, get) => ({
       ventureState: null,
       activeTab: 'dashboard',
       chatMessages: [],
-      opportunities: [],
-      brandIdentity: null,
-      marketingCampaign: null,
-      pitchDeck: null
+      opportunities: []
     });
-  },
-
-  resetProjectState: () => {
-    set({
-      isOnboarded: false,
-      currentProject: null,
-      selectedProjectId: null,
-      ventureState: null,
-      opportunities: [],
-      selectedOpportunity: null,
-      brandIdentity: null,
-      marketingCampaign: null,
-      pitchDeck: null,
-      chatMessages: [],
-      activeTab: 'dashboard'
-    });
-  },
-
-  archiveProject: async (projectId: string) => {
-    try {
-      await authClient.post(`/projects/${projectId}/archive`, {});
-      await get().loadProjects();
-    } catch (e) {
-      console.error('Failed to archive project', e);
-    }
-  },
-
-  restoreProject: async (projectId: string) => {
-    try {
-      await authClient.post(`/projects/${projectId}/restore`, {});
-      await get().loadProjects();
-    } catch (e) {
-      console.error('Failed to restore project', e);
-    }
-  },
-
-  deleteProject: async (projectId: string) => {
-    try {
-      await authClient.delete(`/projects/${projectId}`);
-      set(state => ({
-        projects: state.projects.filter(p => p.id !== projectId)
-      }));
-      if (get().selectedProjectId === projectId) {
-        get().resetProjectState();
-      }
-    } catch (e) {
-      console.error('Failed to delete project', e);
-    }
   }
 }));

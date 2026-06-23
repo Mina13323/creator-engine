@@ -1,0 +1,12 @@
+D:\ITI_Final\creator-engine\.agents\skills\frontend-design\LICENSE.txt
+D:\ITI_Final\creator-engine\.claude\skills\graphify\SKILL.md
+D:\ITI_Final\creator-engine\.claude\skills\graphify\references\add-watch.md
+D:\ITI_Final\creator-engine\.claude\skills\graphify\references\exports.md
+D:\ITI_Final\creator-engine\.claude\skills\graphify\references\extraction-spec.md
+D:\ITI_Final\creator-engine\.claude\skills\graphify\references\github-and-merge.md
+D:\ITI_Final\creator-engine\.claude\skills\graphify\references\hooks.md
+D:\ITI_Final\creator-engine\.claude\skills\graphify\references\query.md
+D:\ITI_Final\creator-engine\.claude\skills\graphify\references\transcribe.md
+D:\ITI_Final\creator-engine\.claude\skills\graphify\references\update.md
+D:\ITI_Final\creator-engine\n8n-workflows\financial_agents_guide.md
+D:\ITI_Final\creator-engine\pnpm-workspace.yaml
