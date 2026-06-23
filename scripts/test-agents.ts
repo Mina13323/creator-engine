@@ -33,7 +33,7 @@ async function testAgents() {
     console.log('\n--- BUSINESS PLAN AGENT ---');
     console.log(JSON.stringify(businessPlan, null, 2));
 
-    const financialForecast = await runFinancialAgent('test_project', opportunities[0].description, businessPlan?.businessModel || 'SaaS');
+    const financialForecast = await runFinancialAgent('test_project', opportunities[0].description, 'SaaS');
     console.log('\n--- FINANCIAL AGENT ---');
     console.log(JSON.stringify(financialForecast, null, 2));
 

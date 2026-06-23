@@ -3,10 +3,15 @@ export interface User {
   email: string;
   name?: string;
   avatar?: string;
+  role?: string;
 
   // Authentication
   password?: string;
   googleId?: string;
+  token?: string;
+
+  // Admin
+  isBanned?: boolean;
 
   createdAt: Date;
 }
@@ -58,6 +63,11 @@ export interface Project {
   industry: string;
   status: 'draft' | 'idea' | 'validated' | 'branded' | 'marketing-ready' | 'active' | 'archived';
   selectedOpportunityId?: string;
+  
+  // Admin
+  isFlagged?: boolean;
+  flagReason?: string;
+
   createdAt: Date;
   updatedAt: Date;
 }
@@ -437,6 +447,9 @@ export interface AuthUser {
   email: string;
   name?: string;
   avatar?: string;
+  role?: 'user' | 'admin';
+  isBanned?: boolean;
+  token?: string;
 }
 
 export interface AuthResponse {

@@ -1,8 +1,12 @@
 import { AuthResponse, LoginRequest, SignupRequest, AuthUser } from '@creator/types';
 
-const API_BASE = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_API_URL)
-  ? `${process.env.NEXT_PUBLIC_API_URL}/api`
+const rawApiUrl = process.env.NEXT_PUBLIC_API_URL;
+const cleanApiUrl = rawApiUrl ? rawApiUrl.replace(/^['"]|['"]$/g, '') : undefined;
+
+const API_BASE = (typeof window !== 'undefined' && cleanApiUrl)
+  ? `${cleanApiUrl}/api`
   : 'http://localhost:5000/api';
+
 
 // Local storage logic removed in favor of HttpOnly cookies
 
@@ -15,6 +19,14 @@ async function request<T>(
     ...(options.headers as Record<string, string> || {}),
   };
 
+  // Automatically append local token if available
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('token');
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+  }
+
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
     headers,
@@ -23,6 +35,9 @@ async function request<T>(
 
   // Handle 401 — auto-logout
   if (res.status === 401) {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+    }
     // Dynamically import the store to avoid circular dependencies
     const { useStore } = await import('../store/useStore');
     useStore.getState().logout();
@@ -53,24 +68,36 @@ async function checkEmail(email: string): Promise<{ exists: boolean }> {
 }
 
 async function login(body: LoginRequest): Promise<AuthResponse> {
-  return request<AuthResponse>('/auth/login', {
+  const data = await request<AuthResponse>('/auth/login', {
     method: 'POST',
     body: JSON.stringify(body),
   });
+  if (typeof window !== 'undefined' && data.token) {
+    localStorage.setItem('token', data.token);
+  }
+  return data;
 }
 
 async function signup(body: SignupRequest): Promise<AuthResponse> {
-  return request<AuthResponse>('/auth/signup', {
+  const data = await request<AuthResponse>('/auth/signup', {
     method: 'POST',
     body: JSON.stringify(body),
   });
+  if (typeof window !== 'undefined' && data.token) {
+    localStorage.setItem('token', data.token);
+  }
+  return data;
 }
 
 async function googleLogin(credential: string): Promise<AuthResponse> {
-  return request<AuthResponse>('/auth/google', {
+  const data = await request<AuthResponse>('/auth/google', {
     method: 'POST',
     body: JSON.stringify({ credential }),
   });
+  if (typeof window !== 'undefined' && data.token) {
+    localStorage.setItem('token', data.token);
+  }
+  return data;
 }
 
 async function logout(): Promise<void> {
@@ -78,6 +105,9 @@ async function logout(): Promise<void> {
     await request<{ message: string }>('/auth/logout', { method: 'POST' });
   } catch {
     // Ignore errors — logout is best-effort on backend
+  }
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('token');
   }
 }
 

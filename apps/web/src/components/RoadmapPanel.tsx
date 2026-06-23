@@ -60,7 +60,7 @@ export default function RoadmapPanel() {
         </h2>
 
         <motion.div variants={staggerContainer} initial="initial" animate="animate" className="relative border-l-2 border-slate-200 pl-6 ml-3 space-y-8">
-          {roadmap.milestones.map((milestone, idx) => (
+          {roadmap.milestones.map((milestone: any, idx: number) => (
             <motion.div variants={fadeInUp} key={idx} className="relative">
               {/* Timeline Indicator Ring */}
               <div className="absolute -left-[33px] top-4 w-4 h-4 rounded-full border-2 border-blue-500 bg-white flex items-center justify-center">
@@ -101,7 +101,7 @@ export default function RoadmapPanel() {
                     <CheckSquare className="w-4 h-4 text-slate-500" /> Action Checklist
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {milestone.tasks.map((task, tIdx) => (
+                    {milestone.tasks.map((task: any, tIdx: number) => (
                       <div key={tIdx} className="p-3.5 rounded-xl border border-slate-200 bg-slate-50 text-xs text-slate-700 flex items-start gap-2.5 hover:border-slate-300 transition-colors">
                         <span className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0 mt-1.5"></span>
                         <span className="leading-relaxed">{task}</span>

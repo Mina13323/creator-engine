@@ -16,6 +16,4 @@ export default withSentryConfig(nextConfig, {
   org: "creator-engine",
   project: "frontend",
   widenClientFileUpload: true,
-  hideSourceMaps: true,
-  disableLogger: true,
 });

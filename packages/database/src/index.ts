@@ -37,6 +37,9 @@ interface UserDocument extends User {
   password?: string;
   googleId?: string;
   avatar?: string;
+  role?: 'user' | 'admin';
+  isBanned?: boolean;
+  token?: string;
 }
 
 const UserSchema = new Schema<UserDocument & Document>(
@@ -46,7 +49,10 @@ const UserSchema = new Schema<UserDocument & Document>(
     name: { type: String },
     password: { type: String },
     googleId: { type: String },
-    avatar: { type: String }
+    avatar: { type: String },
+    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    isBanned: { type: Boolean, default: false },
+    token: { type: String }
   },
   { timestamps: true }
 );
@@ -58,14 +64,14 @@ const FounderProfileSchema = new Schema<FounderProfile & Document>(
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     skills: [{ type: String }],
-    experience: { type: String, required: true },
+    experience: { type: String },
     industryInterests: [{ type: String }],
     budget: { type: Number, required: true },
-    location: { type: String, required: true },
-    availableTime: { type: String, required: true },
-    startupGoals: { type: String, required: true },
-    riskTolerance: { type: String, required: true },
-    teamSize: { type: String, required: true },
+    location: { type: String },
+    availableTime: { type: String },
+    startupGoals: { type: String },
+    riskTolerance: { type: String },
+    teamSize: { type: String },
     founderType: { type: String },
     strengths: [{ type: String }],
     weaknesses: [{ type: String }],
@@ -88,7 +94,9 @@ const ProjectSchema = new Schema<Project & Document>(
       enum: ['draft', 'idea', 'validated', 'branded', 'marketing-ready', 'active', 'archived'],
       default: 'draft'
     },
-    selectedOpportunityId: { type: String }
+    selectedOpportunityId: { type: String },
+    isFlagged: { type: Boolean, default: false },
+    flagReason: { type: String }
   },
   { timestamps: true }
 );

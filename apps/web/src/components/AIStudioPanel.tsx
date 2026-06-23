@@ -23,7 +23,9 @@ export default function AIStudioPanel() {
     const formData = new FormData();
     formData.append('file', file);
 
-    const API_BASE = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/api` : 'http://localhost:5000/api';
+    const rawApiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const cleanApiUrl = rawApiUrl ? rawApiUrl.replace(/^['"]|['"]$/g, '') : undefined;
+    const API_BASE = cleanApiUrl ? `${cleanApiUrl}/api` : 'http://localhost:5000/api';
 
     try {
       const response = await fetch(`${API_BASE}/projects/${currentProject.id}/documents/upload`, {
