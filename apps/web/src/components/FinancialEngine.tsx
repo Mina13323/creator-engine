@@ -10,16 +10,26 @@ export default function FinancialEngine() {
   const currentProject = useStore(state => state.currentProject);
   const ventureState = useStore(state => state.ventureState);
   
-  const [businessIdea, setBusinessIdea] = useState(ventureState?.selectedOpportunity?.description || '');
+  const opportunity = ventureState?.selectedOpportunity;
+  const initialIdea = opportunity ? `${opportunity.title}: ${opportunity.description}` : '';
+  const [businessIdea, setBusinessIdea] = useState(initialIdea);
   const [businessModel, setBusinessModel] = useState('SaaS');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any>(null);
 
+  const prevOpportunityId = React.useRef<string | undefined>(opportunity?.id || (opportunity as any)?._id);
+
   React.useEffect(() => {
-    if (ventureState?.selectedOpportunity && !businessIdea) {
-      setBusinessIdea(ventureState.selectedOpportunity.title + ': ' + ventureState.selectedOpportunity.description);
+    const currentId = opportunity?.id || (opportunity as any)?._id;
+    if (currentId !== prevOpportunityId.current) {
+      if (opportunity) {
+        setBusinessIdea(`${opportunity.title}: ${opportunity.description}`);
+      } else {
+        setBusinessIdea('');
+      }
+      prevOpportunityId.current = currentId;
     }
-  }, [ventureState?.selectedOpportunity, businessIdea]);
+  }, [opportunity]);
 
   const handleGenerate = async () => {
     if (!businessIdea) return;

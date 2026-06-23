@@ -1,21 +1,24 @@
 import { NextResponse } from 'next/server';
+import { connectDB, FinancialForecast, PricingStrategy } from '@creator/database';
 
 export async function POST(req: Request) {
   try {
-    const { businessIdea, businessModel } = await req.json();
+    const { projectId, businessIdea, businessModel } = await req.json();
 
     if (!businessIdea) {
       return NextResponse.json({ error: 'Business Idea is required' }, { status: 400 });
     }
 
-    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
-    
-    if (!n8nWebhookUrl) {
-      throw new Error('N8N_WEBHOOK_URL is not configured in environment variables');
-    }
+    let resultData;
 
     // In a real environment, this calls the n8n webhook which processes the RAG & Gemini nodes
     try {
+      const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
+      
+      if (!n8nWebhookUrl) {
+        throw new Error('N8N_WEBHOOK_URL is not configured in environment variables');
+      }
+
       const n8nResponse = await fetch(n8nWebhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -26,14 +29,13 @@ export async function POST(req: Request) {
         throw new Error(`n8n webhook failed with status ${n8nResponse.status}`);
       }
 
-      const data = await n8nResponse.json();
-      return NextResponse.json(data);
+      resultData = await n8nResponse.json();
     } catch (n8nError) {
       console.warn('n8n Webhook connection failed or timed out. Falling back to mock RAG engine for demonstration.', n8nError);
       
       // Fallback response matching the exact JSON schema requested
       // This ensures the frontend doesn't break if n8n isn't running locally yet.
-      return NextResponse.json({
+      resultData = {
         financial: {
           totalStartupCost: 35000,
           monthlyBurn: 12500,
@@ -81,10 +83,73 @@ export async function POST(req: Request) {
           ],
           marketPositioningRationale: "Priced dynamically for the Egyptian market. EGP 1499/mo sits perfectly under the local corporate expense limit, ensuring faster B2B sales cycles."
         }
-      });
+      };
     }
 
+    // Persist to MongoDB if a valid projectId is provided
+    if (projectId && projectId !== 'demo-project') {
+      try {
+        await connectDB(process.env.MONGODB_URI || '');
+
+        const financialInput = resultData.financial;
+        const pricingInput = resultData.pricing;
+
+        if (financialInput) {
+          const updateData = {
+            projectId,
+            startupCosts: financialInput.startupCosts,
+            monthlyCosts: financialInput.monthlyCosts,
+            revenueProjections: financialInput.revenueProjections,
+            breakEvenMonth: financialInput.breakEvenMonth,
+            currency: financialInput.currency || 'EGP',
+            assumptionsApplied: financialInput.assumptionsApplied
+          };
+
+          let forecastDoc = await FinancialForecast.findOne({ projectId });
+          if (!forecastDoc) {
+            forecastDoc = new FinancialForecast(updateData);
+          } else {
+            forecastDoc.startupCosts = updateData.startupCosts || forecastDoc.startupCosts;
+            forecastDoc.monthlyCosts = updateData.monthlyCosts || forecastDoc.monthlyCosts;
+            forecastDoc.revenueProjections = updateData.revenueProjections || forecastDoc.revenueProjections;
+            forecastDoc.breakEvenMonth = updateData.breakEvenMonth !== undefined ? updateData.breakEvenMonth : forecastDoc.breakEvenMonth;
+            forecastDoc.currency = updateData.currency || forecastDoc.currency;
+            forecastDoc.assumptionsApplied = updateData.assumptionsApplied || forecastDoc.assumptionsApplied;
+          }
+          await forecastDoc.save();
+        }
+
+        if (pricingInput) {
+          const updateData = {
+            projectId,
+            businessModel: businessModel || pricingInput.businessModel || 'SaaS',
+            recommendedStrategyType: pricingInput.recommendedStrategyType,
+            currency: pricingInput.currency || 'EGP',
+            priceTiers: pricingInput.priceTiers,
+            marketPositioningRationale: pricingInput.marketPositioningRationale
+          };
+
+          let pricingDoc = await PricingStrategy.findOne({ projectId });
+          if (!pricingDoc) {
+            pricingDoc = new PricingStrategy(updateData);
+          } else {
+            pricingDoc.businessModel = updateData.businessModel || pricingDoc.businessModel;
+            pricingDoc.recommendedStrategyType = updateData.recommendedStrategyType || pricingDoc.recommendedStrategyType;
+            pricingDoc.currency = updateData.currency || pricingDoc.currency;
+            pricingDoc.priceTiers = updateData.priceTiers || pricingDoc.priceTiers;
+            pricingDoc.marketPositioningRationale = updateData.marketPositioningRationale || pricingDoc.marketPositioningRationale;
+          }
+          await pricingDoc.save();
+        }
+      } catch (dbError) {
+        console.error('Failed to automatically persist financials to MongoDB:', dbError);
+      }
+    }
+
+    return NextResponse.json(resultData);
+
   } catch (error) {
+    console.error('Error in financial engine API:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
