@@ -1,16 +1,16 @@
 # Graph Report - creator-engine  (2026-06-23)
 
 ## Corpus Check
-- 185 files · ~191,539 words
+- 185 files · ~191,775 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1363 nodes · 1630 edges · 132 communities (105 shown, 27 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 27 edges (avg confidence: 0.82)
+- 1363 nodes · 1631 edges · 132 communities (105 shown, 27 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 28 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `39664bbc`
+- Built from commit: `cffd3e75`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -133,14 +133,14 @@
 ## Surprising Connections (you probably didn't know these)
 - `GET()` --calls--> `connectDB()`  [INFERRED]
   apps/web/src/app/api/financials/[projectId]/route.ts → packages/database/src/index.ts
+- `POST()` --calls--> `connectDB()`  [INFERRED]
+  apps/web/src/app/api/financial-engine/route.ts → packages/database/src/index.ts
 - `POST()` --calls--> `callFireworksImage()`  [INFERRED]
   apps/web/src/app/api/generate-image/route.ts → packages/agents/src/aiClient.ts
 - `POST()` --calls--> `connectDB()`  [INFERRED]
   apps/web/src/app/api/predictFinances/route.ts → packages/database/src/index.ts
 - `POST()` --calls--> `generateFinancialPrediction()`  [INFERRED]
   apps/web/src/app/api/predictFinances/route.ts → packages/rag-core/src/ragService.ts
-- `main()` --calls--> `embedText()`  [EXTRACTED]
-  scripts/test-embedding.ts → packages/rag-core/src/index.ts
 
 ## Import Cycles
 - 1-file cycle: `apps/api/src/index.ts -> apps/api/src/index.ts`

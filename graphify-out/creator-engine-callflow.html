@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>creator-engine — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 1363 nodes, 1630 edges, 132 communities. Commit: 39664bb</p>
+<p class="subtitle">Generated from graphify knowledge graph: 1363 nodes, 1631 edges, 132 communities. Commit: cffd3e7</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -158,8 +158,8 @@ flowchart LR
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>1363 nodes · 1630 edges · 132 communities (105 shown, 27 thin omitted)</li>
-      <li>Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 27 edges (avg confidence: 0.82)</li>
+      <li>1363 nodes · 1631 edges · 132 communities (105 shown, 27 thin omitted)</li>
+      <li>Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 28 edges (avg confidence: 0.82)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `useStore` - 47 edges</li>
       <li>2. `/graphify` - 30 edges</li>
@@ -1904,12 +1904,12 @@ flowchart LR
 
 <!-- ====== 9. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">9. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around test, apps, api, packages, mostly in apps/api/test_business_plan.js, apps/api/test_opportunity_discovery_v1.js, apps/api/test_opportunity_selection.js. This section covers 117 nodes and 169 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around test, apps, api, packages, mostly in apps/api/test_business_plan.js, apps/api/test_opportunity_discovery_v1.js, apps/api/test_opportunity_selection.js. This section covers 117 nodes and 170 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (117 nodes, 169 edges)
+    %% Section: Tests &amp; Fixtures (117 nodes, 170 edges)
     subgraph tests_fixtures_agents_src_aiClient_ts_f62b23bc["agents/src/aiClient.ts"]
         src_aiclient_fetchwithretry_b4d8eca7("fetchWithRetry()<br/><small>agents/src/aiClient.ts</small>")
         src_aiclient_aierror_e060af8a("AIError<br/><small>agents/src/aiClient.ts</small>")
@@ -2021,7 +2021,7 @@ flowchart LR
   <td><code>POST()</code><br><small style="color:var(--muted)">api/financial-engine/route.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
+  <td><code>connectDB()</code><br><small style="color:var(--muted)">database/src/index.ts</small></td>
   <td>POST() node in api/financial-engine/route.ts.</td>
 </tr>
 <tr>
@@ -4361,7 +4361,7 @@ flowchart LR
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><td>Nodes</td><td>1363</td></tr>
-      <tr><td>Edges</td><td>1630</td></tr>
+      <tr><td>Edges</td><td>1631</td></tr>
       <tr><td>Hyperedges</td><td>3</td></tr>
       <tr><td>Communities</td><td>132</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
@@ -4371,7 +4371,7 @@ flowchart LR
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><td>EXTRACTED</td><td>1603</td></tr>
-      <tr><td>INFERRED</td><td>27</td></tr>
+      <tr><td>INFERRED</td><td>28</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
   </div>
@@ -4379,7 +4379,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>creator-engine — Architecture Documentation</p>
-  <p>Generated: 2026-06-23 01:33 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-23 02:28 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

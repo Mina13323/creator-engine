@@ -1,11 +1,11 @@
 # Graph Report - creator-engine  (2026-06-23)
 
 ## Corpus Check
-- 185 files · ~191,511 words
+- 185 files · ~191,539 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1362 nodes · 1629 edges · 132 communities (105 shown, 27 thin omitted)
+- 1363 nodes · 1630 edges · 132 communities (105 shown, 27 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 27 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
 
@@ -166,7 +166,7 @@ Nodes (40): KnowledgeDocument, AgentRunSchema, BrandIdentitySchema, BusinessIdea
 
 ### Community 2 - "Package Dependencies Devdependencies Module"
 Cohesion: 0.06
-Nodes (37): dependencies, @base-ui/react, class-variance-authority, clsx, @creator/rag-core, @creator/types, framer-motion, lucide-react (+29 more)
+Nodes (38): dependencies, @base-ui/react, class-variance-authority, clsx, @creator/rag-core, @creator/types, framer-motion, lucide-react (+30 more)
 
 ### Community 3 - "Package Dependencies Devdependencies Module"
 Cohesion: 0.05
@@ -457,7 +457,7 @@ Cohesion: 0.50
 Nodes (3): Creator Engine - CI/CD Architecture, Strict Rules, Workflow Overview (`.github/workflows/ci.yml`)
 
 ## Knowledge Gaps
-- **737 isolated node(s):** `PreToolUse`, `name`, `nodes`, `pinData`, `main` (+732 more)
+- **738 isolated node(s):** `PreToolUse`, `name`, `nodes`, `pinData`, `main` (+733 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **27 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -465,16 +465,16 @@ Nodes (3): Creator Engine - CI/CD Architecture, Strict Rules, Workflow Overview 
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `useStore` connect `Components Authclient Select Module` to `Components Marketingstudio Apiclient Module`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **Why does `cn()` connect `Components Marketingstudio Apiclient Module` to `Components Authclient Select Module`?**
-  _High betweenness centrality (0.003) - this node is a cross-community bridge._
+  _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **Why does `connectDB()` connect `Index Route Test Module` to `Index Packages Database Module`, `Index Apps Authmiddleware Module`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `PreToolUse`, `name`, `nodes` to the rest of the system?**
-  _738 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _739 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Components Authclient Select Module` be split into smaller, more focused modules?**
   _Cohesion score 0.0565088080530771 - nodes in this community are weakly interconnected._
 - **Should `Index Packages Database Module` be split into smaller, more focused modules?**
   _Cohesion score 0.05121951219512195 - nodes in this community are weakly interconnected._
 - **Should `Package Dependencies Devdependencies Module` be split into smaller, more focused modules?**
-  _Cohesion score 0.058029689608636977 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05641025641025641 - nodes in this community are weakly interconnected._

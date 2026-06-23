@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "apps/web/package.json": {
-    "mtime": 1782176610.2932873,
-    "ast_hash": "be1c2e6d7480ec98c2b38fb949b6093f",
+    "mtime": 1782176984.6128116,
+    "ast_hash": "2661d282477a1c92494a33e568e6c736",
     "semantic_hash": ""
   },
   "apps/web/postcss.config.js": {
@@ -130,8 +130,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/AIStudioPanel.tsx": {
-    "mtime": 1782175781.4075973,
-    "ast_hash": "23f53cd7aca9b0231fee76a2873d185f",
+    "mtime": 1782178347.7323482,
+    "ast_hash": "ec3d9119604d48e24f5850437322f185",
     "semantic_hash": ""
   },
   "apps/web/src/components/AuthModal.tsx": {
@@ -225,8 +225,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/lib/authClient.ts": {
-    "mtime": 1782175792.7598033,
-    "ast_hash": "6a85d95741c4409ed17984d1d4f9d8ab",
+    "mtime": 1782178338.0721815,
+    "ast_hash": "9312fb189c3d43248732e809b959fda5",
     "semantic_hash": ""
   },
   "apps/web/src/lib/utils.ts": {
