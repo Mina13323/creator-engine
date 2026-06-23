@@ -8,14 +8,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Business Idea is required' }, { status: 400 });
     }
 
-    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
-    
-    if (!n8nWebhookUrl) {
-      throw new Error('N8N_WEBHOOK_URL is not configured in environment variables');
-    }
-
     // In a real environment, this calls the n8n webhook which processes the RAG & Gemini nodes
     try {
+      const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
+      
+      if (!n8nWebhookUrl) {
+        throw new Error('N8N_WEBHOOK_URL is not configured in environment variables');
+      }
+
       const n8nResponse = await fetch(n8nWebhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
