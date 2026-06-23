@@ -24,12 +24,23 @@ export default function FinancialEngine() {
   const handleGenerate = async () => {
     if (!businessIdea) return;
     setLoading(true);
-    try {
-      const data = await authClient.post<any>('/financial-engine', {
-        projectId: currentProject?.id || 'demo-project',
-        businessIdea,
-        businessModel
+      const response = await fetch('/api/financial-engine', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          projectId: currentProject?.id || 'demo-project',
+          businessIdea,
+          businessModel,
+        }),
       });
+
+      if (!response.ok) {
+        throw new Error(`Server returned status ${response.status}`);
+      }
+
+      const data = await response.json();
       setResults(data);
     } catch (error) {
       console.error('Failed to generate financials', error);
