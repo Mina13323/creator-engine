@@ -400,7 +400,7 @@ export async function runCofounderAgent(
   }
 
   const ragDocs = await queryRAG(message, 3);
-  const ragContext = ragDocs.map(doc => `[${doc.title}]\n${doc.content}`).join('\n\n');
+  const ragContext = ragDocs.map((doc: any) => `[${doc.title}]\n${doc.content}`).join('\n\n');
 
   console.log('[Agents] Falling back to direct LLM fetch...');
   const systemPrompt = `You are the Principal AI Consultant and Cofounder. You are actively building the user's startup. 
@@ -462,7 +462,7 @@ export async function runBrandingAgent(
   console.log('[BrandingAgent] n8n unavailable — querying RAG and calling LLM directly...');
   const ragDocs = await queryRAG('branding case studies brand identity brand story', 4);
   const ragContext = ragDocs
-    .map(doc => `[${doc.title}]\n${doc.content}`)
+    .map((doc: any) => `[${doc.title}]\n${doc.content}`)
     .join('\n\n---\n\n');
 
   // ── 3. Call Gemini (or Fireworks fallback) ──────────────────────────────
@@ -520,7 +520,7 @@ export async function runMarketingAgent(
     4
   );
   const ragContext = ragDocs
-    .map(doc => `[${doc.title}]\n${doc.content}`)
+    .map((doc: any) => `[${doc.title}]\n${doc.content}`)
     .join('\n\n---\n\n');
 
   // ── 3. Call Gemini (or Fireworks fallback) ──────────────────────────────
@@ -579,7 +579,7 @@ export async function runPitchAgent(
     4
   );
   const ragContext = ragDocs
-    .map(doc => `[${doc.title}]\n${doc.content}`)
+    .map((doc: any) => `[${doc.title}]\n${doc.content}`)
     .join('\n\n---\n\n');
 
   // ── 3. Call Gemini (or Fireworks fallback) ──────────────────────────────

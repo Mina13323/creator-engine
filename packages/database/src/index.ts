@@ -49,6 +49,7 @@ interface UserDocument extends User {
 
 const UserSchema = new Schema<UserDocument & Document>(
   {
+    // @ts-ignore - id is added for easier querying along with _id
     id: { type: String, required: true, index: true },
     email: { type: String, required: true, unique: true },
     name: { type: String },

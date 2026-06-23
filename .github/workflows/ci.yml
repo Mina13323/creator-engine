@@ -29,8 +29,8 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --ignore-scripts
 
-      - name: Type Check
-        run: npx tsc --noEmit
+      - name: Build and Type Check
+        run: pnpm turbo run build
         
       - name: Lint
         run: pnpm lint

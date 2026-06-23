@@ -82,7 +82,7 @@ export async function queryRAG(query: string, limit: number = 3): Promise<Knowle
       ]);
 
       if (results && results.length > 0) {
-        return results.map(r => ({
+        return results.map((r: any) => ({
           id: r.id || r._id.toString(),
           title: r.title,
           category: r.category,
@@ -104,7 +104,7 @@ export async function queryRAG(query: string, limit: number = 3): Promise<Knowle
 export async function getKnowledgeByCategory(category: string): Promise<KnowledgeDocument[]> {
   if (KnowledgeDocumentModel.db.readyState === 1) {
     const results = await KnowledgeDocumentModel.find({ category });
-    return results.map(r => ({
+    return results.map((r: any) => ({
       id: r.id || r._id.toString(),
       title: r.title,
       category: r.category,
