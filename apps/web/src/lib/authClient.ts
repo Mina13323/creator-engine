@@ -44,6 +44,21 @@ async function request<T>(
     throw new Error('Session expired. Please log in again.');
   }
 
+  if (res.status === 402) {
+    const data = await res.json();
+    const { useStore } = await import('../store/useStore');
+    useStore.getState().setShowPricingModal(true);
+    throw new Error(data.message || 'Insufficient AI credits.');
+  }
+  if (res.status === 403) {
+    const data = await res.json();
+    if (data.error === 'SUBSCRIPTION_REQUIRED') {
+      const { useStore } = await import('../store/useStore');
+      useStore.getState().setShowPricingModal(true);
+      throw new Error(`Subscription required: ${data.requiredPlan}`);
+    }
+  }
+
   const data = await res.json();
 
   if (!res.ok) {

@@ -44,7 +44,7 @@ export default function MarketingDashboard() {
         <div className="w-24 h-24 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6">
           <Megaphone className="w-12 h-12 text-indigo-500" />
         </div>
-        <h1 className="text-3xl font-bold text-slate-900">Build Your Go-To-Market Playbook</h1>
+        <h1 className="text-3xl font-bold text-slate-900">No marketing strategy has been generated yet.</h1>
         <p className="text-lg text-slate-600">
           Create structured ad campaigns, generate ready-to-use social media copy, design platform
           specific headlines, and map out a step-by-step launch roadmap.
@@ -55,7 +55,7 @@ export default function MarketingDashboard() {
             className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-8 py-6 text-lg font-semibold shadow-md"
           >
             <Wand2 className="w-5 h-5 mr-3" />
-            Generate Marketing Strategy
+            Build Marketing Strategy
           </Button>
         </div>
       </div>
@@ -93,7 +93,7 @@ export default function MarketingDashboard() {
           </div>
           <div className="flex items-center gap-3 mt-4 md:mt-0">
             <button
-              onClick={handleGenerateMarketing} disabled={marketingLoading}
+              onClick={handleGenerateMarketing} disabled={marketingLoading} disabled={marketingLoading}
               className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-sm font-medium transition-all flex items-center gap-2"
             >
               <RefreshCw className="w-4 h-4" /> Regenerate

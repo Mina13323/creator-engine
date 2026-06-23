@@ -47,7 +47,7 @@ export default function PitchDashboard() {
         <div className="w-24 h-24 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-6">
           <Presentation className="w-12 h-12 text-rose-500" />
         </div>
-        <h1 className="text-3xl font-bold text-slate-900">Build Your Investor Pitch</h1>
+        <h1 className="text-3xl font-bold text-slate-900">No pitch deck has been generated yet.</h1>
         <p className="text-lg text-slate-600">
           Craft investor-grade startup pitches, create a concise elevator pitch, and compile
           essential key metrics into a printable deck.
@@ -104,7 +104,7 @@ export default function PitchDashboard() {
             <Download className="w-3.5 h-3.5" /> Export PDF
           </button>
           <button
-            onClick={handleGeneratePitch} disabled={pitchLoading}
+            onClick={handleGeneratePitch} disabled={pitchLoading} disabled={pitchLoading}
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" /> Regenerate Pitch

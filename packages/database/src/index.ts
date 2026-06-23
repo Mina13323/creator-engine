@@ -17,7 +17,12 @@ import {
   AgentRun,
   UploadedDocument,
   OpportunityComparison,
-  PitchDeck
+  PitchDeck,
+  SubscriptionPlan,
+  UserSubscription,
+  CreditWallet,
+  CreditTransaction,
+  PaymentTransaction
 } from '@creator/types';
 
 // MongoDB Connection
@@ -709,5 +714,83 @@ FinancialForecastSchema.pre<IFinancialForecast>('save', function () {
 
 export const FinancialForecast = mongoose.models.FinancialForecast || mongoose.model<IFinancialForecast>('FinancialForecast', FinancialForecastSchema);
 export const PricingStrategy = mongoose.models.PricingStrategy || mongoose.model<IPricingStrategy>('PricingStrategy', PricingStrategySchema);
+
+// Monetization Schemas
+const SubscriptionPlanSchema = new Schema<SubscriptionPlan & Document>(
+  {
+    name: { type: String, required: true },
+    slug: { type: String, required: true, unique: true },
+    monthlyPriceEGP: { type: Number, required: true },
+    monthlyCredits: { type: Number, required: true },
+    maxProjects: { type: Number, required: true },
+    features: [{ type: String }],
+    isActive: { type: Boolean, default: true }
+  },
+  { timestamps: true, collection: 'subscription_plans' }
+);
+
+const UserSubscriptionSchema = new Schema<UserSubscription & Document>(
+  {
+    userId: { type: String, required: true, index: true },
+    planId: { type: String, required: true },
+    status: { type: String, enum: ['active', 'expired', 'cancelled', 'pending'], default: 'pending' },
+    startsAt: { type: Date, required: true },
+    expiresAt: { type: Date, required: true },
+    autoRenew: { type: Boolean, default: true }
+  },
+  { timestamps: true, collection: 'user_subscriptions' }
+);
+
+const CreditWalletSchema = new Schema<CreditWallet & Document>(
+  {
+    userId: { type: String, required: true, index: true, unique: true },
+    availableCredits: { type: Number, required: true, default: 0 },
+    totalUsedCredits: { type: Number, required: true, default: 0 },
+    totalPurchasedCredits: { type: Number, required: true, default: 0 }
+  },
+  { timestamps: true, collection: 'credit_wallets' }
+);
+
+const CreditTransactionSchema = new Schema<CreditTransaction & Document>(
+  {
+    userId: { type: String, required: true, index: true },
+    type: { type: String, enum: ['usage', 'subscription', 'topup', 'refund'], required: true },
+    amount: { type: Number, required: true },
+    feature: { type: String, required: true },
+    referenceId: { type: String }
+  },
+  { timestamps: true, collection: 'credit_transactions' }
+);
+
+const PaymentTransactionSchema = new Schema<PaymentTransaction & Document>(
+  {
+    userId: { type: String, required: true, index: true },
+    amountEGP: { type: Number, required: true },
+    paymentProvider: { type: String, enum: ['paymob'], default: 'paymob' },
+    paymentIntentId: { type: String, required: true },
+    transactionId: { type: String },
+    status: { type: String, enum: ['pending', 'paid', 'failed'], default: 'pending' },
+    metadata: { type: Schema.Types.Mixed }
+  },
+  { timestamps: true, collection: 'payment_transactions' }
+);
+
+const CreditPackSchema = new Schema<any & Document>(
+  {
+    name: { type: String, required: true },
+    slug: { type: String, required: true, unique: true },
+    priceEGP: { type: Number, required: true },
+    credits: { type: Number, required: true },
+    isActive: { type: Boolean, default: true }
+  },
+  { timestamps: true, collection: 'credit_packs' }
+);
+
+export const SubscriptionPlanModel = mongoose.models.SubscriptionPlan || mongoose.model<SubscriptionPlan & Document>('SubscriptionPlan', SubscriptionPlanSchema);
+export const UserSubscriptionModel = mongoose.models.UserSubscription || mongoose.model<UserSubscription & Document>('UserSubscription', UserSubscriptionSchema);
+export const CreditWalletModel = mongoose.models.CreditWallet || mongoose.model<CreditWallet & Document>('CreditWallet', CreditWalletSchema);
+export const CreditTransactionModel = mongoose.models.CreditTransaction || mongoose.model<CreditTransaction & Document>('CreditTransaction', CreditTransactionSchema);
+export const PaymentTransactionModel = mongoose.models.PaymentTransaction || mongoose.model<PaymentTransaction & Document>('PaymentTransaction', PaymentTransactionSchema);
+export const CreditPackModel = mongoose.models.CreditPack || mongoose.model<any & Document>('CreditPack', CreditPackSchema);
 
 export * from './services/projectContext';

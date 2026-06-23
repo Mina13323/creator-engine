@@ -65,7 +65,7 @@ export default function BrandingPanel() {
         <div className="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6">
           <Palette className="w-12 h-12 text-emerald-500" />
         </div>
-        <h1 className="text-3xl font-bold text-slate-900">Build Your Visual Identity</h1>
+        <h1 className="text-3xl font-bold text-slate-900">No brand identity has been generated yet.</h1>
         <p className="text-lg text-slate-600">
           Transform your startup business plan into a distinctive, professional brand identity
           complete with logo prompts, matching color palette, voice guidelines, and core narrative.
@@ -76,7 +76,7 @@ export default function BrandingPanel() {
             className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl px-8 py-6 text-lg font-semibold shadow-md"
           >
             <Wand2 className="w-5 h-5 mr-3" />
-            Generate Brand Dossier
+            Generate Brand Identity
           </Button>
         </div>
       </div>
@@ -103,7 +103,7 @@ export default function BrandingPanel() {
           <p className="text-slate-500 mt-1">{brandIdentity.brandName}</p>
         </div>
         <button
-          onClick={handleGenerateBranding} disabled={brandingLoading}
+          onClick={handleGenerateBranding} disabled={brandingLoading} disabled={brandingLoading}
           className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-colors"
         >
           <RefreshCw className="w-3.5 h-3.5" /> Regenerate Brand

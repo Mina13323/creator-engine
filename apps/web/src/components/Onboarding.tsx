@@ -107,7 +107,7 @@ export default function Onboarding() {
           <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
           <div className="w-1/2 h-full bg-emerald-500 rounded-sm -skew-x-12"></div>
         </div>
-        <span className="font-bold text-lg text-slate-900 tracking-tight">Venturekit</span>
+        <span className="font-bold text-lg text-slate-900 tracking-tight">Creator Engine</span>
       </div>
 
       <div className="absolute top-6 right-6">

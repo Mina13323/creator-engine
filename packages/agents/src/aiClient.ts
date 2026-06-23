@@ -182,7 +182,7 @@ export async function callFireworksChat(systemPrompt: string, userPrompt: string
 
 export async function callGemini(systemPrompt: string, userPrompt: string, options: AIClientOptions = {}): Promise<string | null> {
   const geminiKey = process.env.GEMINI_API_KEY;
-  if (!geminiKey || geminiKey.includes('your-') || geminiKey.includes('AIzaSy')) {
+  if (!geminiKey || geminiKey.includes('your-') || geminiKey === 'AIzaSy...') {
     console.warn('[AIClient] Gemini API key not configured.');
     return null;
   }

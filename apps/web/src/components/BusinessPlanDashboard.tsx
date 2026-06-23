@@ -39,7 +39,7 @@ export default function BusinessPlanDashboard() {
         <div className="w-24 h-24 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-6">
           <FileText className="w-12 h-12 text-purple-600" />
         </div>
-        <h1 className="text-3xl font-bold text-slate-900">Build Your Venture Plan</h1>
+        <h1 className="text-3xl font-bold text-slate-900">No business plan has been generated yet.</h1>
         <p className="text-lg text-slate-600">
           You have selected <strong>{selectedOpportunity.title}</strong>. 
           Our AI architect will now generate a complete 10-section business intelligence dossier tailored exactly to your vision.
@@ -50,7 +50,7 @@ export default function BusinessPlanDashboard() {
             className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-xl shadow-slate-900/20 transition-all hover:scale-105"
           >
             <Wand2 className="w-5 h-5 mr-3" />
-            Generate Venture Intelligence
+            Generate Business Plan
           </Button>
         </div>
       </div>

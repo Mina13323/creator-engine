@@ -78,7 +78,7 @@ export default function Dashboard() {
       <div className="p-6 md:p-10 max-w-[1000px] mx-auto space-y-8 animate-in fade-in duration-500">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
-            Welcome to Venturekit
+            Welcome to Creator Engine
           </h1>
           <p className="text-slate-500 mt-1">Initialize a venture project to build business plans, roadmap, branding, and marketing assets.</p>
         </div>

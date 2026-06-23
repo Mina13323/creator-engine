@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { ToastContainer } from '@/components/ui/Toast';
 
 export const metadata: Metadata = {
-  title: 'Creator Engine – AI Venture Builder',
+  title: 'Creator Engine',
   description: 'Go from simple business idea to a validated, branded, launch-ready startup powered by multi-agent AI workflows.',
 };
 

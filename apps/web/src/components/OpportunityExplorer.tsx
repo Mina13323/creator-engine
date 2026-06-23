@@ -19,7 +19,8 @@ export default function OpportunityExplorer() {
     isSelecting, 
     setActiveTab, 
     loading, 
-    loadingMessage 
+    loadingMessage,
+    discoverOpportunities
   } = useStore();
   
   const [selectedToCompare, setSelectedToCompare] = React.useState<string[]>([]);
@@ -32,8 +33,23 @@ export default function OpportunityExplorer() {
 
   if (!opportunities || opportunities.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-[60vh]">
-        <h2 className="text-xl font-semibold text-slate-400">No opportunities found yet.</h2>
+      <div className="p-6 md:p-10 max-w-[800px] mx-auto text-center space-y-8 animate-in fade-in">
+        <div className="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6">
+          <Radar className="w-12 h-12 text-emerald-500" />
+        </div>
+        <h1 className="text-3xl font-bold text-slate-900">No Opportunities Available Yet</h1>
+        <p className="text-lg text-slate-600">
+          We need to analyze your founder profile and business context to discover high-potential opportunities.
+        </p>
+        <div className="pt-8">
+          <Button 
+            onClick={() => currentProject && discoverOpportunities(currentProject.id)}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl px-8 py-6 text-lg font-semibold shadow-md"
+          >
+            <CheckCircle className="w-5 h-5 mr-3" />
+            Discover Opportunities
+          </Button>
+        </div>
       </div>
     );
   }

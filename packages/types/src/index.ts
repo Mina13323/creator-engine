@@ -160,6 +160,66 @@ export interface BusinessModel {
   mvpScope: string[];
 }
 
+export interface BillingPlan {
+  name: string;
+}
+
+export interface SubscriptionPlan {
+  id?: string;
+  name: string;
+  slug: string;
+  monthlyPriceEGP: number;
+  monthlyCredits: number;
+  maxProjects: number;
+  features: string[];
+  isActive: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface UserSubscription {
+  id?: string;
+  userId: string;
+  planId: string;
+  status: 'active' | 'expired' | 'cancelled' | 'pending';
+  startsAt: Date;
+  expiresAt: Date;
+  autoRenew: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface CreditWallet {
+  id?: string;
+  userId: string;
+  availableCredits: number;
+  totalUsedCredits: number;
+  totalPurchasedCredits: number;
+  updatedAt?: Date;
+}
+
+export interface CreditTransaction {
+  id?: string;
+  userId: string;
+  type: 'usage' | 'subscription' | 'topup' | 'refund';
+  amount: number;
+  feature: string;
+  referenceId: string;
+  createdAt?: Date;
+}
+
+export interface PaymentTransaction {
+  id?: string;
+  userId: string;
+  amountEGP: number;
+  paymentProvider: 'paymob';
+  paymentIntentId: string;
+  transactionId: string;
+  status: 'pending' | 'paid' | 'failed';
+  metadata: any;
+  createdAt?: Date;
+}
+
 export interface BusinessPlan {
   id: string;
   userId: string;

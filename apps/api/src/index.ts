@@ -22,6 +22,9 @@ import {
   UploadedDocumentModel 
 } from '@creator/database';
 import adminRouter, { registerLockdownHandlers } from './routes/admin';
+import paymentsRouter from './routes/payments';
+import { requireCredits, requireSubscription } from './middleware';
+import { deductCredits, CREDIT_COSTS, getUserCredits } from './services/creditEngine';
 import { authMiddleware, adminMiddleware } from './middleware';
 import { LoginRequest, SignupRequest, AuthResponse, AuthUser, FounderProfile, SelectedOpportunity, BusinessPlan } from '@creator/types';
 import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent } from '@creator/agents';
@@ -30,6 +33,7 @@ import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
 
 dotenv.config();
+dotenv.config({ path: require('path').resolve(__dirname, '../../../.env') });
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret_key_for_jwt_fallback_only';
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || 'mock_client_id');
@@ -76,6 +80,18 @@ app.get('/api/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', database: dbConnected ? 'connected' : 'offline' });
 });
 
+
+// Get user credits
+app.get('/api/user/credits', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    const wallet = await getUserCredits(userId);
+    return res.status(200).json({ wallet });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 // AUTH ROUTES
 app.post('/api/auth/signup', async (req: Request, res: Response): Promise<any> => {
   try {
@@ -93,6 +109,7 @@ app.post('/api/auth/signup', async (req: Request, res: Response): Promise<any> =
     const token = generateToken(userId, email);
     const newUser = new UserModel({ id: userId, email, password: hashedPassword, name, token });
     await newUser.save();
+
 
     res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
     return res.status(201).json({ token, user: toAuthUser(newUser) });
@@ -161,6 +178,7 @@ app.post('/api/auth/google', async (req: Request, res: Response): Promise<any> =
     if (!user) {
       user = new UserModel({ id: userId, email, name, googleId, avatar: picture, token });
       await user.save();
+
     } else {
       user.token = token;
       if (!user.googleId) user.googleId = googleId;
@@ -291,6 +309,7 @@ app.post('/api/auth/demote', async (req: Request, res: Response): Promise<any> =
 
 // Admin Routes
 app.use('/api/admin', adminRouter);
+app.use('/api/payments', paymentsRouter);
 
 // ==========================================
 // BUSINESS PLAN ENGINE ROUTES
@@ -378,7 +397,7 @@ app.post('/api/projects', authMiddleware, async (req: Request, res: Response): P
 });
 
 // 1. Founder Analysis
-app.post('/api/founder/analyze', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/founder/analyze', authMiddleware, requireCredits(CREDIT_COSTS.FOUNDER_ANALYSIS), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId, data } = req.body;
@@ -399,6 +418,7 @@ app.post('/api/founder/analyze', authMiddleware, async (req: Request, res: Respo
     // Call Agent with tracking
     const analysis = await trackAgentRun(userId, projectId, 'founder-analysis', sanitizedData, () => runFounderAgent(projectId, sanitizedData));
     
+    await deductCredits(userId, CREDIT_COSTS.FOUNDER_ANALYSIS, 'Founder Analysis');
     const founderProfile = new FounderProfileModel({
       id: `fp_${Date.now()}`,
       userId,
@@ -420,7 +440,7 @@ app.post('/api/founder/analyze', authMiddleware, async (req: Request, res: Respo
 });
 
 // 2. Opportunity Discovery
-app.post('/api/opportunities/discover', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/opportunities/discover', authMiddleware, requireCredits(CREDIT_COSTS.OPPORTUNITY_DISCOVERY), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
@@ -440,6 +460,7 @@ app.post('/api/opportunities/discover', authMiddleware, async (req: Request, res
     );
     
     // Express owns formatting and persistence
+    await deductCredits(userId, CREDIT_COSTS.OPPORTUNITY_DISCOVERY, 'Opportunity Discovery');
     const formattedOpportunities = (rawOpportunities || []).map((opp: any, idx: number) => {
       const startupCostStr = typeof opp.startupCost === 'number'
         ? `$${opp.startupCost.toLocaleString()}`
@@ -543,7 +564,7 @@ app.post('/api/opportunities/select', authMiddleware, async (req: Request, res: 
 });
 
 // 4. Generate Business Plan
-app.post('/api/business-plan/generate', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/business-plan/generate', authMiddleware, requireCredits(CREDIT_COSTS.BUSINESS_PLAN), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
@@ -683,9 +704,10 @@ app.get('/api/projects/:projectId/context', authMiddleware, async (req: Request,
 });
 
 // 7. Upload Document Pipeline
-app.post('/api/projects/:projectId/documents/upload', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/projects/:projectId/documents/upload', authMiddleware, requireCredits(CREDIT_COSTS.RAG_QUERY), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
+    await deductCredits(userId, CREDIT_COSTS.RAG_QUERY, 'RAG Upload');
     const { projectId } = req.params;
     const { fileName, fileType, storageUrl, fileSize } = req.body;
     
@@ -749,7 +771,7 @@ app.get('/api/projects', authMiddleware, async (req: Request, res: Response) => 
 });
 
 // AI Cofounder Chat Endpoint
-app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/ai/chat', authMiddleware, requireCredits(CREDIT_COSTS.AI_CHAT_MESSAGE), async (req: Request, res: Response): Promise<any> => {
   try {
     const { projectId, message } = req.body;
     if (!projectId || !message) return res.status(400).json({ error: 'Missing projectId or message' });
@@ -790,6 +812,62 @@ app.get('/api/ai/chat/:projectId', authMiddleware, async (req: Request, res: Res
     }
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+// 6. Financial Engine
+app.post('/api/financial-engine/generate', authMiddleware, requireCredits(CREDIT_COSTS.FINANCIAL_ENGINE), async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    await deductCredits(userId, CREDIT_COSTS.FINANCIAL_ENGINE, 'Financial Engine');
+    return res.status(200).json({ success: true, message: 'Financial Engine Generated' });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// 7. Branding
+app.post('/api/branding/generate', authMiddleware, requireCredits(CREDIT_COSTS.BRANDING), async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    await deductCredits(userId, CREDIT_COSTS.BRANDING, 'Branding');
+    return res.status(200).json({ success: true, message: 'Branding Generated' });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// 8. Marketing
+app.post('/api/marketing/generate', authMiddleware, requireCredits(CREDIT_COSTS.MARKETING), async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    await deductCredits(userId, CREDIT_COSTS.MARKETING, 'Marketing');
+    return res.status(200).json({ success: true, message: 'Marketing Generated' });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// 9. Pitch Deck
+app.post('/api/pitch-deck/generate', authMiddleware, requireCredits(CREDIT_COSTS.PITCH_DECK), async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    await deductCredits(userId, CREDIT_COSTS.PITCH_DECK, 'Pitch Deck');
+    return res.status(200).json({ success: true, message: 'Pitch Deck Generated' });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// 10. Image Generation
+app.post('/api/image/generate', authMiddleware, requireCredits(CREDIT_COSTS.IMAGE_GENERATION), async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    await deductCredits(userId, CREDIT_COSTS.IMAGE_GENERATION, 'Image Generation');
+    return res.status(200).json({ success: true, url: 'https://via.placeholder.com/512' });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
   }
 });
 

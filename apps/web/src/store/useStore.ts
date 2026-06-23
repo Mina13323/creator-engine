@@ -6,7 +6,7 @@ interface StoreState {
   projects: Project[];
   currentProject: Project | null;
   ventureState: VentureState | null;
-  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'roadmap' | 'ai-studio' | 'account';
+  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'roadmap' | 'ai-studio' | 'account' | 'ai-consultant';
   isOnboarded: boolean;
   
   // Async states
@@ -46,6 +46,11 @@ interface StoreState {
   user: AuthUser | null;
   isAuthModalOpen: boolean;
   isAuthenticated: boolean;
+  credits: number;
+  isDemo: boolean;
+  loadCredits: () => Promise<void>;
+  showPricingModal: boolean;
+  setShowPricingModal: (show: boolean) => void;
 
   // Actions
   setAuthModalOpen: (isOpen: boolean) => void;
@@ -111,6 +116,20 @@ export const useStore = create<StoreState>((set, get) => ({
   isAuthModalOpen: false,
   isAuthenticated: false,
 
+  credits: 0,
+  isDemo: false,
+  showPricingModal: false,
+  setShowPricingModal: (show) => set({ showPricingModal: show }),
+  loadCredits: async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/user/credits', { headers: { Authorization: `Bearer ${get().user?.token}` } });
+      const data = await res.json();
+      if (data.wallet) {
+        set({ credits: data.wallet.availableCredits, isDemo: !!data.isDemo });
+      }
+    } catch (e) {}
+  },
+
   setAuthModalOpen: (isOpen: boolean) => set({ isAuthModalOpen: isOpen }),
   setAuth: (user) => {
     set({ user, isAuthenticated: !!user });
@@ -120,6 +139,9 @@ export const useStore = create<StoreState>((set, get) => ({
     set({
       user: null,
       isAuthenticated: false,
+      credits: 0,
+      isDemo: false,
+      showPricingModal: false,
       isOnboarded: false,
       projects: [],
       currentProject: null,

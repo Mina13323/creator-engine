@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import Link from 'next/link';
 import { useStore } from '../store/useStore';
 import Onboarding from '../components/Onboarding';
@@ -12,7 +13,10 @@ import BrandingPanel from '../components/BrandingPanel';
 import MarketingStudio from '../components/MarketingStudio';
 import RoadmapPanel from '../components/RoadmapPanel';
 import AIStudioPanel from '../components/AIStudioPanel';
+import AIConsultantDashboard from '../components/AIConsultantDashboard';
 import AuthModal from '../components/AuthModal';
+import CreditIndicator from '../components/CreditIndicator';
+import PricingModal from '../components/PricingModal';
 import FinancialEngine from '../components/FinancialEngine';
 import AccountDetails from '../components/AccountDetails';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -76,6 +80,36 @@ export default function AppPage() {
     }
   }, [isAuthenticated]);
 
+
+  // Check for Paymob redirect
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const success = urlParams.get('success');
+    const merchantOrderId = urlParams.get('merchant_order_id');
+
+    if (success && merchantOrderId && isAuthenticated) {
+      // Clear URL params
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      if (success === 'true') {
+        const verifyPayment = async () => {
+          const res = await fetch('http://localhost:5000/api/payments/paymob/verify-redirect', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${useStore.getState().user?.token}` },
+            body: JSON.stringify({ merchant_order_id: merchantOrderId, success })
+          });
+          if (res.ok) {
+            toast.success('Payment successful! Credits added to your wallet.');
+            useStore.getState().loadCredits();
+          }
+        };
+        verifyPayment();
+      } else {
+        toast.error('Payment failed or was cancelled.');
+      }
+    }
+  }, [isAuthenticated]);
+
   // Route protection disabled for open UI development
   /*
   useEffect(() => {
@@ -119,6 +153,7 @@ export default function AppPage() {
     { id: 'branding', label: 'Branding', icon: BookOpen, requiresProject: true },
     { id: 'marketing', label: 'Marketing Studio', icon: Megaphone, requiresProject: true },
     { id: 'roadmap', label: 'Roadmap', icon: Clock, requiresProject: true },
+    { id: 'ai-consultant', label: 'AI Cofounder', icon: MessageSquare, requiresProject: true },
     { id: 'ai-studio', label: 'AI Studio', icon: ImagePlus, requiresProject: false },
     { id: 'account', label: 'Account', icon: UserCircle, requiresProject: false },
   ] as const;
@@ -130,6 +165,7 @@ export default function AppPage() {
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-slate-900 flex font-sans overflow-hidden">
       
+      <Toaster />
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 z-50 flex items-center justify-between px-4">
         <div className="flex items-center gap-2">
@@ -137,7 +173,7 @@ export default function AppPage() {
             <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
             <div className="w-1/2 h-full bg-emerald-500 rounded-sm -skew-x-12"></div>
           </div>
-          <span className="font-bold text-lg text-slate-900 tracking-tight">Venturekit</span>
+          <span className="font-bold text-lg text-slate-900 tracking-tight">Creator Engine</span>
         </div>
         <div className="flex items-center gap-2">
           {isAuthenticated && user?.role === 'admin' && (
@@ -156,7 +192,7 @@ export default function AppPage() {
             <LogOut className="w-3.5 h-3.5" />
             Logout
           </button>}
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-slate-600">
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-slate-600" aria-label="Toggle Mobile Menu">
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
@@ -175,7 +211,7 @@ export default function AppPage() {
               <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
               <div className="w-1/2 h-full bg-emerald-500 rounded-sm -skew-x-12"></div>
             </div>
-            <span className="font-bold text-xl text-slate-900 tracking-tight">Venturekit</span>
+            <span className="font-bold text-xl text-slate-900 tracking-tight">Creator Engine</span>
           </div>
 
           {/* Project Selector */}
@@ -206,19 +242,26 @@ export default function AppPage() {
                 key={item.id}
                 disabled={isDisabled}
                 onClick={() => {
-                  useStore.setState({ activeTab: item.id });
+                  useStore.setState({ activeTab: item.id as any });
                   setMobileMenuOpen(false);
                 }}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
+                className={`relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all z-10 group
                   ${isDisabled ? 'opacity-40 cursor-not-allowed' : ''}
                   ${isActive 
-                    ? 'bg-slate-100 text-slate-900 font-semibold' 
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    ? 'text-emerald-900 font-bold' 
+                    : 'text-slate-600 hover:text-slate-900'
                   }
                 `}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-slate-900' : 'text-slate-500'}`} />
-                {item.label}
+                {isActive && (
+                  <motion.div
+                    layoutId="sidebar-active-pill"
+                    className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/20 rounded-xl -z-10 shadow-[0_0_12px_rgba(16,185,129,0.15)]"
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  />
+                )}
+                <Icon className={`w-4 h-4 relative z-10 transition-colors ${isActive ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-600'}`} />
+                <span className="relative z-10">{item.label}</span>
               </button>
             );
           })}
@@ -235,7 +278,7 @@ export default function AppPage() {
 
         {/* Bottom Actions */}
         <div className="p-4 border-t border-slate-100 space-y-2">
-          <button className="w-full bg-[#1e293b] hover:bg-slate-800 text-white font-semibold rounded-full py-2.5 text-sm transition-colors mb-4">
+          <button onClick={() => useStore.getState().setShowPricingModal(true)} className="w-full bg-[#1e293b] hover:bg-slate-800 text-white font-semibold rounded-full py-2.5 text-sm transition-colors mb-4">
             Upgrade
           </button>
           
@@ -283,6 +326,7 @@ export default function AppPage() {
             <span className="text-slate-700 capitalize font-bold">{activeTab.replace('-', ' ')}</span>
           </div>
           <div className="flex items-center gap-4">
+            <CreditIndicator />
             <span className="text-slate-500 text-xs font-semibold bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
               {userDisplayName}
             </span>
@@ -314,12 +358,13 @@ export default function AppPage() {
             {activeTab === 'marketing' && <MarketingStudio />}
             {activeTab === 'roadmap' && <RoadmapPanel />}
             {activeTab === 'ai-studio' && <AIStudioPanel />}
+            {activeTab === 'ai-consultant' && <AIConsultantDashboard />}
             {activeTab === 'account' && <AccountDetails />}
             
             {activeTab === 'financials' && <FinancialEngine />}
             
             {/* Fallbacks for new tabs if components don't exist yet */}
-            {['guides', 'ai-consultant', 'pitch', 'radar', 'market-research'].includes(activeTab) && (
+            {['guides', 'pitch', 'radar', 'market-research'].includes(activeTab) && (
               <div className="p-8 md:p-12 text-center text-slate-500">
                 <h2 className="text-2xl font-semibold mb-2 text-slate-800 capitalize">{activeTab.replace('-', ' ')}</h2>
                 <p>This module is under construction in the new UI.</p>
@@ -330,6 +375,7 @@ export default function AppPage() {
       </div>
     </main>
     <AuthModal />
+    <PricingModal />
   </div>
   );
 }
