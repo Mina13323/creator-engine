@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>creator-engine — Complete Call Flow &amp; Architecture Documentation</title>
+<title>CEO — Complete Call Flow &amp; Architecture Documentation</title>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
 :root {
@@ -59,8 +59,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <body>
 <div class="container">
 
-<h1>creator-engine — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 1363 nodes, 1630 edges, 132 communities. Commit: 39664bb</p>
+<h1>CEO — Complete Call Flow &amp; Architecture Documentation</h1>
+<p class="subtitle">Generated from graphify knowledge graph: 1512 nodes, 1865 edges, 140 communities. Commit: dc386d2</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -88,25 +88,25 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    BUILD_GRAPH_321CBB04("Graph Build<br/><small>668 nodes</small>")
+    BUILD_GRAPH_321CBB04("Graph Build<br/><small>768 nodes</small>")
     class BUILD_GRAPH_321CBB04 module;
-    ANALYSIS_CLUSTERING_C79796DA("Analysis &amp; Clustering<br/><small>4 nodes</small>")
+    ANALYSIS_CLUSTERING_C79796DA("Analysis &amp; Clustering<br/><small>5 nodes</small>")
     class ANALYSIS_CLUSTERING_C79796DA module;
-    OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>8 nodes</small>")
+    OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>9 nodes</small>")
     class OUTPUTS_DOCS_ED82387C module;
-    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>78 nodes</small>")
+    CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>86 nodes</small>")
     class CLI_SKILLS_9964CBB8 module;
-    INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>16 nodes</small>")
+    INGEST_CACHE_UPDATE_FF457338("Ingestion &amp; Updates<br/><small>20 nodes</small>")
     class INGEST_CACHE_UPDATE_FF457338 module;
-    SERVE_API_35EC8E86("Serving API<br/><small>132 nodes</small>")
+    SERVE_API_35EC8E86("Serving API<br/><small>161 nodes</small>")
     class SERVE_API_35EC8E86 module;
     SECURITY_GLOBAL_5B9C6A04("Security &amp; Global Graph<br/><small>18 nodes</small>")
     class SECURITY_GLOBAL_5B9C6A04 module;
-    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>117 nodes</small>")
+    TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>118 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
-    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4("Components Authclient Select Module<br/><small>94 nodes</small>")
+    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4("Components Authclient Select Module<br/><small>95 nodes</small>")
     class COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 module;
-    COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25("Components Marketingstudio Apiclient Module<br/><small>46 nodes</small>")
+    COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25("Components Marketingstudio Apiclient Module<br/><small>45 nodes</small>")
     class COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25 module;
     INDEX_PACKAGES_DATABASE_MODULE_344FEEB0("Index Packages Database Module<br/><small>41 nodes</small>")
     class INDEX_PACKAGES_DATABASE_MODULE_344FEEB0 module;
@@ -116,11 +116,11 @@ flowchart LR
     class LANDINGPAGE_COMPONENTS_CONCEPT_MODULE_85AEC5DA module;
     LAYOUT_METADATA_ROOTLAYOUT_MODULE_F6318591("Layout Metadata Rootlayout Module<br/><small>10 nodes</small>")
     class LAYOUT_METADATA_ROOTLAYOUT_MODULE_F6318591 module;
-    OTHER_D0941E68("Other<br/><small>91 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>96 nodes</small>")
     class OTHER_D0941E68 module;
-    COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25 -->|imports x14| COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4
+    COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25 -->|imports x15| COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4
+    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 -->|contains x13| COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25
     INDEX_PACKAGES_DATABASE_MODULE_344FEEB0 -->|imports x13| INDEX_PACKAGES_TYPES_MODULE_DFB864CD
-    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 -->|imports x12| COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25
     INDEX_PACKAGES_TYPES_MODULE_DFB864CD -->|contains x7| SERVE_API_35EC8E86
     SERVE_API_35EC8E86 -->|imports x5| TESTS_FIXTURES_B84B1DCC
     COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 -->|imports x3| SERVE_API_35EC8E86
@@ -146,7 +146,7 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Graph Build</td><td>668</td><td><code>3, 6, 2, 4, 36, 21, 93, 23, 28, 29, 7, 8, 94, 95, 15, 18, 19, 24, 32, 22, 27, 25, 26, 97, 30, 31, 33, 34, 35, 37, 38, 40, 45, 41, 42, 43, 44, 46, 47, 50, 85, 62, 130</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>4</td><td><code>82</code></td></tr><tr><td>Outputs &amp; Docs</td><td>8</td><td><code>77</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>78</td><td><code>12, 11, 81, 84, 55, 56, 88, 89, 90, 64, 68</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>16</td><td><code>80, 83, 86, 119, 52, 123</code></td></tr><tr><td>Serving API</td><td>132</td><td><code>48, 92, 20, 96, 99, 100, 101, 105, 107, 108, 109, 115, 116, 121, 65</code></td></tr><tr><td>Security &amp; Global Graph</td><td>18</td><td><code>98, 103, 118</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>117</td><td><code>5, 9, 16, 17, 106, 125, 127</code></td></tr><tr><td>Components Authclient Select Module</td><td>94</td><td><code>0</code></td></tr><tr><td>Components Marketingstudio Apiclient Module</td><td>46</td><td><code>10</code></td></tr><tr><td>Index Packages Database Module</td><td>41</td><td><code>1</code></td></tr><tr><td>Index Packages Types Module</td><td>23</td><td><code>13</code></td></tr><tr><td>Landingpage Components Concept Module</td><td>17</td><td><code>14</code></td></tr><tr><td>Layout Metadata Rootlayout Module</td><td>10</td><td><code>49</code></td></tr><tr><td>Other</td><td>91</td><td><code>102, 104, 39, 78, 79, 110, 111, 112, 113, 114, 51, 117, 120, 53, 54, 57, 58, 59, 60, 61, 63, 72, 87, 91, 122, 124, 126, 128, 129, 131, 66, 67, 69, 70, 71, 73, 74, 75, 76</code></td></tr>
+      <tr><td>Graph Build</td><td>768</td><td><code>78, 3, 2, 4, 6, 133, 36, 21, 93, 23, 28, 29, 8, 94, 95, 7, 15, 19, 18, 24, 32, 22, 27, 134, 25, 26, 97, 30, 31, 33, 34, 35, 37, 38, 40, 41, 45, 42, 43, 44, 46, 47, 50, 85, 62, 130</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>5</td><td><code>82</code></td></tr><tr><td>Outputs &amp; Docs</td><td>9</td><td><code>77</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>86</td><td><code>12, 11, 81, 84, 88, 90, 135, 55, 56, 89, 64, 68</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>20</td><td><code>80, 83, 86, 52, 119, 123</code></td></tr><tr><td>Serving API</td><td>161</td><td><code>132, 48, 92, 20, 96, 99, 100, 101, 105, 107, 108, 109, 115, 116, 121, 65</code></td></tr><tr><td>Security &amp; Global Graph</td><td>18</td><td><code>98, 103, 118</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>118</td><td><code>5, 9, 16, 17, 106, 125, 127, 137</code></td></tr><tr><td>Components Authclient Select Module</td><td>95</td><td><code>0</code></td></tr><tr><td>Components Marketingstudio Apiclient Module</td><td>45</td><td><code>10</code></td></tr><tr><td>Index Packages Database Module</td><td>41</td><td><code>1</code></td></tr><tr><td>Index Packages Types Module</td><td>23</td><td><code>13</code></td></tr><tr><td>Landingpage Components Concept Module</td><td>17</td><td><code>14</code></td></tr><tr><td>Layout Metadata Rootlayout Module</td><td>10</td><td><code>49</code></td></tr><tr><td>Other</td><td>96</td><td><code>102, 104, 39, 79, 110, 112, 111, 113, 114, 120, 51, 53, 54, 72, 87, 117, 57, 58, 59, 60, 61, 63, 71, 91, 122, 124, 126, 128, 129, 131, 136, 138, 139, 66, 67, 69, 70, 73, 74, 75, 76</code></td></tr>
     </table>
   </div>
   <div class="card">
@@ -158,11 +158,11 @@ flowchart LR
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>1363 nodes · 1630 edges · 132 communities (105 shown, 27 thin omitted)</li>
-      <li>Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 27 edges (avg confidence: 0.82)</li>
+      <li>1512 nodes · 1865 edges · 140 communities (108 shown, 32 thin omitted)</li>
+      <li>Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 27 edges (avg confidence: 0.82)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `useStore` - 47 edges</li>
-      <li>2. `/graphify` - 30 edges</li>
+      <li>2. `/graphify` - 31 edges</li>
       <li>3. `cn()` - 27 edges</li>
     </ul>
   </div>
@@ -170,53 +170,54 @@ flowchart LR
 <hr>
 <!-- ====== 2. Graph Build ====== -->
 <h2 id="build-graph">2. Graph Build</h2>
-<p>Graph Build groups implementation around n8n, workflows, apps, workflowjson, mostly in apps/api/package.json, apps/web/package.json, n8n-workflows/financial_agents_guide.json. This section covers 668 nodes and 669 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Graph Build groups implementation around n8n, workflows, workflowjson, packagejson, mostly in package.json, Market Research &amp; Validation Workflow.json, apps/api/package.json. This section covers 768 nodes and 858 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Graph Build (668 nodes, 669 edges)
-    subgraph build_graph_Market_Research_Validation_Workflow_1b3f3dec["Market Research &amp; Validation Workflow.json"]
-        market_research_validation_workflow_connections_e44aaf37("Code in JavaScript<br/><small>Market Research &amp; Validation Workflow.json</small>")
-        market_research_validation_workflow_connections_0ee4a3f1("Competitor Agent (Gemini)<br/><small>Market Research &amp; Validation Workflow.json</small>")
-        market_research_validation_workflow_connections_f820926a("HTTP Request<br/><small>Market Research &amp; Validation Workflow.json</small>")
-        market_research_validation_workflow_cb94891c("Market Research &amp; Validation Workflow.json")
-        market_research_validation_workflow_connections_60ae2ca3("Merge<br/><small>Market Research &amp; Validation Workflow.json</small>")
-        market_research_validation_workflow_connections_2bde48d7("MongoDB: Get Project<br/><small>Market Research &amp; Validation Workflow.json</small>")
-        market_research_validation_workflow_connections_5cde6bbf("Trend Agent (Gemini)<br/><small>Market Research &amp; Validation Workflow.json</small>")
-        market_research_validation_workflow_connections_3463e13f("Webhook: Start Research<br/><small>Market Research &amp; Validation Workflow.json</small>")
-        market_research_validation_workflow_active_42cf6158("active<br/><small>Market Research &amp; Validation Workflow.json</small>")
-        market_research_validation_workflow_settings_bin_cd22a19d("binaryMode<br/><small>Market Research &amp; Validation Workflow.json</small>")
-        market_research_validation_workflow_connections_513dd59e("connections<br/><small>Market Research &amp; Validation Workflow.json</small>")
-        market_research_validation_workflow_settings_exe_1011b2e0("executionOrder<br/><small>Market Research &amp; Validation Workflow.json</small>")
-        market_research_validation_workflow_id_128444d7("id<br/><small>Market Research &amp; Validation Workflow.json</small>")
+    %% Section: Graph Build (768 nodes, 858 edges)
+    subgraph build_graph_ITI_Final_creator_engine_skills_lock_46046f07["ITI_Final/creator-engine/skills-lock.json"]
+        creator_engine_skills_lock_find_skills_computedh_c21404e5("computedHash<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
+        creator_engine_skills_lock_frontend_design_compu_f5113b24("computedHash<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
+        creator_engine_skills_lock_skills_find_skills_de41ff28("find-skills<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
+        creator_engine_skills_lock_skills_frontend_desig_a8e961ea("frontend-design<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
+        creator_engine_skills_lock_find_skills_skillpath_47c86dc9("skillPath<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
+        creator_engine_skills_lock_frontend_design_skill_c16a0b92("skillPath<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
+        creator_engine_skills_lock_skills_20508724("skills<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
+        d_iti_final_creator_engine_skills_lock_json_c440ef5b("skills-lock.json")
+        creator_engine_skills_lock_find_skills_source_4044de76("source<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
+        creator_engine_skills_lock_frontend_design_sourc_8ff8c6bd("source<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
+        creator_engine_skills_lock_find_skills_sourcetyp_cfe42712("sourceType<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
+        creator_engine_skills_lock_frontend_design_sourc_ee88042a("sourceType<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
+        creator_engine_skills_lock_version_337616d5("version<br/><small>ITI_Final/creator-engine/skills-lock.json</small>")
     end
-    subgraph build_graph_claude_settings_json_ecd3fce2[".claude/settings.json"]
-        claude_settings_hooks_pretooluse_8b32d47a("PreToolUse<br/><small>.claude/settings.json</small>")
-        claude_settings_hooks_0f8e3873("hooks<br/><small>.claude/settings.json</small>")
-        claude_settings_d16bcfe1("settings.json")
+    subgraph build_graph_package_json_4e40bfbd["package.json"]
+        creator_engine_package_devdependencies_turbo_9be562bf("turbo<br/><small>package.json</small>")
+        package_devdependencies_turbo_48262035("turbo<br/><small>package.json</small>")
     end
-    package_devdependencies_turbo_48262035("turbo<br/><small>package.json</small>")
+    claude_settings_d16bcfe1("settings.json")
+    creator_engine_market_research_validation_workfl_319747fc("Code in JavaScript<br/><small>Market Research &amp; Validation Workflow.json</small>")
     turbo_ae748197("turbo.json")
-    package_devdependencies_turbo_48262035 -->|imports| turbo_ae748197
-    %% Omitted for readability: 650 nodes, 0 edges
-    class market_research_validation_workflow_connections_e44aaf37 klass;
-    class market_research_validation_workflow_connections_0ee4a3f1 klass;
-    class market_research_validation_workflow_connections_f820926a klass;
-    class market_research_validation_workflow_cb94891c klass;
-    class market_research_validation_workflow_connections_60ae2ca3 klass;
-    class market_research_validation_workflow_connections_2bde48d7 klass;
-    class market_research_validation_workflow_connections_5cde6bbf klass;
-    class market_research_validation_workflow_connections_3463e13f ui;
-    class market_research_validation_workflow_active_42cf6158 function;
-    class market_research_validation_workflow_settings_bin_cd22a19d function;
-    class market_research_validation_workflow_connections_513dd59e function;
-    class market_research_validation_workflow_settings_exe_1011b2e0 function;
-    class market_research_validation_workflow_id_128444d7 function;
-    class claude_settings_hooks_pretooluse_8b32d47a klass;
-    class claude_settings_hooks_0f8e3873 ui;
-    class claude_settings_d16bcfe1 function;
+    creator_engine_package_devdependencies_turbo_9be562bf -->|imports| turbo_ae748197
+    turbo_ae748197 -->|imports| package_devdependencies_turbo_48262035
+    %% Omitted for readability: 750 nodes, 0 edges
+    class creator_engine_skills_lock_find_skills_computedh_c21404e5 function;
+    class creator_engine_skills_lock_frontend_design_compu_f5113b24 function;
+    class creator_engine_skills_lock_skills_find_skills_de41ff28 function;
+    class creator_engine_skills_lock_skills_frontend_desig_a8e961ea function;
+    class creator_engine_skills_lock_find_skills_skillpath_47c86dc9 function;
+    class creator_engine_skills_lock_frontend_design_skill_c16a0b92 function;
+    class creator_engine_skills_lock_skills_20508724 function;
+    class d_iti_final_creator_engine_skills_lock_json_c440ef5b function;
+    class creator_engine_skills_lock_find_skills_source_4044de76 function;
+    class creator_engine_skills_lock_frontend_design_sourc_8ff8c6bd function;
+    class creator_engine_skills_lock_find_skills_sourcetyp_cfe42712 function;
+    class creator_engine_skills_lock_frontend_design_sourc_ee88042a function;
+    class creator_engine_skills_lock_version_337616d5 function;
+    class creator_engine_package_devdependencies_turbo_9be562bf function;
     class package_devdependencies_turbo_48262035 function;
+    class claude_settings_d16bcfe1 function;
+    class creator_engine_market_research_validation_workfl_319747fc klass;
     class turbo_ae748197 function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
@@ -241,243 +242,243 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>package.json</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>package.json</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>package.json node in apps/api/package.json.</td>
+  <td>package.json node in package.json.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>name</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>name</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>name node in apps/api/package.json.</td>
+  <td>name node in package.json.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>version</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>version</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>version node in apps/api/package.json.</td>
+  <td>version node in package.json.</td>
 </tr>
 <tr>
   <td>4</td>
-  <td><code>private</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>private</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>private node in apps/api/package.json.</td>
+  <td>private node in package.json.</td>
 </tr>
 <tr>
   <td>5</td>
-  <td><code>main</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>description</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>main node in apps/api/package.json.</td>
+  <td>description node in package.json.</td>
 </tr>
 <tr>
   <td>6</td>
-  <td><code>scripts</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>scripts</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>scripts node in apps/api/package.json.</td>
+  <td>scripts node in package.json.</td>
 </tr>
 <tr>
   <td>7</td>
-  <td><code>build</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>dev</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>build node in apps/api/package.json.</td>
+  <td>dev node in package.json.</td>
 </tr>
 <tr>
   <td>8</td>
-  <td><code>dev</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>build</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>dev node in apps/api/package.json.</td>
+  <td>build node in package.json.</td>
 </tr>
 <tr>
   <td>9</td>
-  <td><code>start</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>lint</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>start node in apps/api/package.json.</td>
+  <td>lint node in package.json.</td>
 </tr>
 <tr>
   <td>10</td>
-  <td><code>dependencies</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>format</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>dependencies node in apps/api/package.json.</td>
+  <td>format node in package.json.</td>
 </tr>
 <tr>
   <td>11</td>
-  <td><code>@creator/agents</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>devDependencies</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>@creator/agents node in apps/api/package.json.</td>
+  <td>devDependencies node in package.json.</td>
 </tr>
 <tr>
   <td>12</td>
-  <td><code>@creator/database</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>@types/node</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>@creator/database node in apps/api/package.json.</td>
+  <td>@types/node node in package.json.</td>
 </tr>
 <tr>
   <td>13</td>
-  <td><code>@creator/rag-core</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>@types/react</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
+  <td>@types/react node in package.json.</td>
 </tr>
 <tr>
   <td>14</td>
-  <td><code>@creator/types</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>@types/react-dom</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>@creator/types node in apps/api/package.json.</td>
+  <td>@types/react-dom node in package.json.</td>
 </tr>
 <tr>
   <td>15</td>
-  <td><code>@sentry/node</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>next</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>@sentry/node node in apps/api/package.json.</td>
+  <td>next node in package.json.</td>
 </tr>
 <tr>
   <td>16</td>
-  <td><code>@sentry/profiling-node</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>prettier</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>@sentry/profiling-node node in apps/api/package.json.</td>
+  <td>prettier node in package.json.</td>
 </tr>
 <tr>
   <td>17</td>
-  <td><code>bcryptjs</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>react</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>bcryptjs node in apps/api/package.json.</td>
+  <td>react node in package.json.</td>
 </tr>
 <tr>
   <td>18</td>
-  <td><code>cookie-parser</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>react-dom</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>cookie-parser node in apps/api/package.json.</td>
+  <td>react-dom node in package.json.</td>
 </tr>
 <tr>
   <td>19</td>
-  <td><code>cors</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>turbo</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>cors node in apps/api/package.json.</td>
+  <td><code>turbo.json</code><br><small style="color:var(--muted)">turbo.json</small></td>
+  <td>turbo node in package.json.</td>
 </tr>
 <tr>
   <td>20</td>
-  <td><code>dotenv</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>typescript</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>dotenv node in apps/api/package.json.</td>
+  <td>typescript node in package.json.</td>
 </tr>
 <tr>
   <td>21</td>
-  <td><code>express</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>engines</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>express node in apps/api/package.json.</td>
+  <td>engines node in package.json.</td>
 </tr>
 <tr>
   <td>22</td>
-  <td><code>express-async-errors</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
-  <td><span class="tag tag-async">Async</span></td>
+  <td><code>node</code><br><small style="color:var(--muted)">package.json</small></td>
+  <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>express-async-errors node in apps/api/package.json.</td>
+  <td>node node in package.json.</td>
 </tr>
 <tr>
   <td>23</td>
-  <td><code>express-rate-limit</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>pnpm</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>express-rate-limit node in apps/api/package.json.</td>
+  <td>pnpm node in package.json.</td>
 </tr>
 <tr>
   <td>24</td>
-  <td><code>google-auth-library</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>packageManager</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>google-auth-library node in apps/api/package.json.</td>
+  <td>packageManager node in package.json.</td>
 </tr>
 <tr>
   <td>25</td>
-  <td><code>helmet</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>dependencies</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>helmet node in apps/api/package.json.</td>
+  <td>dependencies node in package.json.</td>
 </tr>
 <tr>
   <td>26</td>
-  <td><code>jsonwebtoken</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>@langchain/openai</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>jsonwebtoken node in apps/api/package.json.</td>
+  <td>@langchain/openai node in package.json.</td>
 </tr>
 <tr>
   <td>27</td>
-  <td><code>multer</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>@pinecone-database/pinecone</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>multer node in apps/api/package.json.</td>
+  <td>@pinecone-database/pinecone node in package.json.</td>
 </tr>
 <tr>
   <td>28</td>
-  <td><code>zod</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>mongodb</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>zod node in apps/api/package.json.</td>
+  <td>mongodb node in package.json.</td>
 </tr>
 <tr>
   <td>29</td>
-  <td><code>devDependencies</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>mongoose</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>devDependencies node in apps/api/package.json.</td>
+  <td>mongoose node in package.json.</td>
 </tr>
 <tr>
   <td>30</td>
-  <td><code>@types/bcryptjs</code><br><small style="color:var(--muted)">apps/api/package.json</small></td>
+  <td><code>zod</code><br><small style="color:var(--muted)">package.json</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>@types/bcryptjs node in apps/api/package.json.</td>
+  <td>zod node in package.json.</td>
 </tr>
 </table>
 
@@ -486,39 +487,42 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>apps/api/package.json</code></td><td>43 nodes</td></tr>
-<tr><td><code>apps/web/package.json</code></td><td>40 nodes</td></tr>
+      <tr><td><code>package.json</code></td><td>64 nodes</td></tr>
+<tr><td><code>Market Research &amp; Validation Workflow.json</code></td><td>56 nodes</td></tr>
+<tr><td><code>apps/api/package.json</code></td><td>43 nodes</td></tr>
+<tr><td><code>apps/web/package.json</code></td><td>41 nodes</td></tr>
 <tr><td><code>n8n-workflows/financial_agents_guide.json</code></td><td>35 nodes</td></tr>
-<tr><td><code>package.json</code></td><td>32 nodes</td></tr>
-<tr><td><code>Market Research &amp; Validation Workflow.json</code></td><td>28 nodes</td></tr>
-<tr><td><code>n8n-workflows/opportunity_ranking_workflow.json</code></td><td>25 nodes</td></tr>
-<tr><td><code>n8n-workflows/marketing_workflow.json</code></td><td>24 nodes</td></tr>
-<tr><td><code>n8n-workflows/financial_engine_workflow.json</code></td><td>23 nodes</td></tr>
+<tr><td><code>n8n-workflows/opportunity_ranking_workflow.json</code></td><td>26 nodes</td></tr>
+<tr><td><code>n8n-workflows/marketing_workflow.json</code></td><td>25 nodes</td></tr>
+<tr><td><code>n8n-workflows/financial_engine_workflow.json</code></td><td>24 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x661, relates x4, shares data with x3, imports x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x849, relates x4, shares data with x3, imports x2. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 3. Analysis & Clustering ====== -->
 <h2 id="analysis-clustering">3. Analysis &amp; Clustering</h2>
-<p>Analysis &amp; Clustering groups implementation around graphify, querymd, claude, skills, mostly in graphify/references/query.md. This section covers 4 nodes and 3 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Analysis &amp; Clustering groups implementation around graphify, querymd, claude, skills, mostly in graphify/references/query.md. This section covers 5 nodes and 4 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Analysis &amp; Clustering (4 nodes, 3 edges)
+    %% Section: Analysis &amp; Clustering (5 nodes, 4 edges)
     references_query_graphify_reference_query_path_e_399362a1("graphify reference: query, path, explain<br/><small>graphify/references/query.md</small>")
+    references_query_40c1e360("query.md")
     c_users_mina_wael_desktop_ceo_claude_skills_grap_3f08f015("query.md")
     references_query_for_graphify_explain_474223b7("For /graphify explain<br/><small>graphify/references/query.md</small>")
     references_query_for_graphify_path_2bae05ca("For /graphify path<br/><small>graphify/references/query.md</small>")
-    c_users_mina_wael_desktop_ceo_claude_skills_grap_3f08f015 -->|contains| references_query_graphify_reference_query_path_e_399362a1
+    references_query_40c1e360 -->|contains| references_query_graphify_reference_query_path_e_399362a1
+    references_query_graphify_reference_query_path_e_399362a1 -->|contains| c_users_mina_wael_desktop_ceo_claude_skills_grap_3f08f015
     references_query_graphify_reference_query_path_e_399362a1 -->|contains| references_query_for_graphify_explain_474223b7
     references_query_graphify_reference_query_path_e_399362a1 -->|contains| references_query_for_graphify_path_2bae05ca
     class references_query_graphify_reference_query_path_e_399362a1 concept;
+    class references_query_40c1e360 concept;
     class c_users_mina_wael_desktop_ceo_claude_skills_grap_3f08f015 concept;
     class references_query_for_graphify_explain_474223b7 concept;
     class references_query_for_graphify_path_2bae05ca concept;
@@ -575,6 +579,14 @@ flowchart LR
   <td>No direct outbound edge</td>
   <td>Documentation node describing For /graphify explain.</td>
 </tr>
+<tr>
+  <td>5</td>
+  <td><code>query.md</code><br><small style="color:var(--muted)">graphify/references/query.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing query.md.</td>
+</tr>
 </table>
 
 <div class="grid">
@@ -582,25 +594,26 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>graphify/references/query.md</code></td><td>4 nodes</td></tr>
+      <tr><td><code>graphify/references/query.md</code></td><td>5 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 4. Outputs & Docs ====== -->
 <h2 id="outputs-docs">4. Outputs &amp; Docs</h2>
-<p>Outputs &amp; Docs groups implementation around exportsmd, graphify, claude, skills, mostly in graphify/references/exports.md. This section covers 8 nodes and 7 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Outputs &amp; Docs groups implementation around exportsmd, graphify, claude, skills, mostly in graphify/references/exports.md. This section covers 9 nodes and 8 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Outputs &amp; Docs (8 nodes, 7 edges)
+    %% Section: Outputs &amp; Docs (9 nodes, 8 edges)
     references_exports_graphify_reference_extra_expo_ee448005("graphify reference: extra exports and b...<br/><small>graphify/references/exports.md</small>")
+    references_exports_f50c662b("exports.md")
     c_users_mina_wael_desktop_ceo_claude_skills_grap_4117d5ee("exports.md")
     references_exports_step_6b_wiki_only_if_wiki_fla_f09198df("Step 6b - Wiki (only if --wiki flag)<br/><small>graphify/references/exports.md</small>")
     references_exports_step_7_neo4j_export_only_if_n_4506a260("Step 7 - Neo4j export (only if --neo4j...<br/><small>graphify/references/exports.md</small>")
@@ -608,7 +621,8 @@ flowchart LR
     references_exports_step_7c_graphml_export_only_i_4cc5e08c("Step 7c - GraphML export (only if --gra...<br/><small>graphify/references/exports.md</small>")
     references_exports_step_7d_mcp_server_only_if_mc_bc22e883("Step 7d - MCP server (only if --mcp flag)<br/><small>graphify/references/exports.md</small>")
     references_exports_step_8_token_reduction_benchm_d4b739be("Step 8 - Token reduction benchmark (onl...<br/><small>graphify/references/exports.md</small>")
-    c_users_mina_wael_desktop_ceo_claude_skills_grap_4117d5ee -->|contains| references_exports_graphify_reference_extra_expo_ee448005
+    references_exports_f50c662b -->|contains| references_exports_graphify_reference_extra_expo_ee448005
+    references_exports_graphify_reference_extra_expo_ee448005 -->|contains| c_users_mina_wael_desktop_ceo_claude_skills_grap_4117d5ee
     references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_6b_wiki_only_if_wiki_fla_f09198df
     references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_7_neo4j_export_only_if_n_4506a260
     references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_7b_svg_export_only_if_sv_f5c26580
@@ -616,6 +630,7 @@ flowchart LR
     references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_7d_mcp_server_only_if_mc_bc22e883
     references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_8_token_reduction_benchm_d4b739be
     class references_exports_graphify_reference_extra_expo_ee448005 concept;
+    class references_exports_f50c662b concept;
     class c_users_mina_wael_desktop_ceo_claude_skills_grap_4117d5ee concept;
     class references_exports_step_6b_wiki_only_if_wiki_fla_f09198df concept;
     class references_exports_step_7_neo4j_export_only_if_n_4506a260 concept;
@@ -708,6 +723,14 @@ flowchart LR
   <td>No direct outbound edge</td>
   <td>Documentation node describing Step 8 - Token reduction benchmark (only if total_words &gt; 5000).</td>
 </tr>
+<tr>
+  <td>9</td>
+  <td><code>exports.md</code><br><small style="color:var(--muted)">graphify/references/exports.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing exports.md.</td>
+</tr>
 </table>
 
 <div class="grid">
@@ -715,24 +738,24 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>graphify/references/exports.md</code></td><td>8 nodes</td></tr>
+      <tr><td><code>graphify/references/exports.md</code></td><td>9 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x7. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x8. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 5. CLI & Skill Installers ====== -->
 <h2 id="cli-skills">5. CLI &amp; Skill Installers</h2>
-<p>CLI &amp; Skill Installers groups implementation around skills, graphify, claude, skillmd, mostly in skills/graphify/SKILL.md, skills/find-skills/SKILL.md, graphify/references/hooks.md. This section covers 78 nodes and 67 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>CLI &amp; Skill Installers groups implementation around skills, graphify, skillmd, claude, mostly in skills/graphify/SKILL.md, skills/find-skills/SKILL.md, graphify/references/hooks.md. This section covers 86 nodes and 75 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: CLI &amp; Skill Installers (78 nodes, 67 edges)
+    %% Section: CLI &amp; Skill Installers (86 nodes, 75 edges)
     subgraph cli_skills_skills_graphify_SKILL_md_ba798e49["skills/graphify/SKILL.md"]
         graphify_skill_graphify_00571124("/graphify<br/><small>skills/graphify/SKILL.md</small>")
         graphify_skill_analyze_655b0b67("analyze<br/><small>skills/graphify/SKILL.md</small>")
@@ -766,7 +789,7 @@ flowchart LR
     graphify_skill_graphify_00571124 -->|calls| graphify_skill_detect_996cd518
     graphify_skill_graphify_00571124 -->|calls| graphify_skill_extract_c3e9d9b5
     graphify_skill_graphify_00571124 -->|calls| graphify_skill_report_b7c7253f
-    %% Omitted for readability: 60 nodes, 0 edges
+    %% Omitted for readability: 68 nodes, 0 edges
     class graphify_skill_graphify_00571124 concept;
     class graphify_skill_analyze_655b0b67 function;
     class graphify_skill_cluster_7310310f function;
@@ -1016,6 +1039,14 @@ flowchart LR
 </tr>
 <tr>
   <td>27</td>
+  <td><code>SKILL.md</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing SKILL.md.</td>
+</tr>
+<tr>
+  <td>28</td>
   <td><code>detect</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>/graphify</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
@@ -1023,7 +1054,7 @@ flowchart LR
   <td>detect node in skills/graphify/SKILL.md.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>29</td>
   <td><code>extract</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>/graphify</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
@@ -1031,20 +1062,12 @@ flowchart LR
   <td>extract node in skills/graphify/SKILL.md.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>30</td>
   <td><code>cluster</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>/graphify</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
   <td>No direct outbound edge</td>
   <td>cluster node in skills/graphify/SKILL.md.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>analyze</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>/graphify</code><br><small style="color:var(--muted)">skills/graphify/SKILL.md</small></td>
-  <td>No direct outbound edge</td>
-  <td>Orchestrates analysis and returns structured documentation data.</td>
 </tr>
 </table>
 
@@ -1053,51 +1076,53 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>skills/graphify/SKILL.md</code></td><td>31 nodes</td></tr>
-<tr><td><code>skills/find-skills/SKILL.md</code></td><td>16 nodes</td></tr>
-<tr><td><code>graphify/references/hooks.md</code></td><td>6 nodes</td></tr>
-<tr><td><code>skills/frontend-design/SKILL.md</code></td><td>5 nodes</td></tr>
-<tr><td><code>.claude/CLAUDE.md</code></td><td>3 nodes</td></tr>
-<tr><td><code>graphify/references/extraction-spec.md</code></td><td>3 nodes</td></tr>
+      <tr><td><code>skills/graphify/SKILL.md</code></td><td>32 nodes</td></tr>
+<tr><td><code>skills/find-skills/SKILL.md</code></td><td>17 nodes</td></tr>
+<tr><td><code>graphify/references/hooks.md</code></td><td>7 nodes</td></tr>
+<tr><td><code>skills/frontend-design/SKILL.md</code></td><td>6 nodes</td></tr>
+<tr><td><code>CLAUDE.md</code></td><td>5 nodes</td></tr>
+<tr><td><code>.claude/CLAUDE.md</code></td><td>4 nodes</td></tr>
+<tr><td><code>graphify/references/extraction-spec.md</code></td><td>4 nodes</td></tr>
 <tr><td><code>graphify/references/query.md</code></td><td>3 nodes</td></tr>
-<tr><td><code>CLAUDE.md</code></td><td>3 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x46, references x14, calls x5, relates x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x54, references x14, calls x5, relates x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 6. Ingestion & Updates ====== -->
 <h2 id="ingest-cache-update">6. Ingestion &amp; Updates</h2>
-<p>Ingestion &amp; Updates groups implementation around graphify, claude, skills, references, mostly in graphify/references/add-watch.md, graphify/references/update.md, graphify/references/transcribe.md. This section covers 16 nodes and 10 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Ingestion &amp; Updates groups implementation around graphify, claude, skills, references, mostly in graphify/references/add-watch.md, graphify/references/update.md, graphify/references/transcribe.md. This section covers 20 nodes and 14 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Ingestion &amp; Updates (16 nodes, 10 edges)
+    %% Section: Ingestion &amp; Updates (20 nodes, 14 edges)
     subgraph ingest_cache_update_graphify_references_add_watc_ad4a876c["graphify/references/add-watch.md"]
         references_add_watch_graphify_reference_add_a_ur_df000dfb("graphify reference: add a URL and watch...<br/><small>graphify/references/add-watch.md</small>")
-        c_users_mina_wael_desktop_ceo_claude_skills_grap_a9ac1ef0("add-watch.md")
+        references_add_watch_a882e130("add-watch.md")
         references_add_watch_for_watch_6ae398fb("For --watch<br/><small>graphify/references/add-watch.md</small>")
         references_add_watch_for_graphify_add_4d2c1e86("For /graphify add<br/><small>graphify/references/add-watch.md</small>")
+        c_users_mina_wael_desktop_ceo_claude_skills_grap_a9ac1ef0("add-watch.md")
+    end
+    subgraph ingest_cache_update_graphify_references_transcri_94aa8e73["graphify/references/transcribe.md"]
+        references_transcribe_graphify_reference_transcr_aa389265("graphify reference: transcribe video an...<br/><small>graphify/references/transcribe.md</small>")
+        references_transcribe_f4c653e5("transcribe.md")
+        references_transcribe_step_2_5_transcribe_video_21771e20("Step 2.5 - Transcribe video / audio fil...<br/><small>graphify/references/transcribe.md</small>")
+        c_users_mina_wael_desktop_ceo_claude_skills_grap_9d1843be("transcribe.md")
     end
     subgraph ingest_cache_update_graphify_references_update_m_5902f3df["graphify/references/update.md"]
         references_update_graphify_reference_incremental_e7189a5d("graphify reference: incremental update...<br/><small>graphify/references/update.md</small>")
-        c_users_mina_wael_desktop_ceo_claude_skills_grap_4f1a42bb("update.md")
         references_update_for_cluster_only_5e9f2f93("For --cluster-only<br/><small>graphify/references/update.md</small>")
         references_update_for_update_incremental_re_extr_46861e8c("For --update (incremental re-extraction)<br/><small>graphify/references/update.md</small>")
     end
-    subgraph ingest_cache_update_graphify_references_transcri_94aa8e73["graphify/references/transcribe.md"]
-        c_users_mina_wael_desktop_ceo_claude_skills_grap_9d1843be("transcribe.md")
-        references_transcribe_graphify_reference_transcr_aa389265("graphify reference: transcribe video an...<br/><small>graphify/references/transcribe.md</small>")
-        references_transcribe_step_2_5_transcribe_video_21771e20("Step 2.5 - Transcribe video / audio fil...<br/><small>graphify/references/transcribe.md</small>")
-    end
     subgraph ingest_cache_update_scripts_graphify_ast_update_3342c9c6["scripts/graphify_ast_update.py"]
-        c_users_mina_wael_desktop_ceo_scripts_graphify_a_2a044377("graphify_ast_update.py")
+        scripts_graphify_ast_update_bc323292("graphify_ast_update.py")
         scripts_graphify_ast_update_main_d3f02b15("main()<br/><small>scripts/graphify_ast_update.py</small>")
+        c_users_mina_wael_desktop_ceo_scripts_graphify_a_2a044377("graphify_ast_update.py")
     end
     subgraph ingest_cache_update_src_components_update_ui_py_c287dee8["src/components/update_ui.py"]
         components_update_ui_0b93b2ab("update_ui.py")
@@ -1105,28 +1130,33 @@ flowchart LR
     end
     n8n_workflows_update_workflows_c6d4785b("update_workflows.py")
     components_update_ui_0b93b2ab -->|contains| components_update_ui_process_file_b383db42
-    c_users_mina_wael_desktop_ceo_scripts_graphify_a_2a044377 -->|contains| scripts_graphify_ast_update_main_d3f02b15
-    c_users_mina_wael_desktop_ceo_claude_skills_grap_a9ac1ef0 -->|contains| references_add_watch_graphify_reference_add_a_ur_df000dfb
+    scripts_graphify_ast_update_bc323292 -->|contains| scripts_graphify_ast_update_main_d3f02b15
+    scripts_graphify_ast_update_main_d3f02b15 -->|contains| c_users_mina_wael_desktop_ceo_scripts_graphify_a_2a044377
+    references_add_watch_a882e130 -->|contains| references_add_watch_graphify_reference_add_a_ur_df000dfb
+    references_add_watch_graphify_reference_add_a_ur_df000dfb -->|contains| c_users_mina_wael_desktop_ceo_claude_skills_grap_a9ac1ef0
     references_add_watch_graphify_reference_add_a_ur_df000dfb -->|contains| references_add_watch_for_graphify_add_4d2c1e86
     references_add_watch_graphify_reference_add_a_ur_df000dfb -->|contains| references_add_watch_for_watch_6ae398fb
-    c_users_mina_wael_desktop_ceo_claude_skills_grap_9d1843be -->|contains| references_transcribe_graphify_reference_transcr_aa389265
+    references_transcribe_f4c653e5 -->|contains| references_transcribe_graphify_reference_transcr_aa389265
+    references_transcribe_graphify_reference_transcr_aa389265 -->|contains| c_users_mina_wael_desktop_ceo_claude_skills_grap_9d1843be
     references_transcribe_graphify_reference_transcr_aa389265 -->|contains| references_transcribe_step_2_5_transcribe_video_21771e20
-    c_users_mina_wael_desktop_ceo_claude_skills_grap_4f1a42bb -->|contains| references_update_graphify_reference_incremental_e7189a5d
     references_update_graphify_reference_incremental_e7189a5d -->|contains| references_update_for_cluster_only_5e9f2f93
     references_update_graphify_reference_incremental_e7189a5d -->|contains| references_update_for_update_incremental_re_extr_46861e8c
+    %% Omitted for readability: 2 nodes, 0 edges
     class references_add_watch_graphify_reference_add_a_ur_df000dfb concept;
-    class c_users_mina_wael_desktop_ceo_claude_skills_grap_a9ac1ef0 concept;
+    class references_add_watch_a882e130 concept;
     class references_add_watch_for_watch_6ae398fb concept;
     class references_add_watch_for_graphify_add_4d2c1e86 concept;
+    class c_users_mina_wael_desktop_ceo_claude_skills_grap_a9ac1ef0 concept;
+    class references_transcribe_graphify_reference_transcr_aa389265 concept;
+    class references_transcribe_f4c653e5 concept;
+    class references_transcribe_step_2_5_transcribe_video_21771e20 concept;
+    class c_users_mina_wael_desktop_ceo_claude_skills_grap_9d1843be concept;
     class references_update_graphify_reference_incremental_e7189a5d concept;
-    class c_users_mina_wael_desktop_ceo_claude_skills_grap_4f1a42bb concept;
     class references_update_for_cluster_only_5e9f2f93 concept;
     class references_update_for_update_incremental_re_extr_46861e8c concept;
-    class c_users_mina_wael_desktop_ceo_claude_skills_grap_9d1843be concept;
-    class references_transcribe_graphify_reference_transcr_aa389265 concept;
-    class references_transcribe_step_2_5_transcribe_video_21771e20 concept;
-    class c_users_mina_wael_desktop_ceo_scripts_graphify_a_2a044377 module;
+    class scripts_graphify_ast_update_bc323292 module;
     class scripts_graphify_ast_update_main_d3f02b15 function;
+    class c_users_mina_wael_desktop_ceo_scripts_graphify_a_2a044377 module;
     class components_update_ui_0b93b2ab module;
     class components_update_ui_process_file_b383db42 function;
     class n8n_workflows_update_workflows_c6d4785b module;
@@ -1185,6 +1215,14 @@ flowchart LR
 </tr>
 <tr>
   <td>5</td>
+  <td><code>add-watch.md</code><br><small style="color:var(--muted)">graphify/references/add-watch.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing add-watch.md.</td>
+</tr>
+<tr>
+  <td>6</td>
   <td><code>update.md</code><br><small style="color:var(--muted)">graphify/references/update.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1192,7 +1230,7 @@ flowchart LR
   <td>Documentation node describing update.md.</td>
 </tr>
 <tr>
-  <td>6</td>
+  <td>7</td>
   <td><code>graphify reference: incremental update and cluster-only</code><br><small style="color:var(--muted)">graphify/references/update.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1200,7 +1238,7 @@ flowchart LR
   <td>Documentation node describing graphify reference: incremental update and cluster-only.</td>
 </tr>
 <tr>
-  <td>7</td>
+  <td>8</td>
   <td><code>For --update (incremental re-extraction)</code><br><small style="color:var(--muted)">graphify/references/update.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1208,7 +1246,7 @@ flowchart LR
   <td>Documentation node describing For --update (incremental re-extraction).</td>
 </tr>
 <tr>
-  <td>8</td>
+  <td>9</td>
   <td><code>For --cluster-only</code><br><small style="color:var(--muted)">graphify/references/update.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1216,7 +1254,15 @@ flowchart LR
   <td>Documentation node describing For --cluster-only.</td>
 </tr>
 <tr>
-  <td>9</td>
+  <td>10</td>
+  <td><code>update.md</code><br><small style="color:var(--muted)">graphify/references/update.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing update.md.</td>
+</tr>
+<tr>
+  <td>11</td>
   <td><code>transcribe.md</code><br><small style="color:var(--muted)">graphify/references/transcribe.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1224,7 +1270,7 @@ flowchart LR
   <td>Documentation node describing transcribe.md.</td>
 </tr>
 <tr>
-  <td>10</td>
+  <td>12</td>
   <td><code>graphify reference: transcribe video and audio</code><br><small style="color:var(--muted)">graphify/references/transcribe.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1232,7 +1278,7 @@ flowchart LR
   <td>Documentation node describing graphify reference: transcribe video and audio.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>13</td>
   <td><code>Step 2.5 - Transcribe video / audio files (only if video files detected)</code><br><small style="color:var(--muted)">graphify/references/transcribe.md</small></td>
   <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
@@ -1240,23 +1286,15 @@ flowchart LR
   <td>Documentation node describing Step 2.5 - Transcribe video / audio files (only if video files detected).</td>
 </tr>
 <tr>
-  <td>12</td>
-  <td><code>update_ui.py</code><br><small style="color:var(--muted)">src/components/update_ui.py</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Module file in src/components/update_ui.py.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>process_file()</code><br><small style="color:var(--muted)">src/components/update_ui.py</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>process_file() node in src/components/update_ui.py.</td>
-</tr>
-<tr>
   <td>14</td>
+  <td><code>transcribe.md</code><br><small style="color:var(--muted)">graphify/references/transcribe.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing transcribe.md.</td>
+</tr>
+<tr>
+  <td>15</td>
   <td><code>graphify_ast_update.py</code><br><small style="color:var(--muted)">scripts/graphify_ast_update.py</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -1264,7 +1302,7 @@ flowchart LR
   <td>Module file in scripts/graphify_ast_update.py.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>16</td>
   <td><code>main()</code><br><small style="color:var(--muted)">scripts/graphify_ast_update.py</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -1272,7 +1310,31 @@ flowchart LR
   <td>main() node in scripts/graphify_ast_update.py.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>17</td>
+  <td><code>graphify_ast_update.py</code><br><small style="color:var(--muted)">scripts/graphify_ast_update.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in scripts/graphify_ast_update.py.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>update_ui.py</code><br><small style="color:var(--muted)">src/components/update_ui.py</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/components/update_ui.py.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>process_file()</code><br><small style="color:var(--muted)">src/components/update_ui.py</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>process_file() node in src/components/update_ui.py.</td>
+</tr>
+<tr>
+  <td>20</td>
   <td><code>update_workflows.py</code><br><small style="color:var(--muted)">n8n-workflows/update_workflows.py</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -1286,29 +1348,29 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>graphify/references/add-watch.md</code></td><td>4 nodes</td></tr>
-<tr><td><code>graphify/references/update.md</code></td><td>4 nodes</td></tr>
-<tr><td><code>graphify/references/transcribe.md</code></td><td>3 nodes</td></tr>
+      <tr><td><code>graphify/references/add-watch.md</code></td><td>5 nodes</td></tr>
+<tr><td><code>graphify/references/update.md</code></td><td>5 nodes</td></tr>
+<tr><td><code>graphify/references/transcribe.md</code></td><td>4 nodes</td></tr>
+<tr><td><code>scripts/graphify_ast_update.py</code></td><td>3 nodes</td></tr>
 <tr><td><code>src/components/update_ui.py</code></td><td>2 nodes</td></tr>
-<tr><td><code>scripts/graphify_ast_update.py</code></td><td>2 nodes</td></tr>
 <tr><td><code>n8n-workflows/update_workflows.py</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x10. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x14. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 7. Serving API ====== -->
 <h2 id="serve-api">7. Serving API</h2>
-<p>Serving API groups implementation around apps, api, postman, guidemd, mostly in POSTMAN_GUIDE.md, api/src/schemas.ts, src/components/MarketingStudio.tsx. This section covers 132 nodes and 131 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Serving API groups implementation around apps, api, postman, guidemd, mostly in POSTMAN_GUIDE.md, api/src/schemas.ts, src/components/MarketingStudio.tsx. This section covers 161 nodes and 159 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Serving API (132 nodes, 131 edges)
+    %% Section: Serving API (161 nodes, 159 edges)
     subgraph serve_api_api_src_index_ts_a56be3a8["api/src/index.ts"]
         apps_api_src_index_ts_src_index_1597a0c7("index.ts")
         src_index_app_c760390f("app<br/><small>api/src/index.ts</small>")
@@ -1349,7 +1411,7 @@ flowchart LR
     src_errorhandler_apperror_ec8895ed -->|imports| tests_errorhandler_test_7009af09
     apps_api_src_index_ts_src_index_1597a0c7 -->|imports| apps_api_src_index_ts_src_index_1597a0c7
     apps_api_src_index_ts_src_index_1597a0c7 -->|imports| src_middleware_authmiddleware_55a9cab1
-    %% Omitted for readability: 114 nodes, 0 edges
+    %% Omitted for readability: 143 nodes, 0 edges
     class apps_api_src_index_ts_src_index_1597a0c7 module;
     class src_index_app_c760390f function;
     class src_index_verifytoken_271fccdb function;
@@ -1623,11 +1685,11 @@ flowchart LR
 </tr>
 <tr>
   <td>30</td>
-  <td><code>MarketingStudio.tsx</code><br><small style="color:var(--muted)">src/components/MarketingStudio.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>POSTMAN_GUIDE.md</code><br><small style="color:var(--muted)">POSTMAN_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>api</code><br><small style="color:var(--muted)">src/lib/api.ts</small><br><code>api.ts</code><br><small style="color:var(--muted)">src/lib/api.ts</small></td>
-  <td>Module file in src/components/MarketingStudio.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing POSTMAN_GUIDE.md.</td>
 </tr>
 </table>
 
@@ -1636,7 +1698,7 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>POSTMAN_GUIDE.md</code></td><td>29 nodes</td></tr>
+      <tr><td><code>POSTMAN_GUIDE.md</code></td><td>58 nodes</td></tr>
 <tr><td><code>api/src/schemas.ts</code></td><td>14 nodes</td></tr>
 <tr><td><code>src/components/MarketingStudio.tsx</code></td><td>13 nodes</td></tr>
 <tr><td><code>api/src/index.ts</code></td><td>9 nodes</td></tr>
@@ -1648,7 +1710,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x100, imports x18, imports x7, method x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x128, imports x18, imports x7, method x4. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -1904,12 +1966,12 @@ flowchart LR
 
 <!-- ====== 9. Tests & Fixtures ====== -->
 <h2 id="tests-fixtures">9. Tests &amp; Fixtures</h2>
-<p>Tests &amp; Fixtures groups implementation around test, apps, api, packages, mostly in apps/api/test_business_plan.js, apps/api/test_opportunity_discovery_v1.js, apps/api/test_opportunity_selection.js. This section covers 117 nodes and 169 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Tests &amp; Fixtures groups implementation around test, apps, api, packages, mostly in apps/api/test_business_plan.js, apps/api/test_opportunity_discovery_v1.js, apps/api/test_opportunity_selection.js. This section covers 118 nodes and 169 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Tests &amp; Fixtures (117 nodes, 169 edges)
+    %% Section: Tests &amp; Fixtures (118 nodes, 169 edges)
     subgraph tests_fixtures_agents_src_aiClient_ts_f62b23bc["agents/src/aiClient.ts"]
         src_aiclient_fetchwithretry_b4d8eca7("fetchWithRetry()<br/><small>agents/src/aiClient.ts</small>")
         src_aiclient_aierror_e060af8a("AIError<br/><small>agents/src/aiClient.ts</small>")
@@ -1952,7 +2014,7 @@ flowchart LR
     tests_aiclient_test_961b5f30 -->|imports| src_aiclient_callfireworkschat_2e07d345
     tests_aiclient_test_961b5f30 -->|imports| src_aiclient_callgemini_9f74a33f
     tests_aiclient_test_961b5f30 -->|imports| src_aiclient_callllmwithfallback_198fbcd0
-    %% Omitted for readability: 99 nodes, 0 edges
+    %% Omitted for readability: 100 nodes, 0 edges
     class src_aiclient_fetchwithretry_b4d8eca7 function;
     class src_aiclient_aierror_e060af8a klass;
     class src_aiclient_aierror_constructor_946cda48 function;
@@ -2258,12 +2320,12 @@ flowchart LR
 
 <!-- ====== 10. Components Authclient Select Module ====== -->
 <h2 id="components-authclient-select-module">10. Components Authclient Select Module</h2>
-<p>Components Authclient Select Module groups implementation around apps, web, components, motion, mostly in src/lib/motion-presets.ts, src/lib/authClient.ts, src/components/AccountDetails.tsx. This section covers 94 nodes and 247 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Components Authclient Select Module groups implementation around apps, web, components, motion, mostly in src/lib/motion-presets.ts, src/lib/authClient.ts, src/components/AccountDetails.tsx. This section covers 95 nodes and 255 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Components Authclient Select Module (94 nodes, 247 edges)
+    %% Section: Components Authclient Select Module (95 nodes, 255 edges)
     subgraph components_authclient_select_module_src_app_page_9f873f98["src/app/page.tsx"]
         app_page_c77e992c("page.tsx")
         app_page_apppage_d3039541("AppPage()<br/><small>src/app/page.tsx</small>")
@@ -2308,7 +2370,7 @@ flowchart LR
     components_marketingdashboard_4c409713 -->|imports| store_usestore_usestore_09821344
     components_opportunityexplorer_d659e6a2 -->|imports| store_usestore_usestore_09821344
     components_pitchdashboard_97dfc1b8 -->|imports| store_usestore_usestore_09821344
-    %% Omitted for readability: 76 nodes, 0 edges
+    %% Omitted for readability: 77 nodes, 0 edges
     class app_page_c77e992c ui;
     class app_page_apppage_d3039541 ui;
     class components_brandingpanel_ac72d46d ui;
@@ -2513,7 +2575,7 @@ flowchart LR
   <td><code>BrandingPanel.tsx</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br>+8 more</td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br>+9 more</td>
   <td>Module file in src/components/BrandingPanel.tsx.</td>
 </tr>
 <tr>
@@ -2529,7 +2591,7 @@ flowchart LR
   <td><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br>+14 more</td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br>+15 more</td>
   <td>Module file in src/components/BusinessPlanDashboard.tsx.</td>
 </tr>
 <tr>
@@ -2585,7 +2647,7 @@ flowchart LR
   <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">src/components/Dashboard.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+2 more</td>
+  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+3 more</td>
   <td>Module file in src/components/Dashboard.tsx.</td>
 </tr>
 </table>
@@ -2607,19 +2669,19 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x85, imports x66, contains x64, calls x32. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x85, imports x73, contains x65, calls x32. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 11. Components Marketingstudio Apiclient Module ====== -->
 <h2 id="components-marketingstudio-apiclient-module">11. Components Marketingstudio Apiclient Module</h2>
-<p>Components Marketingstudio Apiclient Module groups implementation around apps, web, components, selecttsx, mostly in components/ui/select.tsx, components/ui/card.tsx, src/hooks/useModerationDashboard.ts. This section covers 46 nodes and 100 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Components Marketingstudio Apiclient Module groups implementation around apps, web, components, selecttsx, mostly in components/ui/select.tsx, components/ui/card.tsx, src/hooks/useModerationDashboard.ts. This section covers 45 nodes and 90 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Components Marketingstudio Apiclient Module (46 nodes, 100 edges)
+    %% Section: Components Marketingstudio Apiclient Module (45 nodes, 90 edges)
     subgraph components_marketingstudio_apiclient_module_comp_54774061["components/ui/card.tsx"]
         ui_card_cardheader_cb718f02("CardHeader()<br/><small>components/ui/card.tsx</small>")
         ui_card_cardtitle_f8dc8a4e("CardTitle()<br/><small>components/ui/card.tsx</small>")
@@ -2671,7 +2733,7 @@ flowchart LR
     admin_kpicardsrow_873e7f9c -->|imports| ui_card_cardtitle_f8dc8a4e
     admin_moderationfeed_499dceb6 -->|imports| ui_badge_badge_62fe1c0e
     ui_skeleton_af03ce57 -->|imports| lib_utils_cn_b8743bb6
-    %% Omitted for readability: 28 nodes, 0 edges
+    %% Omitted for readability: 27 nodes, 0 edges
     class ui_card_cardheader_cb718f02 ui;
     class ui_card_cardtitle_f8dc8a4e ui;
     class ui_card_carddescription_40d0a254 ui;
@@ -2716,7 +2778,7 @@ flowchart LR
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>adminClient</code><br><small style="color:var(--muted)">src/lib/adminClient.ts</small><br><code>adminClient.ts</code><br><small style="color:var(--muted)">src/lib/adminClient.ts</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+11 more</td>
+  <td><code>adminClient</code><br><small style="color:var(--muted)">src/lib/adminClient.ts</small><br><code>adminClient.ts</code><br><small style="color:var(--muted)">src/lib/adminClient.ts</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+10 more</td>
   <td>Module file in admin/dashboard/page.tsx.</td>
 </tr>
 <tr>
@@ -2764,7 +2826,7 @@ flowchart LR
   <td><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardHeader()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+3 more</td>
+  <td><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardHeader()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardTitle()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+2 more</td>
   <td>Module file in components/admin/KPICardsRow.tsx.</td>
 </tr>
 <tr>
@@ -2849,14 +2911,6 @@ flowchart LR
 </tr>
 <tr>
   <td>18</td>
-  <td><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>Module file in components/ui/card.tsx.</td>
-</tr>
-<tr>
-  <td>19</td>
   <td><code>CardHeader()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2864,7 +2918,7 @@ flowchart LR
   <td>CardHeader() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>19</td>
   <td><code>CardTitle()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2872,7 +2926,7 @@ flowchart LR
   <td>CardTitle() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>20</td>
   <td><code>CardDescription()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2880,7 +2934,7 @@ flowchart LR
   <td>CardDescription() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>21</td>
   <td><code>CardAction()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2888,7 +2942,7 @@ flowchart LR
   <td>CardAction() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>22</td>
   <td><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2896,7 +2950,7 @@ flowchart LR
   <td>CardContent() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>23</td>
   <td><code>CardFooter()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2904,7 +2958,7 @@ flowchart LR
   <td>CardFooter() node in components/ui/card.tsx.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>24</td>
   <td><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
@@ -2912,7 +2966,7 @@ flowchart LR
   <td>Module file in components/ui/input.tsx.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>25</td>
   <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
@@ -2920,7 +2974,7 @@ flowchart LR
   <td>Input() node in components/ui/input.tsx.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>26</td>
   <td><code>select.tsx</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
@@ -2928,7 +2982,7 @@ flowchart LR
   <td>Module file in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>27</td>
   <td><code>SelectGroup()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2936,7 +2990,7 @@ flowchart LR
   <td>SelectGroup() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>28</td>
   <td><code>SelectValue()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
@@ -2944,12 +2998,20 @@ flowchart LR
   <td>SelectValue() node in components/ui/select.tsx.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>29</td>
   <td><code>SelectTrigger()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
   <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
   <td>SelectTrigger() node in components/ui/select.tsx.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>SelectContent()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td>SelectContent() node in components/ui/select.tsx.</td>
 </tr>
 </table>
 
@@ -2959,7 +3021,7 @@ flowchart LR
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
       <tr><td><code>components/ui/select.tsx</code></td><td>10 nodes</td></tr>
-<tr><td><code>components/ui/card.tsx</code></td><td>7 nodes</td></tr>
+<tr><td><code>components/ui/card.tsx</code></td><td>6 nodes</td></tr>
 <tr><td><code>src/hooks/useModerationDashboard.ts</code></td><td>6 nodes</td></tr>
 <tr><td><code>components/ui/badge.tsx</code></td><td>3 nodes</td></tr>
 <tr><td><code>admin/dashboard/page.tsx</code></td><td>2 nodes</td></tr>
@@ -2970,7 +3032,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x32, imports x27, calls x21, imports x20. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x26, contains x26, calls x21, imports x17. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3981,12 +4043,17 @@ flowchart LR
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around scripts, apps, n8n, readme, mostly in n8n-workflows/README-RECOVERY.md, apps/web/README-FRONTEND-MONITORING.md, scripts/seed_knowledge.js. This section covers 91 nodes and 53 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around scripts, apps, readme, graphify, mostly in n8n-workflows/README-RECOVERY.md, apps/web/README-FRONTEND-MONITORING.md, scripts/seed_knowledge.js. This section covers 96 nodes and 57 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (91 nodes, 53 edges)
+    %% Section: Other (96 nodes, 57 edges)
+    subgraph other_n8n_workflows_audit_workflows_py_25fe5793["n8n-workflows/audit_workflows.py"]
+        n8n_workflows_audit_workflows_6c95ccdd("audit_workflows.py")
+        n8n_workflows_audit_workflows_get_error_connecti_20adef3a("get_error_connections()<br/><small>n8n-workflows/audit_workflows.py</small>")
+        n8n_workflows_audit_workflows_get_error_nodes_fcf1eb58("get_error_nodes()<br/><small>n8n-workflows/audit_workflows.py</small>")
+    end
     subgraph other_apps_web_next_config_ts_0769bbae["apps/web/next.config.ts"]
         web_next_config_674f740b("next.config.ts")
         web_next_config_nextconfig_5a6dbeeb("nextConfig<br/><small>apps/web/next.config.ts</small>")
@@ -3995,17 +4062,12 @@ flowchart LR
         web_tailwind_config_9bf29a24("tailwind.config.ts")
         web_tailwind_config_config_4b4e0131("config<br/><small>apps/web/tailwind.config.ts</small>")
     end
-    subgraph other_n8n_workflows_audit_workflows_py_25fe5793["n8n-workflows/audit_workflows.py"]
-        n8n_workflows_audit_workflows_6c95ccdd("audit_workflows.py")
-        n8n_workflows_audit_workflows_get_error_connecti_20adef3a("get_error_connections()<br/><small>n8n-workflows/audit_workflows.py</small>")
-    end
     subgraph other_scripts_agy_status_py_f1f66163["scripts/agy_status.py"]
         scripts_agy_status_get_git_branch_b9689f66("get_git_branch()<br/><small>scripts/agy_status.py</small>")
         scripts_agy_status_main_324431b0("main()<br/><small>scripts/agy_status.py</small>")
     end
     workflows_graphify_workflow_17ea00bc("Graphify Workflow<br/><small>.agents/workflows/graphify.md</small>")
     workflows_ci_github_actions_dad5a320("Creator Engine CI Action<br/><small>.github/workflows/ci.yml</small>")
-    readme_creator_engine_ab6ad04c("Creator Engine Platform<br/><small>README.md</small>")
     tests_setup_5566e1d1("setup.ts")
     api_vitest_config_1cdccf15("vitest.config.ts")
     web_next_env_d_29b6205e("next-env.d.ts")
@@ -4015,18 +4077,18 @@ flowchart LR
     config_tailwind_config_769650c7("tailwind.config.js")
     scripts_agy_status_get_git_branch_b9689f66 -->|calls| scripts_agy_status_main_324431b0
     web_tailwind_config_9bf29a24 -->|imports| config_tailwind_config_769650c7
-    %% Omitted for readability: 73 nodes, 0 edges
+    %% Omitted for readability: 78 nodes, 0 edges
+    class n8n_workflows_audit_workflows_6c95ccdd module;
+    class n8n_workflows_audit_workflows_get_error_connecti_20adef3a function;
+    class n8n_workflows_audit_workflows_get_error_nodes_fcf1eb58 function;
     class web_next_config_674f740b module;
     class web_next_config_nextconfig_5a6dbeeb function;
     class web_tailwind_config_9bf29a24 module;
     class web_tailwind_config_config_4b4e0131 function;
-    class n8n_workflows_audit_workflows_6c95ccdd module;
-    class n8n_workflows_audit_workflows_get_error_connecti_20adef3a function;
     class scripts_agy_status_get_git_branch_b9689f66 function;
     class scripts_agy_status_main_324431b0 function;
     class workflows_graphify_workflow_17ea00bc klass;
     class workflows_ci_github_actions_dad5a320 klass;
-    class readme_creator_engine_ab6ad04c klass;
     class tests_setup_5566e1d1 test;
     class api_vitest_config_1cdccf15 test;
     class web_next_env_d_29b6205e module;
@@ -4225,46 +4287,6 @@ flowchart LR
 </tr>
 <tr>
   <td>22</td>
-  <td><code>financial_agents_guide.md</code><br><small style="color:var(--muted)">n8n-workflows/financial_agents_guide.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing financial_agents_guide.md.</td>
-</tr>
-<tr>
-  <td>23</td>
-  <td><code>n8n Financial Engine Workflow Specification</code><br><small style="color:var(--muted)">n8n-workflows/financial_agents_guide.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing n8n Financial Engine Workflow Specification.</td>
-</tr>
-<tr>
-  <td>24</td>
-  <td><code>Workflow Architecture (Nodes)</code><br><small style="color:var(--muted)">n8n-workflows/financial_agents_guide.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Workflow Architecture (Nodes).</td>
-</tr>
-<tr>
-  <td>25</td>
-  <td><code>Prompt A: OpenAI System Prompt</code><br><small style="color:var(--muted)">n8n-workflows/financial_agents_guide.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Prompt A: OpenAI System Prompt.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>Code B: Deterministic Financial Forecasting (Code Node)</code><br><small style="color:var(--muted)">n8n-workflows/financial_agents_guide.md</small></td>
-  <td><span class="tag tag-func">Concept</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Documentation node describing Code B: Deterministic Financial Forecasting (Code Node).</td>
-</tr>
-<tr>
-  <td>27</td>
   <td><code>create_admin.js</code><br><small style="color:var(--muted)">scripts/create_admin.js</small></td>
   <td><span class="tag tag-class">Module</span></td>
   <td>External entry / no inbound edge</td>
@@ -4272,7 +4294,7 @@ flowchart LR
   <td>create_admin.js node in scripts/create_admin.js.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>23</td>
   <td><code>mongoose</code><br><small style="color:var(--muted)">scripts/create_admin.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -4280,7 +4302,7 @@ flowchart LR
   <td>mongoose node in scripts/create_admin.js.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>24</td>
   <td><code>bcrypt</code><br><small style="color:var(--muted)">scripts/create_admin.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
@@ -4288,12 +4310,52 @@ flowchart LR
   <td>bcrypt node in scripts/create_admin.js.</td>
 </tr>
 <tr>
-  <td>30</td>
+  <td>25</td>
   <td><code>fs</code><br><small style="color:var(--muted)">scripts/create_admin.js</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>fs node in scripts/create_admin.js.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>createAdmin()</code><br><small style="color:var(--muted)">scripts/create_admin.js</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>createAdmin() node in scripts/create_admin.js.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>README-CI.md</code><br><small style="color:var(--muted)">.github/README-CI.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing README-CI.md.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>Creator Engine - CI/CD Architecture</code><br><small style="color:var(--muted)">.github/README-CI.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Creator Engine - CI/CD Architecture.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>Workflow Overview (`.github/workflows/ci.yml`)</code><br><small style="color:var(--muted)">.github/README-CI.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Workflow Overview (`.github/workflows/ci.yml`).</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>Strict Rules</code><br><small style="color:var(--muted)">.github/README-CI.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Strict Rules.</td>
 </tr>
 </table>
 
@@ -4305,16 +4367,16 @@ flowchart LR
       <tr><td><code>apps/web/README-FRONTEND-MONITORING.md</code></td><td>7 nodes</td></tr>
 <tr><td><code>n8n-workflows/README-RECOVERY.md</code></td><td>7 nodes</td></tr>
 <tr><td><code>scripts/seed_knowledge.js</code></td><td>7 nodes</td></tr>
-<tr><td><code>n8n-workflows/financial_agents_guide.md</code></td><td>5 nodes</td></tr>
 <tr><td><code>scripts/create_admin.js</code></td><td>5 nodes</td></tr>
+<tr><td><code>.agents/workflows/graphify.md</code></td><td>4 nodes</td></tr>
 <tr><td><code>.github/README-CI.md</code></td><td>4 nodes</td></tr>
-<tr><td><code>.agents/workflows/graphify.md</code></td><td>3 nodes</td></tr>
-<tr><td><code>README.md</code></td><td>3 nodes</td></tr>
+<tr><td><code>README.md</code></td><td>4 nodes</td></tr>
+<tr><td><code>scripts/agy_status.py</code></td><td>4 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x51, imports x1, calls x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x55, imports x1, calls x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -4360,17 +4422,17 @@ flowchart LR
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>1363</td></tr>
-      <tr><td>Edges</td><td>1630</td></tr>
+      <tr><td>Nodes</td><td>1512</td></tr>
+      <tr><td>Edges</td><td>1865</td></tr>
       <tr><td>Hyperedges</td><td>3</td></tr>
-      <tr><td>Communities</td><td>132</td></tr>
+      <tr><td>Communities</td><td>140</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>EXTRACTED</td><td>1603</td></tr>
+      <tr><td>EXTRACTED</td><td>1838</td></tr>
       <tr><td>INFERRED</td><td>27</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
@@ -4378,8 +4440,8 @@ flowchart LR
 </div>
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
-  <p>creator-engine — Architecture Documentation</p>
-  <p>Generated: 2026-06-23 01:33 UTC · graphify callflow-html</p>
+  <p>CEO — Architecture Documentation</p>
+  <p>Generated: 2026-06-23 01:44 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->

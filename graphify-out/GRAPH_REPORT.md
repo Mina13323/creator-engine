@@ -1,16 +1,16 @@
-# Graph Report - creator-engine  (2026-06-23)
+# Graph Report - CEO  (2026-06-23)
 
 ## Corpus Check
 - 185 files · ~191,539 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1363 nodes · 1630 edges · 132 communities (105 shown, 27 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 27 edges (avg confidence: 0.82)
+- 1512 nodes · 1865 edges · 140 communities (108 shown, 32 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 27 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `39664bbc`
+- Built from commit: `dc386d20`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -67,6 +67,9 @@
 - [[_COMMUNITY_Layout Metadata Rootlayout Module|Layout Metadata Rootlayout Module]]
 - [[_COMMUNITY_Claude Settings Hooks Module|Claude Settings Hooks Module]]
 - [[_COMMUNITY_Config Tailwind Module|Config Tailwind Module]]
+- [[_COMMUNITY_Scripts Graphify Update Module|Scripts Graphify Update Module]]
+- [[_COMMUNITY_Scripts Graphify Step1 Module|Scripts Graphify Step1 Module]]
+- [[_COMMUNITY_Scripts Graphify Step3 Module|Scripts Graphify Step3 Module]]
 - [[_COMMUNITY_Skill Find Skills Module|Skill Find Skills Module]]
 - [[_COMMUNITY_Skill Frontend Design Module|Skill Frontend Design Module]]
 - [[_COMMUNITY_Index Prompts Packages Module|Index Prompts Packages Module]]
@@ -117,18 +120,23 @@
 - [[_COMMUNITY_Community 110|Community 110]]
 - [[_COMMUNITY_Community 112|Community 112]]
 - [[_COMMUNITY_Community 113|Community 113]]
+- [[_COMMUNITY_Community 120|Community 120]]
+- [[_COMMUNITY_Community 132|Community 132]]
+- [[_COMMUNITY_Community 133|Community 133]]
+- [[_COMMUNITY_Community 134|Community 134]]
+- [[_COMMUNITY_Community 135|Community 135]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `useStore` - 47 edges
-2. `/graphify` - 30 edges
+2. `/graphify` - 31 edges
 3. `cn()` - 27 edges
-4. `compilerOptions` - 17 edges
+4. `compilerOptions` - 18 edges
 5. `compilerOptions` - 15 edges
 6. `Button()` - 14 edges
 7. `compilerOptions` - 14 edges
-8. `Card()` - 11 edges
-9. `request()` - 11 edges
-10. `What You Must Do When Invoked` - 11 edges
+8. `compilerOptions` - 11 edges
+9. `Card()` - 11 edges
+10. `request()` - 11 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `GET()` --calls--> `connectDB()`  [INFERRED]
@@ -154,7 +162,7 @@
 - **Financial Engine Pipeline** — n8n_workflows_financial_agents_guide_webhook, n8n_workflows_financial_agents_guide_vector_search, n8n_workflows_financial_agents_guide_openai, n8n_workflows_financial_agents_guide_code_node [EXTRACTED 0.95]
 - **Graphify Core Pipeline** — graphify_skill_detect, graphify_skill_extract, graphify_skill_cluster, graphify_skill_analyze, graphify_skill_report [EXTRACTED 1.00]
 
-## Communities (132 total, 27 thin omitted)
+## Communities (140 total, 32 thin omitted)
 
 ### Community 0 - "Components Authclient Select Module"
 Cohesion: 0.06
@@ -174,15 +182,15 @@ Nodes (41): dependencies, bcryptjs, cookie-parser, cors, @creator/agents, @creat
 
 ### Community 4 - "Workflows Financial Agents Module"
 Cohesion: 0.07
-Nodes (33): active, main, connections, Code in JavaScript, Embeddings OpenAI, Error Trigger, Message a model, MongoDB Vector Search (+25 more)
+Nodes (37): active, Code B: Deterministic Financial Forecasting (Code Node), main, connections, Code in JavaScript, Embeddings OpenAI, Error Trigger, Message a model (+29 more)
 
 ### Community 5 - "Index Route Test Module"
 Cohesion: 0.07
 Nodes (37): POST(), POST(), KnowledgeDocument, POST(), PredictPayloadSchema, GET(), run(), testAgents() (+29 more)
 
 ### Community 6 - "Package Dependencies Scripts Module"
-Cohesion: 0.05
-Nodes (41): dependencies, @langchain/openai, mongodb, mongoose, @pinecone-database/pinecone, zod, description, devDependencies (+33 more)
+Cohesion: 0.06
+Nodes (30): dependencies, @langchain/openai, mongodb, mongoose, @pinecone-database/pinecone, zod, description, devDependencies (+22 more)
 
 ### Community 7 - "Components Aliases Tailwind Module"
 Cohesion: 0.09
@@ -197,11 +205,11 @@ Cohesion: 0.10
 Nodes (19): AgentRun, AgentRunSchema, BusinessPlan, BusinessPlanSchema, FounderProfile, FounderProfileSchema, fs, jwt (+11 more)
 
 ### Community 10 - "Components Marketingstudio Apiclient Module"
-Cohesion: 0.10
+Cohesion: 0.09
 Nodes (32): KPICardsRow(), ModerationFeed(), TrafficChart(), Onboarding(), AdminDashboardPage(), FlaggedCategory, ModerationEvent, ModerationStats (+24 more)
 
 ### Community 11 - "Turbo Package Devdependencies Module"
-Cohesion: 0.14
+Cohesion: 0.13
 Nodes (13): Common Skill Categories, Find Skills, How to Help Users Find Skills, Step 1: Understand What They Need, Step 2: Check the Leaderboard First, Step 3: Search for Skills, Step 4: Verify Quality Before Recommending, Step 5: Present Options to the User (+5 more)
 
 ### Community 12 - "References Graphify Skill Module"
@@ -233,7 +241,7 @@ Cohesion: 0.12
 Nodes (15): compilerOptions, declaration, declarationMap, esModuleInterop, forceConsistentCasingInFileNames, lib, module, outDir (+7 more)
 
 ### Community 19 - "Agents Package Dependencies Module"
-Cohesion: 0.12
+Cohesion: 0.17
 Nodes (15): dependencies, @creator/prompts, @creator/rag-core, @creator/types, @google/generative-ai, devDependencies, @types/node, typescript (+7 more)
 
 ### Community 20 - "Index Apps Authmiddleware Module"
@@ -245,11 +253,11 @@ Cohesion: 0.09
 Nodes (23): connections, Error Trigger, Fireworks AI, Get Opportunities, Insert Rankings, Parse Rankings, Sanitize Error & Log, Webhook (+15 more)
 
 ### Community 22 - "Workflows Business Plan Module"
-Cohesion: 0.14
+Cohesion: 0.15
 Nodes (13): connections, active, Fireworks AI, Parse JSON, settings, Tavily Search, Webhook, main (+5 more)
 
 ### Community 23 - "Workflows Opportunity Discovery Module"
-Cohesion: 0.09
+Cohesion: 0.10
 Nodes (22): active, connections, Error Trigger, Fireworks AI, Parse JSON, Sanitize Error & Log, Tavily Search, Webhook (+14 more)
 
 ### Community 24 - "Core Package Devdependencies Module"
@@ -265,39 +273,39 @@ Cohesion: 0.15
 Nodes (12): computedHash, skillPath, source, sourceType, computedHash, skillPath, source, sourceType (+4 more)
 
 ### Community 27 - "Tsconfig Compileroptions Esmoduleinterop Module"
-Cohesion: 0.16
+Cohesion: 0.17
 Nodes (13): compilerOptions, esModuleInterop, forceConsistentCasingInFileNames, module, moduleResolution, outDir, rootDir, skipLibCheck (+5 more)
 
 ### Community 28 - "Financial Workflows Engine Module"
-Cohesion: 0.09
+Cohesion: 0.10
 Nodes (21): main, connections, Code Node (Financial Deterministic Math), Error Trigger, Gemini Chat Model Node (AI Agent), MongoDB Atlas Vector Search Node, Sanitize Error & Log, Webhook Node (Trigger) (+13 more)
 
 ### Community 29 - "Workflows Founder Analysis Module"
-Cohesion: 0.11
+Cohesion: 0.12
 Nodes (20): active, connections, Error Trigger, Fireworks AI, Parse JSON, Sanitize Error & Log, Webhook, main (+12 more)
 
 ### Community 30 - "Workflows Branding Flow Module"
-Cohesion: 0.20
+Cohesion: 0.29
 Nodes (9): active, connections, Webhook, description, id, name, nodes, settings (+1 more)
 
 ### Community 31 - "Workflows Business Idea Module"
-Cohesion: 0.20
+Cohesion: 0.29
 Nodes (9): active, connections, Webhook, description, id, name, nodes, settings (+1 more)
 
 ### Community 32 - "Workflows Cofounder Chat Module"
-Cohesion: 0.17
+Cohesion: 0.19
 Nodes (13): active, main, connections, Call LLM (OpenAI), Generate Chat Prompt, Webhook, description, main (+5 more)
 
 ### Community 33 - "Workflows Marketing Flow Module"
-Cohesion: 0.20
+Cohesion: 0.29
 Nodes (9): active, connections, Webhook, description, id, name, nodes, settings (+1 more)
 
 ### Community 34 - "Workflows Roadmap Flow Module"
-Cohesion: 0.20
+Cohesion: 0.29
 Nodes (9): active, connections, Webhook, description, id, name, nodes, settings (+1 more)
 
 ### Community 35 - "Workflows Validation Flow Module"
-Cohesion: 0.20
+Cohesion: 0.29
 Nodes (9): active, connections, Webhook, description, id, name, nodes, settings (+1 more)
 
 ### Community 36 - "Index Packages Agents Module"
@@ -321,7 +329,7 @@ Cohesion: 0.29
 Nodes (6): compilerOptions, outDir, rootDir, types, extends, include
 
 ### Community 41 - "Package Users Mina Module"
-Cohesion: 0.33
+Cohesion: 0.48
 Nodes (5): description, name, private, scripts, version
 
 ### Community 42 - "Config Package Dependencies Module"
@@ -357,31 +365,31 @@ Cohesion: 0.29
 Nodes (5): metadata, AppError, ErrorState, useErrorStore, ToastContainer()
 
 ### Community 77 - "Community 77"
-Cohesion: 0.25
+Cohesion: 0.22
 Nodes (7): graphify reference: extra exports and benchmark, Step 6b - Wiki (only if --wiki flag), Step 7 - Neo4j export (only if --neo4j or --neo4j-push flag), Step 7b - SVG export (only if --svg flag), Step 7c - GraphML export (only if --graphml flag), Step 7d - MCP server (only if --mcp flag), Step 8 - Token reduction benchmark (only if total_words > 5000)
 
 ### Community 78 - "Community 78"
-Cohesion: 0.40
-Nodes (4): Code B: Deterministic Financial Forecasting (Code Node), n8n Financial Engine Workflow Specification, Prompt A: OpenAI System Prompt, Workflow Architecture (Nodes)
+Cohesion: 0.05
+Nodes (42): dependencies, @langchain/openai, mongodb, mongoose, @pinecone-database/pinecone, zod, description, devDependencies (+34 more)
 
 ### Community 79 - "Community 79"
 Cohesion: 0.40
 Nodes (3): bcrypt, fs, mongoose
 
 ### Community 80 - "Community 80"
-Cohesion: 0.50
+Cohesion: 0.40
 Nodes (3): For /graphify add, For --watch, graphify reference: add a URL and watch a folder
 
 ### Community 81 - "Community 81"
-Cohesion: 0.50
+Cohesion: 0.40
 Nodes (3): For git commit hook, For native CLAUDE.md integration, graphify reference: commit hook and native CLAUDE.md integration
 
 ### Community 82 - "Community 82"
-Cohesion: 0.50
+Cohesion: 0.40
 Nodes (3): For /graphify explain, For /graphify path, graphify reference: query, path, explain
 
 ### Community 83 - "Community 83"
-Cohesion: 0.50
+Cohesion: 0.40
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ### Community 92 - "Community 92"
@@ -389,15 +397,15 @@ Cohesion: 0.11
 Nodes (4): ASSETS, OPTIONS, api, ApiClient
 
 ### Community 93 - "Community 93"
-Cohesion: 0.08
+Cohesion: 0.09
 Nodes (23): active, connections, Error Trigger, Fireworks AI, Parse JSON, Sanitize Error & Log, Tavily Search, Webhook (+15 more)
 
 ### Community 94 - "Community 94"
-Cohesion: 0.09
+Cohesion: 0.10
 Nodes (21): active, connections, Error Trigger, Fireworks AI, Parse JSON, Sanitize Error & Log, Webhook, main (+13 more)
 
 ### Community 95 - "Community 95"
-Cohesion: 0.09
+Cohesion: 0.10
 Nodes (21): active, connections, Error Trigger, Fireworks AI, Parse JSON, Sanitize Error & Log, Webhook, main (+13 more)
 
 ### Community 96 - "Community 96"
@@ -456,25 +464,37 @@ Nodes (4): Coverage Report, Creator Engine Backend Test Suite, Overview, Running
 Cohesion: 0.50
 Nodes (3): Creator Engine - CI/CD Architecture, Strict Rules, Workflow Overview (`.github/workflows/ci.yml`)
 
+### Community 132 - "Community 132"
+Cohesion: 0.07
+Nodes (28): 1. Environment & Setup, 2. Authentication Endpoints, 3. Project / Venture Endpoints, 4. Founder Analysis & Opportunities, 5. Planning & Content Generation, 6. AI Cofounder Chat, 7. Admin Dashboard Endpoints, 8. Step-by-Step Testing Workflow in Postman (+20 more)
+
+### Community 133 - "Community 133"
+Cohesion: 0.07
+Nodes (27): active, main, main, connections, Code in JavaScript, Competitor Agent (Gemini), HTTP Request, Merge (+19 more)
+
+### Community 134 - "Community 134"
+Cohesion: 0.15
+Nodes (12): computedHash, skillPath, source, sourceType, computedHash, skillPath, source, sourceType (+4 more)
+
 ## Knowledge Gaps
-- **738 isolated node(s):** `PreToolUse`, `name`, `nodes`, `pinData`, `main` (+733 more)
+- **748 isolated node(s):** `PreToolUse`, `name`, `nodes`, `pinData`, `main` (+743 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **27 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **32 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `useStore` connect `Components Authclient Select Module` to `Components Marketingstudio Apiclient Module`?**
-  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **Why does `cn()` connect `Components Marketingstudio Apiclient Module` to `Components Authclient Select Module`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **Why does `connectDB()` connect `Index Route Test Module` to `Index Packages Database Module`, `Index Apps Authmiddleware Module`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+  _High betweenness centrality (0.001) - this node is a cross-community bridge._
 - **What connects `PreToolUse`, `name`, `nodes` to the rest of the system?**
-  _739 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _749 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Components Authclient Select Module` be split into smaller, more focused modules?**
-  _Cohesion score 0.0565088080530771 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05711086226203808 - nodes in this community are weakly interconnected._
 - **Should `Index Packages Database Module` be split into smaller, more focused modules?**
   _Cohesion score 0.05121951219512195 - nodes in this community are weakly interconnected._
 - **Should `Package Dependencies Devdependencies Module` be split into smaller, more focused modules?**
-  _Cohesion score 0.05641025641025641 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06097560975609756 - nodes in this community are weakly interconnected._

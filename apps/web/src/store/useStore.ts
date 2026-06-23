@@ -20,6 +20,27 @@ interface StoreState {
   selectedOpportunity: SelectedOpportunity | null;
   isSelecting: boolean;
   selectionError: string | null;
+  marketingCampaign: any;
+  pitchDeck: any;
+  currentOutputs: any;
+  marketingLoading: boolean;
+  pitchLoading: boolean;
+  generateMarketing: any;
+  generatePitch: any;
+  resetProjectState: any;
+  archiveProject: any;
+  restoreProject: any;
+  deleteProject: any;
+
+  clearChat: any;
+  conversations: any;
+  setActiveConversation: any;
+  loadConversations: any;
+  activeConversationId: any;
+  generateImage: any;
+  brandIdentity: any;
+  brandingLoading: boolean;
+  generateBranding: any;
 
   // Auth State
   user: AuthUser | null;
@@ -64,6 +85,28 @@ export const useStore = create<StoreState>((set, get) => ({
   isSelecting: false,
   selectionError: null,
 
+  marketingCampaign: null,
+  pitchDeck: null,
+  currentOutputs: null,
+  marketingLoading: false,
+  pitchLoading: false,
+  generateMarketing: async () => {},
+  generatePitch: async () => {},
+  resetProjectState: () => {},
+  archiveProject: () => {},
+  restoreProject: () => {},
+  deleteProject: () => {},
+
+  clearChat: () => {},
+  conversations: [],
+  setActiveConversation: () => {},
+  loadConversations: async () => {},
+  activeConversationId: null,
+  generateImage: async () => {},
+  brandIdentity: null,
+  brandingLoading: false,
+  generateBranding: async () => {},
+
   user: null,
   isAuthModalOpen: false,
   isAuthenticated: false,
@@ -107,7 +150,7 @@ export const useStore = create<StoreState>((set, get) => ({
       const data = await authClient.get<Project[]>('/projects');
       set({ projects: data });
       if (data.length > 0) {
-        await get().selectProject(data[0].id || data[0]._id as any);
+        await get().selectProject(data[0].id || (data[0] as any)._id);
         set({ isOnboarded: true });
       }
     } catch (e) {

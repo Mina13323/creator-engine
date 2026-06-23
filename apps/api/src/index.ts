@@ -762,7 +762,7 @@ app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Pr
     const userMessage = { id: `msg_user_${Date.now()}`, sender: 'user' as const, message, timestamp: new Date() };
     chatHistory.push(userMessage);
 
-    const aiResponse = await runCofounderAgent(message, JSON.stringify(state), chatHistory);
+    const aiResponse = await runCofounderAgent(message, JSON.stringify(state), JSON.stringify(chatHistory));
     chatHistory.push(aiResponse);
 
     if (dbConnected) {

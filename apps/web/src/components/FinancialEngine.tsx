@@ -24,6 +24,7 @@ export default function FinancialEngine() {
   const handleGenerate = async () => {
     if (!businessIdea) return;
     setLoading(true);
+    try {
       const response = await fetch('/api/financial-engine', {
         method: 'POST',
         headers: {
