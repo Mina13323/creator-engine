@@ -1,16 +1,16 @@
 # Graph Report - creator-engine  (2026-06-23)
 
 ## Corpus Check
-- 185 files · ~191,775 words
+- 183 files · ~190,067 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1363 nodes · 1631 edges · 132 communities (105 shown, 27 thin omitted)
+- 1322 nodes · 1580 edges · 131 communities (104 shown, 27 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 28 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cffd3e75`
+- Built from commit: `e474c938`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -43,7 +43,6 @@
 - [[_COMMUNITY_Database Package Dependencies Module|Database Package Dependencies Module]]
 - [[_COMMUNITY_Skills Lock Find Module|Skills Lock Find Module]]
 - [[_COMMUNITY_Tsconfig Compileroptions Esmoduleinterop Module|Tsconfig Compileroptions Esmoduleinterop Module]]
-- [[_COMMUNITY_Financial Workflows Engine Module|Financial Workflows Engine Module]]
 - [[_COMMUNITY_Workflows Founder Analysis Module|Workflows Founder Analysis Module]]
 - [[_COMMUNITY_Workflows Branding Flow Module|Workflows Branding Flow Module]]
 - [[_COMMUNITY_Workflows Business Idea Module|Workflows Business Idea Module]]
@@ -154,7 +153,7 @@
 - **Financial Engine Pipeline** — n8n_workflows_financial_agents_guide_webhook, n8n_workflows_financial_agents_guide_vector_search, n8n_workflows_financial_agents_guide_openai, n8n_workflows_financial_agents_guide_code_node [EXTRACTED 0.95]
 - **Graphify Core Pipeline** — graphify_skill_detect, graphify_skill_extract, graphify_skill_cluster, graphify_skill_analyze, graphify_skill_report [EXTRACTED 1.00]
 
-## Communities (132 total, 27 thin omitted)
+## Communities (131 total, 27 thin omitted)
 
 ### Community 0 - "Components Authclient Select Module"
 Cohesion: 0.06
@@ -173,8 +172,8 @@ Cohesion: 0.05
 Nodes (41): dependencies, bcryptjs, cookie-parser, cors, @creator/agents, @creator/database, @creator/rag-core, @creator/types (+33 more)
 
 ### Community 4 - "Workflows Financial Agents Module"
-Cohesion: 0.07
-Nodes (33): active, main, connections, Code in JavaScript, Embeddings OpenAI, Error Trigger, Message a model, MongoDB Vector Search (+25 more)
+Cohesion: 0.12
+Nodes (16): main, main, connections, AI Agent, Code in JavaScript1, Embeddings OpenAI1, MongoDB Atlas Vector Store1, OpenAI Chat Model (+8 more)
 
 ### Community 5 - "Index Route Test Module"
 Cohesion: 0.07
@@ -267,10 +266,6 @@ Nodes (12): computedHash, skillPath, source, sourceType, computedHash, skillPath
 ### Community 27 - "Tsconfig Compileroptions Esmoduleinterop Module"
 Cohesion: 0.16
 Nodes (13): compilerOptions, esModuleInterop, forceConsistentCasingInFileNames, module, moduleResolution, outDir, rootDir, skipLibCheck (+5 more)
-
-### Community 28 - "Financial Workflows Engine Module"
-Cohesion: 0.09
-Nodes (21): main, connections, Code Node (Financial Deterministic Math), Error Trigger, Gemini Chat Model Node (AI Agent), MongoDB Atlas Vector Search Node, Sanitize Error & Log, Webhook Node (Trigger) (+13 more)
 
 ### Community 29 - "Workflows Founder Analysis Module"
 Cohesion: 0.11
@@ -457,7 +452,7 @@ Cohesion: 0.50
 Nodes (3): Creator Engine - CI/CD Architecture, Strict Rules, Workflow Overview (`.github/workflows/ci.yml`)
 
 ## Knowledge Gaps
-- **738 isolated node(s):** `PreToolUse`, `name`, `nodes`, `pinData`, `main` (+733 more)
+- **720 isolated node(s):** `PreToolUse`, `name`, `nodes`, `pinData`, `main` (+715 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **27 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -467,14 +462,14 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `useStore` connect `Components Authclient Select Module` to `Components Marketingstudio Apiclient Module`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **Why does `cn()` connect `Components Marketingstudio Apiclient Module` to `Components Authclient Select Module`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
-- **Why does `connectDB()` connect `Index Route Test Module` to `Index Packages Database Module`, `Index Apps Authmiddleware Module`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **What connects `PreToolUse`, `name`, `nodes` to the rest of the system?**
-  _739 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _721 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Components Authclient Select Module` be split into smaller, more focused modules?**
   _Cohesion score 0.0565088080530771 - nodes in this community are weakly interconnected._
 - **Should `Index Packages Database Module` be split into smaller, more focused modules?**
   _Cohesion score 0.05121951219512195 - nodes in this community are weakly interconnected._
 - **Should `Package Dependencies Devdependencies Module` be split into smaller, more focused modules?**
   _Cohesion score 0.05641025641025641 - nodes in this community are weakly interconnected._
+- **Should `Package Dependencies Devdependencies Module` be split into smaller, more focused modules?**
+  _Cohesion score 0.053156146179401995 - nodes in this community are weakly interconnected._

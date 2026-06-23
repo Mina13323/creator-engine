@@ -249,16 +249,6 @@
     "ast_hash": "eda09dea47fee4a2f7bac1f88c756202",
     "semantic_hash": "eda09dea47fee4a2f7bac1f88c756202"
   },
-  "n8n-workflows/financial_agents_guide.json": {
-    "mtime": 1782175781.4518883,
-    "ast_hash": "0c862d526376fdc1d415f152f2f2d789",
-    "semantic_hash": ""
-  },
-  "n8n-workflows/financial_engine_workflow.json": {
-    "mtime": 1782175781.4538994,
-    "ast_hash": "c39585ff52d46bee3028fbdf000570b2",
-    "semantic_hash": ""
-  },
   "n8n-workflows/founder_analysis_workflow.json": {
     "mtime": 1782175781.4549093,
     "ast_hash": "840219710d92676de82c0d6f8fe34325",
@@ -503,11 +493,6 @@
     "mtime": 1782156703.857592,
     "ast_hash": "9267b287800a1a6b8dc794ad920b8ce3",
     "semantic_hash": "9267b287800a1a6b8dc794ad920b8ce3"
-  },
-  "n8n-workflows/financial_agents_guide.md": {
-    "mtime": 1782156704.0775366,
-    "ast_hash": "42b00a790985f280e245b0e7b4622962",
-    "semantic_hash": "42b00a790985f280e245b0e7b4622962"
   },
   "pnpm-workspace.yaml": {
     "mtime": 1782176774.1649733,
@@ -1032,6 +1017,11 @@
   "UI_SystemDesign/Screenshot 2026-06-16 060755.png": {
     "mtime": 1782175781.370446,
     "ast_hash": "4ee1ac18c9a38b62109741c8fd56eb19",
+    "semantic_hash": ""
+  },
+  "n8n-workflows/Financial Engine (Fixed).json": {
+    "mtime": 1782184475.8359063,
+    "ast_hash": "6133a0d668b54457248daf1696c8e7e4",
     "semantic_hash": ""
   }
 }

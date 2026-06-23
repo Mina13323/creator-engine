@@ -105,12 +105,12 @@
     "semantic_hash": "762a94d1749c8e97eebf3f94102e8eb2"
   },
   "apps/web/src/app/api/financial-engine/route.ts": {
-    "mtime": 1782156703.877309,
-    "ast_hash": "872d50f0e2ce7be6988543241cb46b72",
-    "semantic_hash": "872d50f0e2ce7be6988543241cb46b72"
+    "mtime": 1782181712.5134506,
+    "ast_hash": "b9df7f4f1bb3241904a1616d9b424e6a",
+    "semantic_hash": ""
   },
   "apps/web/src/app/api/financials/[projectId]/route.ts": {
-    "mtime": 1782156703.878314,
+    "mtime": 1782181676.7072055,
     "ast_hash": "5687bfa461cb936bf868d44ad19a6aec",
     "semantic_hash": "5687bfa461cb936bf868d44ad19a6aec"
   },
@@ -160,8 +160,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/FinancialEngine.tsx": {
-    "mtime": 1782175781.4131165,
-    "ast_hash": "726b171293c4a36b6c2dd77a29626a71",
+    "mtime": 1782184125.8949125,
+    "ast_hash": "547975a7fbab80ddb6fb7a56039214e2",
     "semantic_hash": ""
   },
   "apps/web/src/components/LandingPage.tsx": {
