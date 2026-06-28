@@ -217,7 +217,7 @@ export default function OpportunityExplorer() {
                       className="mt-1.5 h-5 w-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-600"
                     />
                     <div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 flex-wrap">
                         <h2 className="text-xl font-bold text-slate-900">{opp.title}</h2>
                         {isSelected && (
                           <span className="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-full border border-emerald-200 flex items-center gap-1">

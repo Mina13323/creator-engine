@@ -7,6 +7,7 @@ import { Send, Sparkles, User, Brain, ExternalLink, Lightbulb, History, HistoryI
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeInUp, fadeIn, staggerContainer } from '../lib/motion-presets';
 import ReactMarkdown from 'react-markdown';
+import { SpeakButton } from './ui/SpeakButton';
 
 export default function AIConsultantDashboard() {
   const { chatMessages, sendChatMessage, clearChat, chatLoading, currentProject, conversations, setActiveConversation, loadConversations, activeConversationId } = useStore();
@@ -135,16 +136,22 @@ export default function AIConsultantDashboard() {
                       )}
                     </div>
 
-                    {!isUser && msg.ragSources && msg.ragSources.length > 0 && (
-                      <div className="flex flex-wrap gap-2 items-center mt-2">
-                        <span className="text-xs text-slate-500 flex items-center gap-1">
-                          <ExternalLink className="w-3 h-3" /> Sources:
-                        </span>
-                        {msg.ragSources.map((source, sIdx) => (
-                          <span key={sIdx} className="text-xs text-emerald-600 border border-emerald-200 bg-emerald-50 px-2 py-1 rounded-md font-medium">
-                            {source}
-                          </span>
-                        ))}
+                    {!isUser && (
+                      <div className="flex items-center gap-2 mt-2 flex-wrap">
+                        <SpeakButton text={msg.message} size="sm" label="Listen" />
+                        
+                        {msg.ragSources && msg.ragSources.length > 0 && (
+                          <div className="flex flex-wrap gap-2 items-center">
+                            <span className="text-xs text-slate-500 flex items-center gap-1">
+                              <ExternalLink className="w-3 h-3" /> Sources:
+                            </span>
+                            {msg.ragSources.map((source, sIdx) => (
+                              <span key={sIdx} className="text-xs text-emerald-600 border border-emerald-200 bg-emerald-50 px-2 py-1 rounded-md font-medium">
+                                {source}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
