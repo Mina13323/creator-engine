@@ -105,8 +105,8 @@ export function useModerationDashboard() {
 
   useEffect(() => {
     fetchDashboardData();
-    // Poll real-time backend every 5 seconds
-    const interval = setInterval(fetchDashboardData, 5000);
+    // Poll real-time backend every 15 seconds
+    const interval = setInterval(fetchDashboardData, 15000);
     return () => clearInterval(interval);
   }, [fetchDashboardData]);
 

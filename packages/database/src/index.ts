@@ -64,6 +64,8 @@ const UserSchema = new Schema<UserDocument & Document>(
   { timestamps: true }
 );
 
+UserSchema.index({ createdAt: -1 });
+
 // 0.5 Founder Profile Model
 const FounderProfileSchema = new Schema<FounderProfile & Document>(
   {
@@ -109,6 +111,7 @@ const ProjectSchema = new Schema<Project & Document>(
 );
 
 ProjectSchema.index({ userId: 1, status: 1 });
+ProjectSchema.index({ createdAt: -1 });
 
 // 2. Business Idea Model (Legacy, kept per spec)
 const BusinessIdeaSchema = new Schema<BusinessIdea & Document>(
@@ -528,6 +531,8 @@ const AgentRunSchema = new Schema<AgentRun & Document>(
   { timestamps: true }
 );
 
+AgentRunSchema.index({ createdAt: -1 });
+
 // 11. Uploaded Document Model
 const UploadedDocumentSchema = new Schema<UploadedDocument & Document>(
   {
@@ -746,6 +751,8 @@ const UserSubscriptionSchema = new Schema<UserSubscription & Document>(
   { timestamps: true, collection: 'user_subscriptions' }
 );
 
+UserSubscriptionSchema.index({ userId: 1, status: 1 });
+
 const CreditWalletSchema = new Schema<CreditWallet & Document>(
   {
     userId: { type: String, required: true, index: true, unique: true },
@@ -779,6 +786,8 @@ const PaymentTransactionSchema = new Schema<PaymentTransaction & Document>(
   },
   { timestamps: true, collection: 'payment_transactions' }
 );
+
+PaymentTransactionSchema.index({ createdAt: -1 });
 
 const CreditPackSchema = new Schema<any & Document>(
   {

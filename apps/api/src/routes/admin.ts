@@ -63,36 +63,65 @@ router.get('/stats', async (req: Request, res: Response): Promise<any> => {
 router.get('/traffic', async (req: Request, res: Response): Promise<any> => {
   try {
     const offset = Number(req.query.offset) || 0;
-    const traffic = [];
     const now = new Date();
     
+    const startOffset = 10 + offset;
+    const endOffset = offset;
+    
+    const dStart = new Date(now);
+    dStart.setDate(dStart.getDate() - startOffset);
+    dStart.setHours(0,0,0,0);
+    
+    const dEnd = new Date(now);
+    dEnd.setDate(dEnd.getDate() - endOffset);
+    dEnd.setHours(23,59,59,999);
+
+    const [runs, users, projects] = await Promise.all([
+      AgentRunModel.find({
+        createdAt: { $gte: dStart, $lte: dEnd }
+      }, { createdAt: 1 }).lean(),
+      UserModel.find({
+        createdAt: { $gte: dStart, $lte: dEnd }
+      }, { createdAt: 1 }).lean(),
+      ProjectModel.find({
+        createdAt: { $gte: dStart, $lte: dEnd }
+      }, { name: 1, createdAt: 1 }).lean()
+    ]);
+
+    const traffic = [];
     for (let i = 10; i >= 0; i--) {
       const d = new Date(now);
       d.setDate(d.getDate() - i - offset);
-      const startOfDay = new Date(d.setHours(0,0,0,0));
-      const endOfDay = new Date(d.setHours(23,59,59,999));
-      
-      const runsCount = await AgentRunModel.countDocuments({
-        createdAt: { $gte: startOfDay, $lte: endOfDay }
-      });
-      const signupsCount = await UserModel.countDocuments({
-        createdAt: { $gte: startOfDay, $lte: endOfDay }
-      });
-      const loginsCount = signupsCount * 2 + (runsCount > 0 ? 1 : 0);
+      const startOfDay = new Date(d.setHours(0,0,0,0)).getTime();
+      const endOfDay = new Date(d.setHours(23,59,59,999)).getTime();
 
-      const projects = await ProjectModel.find({
-        createdAt: { $gte: startOfDay, $lte: endOfDay }
+      const runsInDay = runs.filter(r => {
+        const t = new Date(r.createdAt).getTime();
+        return t >= startOfDay && t <= endOfDay;
       });
-      const projectNames = projects.map(p => p.name || 'Unnamed Project');
+      const usersInDay = users.filter(u => {
+        const t = new Date(u.createdAt).getTime();
+        return t >= startOfDay && t <= endOfDay;
+      });
+      const projectsInDay = projects.filter(p => {
+        const t = new Date(p.createdAt).getTime();
+        return t >= startOfDay && t <= endOfDay;
+      });
+
+      const runsCount = runsInDay.length;
+      const signupsCount = usersInDay.length;
+      const loginsCount = signupsCount * 2 + (runsCount > 0 ? 1 : 0);
+      const projectNames = projectsInDay.map(p => p.name || 'Unnamed Project');
       
-      const dayLabel = startOfDay.toLocaleDateString('en-US', { weekday: 'short' });
-      const dateLabel = startOfDay.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' });
+      const startOfDayDate = new Date(startOfDay);
+      const dayLabel = startOfDayDate.toLocaleDateString('en-US', { weekday: 'short' });
+      const dateLabel = startOfDayDate.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' });
       traffic.push({
         time: `${dayLabel} (${dateLabel})`,
         signups: signupsCount,
         logins: loginsCount,
         actions: runsCount,
-        projectsCount: projects.length,
+        projectsCount: projectsInDay.length,
         projectNames: projectNames
       });
     }
@@ -217,26 +246,42 @@ router.get('/projects', async (req: Request, res: Response): Promise<any> => {
   try {
     const projects = await ProjectModel.find().sort({ createdAt: -1 }).lean();
     
-    const populatedProjects = await Promise.all(
-      projects.map(async (project) => {
-        const user = await UserModel.findOne({ id: project.userId }).lean() as any;
-        let planName = 'Free';
-        if (user) {
-          const sub = await UserSubscriptionModel.findOne({ userId: user.id, status: 'active' }).lean() as any;
-          if (sub) {
-            const plan = await SubscriptionPlanModel.findById(sub.planId).lean() as any;
-            if (plan) {
-              planName = plan.name;
-            }
+    // Get unique user IDs
+    const userIds = Array.from(new Set(projects.map(p => p.userId).filter(Boolean)));
+    
+    // Fetch users in parallel
+    const users = await UserModel.find({ id: { $in: userIds } }).lean();
+    const userMap = new Map(users.map(u => [u.id, u]));
+    
+    // Fetch active subscriptions for these users
+    const subscriptions = await UserSubscriptionModel.find({ userId: { $in: userIds }, status: 'active' }).lean();
+    const subMap = new Map(subscriptions.map(s => [s.userId, s]));
+    
+    // Get unique plan IDs from subscriptions
+    const planIds = Array.from(new Set(subscriptions.map(s => s.planId).filter(Boolean)));
+    
+    // Fetch plans
+    const plans = await SubscriptionPlanModel.find({ _id: { $in: planIds } }).lean();
+    const planMap = new Map(plans.map(p => [(p as any)._id.toString(), p]));
+    
+    const populatedProjects = projects.map((project) => {
+      const user = userMap.get(project.userId) as any;
+      let planName = 'Free';
+      if (user) {
+        const sub = subMap.get(user.id) as any;
+        if (sub) {
+          const plan = planMap.get(sub.planId.toString()) as any;
+          if (plan) {
+            planName = plan.name;
           }
         }
-        return {
-          ...project,
-          creator: user ? { id: (user as any).id, name: (user as any).name, email: (user as any).email } : null,
-          plan: planName,
-        };
-      })
-    );
+      }
+      return {
+        ...project,
+        creator: user ? { id: user.id, name: user.name, email: user.email } : null,
+        plan: planName,
+      };
+    });
 
     return res.json(populatedProjects);
   } catch (error: any) {
@@ -603,22 +648,25 @@ router.get('/dashboard-extended', async (req: Request, res: Response): Promise<a
       .sort({ createdAt: -1 })
       .limit(10)
       .lean();
-    const populatedPayments = await Promise.all(
-      payments.map(async (tx: any) => {
-        const user = await UserModel.findOne({ id: tx.userId }).lean() as any;
-        return {
-          id: tx._id ? tx._id.toString() : tx.paymentIntentId,
-          userId: tx.userId,
-          amountEGP: tx.amountEGP,
-          paymentProvider: tx.paymentProvider,
-          paymentIntentId: tx.paymentIntentId,
-          status: tx.status,
-          metadata: tx.metadata || {},
-          createdAt: tx.createdAt || new Date(),
-          creator: user ? { name: (user as any).name, email: (user as any).email } : null
-        };
-      })
-    );
+
+    const userIds = Array.from(new Set(payments.map(tx => tx.userId).filter(Boolean)));
+    const users = await UserModel.find({ id: { $in: userIds } }).lean();
+    const userMap = new Map(users.map(u => [u.id, u]));
+
+    const populatedPayments = payments.map((tx: any) => {
+      const user = userMap.get(tx.userId) as any;
+      return {
+        id: tx._id ? tx._id.toString() : tx.paymentIntentId,
+        userId: tx.userId,
+        amountEGP: tx.amountEGP,
+        paymentProvider: tx.paymentProvider,
+        paymentIntentId: tx.paymentIntentId,
+        status: tx.status,
+        metadata: tx.metadata || {},
+        createdAt: tx.createdAt || new Date(),
+        creator: user ? { name: user.name, email: user.email } : null
+      };
+    });
 
     // 4. Agent runs stats
     const agentStats = await AgentRunModel.aggregate([

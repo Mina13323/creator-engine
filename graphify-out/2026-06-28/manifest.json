@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "apps/web/package.json": {
-    "mtime": 1782482754.6441684,
-    "ast_hash": "816f1d4e1c84c7fe8f1301c36869d92e",
+    "mtime": 1782649537.4103503,
+    "ast_hash": "4a2da3cde4ba40c8381864c97b3ffa6a",
     "semantic_hash": ""
   },
   "apps/web/postcss.config.js": {
@@ -105,8 +105,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/app/api/financial-engine/route.ts": {
-    "mtime": 1782181712.5134506,
-    "ast_hash": "b9df7f4f1bb3241904a1616d9b424e6a",
+    "mtime": 1782625729.7117715,
+    "ast_hash": "b0d2e435711489e0dc6e209c25f0aa8e",
     "semantic_hash": ""
   },
   "apps/web/src/app/api/financials/[projectId]/route.ts": {
@@ -275,8 +275,8 @@
     "semantic_hash": ""
   },
   "packages/agents/src/index.ts": {
-    "mtime": 1782482755.0938225,
-    "ast_hash": "e4842d96e94eeddde13c4f55c1ecff4a",
+    "mtime": 1782625339.9655025,
+    "ast_hash": "83346d1180fa74b9570082a7b391fe19",
     "semantic_hash": ""
   },
   "packages/agents/tsconfig.json": {
@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "packages/database/src/index.ts": {
-    "mtime": 1782612789.4778585,
-    "ast_hash": "aa87d96392ca0704bb0d058b6f2421f7",
+    "mtime": 1782649524.9346282,
+    "ast_hash": "06c1451f91c824d54191797e8ebe8691",
     "semantic_hash": ""
   },
   "packages/database/tsconfig.json": {
@@ -525,13 +525,13 @@
     "semantic_hash": ""
   },
   "apps/web/src/app/admin/dashboard/page.tsx": {
-    "mtime": 1782611930.9953763,
-    "ast_hash": "2beefd30784c5c2d7793461e788421be",
+    "mtime": 1782622262.8875432,
+    "ast_hash": "26a0c594c0b150517c927a275da607a7",
     "semantic_hash": ""
   },
   "apps/web/src/app/admin/layout.tsx": {
-    "mtime": 1782175792.8884807,
-    "ast_hash": "b6cdd449279a27db65d4c2d5627f450e",
+    "mtime": 1782621941.5903292,
+    "ast_hash": "8f6ef551a3aaaaf29bc3fc39f0708a85",
     "semantic_hash": ""
   },
   "apps/web/src/components/admin/AdminSidebar.tsx": {
@@ -555,8 +555,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/hooks/useModerationDashboard.ts": {
-    "mtime": 1782611912.1008258,
-    "ast_hash": "b0f61c50583be660c06e4282e5817d9d",
+    "mtime": 1782649206.3632953,
+    "ast_hash": "aad130ee387ff303df40ce8f87477cf3",
     "semantic_hash": ""
   },
   "scripts/create_admin.js": {
@@ -570,13 +570,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/routes/admin.ts": {
-    "mtime": 1782614023.6654725,
-    "ast_hash": "fa464c7befd63f176b76c361177838bd",
+    "mtime": 1782649236.6438994,
+    "ast_hash": "3c0f18aa84478d1b8113c40163a5e062",
     "semantic_hash": ""
   },
   "apps/web/src/app/admin/moderation/page.tsx": {
-    "mtime": 1782609119.8086002,
-    "ast_hash": "74bce310f774c7af96c20fe7c1e7718e",
+    "mtime": 1782649212.2234304,
+    "ast_hash": "3aa877e1eaf9c2ea88ef6ecd2b703360",
     "semantic_hash": ""
   },
   "apps/web/src/app/admin/settings/page.tsx": {
@@ -585,8 +585,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/app/admin/users/page.tsx": {
-    "mtime": 1782608822.183764,
-    "ast_hash": "809a15b98e92c851a602e1d724d0d95a",
+    "mtime": 1782622789.520824,
+    "ast_hash": "e95c4773d472825ab5c9e4db3b8468e8",
     "semantic_hash": ""
   },
   "POSTMAN_GUIDE.md": {
@@ -667,21 +667,6 @@
   "apps/api/vitest.config.ts": {
     "mtime": 1782175781.393093,
     "ast_hash": "87ffac51e2549cb216f2c56b53bf4d51",
-    "semantic_hash": ""
-  },
-  "apps/web/sentry.client.config.ts": {
-    "mtime": 1782175781.3988101,
-    "ast_hash": "5d911d8064b67b1e7b9e5f80c2e03349",
-    "semantic_hash": ""
-  },
-  "apps/web/sentry.edge.config.ts": {
-    "mtime": 1782175781.3988101,
-    "ast_hash": "dfabe435a7416a8564431878e395fa40",
-    "semantic_hash": ""
-  },
-  "apps/web/sentry.server.config.ts": {
-    "mtime": 1782175781.3998096,
-    "ast_hash": "dfabe435a7416a8564431878e395fa40",
     "semantic_hash": ""
   },
   "apps/web/src/app/api/generate-image/route.ts": {
@@ -1060,13 +1045,43 @@
     "semantic_hash": ""
   },
   "apps/web/src/app/admin/plans/page.tsx": {
-    "mtime": 1782609282.7940903,
-    "ast_hash": "827952a6423893c404b691424468acc3",
+    "mtime": 1782623179.6251602,
+    "ast_hash": "c31660c5337254fb0e74303325d3732f",
     "semantic_hash": ""
   },
   "apps/web/src/components/SystemStatusBanner.tsx": {
     "mtime": 1782614030.1641822,
     "ast_hash": "2de998f217308229d5bd23130c279251",
+    "semantic_hash": ""
+  },
+  "apps/web/src/components/admin/CommandPalette.tsx": {
+    "mtime": 1782622241.5786822,
+    "ast_hash": "3b6226715f23645569005c9e1381d069",
+    "semantic_hash": ""
+  },
+  "apps/web/src/components/admin/DashboardObservability.tsx": {
+    "mtime": 1782621921.8454719,
+    "ast_hash": "4ccdc95c8346762f0c7742ba7a0bc55e",
+    "semantic_hash": ""
+  },
+  "apps/web/src/components/admin/RevenueAnalytics.tsx": {
+    "mtime": 1782622285.8126667,
+    "ast_hash": "02db58acdef5257709e9bda306d5f1e3",
+    "semantic_hash": ""
+  },
+  "apps/web/src/components/admin/VentureFunnel.tsx": {
+    "mtime": 1782621908.4646764,
+    "ast_hash": "1d6436d80547b03c572b56f910097bde",
+    "semantic_hash": ""
+  },
+  "apps/web/src/instrumentation-client.ts": {
+    "mtime": 1782648607.6429188,
+    "ast_hash": "db329c91f8f3aa33586744bec450bb2b",
+    "semantic_hash": ""
+  },
+  "apps/web/src/instrumentation.ts": {
+    "mtime": 1782648604.251371,
+    "ast_hash": "8fd2b3dedb07a834c71094163753062e",
     "semantic_hash": ""
   }
 }

@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "apps/web/package.json": {
-    "mtime": 1782482754.6441684,
-    "ast_hash": "816f1d4e1c84c7fe8f1301c36869d92e",
+    "mtime": 1782649837.7929902,
+    "ast_hash": "bc8a9d9a3686e320238d05ef843540e6",
     "semantic_hash": ""
   },
   "apps/web/postcss.config.js": {
@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "packages/database/src/index.ts": {
-    "mtime": 1782612789.4778585,
-    "ast_hash": "aa87d96392ca0704bb0d058b6f2421f7",
+    "mtime": 1782649524.9346282,
+    "ast_hash": "06c1451f91c824d54191797e8ebe8691",
     "semantic_hash": ""
   },
   "packages/database/tsconfig.json": {
@@ -555,8 +555,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/hooks/useModerationDashboard.ts": {
-    "mtime": 1782622255.3606791,
-    "ast_hash": "32f93e9e6a9d04f9d3e37cc2bf602ed7",
+    "mtime": 1782649206.3632953,
+    "ast_hash": "aad130ee387ff303df40ce8f87477cf3",
     "semantic_hash": ""
   },
   "scripts/create_admin.js": {
@@ -570,13 +570,13 @@
     "semantic_hash": ""
   },
   "apps/api/src/routes/admin.ts": {
-    "mtime": 1782622758.982621,
-    "ast_hash": "18dcacd5bb6b0757fee533ef1177fda7",
+    "mtime": 1782649236.6438994,
+    "ast_hash": "3c0f18aa84478d1b8113c40163a5e062",
     "semantic_hash": ""
   },
   "apps/web/src/app/admin/moderation/page.tsx": {
-    "mtime": 1782609119.8086002,
-    "ast_hash": "74bce310f774c7af96c20fe7c1e7718e",
+    "mtime": 1782649212.2234304,
+    "ast_hash": "3aa877e1eaf9c2ea88ef6ecd2b703360",
     "semantic_hash": ""
   },
   "apps/web/src/app/admin/settings/page.tsx": {
@@ -667,21 +667,6 @@
   "apps/api/vitest.config.ts": {
     "mtime": 1782175781.393093,
     "ast_hash": "87ffac51e2549cb216f2c56b53bf4d51",
-    "semantic_hash": ""
-  },
-  "apps/web/sentry.client.config.ts": {
-    "mtime": 1782175781.3988101,
-    "ast_hash": "5d911d8064b67b1e7b9e5f80c2e03349",
-    "semantic_hash": ""
-  },
-  "apps/web/sentry.edge.config.ts": {
-    "mtime": 1782175781.3988101,
-    "ast_hash": "dfabe435a7416a8564431878e395fa40",
-    "semantic_hash": ""
-  },
-  "apps/web/sentry.server.config.ts": {
-    "mtime": 1782175781.3998096,
-    "ast_hash": "dfabe435a7416a8564431878e395fa40",
     "semantic_hash": ""
   },
   "apps/web/src/app/api/generate-image/route.ts": {
@@ -1087,6 +1072,16 @@
   "apps/web/src/components/admin/VentureFunnel.tsx": {
     "mtime": 1782621908.4646764,
     "ast_hash": "1d6436d80547b03c572b56f910097bde",
+    "semantic_hash": ""
+  },
+  "apps/web/src/instrumentation-client.ts": {
+    "mtime": 1782648607.6429188,
+    "ast_hash": "db329c91f8f3aa33586744bec450bb2b",
+    "semantic_hash": ""
+  },
+  "apps/web/src/instrumentation.ts": {
+    "mtime": 1782648604.251371,
+    "ast_hash": "8fd2b3dedb07a834c71094163753062e",
     "semantic_hash": ""
   }
 }
