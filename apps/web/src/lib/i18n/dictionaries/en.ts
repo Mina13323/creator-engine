@@ -71,6 +71,17 @@ export const en = {
     aiCredits: 'AI Credits',
     demoMode: 'DEMO MODE',
   },
+  marketingStudio: {
+    startCreatingWith: 'START CREATING WITH',
+    marketingStudioTitle: 'MARKETING STUDIO',
+    description: 'Describe your scene, upload your product, and watch high-converting AI video ads come to life.',
+    promptPlaceholder: 'Describe your ad script... Use @image1 for product, @image2 for avatar.',
+    selectAvatar: 'Select Avatar',
+    launchBtn: 'Launch',
+    generating: 'Generating...',
+    alertNoScript: 'Please enter an ad script.',
+    alertNoProduct: 'Please upload a product image.'
+  },
   consultant: {
     greeting: 'How can I help you today?',
     subtitle: 'I can help you review your business plan, brainstorm marketing strategies, or act as a sounding board for your ideas.',

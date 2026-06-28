@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { api } from "../lib/api";
+import { useI18n } from "../lib/i18n/I18nContext";
 
 const SCROLLBAR_STYLE = `
   .custom-scrollbar-thin::-webkit-scrollbar {
@@ -235,6 +236,7 @@ function SimpleDropdown({ isOpen, title, options, selected, onSelect, onClose }:
 
 export default function MarketingStudio() {
   const PERSIST_KEY = "hg_marketing_studio_persistent";
+  const { t } = useI18n();
   
   const [prompt, setPrompt] = useState("");
   const [productImage, setProductImage] = useState<string | null>(null);
@@ -326,8 +328,8 @@ export default function MarketingStudio() {
   };
 
   const handleGenerate = async () => {
-    if (!prompt.trim()) return alert("Please enter an ad script.");
-    if (!productImage) return alert("Please upload a product image.");
+    if (!prompt.trim()) return alert(t('marketingStudio.alertNoScript') || "Please enter an ad script.");
+    if (!productImage) return alert(t('marketingStudio.alertNoProduct') || "Please upload a product image.");
 
     setIsGenerating(true);
     try {
@@ -422,12 +424,12 @@ export default function MarketingStudio() {
                 </div>
               </div>
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-4 text-center px-4">
-                <span className="text-white/40 font-medium uppercase tracking-widest">START CREATING WITH</span>
+                <span className="text-white/40 font-medium uppercase tracking-widest">{t('marketingStudio.startCreatingWith')}</span>
                 <br />
-                <span className="text-white uppercase tracking-tight">MARKETING STUDIO</span>
+                <span className="text-white uppercase tracking-tight">{t('marketingStudio.marketingStudioTitle')}</span>
               </h1>
               <p className="text-white/40 text-sm md:text-base font-medium tracking-wide text-center max-w-lg leading-relaxed px-6">
-                Describe your scene, upload your product, and watch high-converting AI video ads come to life.
+                {t('marketingStudio.description')}
               </p>
           </div>
         )}
@@ -459,7 +461,7 @@ export default function MarketingStudio() {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               onInput={handleTextareaInput}
-              placeholder="Describe your ad script... Use @image1 for product, @image2 for avatar."
+              placeholder={t('marketingStudio.promptPlaceholder') || "Describe your ad script... Use @image1 for product, @image2 for avatar."}
               rows={1}
               className="w-full bg-transparent border-none text-white text-sm placeholder:text-white/20 focus:outline-none resize-none pt-1 leading-relaxed min-h-[44px] max-h-[300px] custom-scrollbar font-medium"
             />
@@ -539,7 +541,7 @@ export default function MarketingStudio() {
                     <img src={avatarImage || ASSETS.avatar[0].url} alt="Avatar" className="w-full h-full object-cover" />
                   </div>
                   <span className="text-sm font-bold text-white/70 group-hover:text-emerald-500 transition-colors">
-                    {ASSETS.avatar.find(a => a.url === avatarImage)?.name || "Select Avatar"}
+                    {ASSETS.avatar.find(a => a.url === avatarImage)?.name || t('marketingStudio.selectAvatar')}
                   </span>
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" className="opacity-20 group-hover:opacity-100 transition-opacity"><path d="M6 9l6 6 6-6" /></svg>
                 </button>
@@ -582,10 +584,10 @@ export default function MarketingStudio() {
               {isGenerating ? (
                 <>
                   <div className="w-3 h-3 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                  Generating...
+                  {t('marketingStudio.generating')}
                 </>
               ) : (
-                <span>Launch</span>
+                <span>{t('marketingStudio.launchBtn')}</span>
               )}
             </button>
           </div>

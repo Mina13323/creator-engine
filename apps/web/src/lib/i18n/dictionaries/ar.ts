@@ -71,6 +71,17 @@ export const ar = {
     aiCredits: 'أرصدة ذكاء اصطناعي',
     demoMode: 'الوضع التجريبي',
   },
+  marketingStudio: {
+    startCreatingWith: 'ابدأ الإنشاء مع',
+    marketingStudioTitle: 'استوديو التسويق',
+    description: 'صف المشهد الخاص بك، ارفع منتجك، وشاهد إعلانات فيديو الذكاء الاصطناعي عالية التحويل تنبض بالحياة.',
+    promptPlaceholder: 'صف نص إعلانك... استخدم @image1 للمنتج، و @image2 للصورة الرمزية.',
+    selectAvatar: 'اختر صورة رمزية',
+    launchBtn: 'إطلاق',
+    generating: 'جاري الإنشاء...',
+    alertNoScript: 'الرجاء إدخال نص إعلان.',
+    alertNoProduct: 'الرجاء رفع صورة للمنتج.'
+  },
   consultant: {
     greeting: 'كيف يمكنني مساعدتك اليوم؟',
     subtitle: 'يمكنني مساعدتك في مراجعة خطة عملك، أو العصف الذهني لاستراتيجيات التسويق، أو العمل كمنصة لأفكارك.',
