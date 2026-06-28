@@ -20,6 +20,7 @@ import PricingModal from '../components/PricingModal';
 import FinancialEngine from '../components/FinancialEngine';
 import AccountDetails from '../components/AccountDetails';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useI18n } from '../lib/i18n/I18nContext';
 
 import { 
   Home, 
@@ -45,6 +46,7 @@ import {
 const PROTECTED_TABS = ['dashboard', 'business-builder', 'financials', 'guides', 'ai-consultant', 'pitch', 'radar', 'market-research', 'branding', 'marketing', 'roadmap'];
 
 export default function AppPage() {
+  const { t, dir } = useI18n();
   const { 
     isOnboarded, 
     loadProjects, 
@@ -146,16 +148,16 @@ export default function AppPage() {
   }
 
   const sidebarItems = [
-    { id: 'dashboard', label: 'Founder Profile', icon: Home, requiresProject: false },
-    { id: 'opportunities', label: 'Opportunities', icon: Radar, requiresProject: true },
-    { id: 'business-plan', label: 'Business Plan', icon: FileText, requiresProject: true },
-    { id: 'financials', label: 'Financials', icon: BarChart3, requiresProject: true },
-    { id: 'branding', label: 'Branding', icon: BookOpen, requiresProject: true },
-    { id: 'marketing', label: 'Marketing Studio', icon: Megaphone, requiresProject: true },
-    { id: 'roadmap', label: 'Roadmap', icon: Clock, requiresProject: true },
-    { id: 'ai-consultant', label: 'AI Cofounder', icon: MessageSquare, requiresProject: true },
-    { id: 'ai-studio', label: 'AI Studio', icon: ImagePlus, requiresProject: false },
-    { id: 'account', label: 'Account', icon: UserCircle, requiresProject: false },
+    { id: 'dashboard', label: t('sidebar.dashboard'), icon: Home, requiresProject: false },
+    { id: 'opportunities', label: t('sidebar.opportunities'), icon: Radar, requiresProject: true },
+    { id: 'business-plan', label: t('sidebar.businessPlan'), icon: FileText, requiresProject: true },
+    { id: 'financials', label: t('sidebar.financials'), icon: BarChart3, requiresProject: true },
+    { id: 'branding', label: t('sidebar.branding'), icon: BookOpen, requiresProject: true },
+    { id: 'marketing', label: t('sidebar.marketing'), icon: Megaphone, requiresProject: true },
+    { id: 'roadmap', label: t('sidebar.roadmap'), icon: Clock, requiresProject: true },
+    { id: 'ai-consultant', label: t('sidebar.aiConsultant'), icon: MessageSquare, requiresProject: true },
+    { id: 'ai-studio', label: t('sidebar.aiStudio'), icon: ImagePlus, requiresProject: false },
+    { id: 'account', label: t('sidebar.account'), icon: UserCircle, requiresProject: false },
   ] as const;
 
   // User display info
@@ -182,7 +184,7 @@ export default function AppPage() {
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 transition-all shadow-sm"
             >
               <ShieldAlert className="w-3.5 h-3.5" />
-              Admin
+              {t('sidebar.admin')}
             </Link>
           )}
           {isAuthenticated && <button
@@ -190,7 +192,7 @@ export default function AppPage() {
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-50/80 border border-rose-100 text-rose-600 hover:bg-rose-100 hover:text-rose-700 transition-all shadow-sm"
           >
             <LogOut className="w-3.5 h-3.5" />
-            Logout
+            {t('sidebar.logout')}
           </button>}
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-slate-600" aria-label="Toggle Mobile Menu">
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -271,7 +273,7 @@ export default function AppPage() {
               className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 mt-2 transition-all"
             >
               <ShieldAlert className="w-4.5 h-4.5 text-emerald-600" />
-              Admin Dashboard
+              {t('sidebar.adminDashboard')}
             </Link>
           )}
         </nav>
@@ -279,12 +281,12 @@ export default function AppPage() {
         {/* Bottom Actions */}
         <div className="p-4 border-t border-slate-100 space-y-2">
           <button onClick={() => useStore.getState().setShowPricingModal(true)} className="w-full bg-[#1e293b] hover:bg-slate-800 text-white font-semibold rounded-full py-2.5 text-sm transition-colors mb-4">
-            Upgrade
+            {t('sidebar.upgrade')}
           </button>
           
           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50">
             <HelpCircle className="w-4 h-4 text-slate-500" />
-            Help
+            {t('sidebar.help')}
           </button>
           
           {/* User account section */}
@@ -321,7 +323,7 @@ export default function AppPage() {
         {/* Top Header Navbar */}
         <header className="h-16 border-b border-slate-100 bg-white flex items-center justify-between px-8 shrink-0">
           <div className="text-slate-400 text-xs tracking-wider flex items-center gap-2 font-semibold">
-            <span>WORKSPACE</span>
+            <span>{t('sidebar.workspace')}</span>
             <span className="text-slate-300">/</span>
             <span className="text-slate-700 capitalize font-bold">{activeTab.replace('-', ' ')}</span>
           </div>
@@ -335,7 +337,7 @@ export default function AppPage() {
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-50/80 border border-rose-100 text-rose-600 hover:bg-rose-100 hover:text-rose-700 transition-all shadow-sm"
             >
               <LogOut className="w-3.5 h-3.5" />
-              Logout
+              {t('sidebar.logout')}
             </button>
           </div>
         </header>
