@@ -325,7 +325,7 @@ export default function AppPage() {
           <div className="text-slate-400 text-xs tracking-wider flex items-center gap-2 font-semibold">
             <span>{t('sidebar.workspace')}</span>
             <span className="text-slate-300">/</span>
-            <span className="text-slate-700 capitalize font-bold">{activeTab.replace('-', ' ')}</span>
+            <span className="text-slate-700 capitalize font-bold">{sidebarItems.find(item => item.id === activeTab)?.label || activeTab.replace('-', ' ')}</span>
           </div>
           <div className="flex items-center gap-4">
             <CreditIndicator />
