@@ -5,8 +5,10 @@ import { useStore } from '../store/useStore';
 import { X, Mail, Lock, User as UserIcon, Loader2, ArrowRight } from 'lucide-react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { authClient } from '../lib/authClient';
+import { useI18n } from '../lib/i18n/I18nContext';
 
 export default function AuthModal() {
+  const { t, dir } = useI18n();
   const { isAuthModalOpen, setAuthModalOpen, setAuth, loadProjects } = useStore();
   const [step, setStep] = useState<1 | 2>(1);
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -83,10 +85,10 @@ export default function AuthModal() {
         {/* Header */}
         <div className="mb-6">
           <h2 className="text-2xl font-semibold text-slate-900">
-            {step === 1 ? 'Sign in or create an account' : (mode === 'login' ? 'Welcome back' : 'Create your account')}
+            {step === 1 ? t('auth.titleStart') : (mode === 'login' ? t('auth.titleLogin') : t('auth.titleRegister'))}
           </h2>
           <p className="text-sm text-slate-500 mt-1">
-            {step === 1 ? 'Enter your email to continue' : (mode === 'login' ? 'Enter your password to sign in' : 'Complete your profile to get started')}
+            {step === 1 ? t('auth.subtitleStart') : (mode === 'login' ? t('auth.subtitleLogin') : t('auth.subtitleRegister'))}
           </p>
         </div>
 
@@ -105,16 +107,16 @@ export default function AuthModal() {
           
           {step === 1 ? (
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">{t('auth.email')}</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
+                <Mail className={`absolute top-3 h-5 w-5 text-slate-400 ${dir === 'rtl' ? 'right-3' : 'left-3'}`} />
                 <input
                   required
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-900 transition-all bg-slate-50 focus:bg-white"
-                  placeholder="you@example.com"
+                  className={`w-full py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-900 transition-all bg-slate-50 focus:bg-white ${dir === 'rtl' ? 'pr-10 pl-4' : 'pl-10 pr-4'}`}
+                  placeholder={t('auth.emailPlaceholder')}
                 />
               </div>
             </div>
@@ -128,44 +130,44 @@ export default function AuthModal() {
                   <span className="text-sm font-medium text-slate-700">{email}</span>
                 </div>
                 <button type="button" onClick={resetStep} className="text-xs text-emerald-600 font-semibold hover:text-emerald-700">
-                  Edit
+                  {t('auth.edit')}
                 </button>
               </div>
 
               {mode === 'register' && (
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Name</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">{t('auth.name')}</label>
                   <div className="relative">
-                    <UserIcon className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
+                    <UserIcon className={`absolute top-3 h-5 w-5 text-slate-400 ${dir === 'rtl' ? 'right-3' : 'left-3'}`} />
                     <input
                       required
                       type="text"
                       value={name}
                       onChange={e => setName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-900 transition-all bg-slate-50 focus:bg-white"
-                      placeholder="John Doe"
+                      className={`w-full py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-900 transition-all bg-slate-50 focus:bg-white ${dir === 'rtl' ? 'pr-10 pl-4' : 'pl-10 pr-4'}`}
+                      placeholder={t('auth.namePlaceholder')}
                     />
                   </div>
                 </div>
               )}
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">{t('auth.password')}</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
+                  <Lock className={`absolute top-3 h-5 w-5 text-slate-400 ${dir === 'rtl' ? 'right-3' : 'left-3'}`} />
                   <input
                     required
                     type="password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-900 transition-all bg-slate-50 focus:bg-white"
-                    placeholder="••••••••"
+                    className={`w-full py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-900 transition-all bg-slate-50 focus:bg-white ${dir === 'rtl' ? 'pr-10 pl-4' : 'pl-10 pr-4'}`}
+                    placeholder={t('auth.passwordPlaceholder')}
                     minLength={6}
                     autoFocus
                   />
                 </div>
                 {mode === 'register' && (
-                  <p className="text-xs text-slate-400 mt-1">Must be at least 6 characters</p>
+                  <p className="text-xs text-slate-400 mt-1">{t('auth.passwordHint')}</p>
                 )}
               </div>
             </>
@@ -178,17 +180,17 @@ export default function AuthModal() {
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Processing...
+                {t('auth.processing')}
               </>
             ) : step === 1 ? (
               <>
-                Continue
-                <ArrowRight className="w-4 h-4" />
+                {t('auth.continue')}
+                {dir === 'rtl' ? <ArrowRight className="w-4 h-4 rotate-180" /> : <ArrowRight className="w-4 h-4" />}
               </>
             ) : mode === 'login' ? (
-              'Sign In'
+              t('auth.signIn')
             ) : (
-              'Create Account'
+              t('auth.createAccount')
             )}
           </button>
         </form>
@@ -198,7 +200,7 @@ export default function AuthModal() {
           <div className="mt-6 animate-in fade-in duration-300">
             <div className="relative">
               <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200"></div></div>
-              <div className="relative flex justify-center text-sm"><span className="bg-white px-2 text-slate-500">Or continue with</span></div>
+              <div className="relative flex justify-center text-sm"><span className="bg-white px-2 text-slate-500">{t('auth.orContinueWith')}</span></div>
             </div>
             <div className="mt-6 flex justify-center">
               <GoogleOAuthProvider clientId={clientId}>

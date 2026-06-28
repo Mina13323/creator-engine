@@ -498,11 +498,11 @@ export default function LandingPage({ onGetStarted, onLogin }: LandingPageProps)
             </h2>
             <div className="mt-12 pt-12 border-t border-white/10 grid max-w-[900px] gap-8 md:grid-cols-3">
               {[
-                ['Mina Wael Magdy', t('problem.teamRole')],
-                ['Omar Mohammed', t('problem.teamRole')],
-                ['Samy Barsoum', t('problem.teamRole')],
-                ['Amgd Magdy Labib', t('problem.teamRole')],
-                ['Mina Nabil Fayez', t('problem.teamRole')]
+                [t('team.minaW'), t('problem.teamRole')],
+                [t('team.omar'), t('problem.teamRole')],
+                [t('team.samy'), t('problem.teamRole')],
+                [t('team.amgd'), t('problem.teamRole')],
+                [t('team.minaN'), t('problem.teamRole')]
               ].map(([name, role]) => (
                 <div key={name}>
                   <p className="text-lg font-medium text-[#fff3dd]">{name}</p>
