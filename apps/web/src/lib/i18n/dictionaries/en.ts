@@ -91,7 +91,7 @@ export const en = {
     estRevenue: 'Est. Revenue',
     difficulty: 'Difficulty',
     timeToMvp: 'Time to MVP',
-    oppScore: 'Opp Score',
+    oppScore: 'Opportunity',
     founderFit: 'Founder Fit',
     marketDemand: 'Market Demand',
     aiAdvantage: 'AI Advantage',
@@ -103,6 +103,33 @@ export const en = {
     modalCancel: 'Cancel',
     modalConfirm: 'Yes, Change Concept',
     modalSelecting: 'Selecting...'
+  },
+  dashboard: {
+    welcome: 'Welcome to Creator Engine',
+    initialize: 'Initialize a venture project to build business plans, roadmap, branding, and marketing assets.',
+    yourVentures: 'Your Ventures',
+    draft: 'Draft',
+    active: 'Active',
+    createNew: 'Create a New Venture',
+    enterName: 'Enter a name to set up a new project workspace.',
+    projectName: 'Project Name',
+    projectNamePlaceholder: 'e.g. Acme SaaS, Green Energy Analytics',
+    creating: 'Creating...',
+    createProject: 'Create Project'
+  },
+  loading: {
+    generating: 'Generating...',
+    pleaseWait: 'Please wait while our AI agents construct your personalized assets.',
+    step1: 'Initializing AI core...',
+    step2: 'Analyzing context & constraints...',
+    step3: 'Synthesizing market data...',
+    step4: 'Drafting strategic content...',
+    step5: 'Finalizing deliverables...'
+  },
+  branding: {
+    emptyTitle: 'No brand identity has been generated yet.',
+    emptySubtitle: 'Transform your startup business plan into a distinctive, professional brand identity complete with logo prompts, matching color palette, voice guidelines, and core narrative.',
+    generateBtn: 'Generate Brand Identity'
   },
   hero: {
     badge: 'AI Venture Builder by AI Foundry',

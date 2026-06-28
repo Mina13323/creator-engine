@@ -3,21 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, CheckCircle2, ChevronRight, Cpu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useI18n } from '../../lib/i18n/I18nContext';
 
-const PROGRESS_STEPS = [
-  "Initializing AI core...",
-  "Analyzing context & constraints...",
-  "Synthesizing market data...",
-  "Drafting strategic content...",
-  "Finalizing deliverables..."
-];
-
-export function AILoadingOverlay({ message = "Generating..." }: { message?: string }) {
+export function AILoadingOverlay({ message }: { message?: string }) {
+  const { t } = useI18n();
   const [stepIndex, setStepIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setStepIndex(prev => (prev < PROGRESS_STEPS.length - 1 ? prev + 1 : prev));
+      setStepIndex(prev => (prev < 4 ? prev + 1 : prev));
     }, 2500);
     return () => clearInterval(interval);
   }, []);
@@ -45,11 +39,11 @@ export function AILoadingOverlay({ message = "Generating..." }: { message?: stri
             <Sparkles className="w-8 h-8 text-emerald-500" />
           </motion.div>
           
-          <h2 className="text-xl font-bold text-slate-900 mb-2">{message}</h2>
-          <p className="text-sm text-slate-500 mb-8 max-w-[250px]">Please wait while our AI agents construct your personalized assets.</p>
+          <h2 className="text-xl font-bold text-slate-900 mb-2">{message || t('loading.generating')}</h2>
+          <p className="text-sm text-slate-500 mb-8 max-w-[250px]">{t('loading.pleaseWait')}</p>
           
           <div className="w-full space-y-4">
-            {PROGRESS_STEPS.map((step, idx) => {
+            {[t('loading.step1'), t('loading.step2'), t('loading.step3'), t('loading.step4'), t('loading.step5')].map((step, idx) => {
               const isActive = idx === stepIndex;
               const isCompleted = idx < stepIndex;
               const isPending = idx > stepIndex;
@@ -85,7 +79,7 @@ export function AILoadingOverlay({ message = "Generating..." }: { message?: stri
             <motion.div 
               className="h-full bg-gradient-to-r from-emerald-500 to-indigo-500 rounded-full"
               initial={{ width: '0%' }}
-              animate={{ width: `${((stepIndex + 1) / PROGRESS_STEPS.length) * 100}%` }}
+              animate={{ width: `${((stepIndex + 1) / 5) * 100}%` }}
               transition={{ ease: "easeInOut", duration: 0.8 }}
             />
           </div>

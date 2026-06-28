@@ -5,12 +5,13 @@ import { useStore } from '../store/useStore';
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
-import { 
-  Briefcase, DollarSign, Clock, ShieldAlert, Users, Target, Rocket, Plus,
+import { Briefcase, DollarSign, Clock, ShieldAlert, Users, Target, Rocket, Plus,
   Lightbulb, Sparkles, Pencil, MapPin, Loader2, ChevronRight
 } from 'lucide-react';
+import { useI18n } from '../lib/i18n/I18nContext';
 
 export default function Dashboard() {
+  const { t, dir } = useI18n();
   const { 
     currentProject, 
     ventureState, 
@@ -78,14 +79,14 @@ export default function Dashboard() {
       <div className="p-6 md:p-10 max-w-[1000px] mx-auto space-y-8 animate-in fade-in duration-500">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
-            Welcome to Creator Engine
+            {t('dashboard.welcome')}
           </h1>
-          <p className="text-slate-500 mt-1">Initialize a venture project to build business plans, roadmap, branding, and marketing assets.</p>
+          <p className="text-slate-500 mt-1">{t('dashboard.initialize')}</p>
         </div>
 
         {projects.length > 0 && (
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-slate-800">Your Ventures</h2>
+            <h2 className="text-lg font-semibold text-slate-800">{t('dashboard.yourVentures')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {projects.map((proj) => (
                 <Card 
@@ -99,10 +100,10 @@ export default function Dashboard() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-slate-800 group-hover:text-emerald-600 transition-colors">{proj.name}</h3>
-                      <p className="text-xs text-slate-400 capitalize">{proj.status || 'Draft'}</p>
+                      <p className="text-xs text-slate-400 capitalize">{proj.status === 'active' ? t('dashboard.active') : t('dashboard.draft')}</p>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-emerald-500 transition-colors" />
+                  <ChevronRight className={`w-5 h-5 text-slate-300 group-hover:text-emerald-500 transition-colors ${dir === 'rtl' ? 'rotate-180' : ''}`} />
                 </Card>
               ))}
             </div>
@@ -112,19 +113,19 @@ export default function Dashboard() {
         <Card className="p-6 md:p-8 border-slate-200 shadow-sm rounded-2xl bg-white max-w-xl">
           <h2 className="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
             <Rocket className="w-5 h-5 text-emerald-500" />
-            Create a New Venture
+            {t('dashboard.createNew')}
           </h2>
-          <p className="text-sm text-slate-500 mb-6">Enter a name to set up a new project workspace.</p>
+          <p className="text-sm text-slate-500 mb-6">{t('dashboard.enterName')}</p>
           
           <form onSubmit={handleCreateProjectSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">Project Name</label>
+              <label className="text-sm font-medium text-slate-700">{t('dashboard.projectName')}</label>
               <input
                 required
                 type="text"
                 value={projectName}
                 onChange={(e) => setProjectName(e.target.value)}
-                placeholder="e.g. Acme SaaS, Green Energy Analytics"
+                placeholder={t('dashboard.projectNamePlaceholder')}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all"
               />
             </div>
@@ -137,12 +138,12 @@ export default function Dashboard() {
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Creating...
+                  {t('dashboard.creating')}
                 </>
               ) : (
                 <>
                   <Plus className="w-4 h-4" />
-                  Create Project
+                  {t('dashboard.createProject')}
                 </>
               )}
             </Button>

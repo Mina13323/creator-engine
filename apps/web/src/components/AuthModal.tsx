@@ -8,7 +8,7 @@ import { authClient } from '../lib/authClient';
 import { useI18n } from '../lib/i18n/I18nContext';
 
 export default function AuthModal() {
-  const { t, dir } = useI18n();
+  const { t, dir, locale } = useI18n();
   const { isAuthModalOpen, setAuthModalOpen, setAuth, loadProjects } = useStore();
   const [step, setStep] = useState<1 | 2>(1);
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -114,8 +114,9 @@ export default function AuthModal() {
                   required
                   type="email"
                   value={email}
+                  dir="ltr"
                   onChange={e => setEmail(e.target.value)}
-                  className={`w-full py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-900 transition-all bg-slate-50 focus:bg-white ${dir === 'rtl' ? 'pr-10 pl-4' : 'pl-10 pr-4'}`}
+                  className={`w-full py-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-900 transition-all bg-slate-50 focus:bg-white text-left ${dir === 'rtl' ? 'pr-10 pl-4' : 'pl-10 pr-4'}`}
                   placeholder={t('auth.emailPlaceholder')}
                 />
               </div>
@@ -210,6 +211,7 @@ export default function AuthModal() {
                   theme="outline"
                   shape="rectangular"
                   width="100%"
+                  locale={locale === 'ar' ? 'ar' : 'en'}
                 />
               </GoogleOAuthProvider>
             </div>
