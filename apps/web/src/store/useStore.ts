@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Project, ChatMessage, AuthUser, FounderProfile, BusinessOpportunity, SelectedOpportunity, BusinessPlan, VentureState, OnboardingData } from '@creator/types';
 import { authClient } from '../lib/authClient';
+import { useErrorStore } from './errorStore';
 
 interface StoreState {
   projects: Project[];
@@ -219,9 +220,14 @@ export const useStore = create<StoreState>((set, get) => ({
         loading: false
       }));
       return res.projectId;
-    } catch (e) {
+    } catch (e: any) {
       console.error('createProject failed', e);
       set({ loading: false });
+      useErrorStore.getState().addError({
+        title: 'Project Creation Suspended',
+        message: e.message || 'System is currently under maintenance. New project creations are temporarily suspended.',
+        type: 'warning'
+      });
       throw e;
     }
   },

@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { ToastContainer } from '@/components/ui/Toast';
+import { SystemStatusBanner } from '@/components/SystemStatusBanner';
 
 export const metadata: Metadata = {
   title: 'Creator Engine',
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased text-slate-100 bg-[#040814]">
+        <SystemStatusBanner />
         {children}
         <ToastContainer />
       </body>

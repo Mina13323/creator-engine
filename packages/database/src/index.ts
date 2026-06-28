@@ -27,9 +27,10 @@ import {
 
 // MongoDB Connection
 export async function connectDB(url: string) {
+  const cleanUrl = url.replace(/^["']|["']$/g, '');
   if (mongoose.connection.readyState >= 1) return;
   try {
-    await mongoose.connect(url);
+    await mongoose.connect(cleanUrl);
     console.log('MongoDB connected successfully');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
@@ -519,7 +520,10 @@ const AgentRunSchema = new Schema<AgentRun & Document>(
     durationMs: { type: Number },
     input: { type: Schema.Types.Mixed, required: true },
     output: { type: Schema.Types.Mixed },
-    error: { type: String }
+    error: { type: String },
+    promptTokens: { type: Number, default: 0 },
+    completionTokens: { type: Number, default: 0 },
+    totalTokens: { type: Number, default: 0 }
   },
   { timestamps: true }
 );
@@ -793,5 +797,37 @@ export const CreditWalletModel = mongoose.models.CreditWallet || mongoose.model<
 export const CreditTransactionModel = mongoose.models.CreditTransaction || mongoose.model<CreditTransaction & Document>('CreditTransaction', CreditTransactionSchema);
 export const PaymentTransactionModel = mongoose.models.PaymentTransaction || mongoose.model<PaymentTransaction & Document>('PaymentTransaction', PaymentTransactionSchema);
 export const CreditPackModel = mongoose.models.CreditPack || mongoose.model<any & Document>('CreditPack', CreditPackSchema);
+
+export interface AdminSettings {
+  key: string;
+  defaultModel: string;
+  aiTemperature: number;
+  maxTokensPerRun: number;
+  freeCredits: number;
+  maxProjects: number;
+  lockdown: boolean;
+  maintenance: boolean;
+  flagAlerts: boolean;
+  weeklyReports: boolean;
+}
+
+const AdminSettingsSchema = new Schema<AdminSettings & Document>(
+  {
+    key: { type: String, default: 'global_config', unique: true, index: true },
+    defaultModel: { type: String, default: 'deepseek-v4-flash' },
+    aiTemperature: { type: Number, default: 0.7 },
+    maxTokensPerRun: { type: Number, default: 150000 },
+    freeCredits: { type: Number, default: 50 },
+    maxProjects: { type: Number, default: 5 },
+    lockdown: { type: Boolean, default: false },
+    maintenance: { type: Boolean, default: false },
+    flagAlerts: { type: Boolean, default: true },
+    weeklyReports: { type: Boolean, default: false }
+  },
+  { timestamps: true, collection: 'admin_settings' }
+);
+
+export const AdminSettingsModel = mongoose.models.AdminSettings || mongoose.model<AdminSettings & Document>('AdminSettings', AdminSettingsSchema);
+
 
 export * from './services/projectContext';
