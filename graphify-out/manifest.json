@@ -105,8 +105,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/app/api/financial-engine/route.ts": {
-    "mtime": 1782625326.1853008,
-    "ast_hash": "1ac2d2128c04d1027d958dbe98c26fe0",
+    "mtime": 1782625729.7117715,
+    "ast_hash": "b0d2e435711489e0dc6e209c25f0aa8e",
     "semantic_hash": ""
   },
   "apps/web/src/app/api/financials/[projectId]/route.ts": {

@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL || 'https://anger-favorably-unburned.ngrok-free.dev/webhook/financial-engine';
 
       console.log('[FinancialEngine] Calling webhook:', n8nWebhookUrl);
-      const n8nResponse = await fetch(n8nWebhookUrl, {
+      let n8nResponse = await fetch(n8nWebhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
