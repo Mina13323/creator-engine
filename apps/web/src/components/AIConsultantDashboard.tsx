@@ -7,8 +7,10 @@ import { Send, Sparkles, User, Brain, ExternalLink, Lightbulb, History, HistoryI
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeInUp, fadeIn, staggerContainer } from '../lib/motion-presets';
 import ReactMarkdown from 'react-markdown';
+import { useI18n } from '../lib/i18n/I18nContext';
 
 export default function AIConsultantDashboard() {
+  const { t } = useI18n();
   const { chatMessages, sendChatMessage, clearChat, chatLoading, currentProject, conversations, setActiveConversation, loadConversations, activeConversationId } = useStore();
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -55,8 +57,8 @@ export default function AIConsultantDashboard() {
               <Brain className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-800">CEO Copilot</h1>
-              <p className="text-sm text-slate-500">Your dedicated startup mentor and strategist</p>
+              <h1 className="text-xl font-bold text-slate-800">{t('projectMemory.ceoCopilot')}</h1>
+              <p className="text-sm text-slate-500">{t('projectMemory.ceoCopilotDesc')}</p>
             </div>
           </div>
         </div>
@@ -179,7 +181,7 @@ export default function AIConsultantDashboard() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={chatLoading}
-              placeholder="Ask CEO Copilot anything..."
+              placeholder={t('projectMemory.askCopilot')}
               className="w-full pl-5 pr-14 py-4 rounded-full border border-slate-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 text-slate-700 placeholder-slate-400 shadow-sm transition-all"
             />
             <button
@@ -191,7 +193,7 @@ export default function AIConsultantDashboard() {
             </button>
           </form>
           <div className="text-center mt-2">
-             <span className="text-xs text-slate-400">CEO Copilot has full context of your venture and documents.</span>
+             <span className="text-xs text-slate-400">{t('projectMemory.fullContext')}</span>
           </div>
         </div>
       </div>
@@ -201,49 +203,49 @@ export default function AIConsultantDashboard() {
         <div className="p-5 border-b border-slate-200">
           <div className="flex items-center gap-2 text-slate-800 font-bold">
             <HistoryIcon className="w-5 h-5 text-indigo-500" />
-            Project Memory
+            {t('projectMemory.title')}
           </div>
-          <p className="text-xs text-slate-500 mt-1">Context actively used by AI</p>
+          <p className="text-xs text-slate-500 mt-1">{t('projectMemory.contextActivelyUsed')}</p>
         </div>
         
         <div className="flex-1 p-5 overflow-y-auto space-y-4">
           <div className="space-y-2">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Current Venture</h3>
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{t('projectMemory.currentVenture')}</h3>
             <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
               <div className="font-semibold text-sm text-slate-700">{currentProject.name}</div>
-              <div className="text-xs text-slate-500 mt-1 capitalize">{currentProject.industry} Industry</div>
+              <div className="text-xs text-slate-500 mt-1 capitalize">{currentProject.industry || t('projectMemory.unknownIndustry')}</div>
             </div>
           </div>
           
           <div className="space-y-2 mt-4">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Key Insights</h3>
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{t('projectMemory.keyInsights')}</h3>
             <div className="space-y-2">
               <div className="bg-indigo-50 border border-indigo-100 p-3 rounded-lg flex items-start gap-2">
                 <Lightbulb className="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" />
                 <p className="text-xs text-indigo-900">
-                  AI is optimizing responses for a Bootstrapped go-to-market strategy based on your profile.
+                  {t('projectMemory.insight1')}
                 </p>
               </div>
               <div className="bg-emerald-50 border border-emerald-100 p-3 rounded-lg flex items-start gap-2">
                 <Brain className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
                 <p className="text-xs text-emerald-900">
-                  Memory synchronized with latest Business Plan generation.
+                  {t('projectMemory.insight2')}
                 </p>
               </div>
             </div>
           </div>
           
           <div className="space-y-2 mt-4 flex-1 overflow-y-auto">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Recent Conversations</h3>
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{t('projectMemory.recentConversations')}</h3>
             <button
               onClick={() => clearChat()}
               className="w-full py-2 px-3 mb-3 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold transition-colors shadow-sm"
             >
-              + Start New Session
+              {t('projectMemory.startNewSession')}
             </button>
             
             {conversations.length === 0 ? (
-              <p className="text-xs text-slate-500 italic">No previous chats.</p>
+              <p className="text-xs text-slate-500 italic">{t('projectMemory.noPreviousChats')}</p>
             ) : (
               <div className="space-y-2">
                 {conversations.map((conv, idx) => (

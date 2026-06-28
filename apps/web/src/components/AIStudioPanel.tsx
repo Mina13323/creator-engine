@@ -5,10 +5,12 @@ import { useStore } from '../store/useStore';
 import { ImagePlus, Video, FileAudio, FolderHeart, Sparkles, Download, Layers } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeInUp, fadeIn, staggerContainer } from '../lib/motion-presets';
+import { useI18n } from '../lib/i18n/I18nContext';
 
 type StudioTab = 'image' | 'media' | 'library';
 
 export default function AIStudioPanel() {
+  const { t } = useI18n();
   const { currentProject, generateImage } = useStore();
   const [activeTab, setActiveTab] = useState<StudioTab>('image');
   
@@ -87,9 +89,9 @@ export default function AIStudioPanel() {
     >
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold text-slate-800">Advanced AI Studio</h1>
+          <h1 className="text-2xl font-bold text-slate-800">{t('aiStudio.title')}</h1>
           <p className="text-sm text-slate-500">
-            Generate images, videos, audio, and brand assets natively.
+            {t('aiStudio.subtitle')}
           </p>
         </div>
       </div>
@@ -107,7 +109,7 @@ export default function AIStudioPanel() {
             }`}
           >
             <ImagePlus className={`w-5 h-5 ${activeTab === 'image' ? 'text-indigo-600' : 'text-slate-400'}`} />
-            Image Generation
+            {t('aiStudio.imageGen')}
           </button>
           
           <button 
@@ -119,7 +121,7 @@ export default function AIStudioPanel() {
             }`}
           >
             <Video className={`w-5 h-5 ${activeTab === 'media' ? 'text-indigo-600' : 'text-slate-400'}`} />
-            Media Generation
+            {t('aiStudio.mediaGen')}
           </button>
 
           <div className="h-px bg-slate-200 my-2"></div>
@@ -133,7 +135,7 @@ export default function AIStudioPanel() {
             }`}
           >
             <FolderHeart className={`w-5 h-5 ${activeTab === 'library' ? 'text-emerald-600' : 'text-slate-400'}`} />
-            Asset Library
+            {t('aiStudio.assetLibrary')}
           </button>
         </div>
 
@@ -150,24 +152,24 @@ export default function AIStudioPanel() {
               className="space-y-6 max-w-4xl"
             >
               <div>
-                <h2 className="text-lg font-bold text-slate-800">Create an Image</h2>
-                <p className="text-sm text-slate-500">Describe the asset you want to generate for your venture.</p>
+                <h2 className="text-lg font-bold text-slate-800">{t('aiStudio.createImage')}</h2>
+                <p className="text-sm text-slate-500">{t('aiStudio.createImageDesc')}</p>
               </div>
 
               <form onSubmit={handleGenerateImage} className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-slate-700">Prompt</label>
+                  <label className="text-sm font-semibold text-slate-700">{t('aiStudio.prompt')}</label>
                   <textarea
                     value={imagePrompt}
                     onChange={(e) => setImagePrompt(e.target.value)}
-                    placeholder="E.g., A minimalist vector logo for a fintech startup, blue and green colors..."
+                    placeholder={t('aiStudio.promptPlaceholder')}
                     className="w-full p-4 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 resize-none h-32 text-slate-700"
                     disabled={isGenerating}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-slate-700">Style</label>
+                  <label className="text-sm font-semibold text-slate-700">{t('aiStudio.style')}</label>
                   <div className="flex flex-wrap gap-2">
                     {['Realistic', 'Vector Art', '3D Render', 'Logo Design', 'Minimalist'].map(style => (
                       <button
@@ -196,12 +198,12 @@ export default function AIStudioPanel() {
                     {isGenerating ? (
                       <>
                         <Sparkles className="w-5 h-5 animate-spin" />
-                        Generating...
+                        {t('aiStudio.generating')}
                       </>
                     ) : (
                       <>
                         <Sparkles className="w-5 h-5" />
-                        Generate Asset
+                        {t('aiStudio.generateAsset')}
                       </>
                     )}
                   </button>
