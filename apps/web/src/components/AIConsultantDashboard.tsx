@@ -71,39 +71,59 @@ export default function AIConsultantDashboard() {
           animate="animate"
         >
           {chatMessages.length === 0 ? (
-            <div className="h-full flex flex-col justify-center items-center text-center max-w-lg mx-auto">
-              <div className="w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center mb-6">
-                <Sparkles className="w-8 h-8 text-indigo-500" />
-              </div>
-              <h2 className="text-2xl font-bold text-slate-800 mb-2">How can I help you today?</h2>
-              <p className="text-slate-500 mb-8">
-                I can help you review your business plan, brainstorm marketing strategies, or act as a sounding board for your ideas.
-              </p>
-              
-              <div className="grid grid-cols-1 gap-3 w-full">
-                <button onClick={() => handleActionClick("Review my current business plan and suggest improvements")} className="p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-left flex items-start gap-3 group">
-                  <FileText className="w-5 h-5 text-indigo-400 mt-0.5 group-hover:text-indigo-600" />
-                  <div>
-                    <div className="font-semibold text-slate-700">Review Business Plan</div>
-                    <div className="text-sm text-slate-500">Analyze current strategy and find gaps</div>
-                  </div>
-                </button>
-                <button onClick={() => handleActionClick("What are the best marketing channels for my startup?")} className="p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-left flex items-start gap-3 group">
-                  <Megaphone className="w-5 h-5 text-indigo-400 mt-0.5 group-hover:text-indigo-600" />
-                  <div>
-                    <div className="font-semibold text-slate-700">Marketing Strategy</div>
-                    <div className="text-sm text-slate-500">Identify the highest ROI channels</div>
-                  </div>
-                </button>
-                <button onClick={() => handleActionClick("Draft a cold outreach email to potential investors")} className="p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-left flex items-start gap-3 group">
-                  <Send className="w-5 h-5 text-indigo-400 mt-0.5 group-hover:text-indigo-600" />
-                  <div>
-                    <div className="font-semibold text-slate-700">Draft Investor Email</div>
-                    <div className="text-sm text-slate-500">Write a compelling cold outreach message</div>
-                  </div>
-                </button>
-              </div>
+            <div className="flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto w-full text-center space-y-6">
+            <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center transform -rotate-6">
+              <Sparkles className="w-8 h-8" />
             </div>
+            
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold text-slate-800">{t('consultant.greeting')}</h2>
+              <p className="text-slate-500 max-w-lg">
+                {t('consultant.subtitle')}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 w-full gap-3 mt-8">
+              <button 
+                onClick={() => setInput('Review my business plan and suggest improvements.')}
+                className="p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-md transition-all text-left flex items-start gap-4 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-800">{t('consultant.reviewPlan')}</h3>
+                  <p className="text-sm text-slate-500">{t('consultant.reviewPlanDesc')}</p>
+                </div>
+              </button>
+
+              <button 
+                onClick={() => setInput('What are the best marketing channels for my business?')}
+                className="p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-md transition-all text-left flex items-start gap-4 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Megaphone className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-800">{t('consultant.marketingStrategy')}</h3>
+                  <p className="text-sm text-slate-500">{t('consultant.marketingStrategyDesc')}</p>
+                </div>
+              </button>
+
+              <button 
+                onClick={() => setInput('Draft a cold outreach email to a potential investor.')}
+                className="p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-md transition-all text-left flex items-start gap-4 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Send className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-800">{t('consultant.draftEmail')}</h3>
+                  <p className="text-sm text-slate-500">{t('consultant.draftEmailDesc')}</p>
+                </div>
+              </button>
+            </div>
+          </div>
           ) : (
             chatMessages.map((msg) => {
               if (!msg) return null;

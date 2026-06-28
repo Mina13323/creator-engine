@@ -9,6 +9,19 @@ export function AILoadingOverlay({ message }: { message?: string }) {
   const { t } = useI18n();
   const [stepIndex, setStepIndex] = useState(0);
 
+  const translatedMessage = React.useMemo(() => {
+    if (!message) return t('loading.generating');
+    if (message.includes('venture dossier')) return t('loading.retrievingDossier');
+    if (message.includes('Creating project')) return t('loading.creatingProject');
+    if (message.includes('Analyzing Founder Profile')) return t('loading.analyzingProfile');
+    if (message.includes('Discovering Opportunities') || message.includes('Discovering Startup Opportunities')) return t('loading.discoveringOpportunities');
+    if (message.includes('Generating Lean Canvas') || message.includes('Generating Business Plan')) return t('loading.generatingBusinessPlan');
+    if (message.includes('Generating Brand Identity')) return t('loading.generatingBrandIdentity');
+    if (message.includes('Generating Marketing Strategy')) return t('loading.generatingMarketingStrategy');
+    if (message.includes('Generating Pitch Deck')) return t('loading.generatingPitchDeck');
+    return message;
+  }, [message, t]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setStepIndex(prev => (prev < 4 ? prev + 1 : prev));
@@ -39,7 +52,7 @@ export function AILoadingOverlay({ message }: { message?: string }) {
             <Sparkles className="w-8 h-8 text-emerald-500" />
           </motion.div>
           
-          <h2 className="text-xl font-bold text-slate-900 mb-2">{message || t('loading.generating')}</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-2">{translatedMessage}</h2>
           <p className="text-sm text-slate-500 mb-8 max-w-[250px]">{t('loading.pleaseWait')}</p>
           
           <div className="w-full space-y-4">

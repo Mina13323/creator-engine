@@ -91,18 +91,18 @@ export default function AccountDetails() {
   const roleBadge =
     profile?.role === 'admin'
       ? {
-          text: 'Admin',
+          text: t('account.roleAdmin'),
           color: 'text-emerald-700 bg-emerald-50 border-emerald-200',
         }
-      : { text: 'User', color: 'text-slate-600 bg-slate-50 border-slate-200' };
+      : { text: t('account.roleUser'), color: 'text-slate-600 bg-slate-50 border-slate-200' };
 
   const planBadge =
     profile?.plan === 'Admin'
       ? {
-          text: '★ Admin Plan',
+          text: t('account.planAdmin'),
           color: 'text-amber-700 bg-amber-50 border-amber-200',
         }
-      : { text: 'Free Plan', color: 'text-indigo-700 bg-indigo-50 border-indigo-200' };
+      : { text: t('account.planFree'), color: 'text-indigo-700 bg-indigo-50 border-indigo-200' };
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -203,7 +203,9 @@ export default function AccountDetails() {
                         <p className="text-sm font-semibold text-slate-800 truncate max-w-[200px]">
                           {p.name}
                         </p>
-                        <p className="text-xs text-slate-400 capitalize">{p.industry}</p>
+                        <p className="text-xs text-slate-400 capitalize">
+                          {!p.industry || p.industry.toLowerCase() === 'unknown' ? t('account.unknownIndustry') : p.industry}
+                        </p>
                       </div>
                     </div>
                     <span
@@ -213,7 +215,7 @@ export default function AccountDetails() {
                           : 'text-slate-500 bg-slate-50 border-slate-200'
                       }`}
                     >
-                      {p.status}
+                      {p.status === 'active' ? t('account.statusActive') : p.status === 'draft' ? t('account.statusDraft') : p.status === 'archived' ? t('account.statusArchived') : p.status}
                     </span>
                   </li>
                 ))}
