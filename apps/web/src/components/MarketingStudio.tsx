@@ -279,7 +279,7 @@ export default function MarketingStudio() {
             stages={STAGES as any}
           />
         </div>
-      ) : genResult ? (
+      ) : (genResult && genResult.status !== 'failed' && (genResult.video?.url || genResult.url)) ? (
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -476,6 +476,12 @@ export default function MarketingStudio() {
                 </div>
 
                 <div className="pt-4 mt-4 border-t border-[rgba(60,64,67,0.12)]">
+                  {genResult?.status === 'failed' && (
+                    <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm flex flex-col gap-1">
+                      <span className="font-bold">Generation failed</span>
+                      <span>{genResult.error || "Unknown error occurred"}</span>
+                    </div>
+                  )}
                   <Button 
                     onClick={handleGenerate} 
                     disabled={isGenerating || !prompt || !productImage}
