@@ -3420,7 +3420,7 @@
       "source_file": "apps/web/src/app/admin/dashboard/page.tsx",
       "source_location": "L1",
       "id": "dashboard_page",
-      "community": 10,
+      "community": 5,
       "norm_label": "page.tsx"
     },
     {
@@ -3429,7 +3429,7 @@
       "source_file": "apps/web/src/app/admin/dashboard/page.tsx",
       "source_location": "L21",
       "id": "dashboard_page_trafficchart",
-      "community": 10,
+      "community": 5,
       "norm_label": "trafficchart"
     },
     {
@@ -3825,7 +3825,7 @@
       "source_file": "apps/web/src/components/AIConsultantDashboard.tsx",
       "source_location": "L1",
       "id": "components_aiconsultantdashboard",
-      "community": 0,
+      "community": 10,
       "norm_label": "aiconsultantdashboard.tsx"
     },
     {
@@ -3843,7 +3843,7 @@
       "source_file": "apps/web/src/components/AIStudioPanel.tsx",
       "source_location": "L1",
       "id": "components_aistudiopanel",
-      "community": 0,
+      "community": 10,
       "norm_label": "aistudiopanel.tsx"
     },
     {
@@ -3852,7 +3852,7 @@
       "source_file": "apps/web/src/components/AIStudioPanel.tsx",
       "source_location": "L9",
       "id": "components_aistudiopanel_studiotab",
-      "community": 0,
+      "community": 10,
       "norm_label": "studiotab"
     },
     {
@@ -3861,7 +3861,7 @@
       "source_file": "apps/web/src/components/AIStudioPanel.tsx",
       "source_location": "L11",
       "id": "components_aistudiopanel_aistudiopanel",
-      "community": 0,
+      "community": 10,
       "norm_label": "aistudiopanel()"
     },
     {
@@ -3870,7 +3870,7 @@
       "source_file": "apps/web/src/components/AccountDetails.tsx",
       "source_location": "L1",
       "id": "components_accountdetails",
-      "community": 0,
+      "community": 144,
       "norm_label": "accountdetails.tsx"
     },
     {
@@ -3879,7 +3879,7 @@
       "source_file": "apps/web/src/components/AccountDetails.tsx",
       "source_location": "L19",
       "id": "components_accountdetails_accountprofile",
-      "community": 0,
+      "community": 144,
       "norm_label": "accountprofile"
     },
     {
@@ -3888,7 +3888,7 @@
       "source_file": "apps/web/src/components/AccountDetails.tsx",
       "source_location": "L31",
       "id": "components_accountdetails_inforow",
-      "community": 0,
+      "community": 144,
       "norm_label": "inforow()"
     },
     {
@@ -3897,7 +3897,7 @@
       "source_file": "apps/web/src/components/AccountDetails.tsx",
       "source_location": "L63",
       "id": "components_accountdetails_accountdetails",
-      "community": 0,
+      "community": 144,
       "norm_label": "accountdetails()"
     },
     {
@@ -3924,7 +3924,7 @@
       "source_file": "apps/web/src/components/BrandingPanel.tsx",
       "source_location": "L1",
       "id": "components_brandingpanel",
-      "community": 0,
+      "community": 10,
       "norm_label": "brandingpanel.tsx"
     },
     {
@@ -3942,7 +3942,7 @@
       "source_file": "apps/web/src/components/BusinessPlanDashboard.tsx",
       "source_location": "L1",
       "id": "components_businessplandashboard",
-      "community": 0,
+      "community": 10,
       "norm_label": "businessplandashboard.tsx"
     },
     {
@@ -3951,7 +3951,7 @@
       "source_file": "apps/web/src/components/BusinessPlanDashboard.tsx",
       "source_location": "L23",
       "id": "components_businessplandashboard_colors",
-      "community": 0,
+      "community": 10,
       "norm_label": "colors"
     },
     {
@@ -4023,7 +4023,7 @@
       "source_file": "apps/web/src/components/Dashboard.tsx",
       "source_location": "L1",
       "id": "components_dashboard",
-      "community": 0,
+      "community": 142,
       "norm_label": "dashboard.tsx"
     },
     {
@@ -4032,7 +4032,7 @@
       "source_file": "apps/web/src/components/Dashboard.tsx",
       "source_location": "L13",
       "id": "components_dashboard_dashboard",
-      "community": 0,
+      "community": 142,
       "norm_label": "dashboard()"
     },
     {
@@ -4212,7 +4212,7 @@
       "source_file": "apps/web/src/components/MarketingDashboard.tsx",
       "source_location": "L1",
       "id": "components_marketingdashboard",
-      "community": 0,
+      "community": 10,
       "norm_label": "marketingdashboard.tsx"
     },
     {
@@ -4365,7 +4365,7 @@
       "source_file": "apps/web/src/components/Onboarding.tsx",
       "source_location": "L1",
       "id": "components_onboarding",
-      "community": 20,
+      "community": 5,
       "norm_label": "onboarding.tsx"
     },
     {
@@ -4374,7 +4374,7 @@
       "source_file": "apps/web/src/components/Onboarding.tsx",
       "source_location": "L15",
       "id": "components_onboarding_onboarding",
-      "community": 20,
+      "community": 5,
       "norm_label": "onboarding()"
     },
     {
@@ -4383,7 +4383,7 @@
       "source_file": "apps/web/src/components/OpportunityExplorer.tsx",
       "source_location": "L1",
       "id": "components_opportunityexplorer",
-      "community": 0,
+      "community": 10,
       "norm_label": "opportunityexplorer.tsx"
     },
     {
@@ -4401,7 +4401,7 @@
       "source_file": "apps/web/src/components/PitchDashboard.tsx",
       "source_location": "L1",
       "id": "components_pitchdashboard",
-      "community": 0,
+      "community": 10,
       "norm_label": "pitchdashboard.tsx"
     },
     {
@@ -4473,7 +4473,7 @@
       "source_file": "apps/web/src/components/RoadmapPanel.tsx",
       "source_location": "L1",
       "id": "components_roadmappanel",
-      "community": 0,
+      "community": 10,
       "norm_label": "roadmappanel.tsx"
     },
     {
@@ -4545,7 +4545,7 @@
       "source_file": "apps/web/src/components/admin/CommandPalette.tsx",
       "source_location": "L11",
       "id": "admin_commandpalette_commandpalette",
-      "community": 0,
+      "community": 142,
       "norm_label": "commandpalette()"
     },
     {
@@ -4554,7 +4554,7 @@
       "source_file": "apps/web/src/components/admin/DashboardObservability.tsx",
       "source_location": "L1",
       "id": "admin_dashboardobservability",
-      "community": 10,
+      "community": 5,
       "norm_label": "dashboardobservability.tsx"
     },
     {
@@ -4563,7 +4563,7 @@
       "source_file": "apps/web/src/components/admin/DashboardObservability.tsx",
       "source_location": "L4",
       "id": "admin_dashboardobservability_dashboardobservabilityprops",
-      "community": 10,
+      "community": 5,
       "norm_label": "dashboardobservabilityprops"
     },
     {
@@ -4572,7 +4572,7 @@
       "source_file": "apps/web/src/components/admin/DashboardObservability.tsx",
       "source_location": "L16",
       "id": "admin_dashboardobservability_dashboardobservability",
-      "community": 10,
+      "community": 5,
       "norm_label": "dashboardobservability()"
     },
     {
@@ -4581,7 +4581,7 @@
       "source_file": "apps/web/src/components/admin/KPICardsRow.tsx",
       "source_location": "L1",
       "id": "admin_kpicardsrow",
-      "community": 10,
+      "community": 5,
       "norm_label": "kpicardsrow.tsx"
     },
     {
@@ -4590,7 +4590,7 @@
       "source_file": "apps/web/src/components/admin/KPICardsRow.tsx",
       "source_location": "L5",
       "id": "admin_kpicardsrow_kpicardsrow",
-      "community": 10,
+      "community": 5,
       "norm_label": "kpicardsrow()"
     },
     {
@@ -4617,7 +4617,7 @@
       "source_file": "apps/web/src/components/admin/RevenueAnalytics.tsx",
       "source_location": "L1",
       "id": "admin_revenueanalytics",
-      "community": 10,
+      "community": 5,
       "norm_label": "revenueanalytics.tsx"
     },
     {
@@ -4626,7 +4626,7 @@
       "source_file": "apps/web/src/components/admin/RevenueAnalytics.tsx",
       "source_location": "L4",
       "id": "admin_revenueanalytics_revenueanalyticsprops",
-      "community": 10,
+      "community": 5,
       "norm_label": "revenueanalyticsprops"
     },
     {
@@ -4635,7 +4635,7 @@
       "source_file": "apps/web/src/components/admin/RevenueAnalytics.tsx",
       "source_location": "L20",
       "id": "admin_revenueanalytics_revenueanalytics",
-      "community": 10,
+      "community": 5,
       "norm_label": "revenueanalytics()"
     },
     {
@@ -4671,7 +4671,7 @@
       "source_file": "apps/web/src/components/admin/VentureFunnel.tsx",
       "source_location": "L1",
       "id": "admin_venturefunnel",
-      "community": 10,
+      "community": 5,
       "norm_label": "venturefunnel.tsx"
     },
     {
@@ -4680,7 +4680,7 @@
       "source_file": "apps/web/src/components/admin/VentureFunnel.tsx",
       "source_location": "L4",
       "id": "admin_venturefunnel_venturefunnelprops",
-      "community": 10,
+      "community": 5,
       "norm_label": "venturefunnelprops"
     },
     {
@@ -4689,7 +4689,7 @@
       "source_file": "apps/web/src/components/admin/VentureFunnel.tsx",
       "source_location": "L8",
       "id": "admin_venturefunnel_venturefunnel",
-      "community": 10,
+      "community": 5,
       "norm_label": "venturefunnel()"
     },
     {
@@ -4698,7 +4698,7 @@
       "source_file": "apps/web/src/components/ui/AILoadingOverlay.tsx",
       "source_location": "L1",
       "id": "ui_ailoadingoverlay",
-      "community": 0,
+      "community": 10,
       "norm_label": "ailoadingoverlay.tsx"
     },
     {
@@ -4707,7 +4707,7 @@
       "source_file": "apps/web/src/components/ui/AILoadingOverlay.tsx",
       "source_location": "L7",
       "id": "ui_ailoadingoverlay_progress_steps",
-      "community": 0,
+      "community": 10,
       "norm_label": "progress_steps"
     },
     {
@@ -4716,7 +4716,7 @@
       "source_file": "apps/web/src/components/ui/AILoadingOverlay.tsx",
       "source_location": "L15",
       "id": "ui_ailoadingoverlay_ailoadingoverlay",
-      "community": 0,
+      "community": 10,
       "norm_label": "ailoadingoverlay()"
     },
     {
@@ -4725,7 +4725,7 @@
       "source_file": "apps/web/src/components/ui/Skeleton.tsx",
       "source_location": "L1",
       "id": "ui_skeleton",
-      "community": 20,
+      "community": 5,
       "norm_label": "skeleton.tsx"
     },
     {
@@ -4734,7 +4734,7 @@
       "source_file": "apps/web/src/components/ui/Skeleton.tsx",
       "source_location": "L4",
       "id": "ui_skeleton_skeleton",
-      "community": 20,
+      "community": 5,
       "norm_label": "skeleton()"
     },
     {
@@ -4824,7 +4824,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L1",
       "id": "ui_card",
-      "community": 10,
+      "community": 5,
       "norm_label": "card.tsx"
     },
     {
@@ -4833,7 +4833,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L5",
       "id": "ui_card_card",
-      "community": 10,
+      "community": 5,
       "norm_label": "card()"
     },
     {
@@ -4842,7 +4842,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L23",
       "id": "ui_card_cardheader",
-      "community": 10,
+      "community": 5,
       "norm_label": "cardheader()"
     },
     {
@@ -4851,7 +4851,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L36",
       "id": "ui_card_cardtitle",
-      "community": 10,
+      "community": 5,
       "norm_label": "cardtitle()"
     },
     {
@@ -4860,7 +4860,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L49",
       "id": "ui_card_carddescription",
-      "community": 10,
+      "community": 5,
       "norm_label": "carddescription()"
     },
     {
@@ -4869,7 +4869,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L59",
       "id": "ui_card_cardaction",
-      "community": 10,
+      "community": 5,
       "norm_label": "cardaction()"
     },
     {
@@ -4878,7 +4878,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L72",
       "id": "ui_card_cardcontent",
-      "community": 10,
+      "community": 5,
       "norm_label": "cardcontent()"
     },
     {
@@ -4887,7 +4887,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L82",
       "id": "ui_card_cardfooter",
-      "community": 10,
+      "community": 5,
       "norm_label": "cardfooter()"
     },
     {
@@ -4896,7 +4896,7 @@
       "source_file": "apps/web/src/components/ui/checkbox.tsx",
       "source_location": "L1",
       "id": "ui_checkbox",
-      "community": 0,
+      "community": 10,
       "norm_label": "checkbox.tsx"
     },
     {
@@ -4905,7 +4905,7 @@
       "source_file": "apps/web/src/components/ui/checkbox.tsx",
       "source_location": "L5",
       "id": "ui_checkbox_checkbox",
-      "community": 0,
+      "community": 10,
       "norm_label": "checkbox"
     },
     {
@@ -4914,7 +4914,7 @@
       "source_file": "apps/web/src/components/ui/input.tsx",
       "source_location": "L1",
       "id": "ui_input",
-      "community": 20,
+      "community": 5,
       "norm_label": "input.tsx"
     },
     {
@@ -4923,7 +4923,7 @@
       "source_file": "apps/web/src/components/ui/input.tsx",
       "source_location": "L6",
       "id": "ui_input_input",
-      "community": 20,
+      "community": 5,
       "norm_label": "input()"
     },
     {
@@ -4932,7 +4932,7 @@
       "source_file": "apps/web/src/components/ui/select.tsx",
       "source_location": "L1",
       "id": "ui_select",
-      "community": 20,
+      "community": 5,
       "norm_label": "select.tsx"
     },
     {
@@ -4941,7 +4941,7 @@
       "source_file": "apps/web/src/components/ui/select.tsx",
       "source_location": "L11",
       "id": "ui_select_selectgroup",
-      "community": 20,
+      "community": 5,
       "norm_label": "selectgroup()"
     },
     {
@@ -4950,7 +4950,7 @@
       "source_file": "apps/web/src/components/ui/select.tsx",
       "source_location": "L21",
       "id": "ui_select_selectvalue",
-      "community": 20,
+      "community": 5,
       "norm_label": "selectvalue()"
     },
     {
@@ -4959,7 +4959,7 @@
       "source_file": "apps/web/src/components/ui/select.tsx",
       "source_location": "L31",
       "id": "ui_select_selecttrigger",
-      "community": 20,
+      "community": 5,
       "norm_label": "selecttrigger()"
     },
     {
@@ -4968,7 +4968,7 @@
       "source_file": "apps/web/src/components/ui/select.tsx",
       "source_location": "L59",
       "id": "ui_select_selectcontent",
-      "community": 20,
+      "community": 5,
       "norm_label": "selectcontent()"
     },
     {
@@ -4977,7 +4977,7 @@
       "source_file": "apps/web/src/components/ui/select.tsx",
       "source_location": "L98",
       "id": "ui_select_selectlabel",
-      "community": 20,
+      "community": 5,
       "norm_label": "selectlabel()"
     },
     {
@@ -4986,7 +4986,7 @@
       "source_file": "apps/web/src/components/ui/select.tsx",
       "source_location": "L111",
       "id": "ui_select_selectitem",
-      "community": 20,
+      "community": 5,
       "norm_label": "selectitem()"
     },
     {
@@ -4995,7 +4995,7 @@
       "source_file": "apps/web/src/components/ui/select.tsx",
       "source_location": "L139",
       "id": "ui_select_selectseparator",
-      "community": 20,
+      "community": 5,
       "norm_label": "selectseparator()"
     },
     {
@@ -5004,7 +5004,7 @@
       "source_file": "apps/web/src/components/ui/select.tsx",
       "source_location": "L152",
       "id": "ui_select_selectscrollupbutton",
-      "community": 20,
+      "community": 5,
       "norm_label": "selectscrollupbutton()"
     },
     {
@@ -5013,7 +5013,7 @@
       "source_file": "apps/web/src/components/ui/select.tsx",
       "source_location": "L171",
       "id": "ui_select_selectscrolldownbutton",
-      "community": 20,
+      "community": 5,
       "norm_label": "selectscrolldownbutton()"
     },
     {
@@ -5301,7 +5301,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L161",
       "id": "lib_authclient_authclient",
-      "community": 0,
+      "community": 142,
       "norm_label": "authclient"
     },
     {
@@ -5310,7 +5310,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L1",
       "id": "lib_motion_presets",
-      "community": 0,
+      "community": 10,
       "norm_label": "motion-presets.ts"
     },
     {
@@ -5319,7 +5319,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L3",
       "id": "lib_motion_presets_pagetransition",
-      "community": 0,
+      "community": 10,
       "norm_label": "pagetransition"
     },
     {
@@ -5328,7 +5328,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L9",
       "id": "lib_motion_presets_cardreveal",
-      "community": 0,
+      "community": 10,
       "norm_label": "cardreveal"
     },
     {
@@ -5337,7 +5337,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L14",
       "id": "lib_motion_presets_fadeinup",
-      "community": 0,
+      "community": 10,
       "norm_label": "fadeinup"
     },
     {
@@ -5346,7 +5346,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L19",
       "id": "lib_motion_presets_fadein",
-      "community": 0,
+      "community": 10,
       "norm_label": "fadein"
     },
     {
@@ -5355,7 +5355,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L25",
       "id": "lib_motion_presets_slidefromleft",
-      "community": 0,
+      "community": 10,
       "norm_label": "slidefromleft"
     },
     {
@@ -5364,7 +5364,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L31",
       "id": "lib_motion_presets_slidefromright",
-      "community": 0,
+      "community": 10,
       "norm_label": "slidefromright"
     },
     {
@@ -5373,7 +5373,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L37",
       "id": "lib_motion_presets_modaltransition",
-      "community": 0,
+      "community": 10,
       "norm_label": "modaltransition"
     },
     {
@@ -5382,7 +5382,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L43",
       "id": "lib_motion_presets_staggercontainer",
-      "community": 0,
+      "community": 10,
       "norm_label": "staggercontainer"
     },
     {
@@ -5391,7 +5391,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L48",
       "id": "lib_motion_presets_staggeritem",
-      "community": 0,
+      "community": 10,
       "norm_label": "staggeritem"
     },
     {
@@ -5400,7 +5400,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L53",
       "id": "lib_motion_presets_floatinganimation",
-      "community": 0,
+      "community": 10,
       "norm_label": "floatinganimation"
     },
     {
@@ -5409,7 +5409,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L60",
       "id": "lib_motion_presets_pulseanimation",
-      "community": 0,
+      "community": 10,
       "norm_label": "pulseanimation"
     },
     {
@@ -5418,7 +5418,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L68",
       "id": "lib_motion_presets_successanimation",
-      "community": 0,
+      "community": 10,
       "norm_label": "successanimation"
     },
     {
@@ -5427,7 +5427,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L77",
       "id": "lib_motion_presets_slideinleft",
-      "community": 0,
+      "community": 10,
       "norm_label": "slideinleft"
     },
     {
@@ -5436,7 +5436,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L83",
       "id": "lib_motion_presets_slideinright",
-      "community": 0,
+      "community": 10,
       "norm_label": "slideinright"
     },
     {
@@ -5445,7 +5445,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L89",
       "id": "lib_motion_presets_scalein",
-      "community": 0,
+      "community": 10,
       "norm_label": "scalein"
     },
     {
@@ -5454,7 +5454,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L95",
       "id": "lib_motion_presets_hoverlift",
-      "community": 0,
+      "community": 10,
       "norm_label": "hoverlift"
     },
     {
@@ -5463,7 +5463,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L99",
       "id": "lib_motion_presets_hoverglow",
-      "community": 0,
+      "community": 10,
       "norm_label": "hoverglow"
     },
     {
@@ -5472,7 +5472,7 @@
       "source_file": "apps/web/src/lib/motion-presets.ts",
       "source_location": "L107",
       "id": "lib_motion_presets_chartreveal",
-      "community": 0,
+      "community": 10,
       "norm_label": "chartreveal"
     },
     {
@@ -5481,7 +5481,7 @@
       "source_file": "apps/web/src/lib/utils.ts",
       "source_location": "L1",
       "id": "lib_utils",
-      "community": 20,
+      "community": 5,
       "norm_label": "utils.ts"
     },
     {
@@ -5490,7 +5490,7 @@
       "source_file": "apps/web/src/lib/utils.ts",
       "source_location": "L4",
       "id": "lib_utils_cn",
-      "community": 20,
+      "community": 5,
       "norm_label": "cn()"
     },
     {
@@ -11405,6 +11405,213 @@
       "id": "github_readme_ci_strict_rules",
       "community": 110,
       "norm_label": "strict rules"
+    },
+    {
+      "label": "ADMIN_DASHBOARD_GUIDE.md",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L1",
+      "id": "admin_dashboard_guide",
+      "community": 20,
+      "norm_label": "admin_dashboard_guide.md"
+    },
+    {
+      "label": "Creator Engine - Admin Dashboard & Moderation Portal Guide",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L1",
+      "id": "admin_dashboard_guide_creator_engine_admin_dashboard_moderation_portal_guide",
+      "community": 20,
+      "norm_label": "creator engine - admin dashboard & moderation portal guide"
+    },
+    {
+      "label": "Table of Contents",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L7",
+      "id": "admin_dashboard_guide_table_of_contents",
+      "community": 20,
+      "norm_label": "table of contents"
+    },
+    {
+      "label": "1. System Architecture & Authentication Flow",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L24",
+      "id": "admin_dashboard_guide_1_system_architecture_authentication_flow",
+      "community": 20,
+      "norm_label": "1. system architecture & authentication flow"
+    },
+    {
+      "label": "How Authentication Works:",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L31",
+      "id": "admin_dashboard_guide_how_authentication_works",
+      "community": 20,
+      "norm_label": "how authentication works:"
+    },
+    {
+      "label": "2. Dashboard Navigation & Global Layout",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L43",
+      "id": "admin_dashboard_guide_2_dashboard_navigation_global_layout",
+      "community": 20,
+      "norm_label": "2. dashboard navigation & global layout"
+    },
+    {
+      "label": "3. Page-by-Page Feature Breakdown",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L56",
+      "id": "admin_dashboard_guide_3_page_by_page_feature_breakdown",
+      "community": 20,
+      "norm_label": "3. page-by-page feature breakdown"
+    },
+    {
+      "label": "Overview Dashboard",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L58",
+      "id": "admin_dashboard_guide_overview_dashboard",
+      "community": 20,
+      "norm_label": "overview dashboard"
+    },
+    {
+      "label": "Features:",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L63",
+      "id": "admin_dashboard_guide_features",
+      "community": 20,
+      "norm_label": "features:"
+    },
+    {
+      "label": "User Management",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L74",
+      "id": "admin_dashboard_guide_user_management",
+      "community": 20,
+      "norm_label": "user management"
+    },
+    {
+      "label": "Features:",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L78",
+      "id": "admin_dashboard_guide_features_78",
+      "community": 20,
+      "norm_label": "features:"
+    },
+    {
+      "label": "Project Management",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L89",
+      "id": "admin_dashboard_guide_project_management",
+      "community": 20,
+      "norm_label": "project management"
+    },
+    {
+      "label": "Features:",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L93",
+      "id": "admin_dashboard_guide_features_93",
+      "community": 20,
+      "norm_label": "features:"
+    },
+    {
+      "label": "Observability & Moderation",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L103",
+      "id": "admin_dashboard_guide_observability_moderation",
+      "community": 20,
+      "norm_label": "observability & moderation"
+    },
+    {
+      "label": "Features:",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L107",
+      "id": "admin_dashboard_guide_features_107",
+      "community": 20,
+      "norm_label": "features:"
+    },
+    {
+      "label": "Subscription Plans Manager",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L120",
+      "id": "admin_dashboard_guide_subscription_plans_manager",
+      "community": 20,
+      "norm_label": "subscription plans manager"
+    },
+    {
+      "label": "Features:",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L124",
+      "id": "admin_dashboard_guide_features_124",
+      "community": 20,
+      "norm_label": "features:"
+    },
+    {
+      "label": "System Settings",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L138",
+      "id": "admin_dashboard_guide_system_settings",
+      "community": 20,
+      "norm_label": "system settings"
+    },
+    {
+      "label": "Features:",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L142",
+      "id": "admin_dashboard_guide_features_142",
+      "community": 20,
+      "norm_label": "features:"
+    },
+    {
+      "label": "4. Backend Mechanics & Operational Gates",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L156",
+      "id": "admin_dashboard_guide_4_backend_mechanics_operational_gates",
+      "community": 20,
+      "norm_label": "4. backend mechanics & operational gates"
+    },
+    {
+      "label": "Emergency Lockdown System",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L160",
+      "id": "admin_dashboard_guide_emergency_lockdown_system",
+      "community": 20,
+      "norm_label": "emergency lockdown system"
+    },
+    {
+      "label": "Scheduled Maintenance Mode",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L168",
+      "id": "admin_dashboard_guide_scheduled_maintenance_mode",
+      "community": 20,
+      "norm_label": "scheduled maintenance mode"
+    },
+    {
+      "label": "Observability & Token Telemetry Tracking",
+      "file_type": "document",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L177",
+      "id": "admin_dashboard_guide_observability_token_telemetry_tracking",
+      "community": 20,
+      "norm_label": "observability & token telemetry tracking"
     },
     {
       "label": "CLAUDE.md",
@@ -18765,9 +18972,9 @@
       "source_file": "apps/web/package.json",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "web_package_devdependencies",
-      "target": "web_package_devdependencies_import_in_the_middle",
-      "confidence_score": 1.0
+      "target": "web_package_devdependencies_import_in_the_middle"
     },
     {
       "relation": "contains",
@@ -18785,9 +18992,9 @@
       "source_file": "apps/web/package.json",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "web_package_devdependencies",
-      "target": "web_package_devdependencies_require_in_the_middle",
-      "confidence_score": 1.0
+      "target": "web_package_devdependencies_require_in_the_middle"
     },
     {
       "relation": "contains",
@@ -32307,6 +32514,226 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide",
+      "target": "admin_dashboard_guide_creator_engine_admin_dashboard_moderation_portal_guide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_creator_engine_admin_dashboard_moderation_portal_guide",
+      "target": "admin_dashboard_guide_1_system_architecture_authentication_flow",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_creator_engine_admin_dashboard_moderation_portal_guide",
+      "target": "admin_dashboard_guide_2_dashboard_navigation_global_layout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_creator_engine_admin_dashboard_moderation_portal_guide",
+      "target": "admin_dashboard_guide_3_page_by_page_feature_breakdown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L156",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_creator_engine_admin_dashboard_moderation_portal_guide",
+      "target": "admin_dashboard_guide_4_backend_mechanics_operational_gates",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_creator_engine_admin_dashboard_moderation_portal_guide",
+      "target": "admin_dashboard_guide_table_of_contents",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_1_system_architecture_authentication_flow",
+      "target": "admin_dashboard_guide_how_authentication_works",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L103",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_3_page_by_page_feature_breakdown",
+      "target": "admin_dashboard_guide_observability_moderation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_3_page_by_page_feature_breakdown",
+      "target": "admin_dashboard_guide_overview_dashboard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_3_page_by_page_feature_breakdown",
+      "target": "admin_dashboard_guide_project_management",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L120",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_3_page_by_page_feature_breakdown",
+      "target": "admin_dashboard_guide_subscription_plans_manager",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L138",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_3_page_by_page_feature_breakdown",
+      "target": "admin_dashboard_guide_system_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L74",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_3_page_by_page_feature_breakdown",
+      "target": "admin_dashboard_guide_user_management",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_overview_dashboard",
+      "target": "admin_dashboard_guide_features",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_user_management",
+      "target": "admin_dashboard_guide_features_78",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_project_management",
+      "target": "admin_dashboard_guide_features_93",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L107",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_observability_moderation",
+      "target": "admin_dashboard_guide_features_107",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L124",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_subscription_plans_manager",
+      "target": "admin_dashboard_guide_features_124",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L142",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_system_settings",
+      "target": "admin_dashboard_guide_features_142",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L160",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_4_backend_mechanics_operational_gates",
+      "target": "admin_dashboard_guide_emergency_lockdown_system",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L177",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_4_backend_mechanics_operational_gates",
+      "target": "admin_dashboard_guide_observability_token_telemetry_tracking",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "ADMIN_DASHBOARD_GUIDE.md",
+      "source_location": "L168",
+      "weight": 1.0,
+      "source": "admin_dashboard_guide_4_backend_mechanics_operational_gates",
+      "target": "admin_dashboard_guide_scheduled_maintenance_mode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -34320,5 +34747,5 @@
       "source_file": ".claude/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "a571aaff946c6fa6acd24468315e4d09d42fb12c"
+  "built_at_commit": "9cd565467aca8201147135838a93aa57fe57f0c7"
 }

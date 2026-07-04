@@ -1,16 +1,16 @@
-# Graph Report - creator-engine  (2026-06-28)
+# Graph Report - creator-engine  (2026-06-30)
 
 ## Corpus Check
-- 195 files · ~207,318 words
+- 196 files · ~209,003 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1559 nodes · 1955 edges · 148 communities (114 shown, 34 thin omitted)
+- 1582 nodes · 1977 edges · 148 communities (114 shown, 34 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 28 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a571aaff`
+- Built from commit: `9cd56546`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -174,8 +174,8 @@
 ## Communities (148 total, 34 thin omitted)
 
 ### Community 0 - "Components Authclient Select Module"
-Cohesion: 0.06
-Nodes (52): AdminSidebar(), CommandPalette(), AdminLayout(), AppPage(), PROTECTED_TABS, AccountDetails(), AccountProfile, AIConsultantDashboard() (+44 more)
+Cohesion: 0.11
+Nodes (23): AdminSidebar(), AdminLayout(), AppPage(), PROTECTED_TABS, AIConsultantDashboard(), AuthModal(), BrandingPanel(), BusinessPlanDashboard() (+15 more)
 
 ### Community 1 - "Index Packages Database Module"
 Cohesion: 0.04
@@ -194,8 +194,8 @@ Cohesion: 0.33
 Nodes (4): Code B: Deterministic Financial Forecasting (Code Node), n8n Financial Engine Workflow Specification, Prompt A: OpenAI System Prompt, Workflow Architecture (Nodes)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.13
-Nodes (15): ModerationFeed(), TrafficChart(), AdminDashboardPage(), DashboardExtendedData, FlaggedCategory, ModerationEvent, ModerationStats, TrafficData (+7 more)
+Cohesion: 0.08
+Nodes (43): DashboardObservability(), DashboardObservabilityProps, KPICardsRow(), ModerationFeed(), RevenueAnalytics(), RevenueAnalyticsProps, TrafficChart(), VentureFunnel() (+35 more)
 
 ### Community 6 - "Package Dependencies Scripts Module"
 Cohesion: 0.04
@@ -214,8 +214,8 @@ Cohesion: 0.10
 Nodes (19): AgentRun, AgentRunSchema, BusinessPlan, BusinessPlanSchema, FounderProfile, FounderProfileSchema, fs, jwt (+11 more)
 
 ### Community 10 - "Components Marketingstudio Apiclient Module"
-Cohesion: 0.23
-Nodes (15): DashboardObservability(), DashboardObservabilityProps, KPICardsRow(), RevenueAnalytics(), RevenueAnalyticsProps, VentureFunnel(), VentureFunnelProps, TrafficChart (+7 more)
+Cohesion: 0.13
+Nodes (24): AIStudioPanel(), StudioTab, COLORS, cardReveal, chartReveal, fadeIn, fadeInUp, floatingAnimation (+16 more)
 
 ### Community 11 - "Turbo Package Devdependencies Module"
 Cohesion: 0.13
@@ -254,8 +254,8 @@ Cohesion: 0.17
 Nodes (15): dependencies, @creator/prompts, @creator/rag-core, @creator/types, @google/generative-ai, devDependencies, @types/node, typescript (+7 more)
 
 ### Community 20 - "Index Apps Authmiddleware Module"
-Cohesion: 0.24
-Nodes (13): Onboarding(), cn(), Input(), SelectContent(), SelectGroup(), SelectItem(), SelectLabel(), SelectScrollDownButton() (+5 more)
+Cohesion: 0.09
+Nodes (22): 1. System Architecture & Authentication Flow, 2. Dashboard Navigation & Global Layout, 3. Page-by-Page Feature Breakdown, 4. Backend Mechanics & Operational Gates, Creator Engine - Admin Dashboard & Moderation Portal Guide, Emergency Lockdown System, Features:, Features: (+14 more)
 
 ### Community 21 - "Workflows Opportunity Ranking Module"
 Cohesion: 0.09
@@ -498,39 +498,39 @@ Cohesion: 0.17
 Nodes (12): POST(), POST(), PredictPayloadSchema, GET(), run(), main(), runTest(), connectDB() (+4 more)
 
 ### Community 142 - "Community 142"
-Cohesion: 0.13
-Nodes (12): CommandPaletteProps, adminClient, PlanScheme, SCHEME_CYCLE, SCHEMES, SLUG_SCHEME, SubscriptionPlan, CreatorInfo (+4 more)
+Cohesion: 0.11
+Nodes (15): CommandPalette(), CommandPaletteProps, Dashboard(), adminClient, authClient, PlanScheme, SCHEME_CYCLE, SCHEMES (+7 more)
 
 ### Community 143 - "Community 143"
 Cohesion: 0.13
 Nodes (14): createdAt, worktreeId, sessions, ses_0f58b6744ffe90nXao4EuycvSa, tabOrder, local, worktreeOrder, worktrees (+6 more)
 
 ### Community 144 - "Community 144"
-Cohesion: 0.32
-Nodes (11): checkEmail(), del(), get(), getMe(), googleLogin(), login(), logout(), post() (+3 more)
+Cohesion: 0.21
+Nodes (13): AccountDetails(), AccountProfile, checkEmail(), del(), get(), getMe(), googleLogin(), login() (+5 more)
 
 ### Community 146 - "Community 146"
 Cohesion: 0.29
 Nodes (5): KnowledgeDocument, KNOWLEDGE_BASE, queryRAG(), callLLM(), generateFinancialPrediction()
 
 ## Knowledge Gaps
-- **777 isolated node(s):** `PreToolUse`, `branch`, `path`, `parentBranch`, `createdAt` (+772 more)
+- **789 isolated node(s):** `PreToolUse`, `branch`, `path`, `parentBranch`, `createdAt` (+784 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **34 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useStore` connect `Components Authclient Select Module` to `Index Apps Authmiddleware Module`, `Community 142`?**
+- **Why does `useStore` connect `Components Authclient Select Module` to `Community 144`, `Components Marketingstudio Apiclient Module`, `Community 5`, `Community 142`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **Why does `connectDB()` connect `Community 141` to `Index Packages Database Module`, `Community 99`?**
   _High betweenness centrality (0.003) - this node is a cross-community bridge._
-- **Why does `Button()` connect `Community 142` to `Components Authclient Select Module`, `Components Marketingstudio Apiclient Module`, `Index Apps Authmiddleware Module`, `Community 5`?**
+- **Why does `Button()` connect `Community 142` to `Components Authclient Select Module`, `Components Marketingstudio Apiclient Module`, `Community 5`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `PreToolUse`, `branch`, `path` to the rest of the system?**
-  _778 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _790 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Components Authclient Select Module` be split into smaller, more focused modules?**
-  _Cohesion score 0.06234177215189873 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.1066066066066066 - nodes in this community are weakly interconnected._
 - **Should `Index Packages Database Module` be split into smaller, more focused modules?**
   _Cohesion score 0.043478260869565216 - nodes in this community are weakly interconnected._
 - **Should `Package Dependencies Devdependencies Module` be split into smaller, more focused modules?**

@@ -27,7 +27,7 @@ export interface ModerationEvent {
   timestamp: string;
   user: string;
   type: string;
-  status: 'Pending' | 'Resolved' | 'Dismissed';
+  status: 'Pending' | 'Resolved' | 'Dismissed' | 'Failed' | 'Banned';
   details?: string;
 }
 

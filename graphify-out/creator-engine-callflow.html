@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>creator-engine — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 1559 nodes, 1955 edges, 148 communities. Commit: a571aaf</p>
+<p class="subtitle">Generated from graphify knowledge graph: 1582 nodes, 1977 edges, 148 communities. Commit: 9cd5654</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -72,12 +72,12 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#serve-api">Serving API</a>
     <a href="#security-global">Security &amp; Global Graph</a>
     <a href="#tests-fixtures">Tests &amp; Fixtures</a>
-    <a href="#components-authclient-select-module">Components Authclient Select Module</a>
+    <a href="#community-5">Community 5</a>
     <a href="#index-packages-database-module">Index Packages Database Module</a>
+    <a href="#components-authclient-select-module">Components Authclient Select Module</a>
+    <a href="#components-marketingstudio-apiclient-module">Components Marketingstudio Apiclient Module</a>
     <a href="#index-packages-types-module">Index Packages Types Module</a>
     <a href="#community-142">Community 142</a>
-    <a href="#components-marketingstudio-apiclient-module">Components Marketingstudio Apiclient Module</a>
-    <a href="#community-5">Community 5</a>
     <a href="#other">Other</a>
 </div>
 
@@ -104,32 +104,32 @@ flowchart LR
     class SECURITY_GLOBAL_5B9C6A04 module;
     TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>89 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
-    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4("Components Authclient Select Module<br/><small>80 nodes</small>")
-    class COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 module;
+    COMMUNITY_5_2966028D("Community 5<br/><small>60 nodes</small>")
+    class COMMUNITY_5_2966028D module;
     INDEX_PACKAGES_DATABASE_MODULE_344FEEB0("Index Packages Database Module<br/><small>47 nodes</small>")
     class INDEX_PACKAGES_DATABASE_MODULE_344FEEB0 module;
+    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4("Components Authclient Select Module<br/><small>37 nodes</small>")
+    class COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 module;
+    COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25("Components Marketingstudio Apiclient Module<br/><small>35 nodes</small>")
+    class COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25 module;
     INDEX_PACKAGES_TYPES_MODULE_DFB864CD("Index Packages Types Module<br/><small>29 nodes</small>")
     class INDEX_PACKAGES_TYPES_MODULE_DFB864CD module;
-    COMMUNITY_142_4F58A044("Community 142<br/><small>23 nodes</small>")
+    COMMUNITY_142_4F58A044("Community 142<br/><small>27 nodes</small>")
     class COMMUNITY_142_4F58A044 module;
-    COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25("Components Marketingstudio Apiclient Module<br/><small>21 nodes</small>")
-    class COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25 module;
-    COMMUNITY_5_2966028D("Community 5<br/><small>21 nodes</small>")
-    class COMMUNITY_5_2966028D module;
-    OTHER_D0941E68("Other<br/><small>174 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>183 nodes</small>")
     class OTHER_D0941E68 module;
-    COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25 -->|calls x15| OTHER_D0941E68
-    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 -->|imports x15| COMMUNITY_142_4F58A044
-    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 -->|imports x14| COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25
+    COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25 -->|imports x24| COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4
+    COMMUNITY_5_2966028D -->|imports x14| COMMUNITY_142_4F58A044
     INDEX_PACKAGES_DATABASE_MODULE_344FEEB0 -->|imports x13| INDEX_PACKAGES_TYPES_MODULE_DFB864CD
-    COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25 -->|imports x9| COMMUNITY_5_2966028D
-    OTHER_D0941E68 -->|imports x8| COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4
+    COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25 -->|imports x12| COMMUNITY_5_2966028D
+    COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25 -->|imports x10| COMMUNITY_142_4F58A044
+    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 -->|imports x9| COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25
+    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 -->|imports x7| COMMUNITY_142_4F58A044
     COMMUNITY_142_4F58A044 -->|imports x7| COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4
+    OTHER_D0941E68 -->|imports x7| COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4
     INDEX_PACKAGES_TYPES_MODULE_DFB864CD -->|contains x7| SERVE_API_35EC8E86
-    COMMUNITY_5_2966028D -->|imports x6| COMMUNITY_142_4F58A044
-    COMMUNITY_142_4F58A044 -->|imports x6| OTHER_D0941E68
-    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 -->|imports x6| OTHER_D0941E68
-    SERVE_API_35EC8E86 -->|imports x4| TESTS_FIXTURES_B84B1DCC
+    COMPONENTS_AUTHCLIENT_SELECT_MODULE_5EA2A4C4 -->|imports x5| OTHER_D0941E68
+    COMMUNITY_142_4F58A044 -->|imports x5| COMMUNITY_5_2966028D
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -146,7 +146,7 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Graph Build</td><td>743</td><td><code>2, 6, 3, 78, 133, 36, 21, 93, 23, 8, 29, 94, 95, 7, 15, 19, 28, 18, 24, 32, 143, 22, 27, 134, 25, 26, 97, 30, 31, 33, 34, 35, 37, 38, 40, 41, 45, 42, 43, 44, 46, 47, 50, 85, 145, 62</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>5</td><td><code>82</code></td></tr><tr><td>Outputs &amp; Docs</td><td>9</td><td><code>77</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>86</td><td><code>12, 11, 81, 84, 88, 90, 135, 55, 56, 89, 64, 68</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>20</td><td><code>80, 83, 86, 52, 119, 123</code></td></tr><tr><td>Serving API</td><td>194</td><td><code>99, 132, 48, 141, 92, 96, 100, 101, 105, 107, 108, 109, 115, 116, 121, 65</code></td></tr><tr><td>Security &amp; Global Graph</td><td>18</td><td><code>98, 103, 118</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>89</td><td><code>9, 16, 17, 129, 140, 106, 125, 127, 137</code></td></tr><tr><td>Components Authclient Select Module</td><td>80</td><td><code>0</code></td></tr><tr><td>Index Packages Database Module</td><td>47</td><td><code>1</code></td></tr><tr><td>Index Packages Types Module</td><td>29</td><td><code>13</code></td></tr><tr><td>Community 142</td><td>23</td><td><code>142</code></td></tr><tr><td>Components Marketingstudio Apiclient Module</td><td>21</td><td><code>10</code></td></tr><tr><td>Community 5</td><td>21</td><td><code>5</code></td></tr><tr><td>Other</td><td>174</td><td><code>20, 14, 144, 49, 146, 102, 104, 39, 4, 79, 110, 112, 111, 113, 114, 120, 51, 53, 54, 72, 87, 117, 130, 147, 57, 58, 59, 60, 61, 63, 71, 91, 122, 124, 126, 128, 131, 136, 138, 139, 66, 67, 69, 70, 73, 74, 75, 76</code></td></tr>
+      <tr><td>Graph Build</td><td>743</td><td><code>2, 6, 3, 78, 133, 36, 21, 93, 23, 8, 29, 94, 95, 7, 15, 19, 28, 18, 24, 32, 143, 22, 27, 134, 25, 26, 97, 30, 31, 33, 34, 35, 37, 38, 40, 41, 45, 42, 43, 44, 46, 47, 50, 85, 145, 62</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>5</td><td><code>82</code></td></tr><tr><td>Outputs &amp; Docs</td><td>9</td><td><code>77</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>86</td><td><code>12, 11, 81, 84, 88, 90, 135, 55, 56, 89, 64, 68</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>20</td><td><code>80, 83, 86, 52, 119, 123</code></td></tr><tr><td>Serving API</td><td>194</td><td><code>99, 132, 48, 141, 92, 96, 100, 101, 105, 107, 108, 109, 115, 116, 121, 65</code></td></tr><tr><td>Security &amp; Global Graph</td><td>18</td><td><code>98, 103, 118</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>89</td><td><code>9, 16, 17, 129, 140, 106, 125, 127, 137</code></td></tr><tr><td>Community 5</td><td>60</td><td><code>5</code></td></tr><tr><td>Index Packages Database Module</td><td>47</td><td><code>1</code></td></tr><tr><td>Components Authclient Select Module</td><td>37</td><td><code>0</code></td></tr><tr><td>Components Marketingstudio Apiclient Module</td><td>35</td><td><code>10</code></td></tr><tr><td>Index Packages Types Module</td><td>29</td><td><code>13</code></td></tr><tr><td>Community 142</td><td>27</td><td><code>142</code></td></tr><tr><td>Other</td><td>183</td><td><code>20, 14, 144, 49, 146, 102, 104, 39, 4, 79, 110, 112, 111, 113, 114, 120, 51, 53, 54, 72, 87, 117, 130, 147, 57, 58, 59, 60, 61, 63, 71, 91, 122, 124, 126, 128, 131, 136, 138, 139, 66, 67, 69, 70, 73, 74, 75, 76</code></td></tr>
     </table>
   </div>
   <div class="card">
@@ -158,7 +158,7 @@ flowchart LR
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>1559 nodes · 1955 edges · 148 communities (114 shown, 34 thin omitted)</li>
+      <li>1582 nodes · 1977 edges · 148 communities (114 shown, 34 thin omitted)</li>
       <li>Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 28 edges (avg confidence: 0.82)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `useStore` - 51 edges</li>
@@ -2328,77 +2328,81 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 10. Components Authclient Select Module ====== -->
-<h2 id="components-authclient-select-module">10. Components Authclient Select Module</h2>
-<p>Components Authclient Select Module groups implementation around apps, web, components, motion, mostly in src/lib/motion-presets.ts, src/components/AccountDetails.tsx, src/app/page.tsx. This section covers 80 nodes and 197 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 10. Community 5 ====== -->
+<h2 id="community-5">10. Community 5</h2>
+<p>Community 5 groups implementation around apps, web, components, admin, mostly in components/ui/select.tsx, components/ui/card.tsx, src/hooks/useModerationDashboard.ts. This section covers 60 nodes and 139 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Components Authclient Select Module (80 nodes, 197 edges)
-    subgraph components_authclient_select_module_src_app_page_9f873f98["src/app/page.tsx"]
-        app_page_c77e992c("page.tsx")
-        app_page_apppage_d3039541("AppPage()<br/><small>src/app/page.tsx</small>")
+    %% Section: Community 5 (60 nodes, 139 edges)
+    subgraph community_5_components_ui_card_tsx_c7b574f5["components/ui/card.tsx"]
+        ui_card_card_7890a788("Card()<br/><small>components/ui/card.tsx</small>")
+        ui_card_cardheader_cb718f02("CardHeader()<br/><small>components/ui/card.tsx</small>")
+        ui_card_cardtitle_f8dc8a4e("CardTitle()<br/><small>components/ui/card.tsx</small>")
+        ui_card_carddescription_40d0a254("CardDescription()<br/><small>components/ui/card.tsx</small>")
+        ui_card_cardaction_a1a717ff("CardAction()<br/><small>components/ui/card.tsx</small>")
     end
-    subgraph components_authclient_select_module_src_componen_503d4f1b["src/components/BrandingPanel.tsx"]
-        components_brandingpanel_ac72d46d("BrandingPanel.tsx")
-        components_brandingpanel_brandingpanel_17363f1d("BrandingPanel()<br/><small>src/components/BrandingPanel.tsx</small>")
+    subgraph community_5_admin_dashboard_page_tsx_7248a0dd["admin/dashboard/page.tsx"]
+        dashboard_page_12dc22a5("page.tsx")
+        dashboard_page_admindashboardpage_c0691e2a("AdminDashboardPage()<br/><small>admin/dashboard/page.tsx</small>")
     end
-    subgraph components_authclient_select_module_src_componen_6522c8c7["src/components/BusinessPlanDashboard.tsx"]
-        components_businessplandashboard_b3b6d800("BusinessPlanDashboard.tsx")
-        components_businessplandashboard_businessplandas_8ea21c29("BusinessPlanDashboard()<br/><small>src/components/BusinessPlanDashboard.tsx</small>")
+    subgraph community_5_components_ui_badge_tsx_6fe69274["components/ui/badge.tsx"]
+        ui_badge_badgevariants_0cd644a0("badgeVariants<br/><small>components/ui/badge.tsx</small>")
+        ui_badge_badge_62fe1c0e("Badge()<br/><small>components/ui/badge.tsx</small>")
     end
-    admin_layout_adminlayout_c354855a("AdminLayout()<br/><small>app/admin/layout.tsx</small>")
-    components_aiconsultantdashboard_aiconsultantdas_eb8b2ef0("AIConsultantDashboard()<br/><small>src/components/AIConsultantDashboard.tsx</small>")
-    components_aistudiopanel_aistudiopanel_2638f903("AIStudioPanel()<br/><small>src/components/AIStudioPanel.tsx</small>")
-    components_accountdetails_accountdetails_b3fe6e83("AccountDetails()<br/><small>src/components/AccountDetails.tsx</small>")
-    components_authmodal_authmodal_da08808a("AuthModal()<br/><small>src/components/AuthModal.tsx</small>")
-    components_cofounderchat_cofounderchat_902f5c24("CofounderChat()<br/><small>src/components/CofounderChat.tsx</small>")
-    components_competitordashboard_competitordashboa_ce2c8161("CompetitorDashboard()<br/><small>src/components/CompetitorDashboard.tsx</small>")
-    components_creditindicator_creditindicator_50730c76("CreditIndicator()<br/><small>src/components/CreditIndicator.tsx</small>")
-    components_marketingdashboard_4c409713("MarketingDashboard.tsx")
-    components_opportunityexplorer_d659e6a2("OpportunityExplorer.tsx")
-    components_pitchdashboard_97dfc1b8("PitchDashboard.tsx")
-    store_usestore_usestore_09821344("useStore<br/><small>src/store/useStore.ts</small>")
-    admin_layout_adminlayout_c354855a -->|calls| store_usestore_usestore_09821344
-    app_page_apppage_d3039541 -->|calls| store_usestore_usestore_09821344
-    components_aiconsultantdashboard_aiconsultantdas_eb8b2ef0 -->|calls| store_usestore_usestore_09821344
-    components_aistudiopanel_aistudiopanel_2638f903 -->|calls| store_usestore_usestore_09821344
-    components_accountdetails_accountdetails_b3fe6e83 -->|calls| store_usestore_usestore_09821344
-    components_authmodal_authmodal_da08808a -->|calls| store_usestore_usestore_09821344
-    components_brandingpanel_brandingpanel_17363f1d -->|calls| store_usestore_usestore_09821344
-    components_businessplandashboard_businessplandas_8ea21c29 -->|calls| store_usestore_usestore_09821344
-    components_cofounderchat_cofounderchat_902f5c24 -->|calls| store_usestore_usestore_09821344
-    components_competitordashboard_competitordashboa_ce2c8161 -->|calls| store_usestore_usestore_09821344
-    components_creditindicator_creditindicator_50730c76 -->|calls| store_usestore_usestore_09821344
-    app_page_c77e992c -->|imports| components_brandingpanel_ac72d46d
-    app_page_c77e992c -->|imports| components_businessplandashboard_b3b6d800
-    app_page_c77e992c -->|imports| components_opportunityexplorer_d659e6a2
-    app_page_c77e992c -->|imports| store_usestore_usestore_09821344
-    components_brandingpanel_ac72d46d -->|imports| store_usestore_usestore_09821344
-    components_businessplandashboard_b3b6d800 -->|imports| store_usestore_usestore_09821344
-    components_marketingdashboard_4c409713 -->|imports| store_usestore_usestore_09821344
-    components_opportunityexplorer_d659e6a2 -->|imports| store_usestore_usestore_09821344
-    components_pitchdashboard_97dfc1b8 -->|imports| store_usestore_usestore_09821344
-    %% Omitted for readability: 62 nodes, 0 edges
-    class app_page_c77e992c ui;
-    class app_page_apppage_d3039541 ui;
-    class components_brandingpanel_ac72d46d ui;
-    class components_brandingpanel_brandingpanel_17363f1d ui;
-    class components_businessplandashboard_b3b6d800 ui;
-    class components_businessplandashboard_businessplandas_8ea21c29 ui;
-    class admin_layout_adminlayout_c354855a ui;
-    class components_aiconsultantdashboard_aiconsultantdas_eb8b2ef0 ui;
-    class components_aistudiopanel_aistudiopanel_2638f903 ui;
-    class components_accountdetails_accountdetails_b3fe6e83 ui;
-    class components_authmodal_authmodal_da08808a ui;
-    class components_cofounderchat_cofounderchat_902f5c24 ui;
-    class components_competitordashboard_competitordashboa_ce2c8161 ui;
-    class components_creditindicator_creditindicator_50730c76 ui;
-    class components_marketingdashboard_4c409713 ui;
-    class components_opportunityexplorer_d659e6a2 ui;
-    class components_pitchdashboard_97dfc1b8 ui;
-    class store_usestore_usestore_09821344 ui;
+    moderation_page_moderationpage_efa9a476("ModerationPage()<br/><small>admin/moderation/page.tsx</small>")
+    admin_dashboardobservability_ec173084("DashboardObservability.tsx")
+    admin_kpicardsrow_873e7f9c("KPICardsRow.tsx")
+    admin_revenueanalytics_fe9a80fd("RevenueAnalytics.tsx")
+    admin_venturefunnel_7b24daa5("VentureFunnel.tsx")
+    ui_skeleton_skeleton_534f2370("Skeleton()<br/><small>components/ui/Skeleton.tsx</small>")
+    components_onboarding_39c17165("Onboarding.tsx")
+    hooks_usemoderationdashboard_usemoderationdashbo_ea7b0009("useModerationDashboard()<br/><small>src/hooks/useModerationDashboard.ts</small>")
+    lib_utils_cn_b8743bb6("cn()<br/><small>src/lib/utils.ts</small>")
+    dashboard_page_admindashboardpage_c0691e2a -->|calls| hooks_usemoderationdashboard_usemoderationdashbo_ea7b0009
+    moderation_page_moderationpage_efa9a476 -->|calls| hooks_usemoderationdashboard_usemoderationdashbo_ea7b0009
+    ui_skeleton_skeleton_534f2370 -->|calls| lib_utils_cn_b8743bb6
+    ui_badge_badgevariants_0cd644a0 -->|calls| ui_badge_badge_62fe1c0e
+    ui_badge_badge_62fe1c0e -->|calls| lib_utils_cn_b8743bb6
+    ui_card_card_7890a788 -->|calls| lib_utils_cn_b8743bb6
+    ui_card_cardheader_cb718f02 -->|calls| lib_utils_cn_b8743bb6
+    ui_card_cardtitle_f8dc8a4e -->|calls| lib_utils_cn_b8743bb6
+    ui_card_carddescription_40d0a254 -->|calls| lib_utils_cn_b8743bb6
+    ui_card_cardaction_a1a717ff -->|calls| lib_utils_cn_b8743bb6
+    dashboard_page_12dc22a5 -->|imports| admin_dashboardobservability_ec173084
+    dashboard_page_12dc22a5 -->|imports| admin_kpicardsrow_873e7f9c
+    dashboard_page_12dc22a5 -->|imports| admin_revenueanalytics_fe9a80fd
+    dashboard_page_12dc22a5 -->|imports| admin_venturefunnel_7b24daa5
+    dashboard_page_12dc22a5 -->|imports| hooks_usemoderationdashboard_usemoderationdashbo_ea7b0009
+    dashboard_page_12dc22a5 -->|imports| ui_card_card_7890a788
+    dashboard_page_12dc22a5 -->|imports| ui_card_cardheader_cb718f02
+    dashboard_page_12dc22a5 -->|imports| ui_card_cardtitle_f8dc8a4e
+    admin_dashboardobservability_ec173084 -->|imports| ui_card_card_7890a788
+    admin_dashboardobservability_ec173084 -->|imports| ui_card_cardheader_cb718f02
+    admin_dashboardobservability_ec173084 -->|imports| ui_card_cardtitle_f8dc8a4e
+    admin_kpicardsrow_873e7f9c -->|imports| ui_card_card_7890a788
+    admin_kpicardsrow_873e7f9c -->|imports| ui_card_cardheader_cb718f02
+    admin_kpicardsrow_873e7f9c -->|imports| ui_card_cardtitle_f8dc8a4e
+    %% Omitted for readability: 42 nodes, 6 edges
+    class ui_card_card_7890a788 ui;
+    class ui_card_cardheader_cb718f02 ui;
+    class ui_card_cardtitle_f8dc8a4e ui;
+    class ui_card_carddescription_40d0a254 ui;
+    class ui_card_cardaction_a1a717ff ui;
+    class dashboard_page_12dc22a5 ui;
+    class dashboard_page_admindashboardpage_c0691e2a ui;
+    class ui_badge_badgevariants_0cd644a0 ui;
+    class ui_badge_badge_62fe1c0e ui;
+    class moderation_page_moderationpage_efa9a476 ui;
+    class admin_dashboardobservability_ec173084 ui;
+    class admin_kpicardsrow_873e7f9c ui;
+    class admin_revenueanalytics_fe9a80fd ui;
+    class admin_venturefunnel_7b24daa5 ui;
+    class ui_skeleton_skeleton_534f2370 ui;
+    class components_onboarding_39c17165 ui;
+    class hooks_usemoderationdashboard_usemoderationdashbo_ea7b0009 ui;
+    class lib_utils_cn_b8743bb6 function;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -2422,243 +2426,243 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>layout.tsx</code><br><small style="color:var(--muted)">app/admin/layout.tsx</small></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>AdminSidebar()</code><br><small style="color:var(--muted)">components/admin/AdminSidebar.tsx</small><br><code>AdminSidebar.tsx</code><br><small style="color:var(--muted)">components/admin/AdminSidebar.tsx</small><br><code>CommandPalette()</code><br><small style="color:var(--muted)">components/admin/CommandPalette.tsx</small><br>+2 more</td>
-  <td>Module file in app/admin/layout.tsx.</td>
+  <td><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+21 more</td>
+  <td>Module file in admin/dashboard/page.tsx.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>AdminLayout()</code><br><small style="color:var(--muted)">app/admin/layout.tsx</small></td>
+  <td><code>TrafficChart</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>AdminLayout() node in app/admin/layout.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>TrafficChart node in admin/dashboard/page.tsx.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>AdminDashboardPage()</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>AccountDetails.tsx</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small><br><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>AIStudioPanel.tsx</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small><br>+12 more</td>
-  <td>Module file in src/app/page.tsx.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>PROTECTED_TABS</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>PROTECTED_TABS node in src/app/page.tsx.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>AppPage()</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td><code>useModerationDashboard()</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
   <td>Organizes documentation pages, navigation, or content lookup.</td>
 </tr>
 <tr>
-  <td>6</td>
-  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small></td>
+  <td>4</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+3 more</td>
-  <td>Module file in src/components/AIConsultantDashboard.tsx.</td>
+  <td>External entry / no inbound edge</td>
+  <td><code>ModerationFeed()</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small><br><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small><br><code>useModerationDashboard()</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small><br>+1 more</td>
+  <td>Module file in admin/moderation/page.tsx.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>AgentRun</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>AgentRun node in admin/moderation/page.tsx.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>ObservabilityStats</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>ObservabilityStats node in admin/moderation/page.tsx.</td>
 </tr>
 <tr>
   <td>7</td>
-  <td><code>AIConsultantDashboard()</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small></td>
+  <td><code>ProjectForMod</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>AIConsultantDashboard() node in src/components/AIConsultantDashboard.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>ProjectForMod node in admin/moderation/page.tsx.</td>
 </tr>
 <tr>
   <td>8</td>
-  <td><code>AIStudioPanel.tsx</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><code>ModerationPage()</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+3 more</td>
-  <td>Module file in src/components/AIStudioPanel.tsx.</td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useModerationDashboard()</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
 </tr>
 <tr>
   <td>9</td>
-  <td><code>StudioTab</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>StudioTab node in src/components/AIStudioPanel.tsx.</td>
+  <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>select.tsx</code><br><small style="color:var(--muted)">components/ui/select.tsx</small><br>+4 more</td>
+  <td>Module file in src/components/Onboarding.tsx.</td>
 </tr>
 <tr>
   <td>10</td>
-  <td><code>AIStudioPanel()</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><code>Onboarding()</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>AIStudioPanel() node in src/components/AIStudioPanel.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>Onboarding() node in src/components/Onboarding.tsx.</td>
 </tr>
 <tr>
   <td>11</td>
-  <td><code>AccountDetails.tsx</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><code>DashboardObservability.tsx</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/AccountDetails.tsx.</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
+  <td><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+2 more</td>
+  <td>Module file in components/admin/DashboardObservability.tsx.</td>
 </tr>
 <tr>
   <td>12</td>
-  <td><code>AccountProfile</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><code>DashboardObservabilityProps</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>AccountProfile node in src/components/AccountDetails.tsx.</td>
+  <td>DashboardObservabilityProps node in components/admin/DashboardObservability.tsx.</td>
 </tr>
 <tr>
   <td>13</td>
-  <td><code>InfoRow()</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><code>DashboardObservability()</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
   <td>No direct outbound edge</td>
-  <td>InfoRow() node in src/components/AccountDetails.tsx.</td>
+  <td>DashboardObservability() node in components/admin/DashboardObservability.tsx.</td>
 </tr>
 <tr>
   <td>14</td>
-  <td><code>AccountDetails()</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>AccountDetails() node in src/components/AccountDetails.tsx.</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
+  <td><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+4 more</td>
+  <td>Module file in components/admin/KPICardsRow.tsx.</td>
 </tr>
 <tr>
   <td>15</td>
-  <td><code>AuthModal.tsx</code><br><small style="color:var(--muted)">src/components/AuthModal.tsx</small></td>
+  <td><code>KPICardsRow()</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/AuthModal.tsx.</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>KPICardsRow() node in components/admin/KPICardsRow.tsx.</td>
 </tr>
 <tr>
   <td>16</td>
-  <td><code>AuthModal()</code><br><small style="color:var(--muted)">src/components/AuthModal.tsx</small></td>
+  <td><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>AuthModal() node in src/components/AuthModal.tsx.</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
+  <td><code>Badge()</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small><br><code>badge.tsx</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small><br><code>ModerationEvent</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small><br>+1 more</td>
+  <td>Module file in components/admin/ModerationFeed.tsx.</td>
 </tr>
 <tr>
   <td>17</td>
-  <td><code>BrandingPanel.tsx</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small></td>
+  <td><code>ModerationFeed()</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+5 more</td>
-  <td>Module file in src/components/BrandingPanel.tsx.</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>ModerationFeed() node in components/admin/ModerationFeed.tsx.</td>
 </tr>
 <tr>
   <td>18</td>
-  <td><code>BrandingPanel()</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small></td>
+  <td><code>RevenueAnalytics.tsx</code><br><small style="color:var(--muted)">components/admin/RevenueAnalytics.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>BrandingPanel() node in src/components/BrandingPanel.tsx.</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
+  <td><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+2 more</td>
+  <td>Module file in components/admin/RevenueAnalytics.tsx.</td>
 </tr>
 <tr>
   <td>19</td>
-  <td><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>chartReveal</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+11 more</td>
-  <td>Module file in src/components/BusinessPlanDashboard.tsx.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>COLORS</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
+  <td><code>RevenueAnalyticsProps</code><br><small style="color:var(--muted)">components/admin/RevenueAnalytics.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>COLORS node in src/components/BusinessPlanDashboard.tsx.</td>
+  <td>Orchestrates analysis and returns structured documentation data.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>RevenueAnalytics()</code><br><small style="color:var(--muted)">components/admin/RevenueAnalytics.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>Orchestrates analysis and returns structured documentation data.</td>
 </tr>
 <tr>
   <td>21</td>
-  <td><code>BusinessPlanDashboard()</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
+  <td><code>TrafficChart.tsx</code><br><small style="color:var(--muted)">components/admin/TrafficChart.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>BusinessPlanDashboard() node in src/components/BusinessPlanDashboard.tsx.</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
+  <td><code>TrafficData</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small><br><code>useModerationDashboard.ts</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
+  <td>Module file in components/admin/TrafficChart.tsx.</td>
 </tr>
 <tr>
   <td>22</td>
-  <td><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small></td>
+  <td><code>CustomTooltip()</code><br><small style="color:var(--muted)">components/admin/TrafficChart.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>staggerContainer</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+2 more</td>
-  <td>Module file in src/components/CofounderChat.tsx.</td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>CustomTooltip() node in components/admin/TrafficChart.tsx.</td>
 </tr>
 <tr>
   <td>23</td>
-  <td><code>CofounderChat()</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small></td>
+  <td><code>TrafficChart()</code><br><small style="color:var(--muted)">components/admin/TrafficChart.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>TrafficChart() node in components/admin/TrafficChart.tsx.</td>
 </tr>
 <tr>
   <td>24</td>
-  <td><code>CompetitorDashboard.tsx</code><br><small style="color:var(--muted)">src/components/CompetitorDashboard.tsx</small></td>
+  <td><code>VentureFunnel.tsx</code><br><small style="color:var(--muted)">components/admin/VentureFunnel.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/CompetitorDashboard.tsx.</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
+  <td><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+2 more</td>
+  <td>Module file in components/admin/VentureFunnel.tsx.</td>
 </tr>
 <tr>
   <td>25</td>
-  <td><code>CompetitorDashboard()</code><br><small style="color:var(--muted)">src/components/CompetitorDashboard.tsx</small></td>
+  <td><code>VentureFunnelProps</code><br><small style="color:var(--muted)">components/admin/VentureFunnel.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>CompetitorDashboard() node in src/components/CompetitorDashboard.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>VentureFunnelProps node in components/admin/VentureFunnel.tsx.</td>
 </tr>
 <tr>
   <td>26</td>
-  <td><code>CreditIndicator.tsx</code><br><small style="color:var(--muted)">src/components/CreditIndicator.tsx</small></td>
+  <td><code>VentureFunnel()</code><br><small style="color:var(--muted)">components/admin/VentureFunnel.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/CreditIndicator.tsx.</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>VentureFunnel() node in components/admin/VentureFunnel.tsx.</td>
 </tr>
 <tr>
   <td>27</td>
-  <td><code>CreditIndicator()</code><br><small style="color:var(--muted)">src/components/CreditIndicator.tsx</small></td>
+  <td><code>Skeleton.tsx</code><br><small style="color:var(--muted)">components/ui/Skeleton.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>CreditIndicator() node in src/components/CreditIndicator.tsx.</td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td>Module file in components/ui/Skeleton.tsx.</td>
 </tr>
 <tr>
   <td>28</td>
-  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">src/components/Dashboard.tsx</small></td>
+  <td><code>Skeleton()</code><br><small style="color:var(--muted)">components/ui/Skeleton.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/Dashboard.tsx.</td>
+  <td>External entry / no inbound edge</td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td>Skeleton() node in components/ui/Skeleton.tsx.</td>
 </tr>
 <tr>
   <td>29</td>
-  <td><code>Dashboard()</code><br><small style="color:var(--muted)">src/components/Dashboard.tsx</small></td>
+  <td><code>badge.tsx</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Dashboard() node in src/components/Dashboard.tsx.</td>
+  <td><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
+  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
+  <td>Module file in components/ui/badge.tsx.</td>
 </tr>
 <tr>
   <td>30</td>
-  <td><code>FinancialEngine.tsx</code><br><small style="color:var(--muted)">src/components/FinancialEngine.tsx</small></td>
+  <td><code>badgeVariants</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/FinancialEngine.tsx.</td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Badge()</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small></td>
+  <td>badgeVariants node in components/ui/badge.tsx.</td>
 </tr>
 </table>
 
@@ -2667,19 +2671,19 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/lib/motion-presets.ts</code></td><td>19 nodes</td></tr>
-<tr><td><code>src/components/AccountDetails.tsx</code></td><td>4 nodes</td></tr>
-<tr><td><code>src/app/page.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>src/components/AIStudioPanel.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>src/components/BusinessPlanDashboard.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>components/ui/AILoadingOverlay.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>src/store/useStore.ts</code></td><td>3 nodes</td></tr>
-<tr><td><code>app/admin/layout.tsx</code></td><td>2 nodes</td></tr>
+      <tr><td><code>components/ui/select.tsx</code></td><td>10 nodes</td></tr>
+<tr><td><code>components/ui/card.tsx</code></td><td>8 nodes</td></tr>
+<tr><td><code>src/hooks/useModerationDashboard.ts</code></td><td>7 nodes</td></tr>
+<tr><td><code>admin/moderation/page.tsx</code></td><td>5 nodes</td></tr>
+<tr><td><code>admin/dashboard/page.tsx</code></td><td>3 nodes</td></tr>
+<tr><td><code>components/admin/DashboardObservability.tsx</code></td><td>3 nodes</td></tr>
+<tr><td><code>components/admin/RevenueAnalytics.tsx</code></td><td>3 nodes</td></tr>
+<tr><td><code>components/admin/TrafficChart.tsx</code></td><td>3 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x69, imports x54, contains x51, calls x23. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x47, contains x44, imports x26, calls x22. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3008,8 +3012,721 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 12. Index Packages Types Module ====== -->
-<h2 id="index-packages-types-module">12. Index Packages Types Module</h2>
+<!-- ====== 12. Components Authclient Select Module ====== -->
+<h2 id="components-authclient-select-module">12. Components Authclient Select Module</h2>
+<p>Components Authclient Select Module groups implementation around apps, web, components, app, mostly in src/app/page.tsx, src/store/useStore.ts, app/admin/layout.tsx. This section covers 37 nodes and 71 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Components Authclient Select Module (37 nodes, 71 edges)
+    subgraph components_authclient_select_module_app_admin_la_5bff685c["app/admin/layout.tsx"]
+        admin_layout_81ac9da6("layout.tsx")
+        admin_layout_adminlayout_c354855a("AdminLayout()<br/><small>app/admin/layout.tsx</small>")
+    end
+    subgraph components_authclient_select_module_src_app_page_9f873f98["src/app/page.tsx"]
+        app_page_c77e992c("page.tsx")
+        app_page_apppage_d3039541("AppPage()<br/><small>src/app/page.tsx</small>")
+    end
+    subgraph components_authclient_select_module_src_componen_1c1c6a75["src/components/CompetitorDashboard.tsx"]
+        components_competitordashboard_0bd15a4e("CompetitorDashboard.tsx")
+        components_competitordashboard_competitordashboa_ce2c8161("CompetitorDashboard()<br/><small>src/components/CompetitorDashboard.tsx</small>")
+    end
+    subgraph components_authclient_select_module_src_componen_8f4f7c5e["src/components/MarketResearchDashboard.tsx"]
+        components_marketresearchdashboard_c411af20("MarketResearchDashboard.tsx")
+        components_marketresearchdashboard_marketresearc_13c033a8("MarketResearchDashboard()<br/><small>src/components/MarketResearchDashboard.tsx</small>")
+    end
+    components_aiconsultantdashboard_aiconsultantdas_eb8b2ef0("AIConsultantDashboard()<br/><small>src/components/AIConsultantDashboard.tsx</small>")
+    components_authmodal_authmodal_da08808a("AuthModal()<br/><small>src/components/AuthModal.tsx</small>")
+    components_brandingpanel_brandingpanel_17363f1d("BrandingPanel()<br/><small>src/components/BrandingPanel.tsx</small>")
+    components_businessplandashboard_businessplandas_8ea21c29("BusinessPlanDashboard()<br/><small>src/components/BusinessPlanDashboard.tsx</small>")
+    components_cofounderchat_cofounderchat_902f5c24("CofounderChat()<br/><small>src/components/CofounderChat.tsx</small>")
+    components_creditindicator_creditindicator_50730c76("CreditIndicator()<br/><small>src/components/CreditIndicator.tsx</small>")
+    components_financialengine_financialengine_e4a650eb("FinancialEngine()<br/><small>src/components/FinancialEngine.tsx</small>")
+    components_newprojectmodal_5c6e6cc9("NewProjectModal.tsx")
+    components_projectsettingsmodal_09df7dc9("ProjectSettingsModal.tsx")
+    store_usestore_usestore_09821344("useStore<br/><small>src/store/useStore.ts</small>")
+    admin_layout_adminlayout_c354855a -->|calls| store_usestore_usestore_09821344
+    app_page_apppage_d3039541 -->|calls| store_usestore_usestore_09821344
+    components_aiconsultantdashboard_aiconsultantdas_eb8b2ef0 -->|calls| store_usestore_usestore_09821344
+    components_authmodal_authmodal_da08808a -->|calls| store_usestore_usestore_09821344
+    components_brandingpanel_brandingpanel_17363f1d -->|calls| store_usestore_usestore_09821344
+    components_businessplandashboard_businessplandas_8ea21c29 -->|calls| store_usestore_usestore_09821344
+    components_cofounderchat_cofounderchat_902f5c24 -->|calls| store_usestore_usestore_09821344
+    components_competitordashboard_competitordashboa_ce2c8161 -->|calls| store_usestore_usestore_09821344
+    components_creditindicator_creditindicator_50730c76 -->|calls| store_usestore_usestore_09821344
+    components_financialengine_financialengine_e4a650eb -->|calls| store_usestore_usestore_09821344
+    components_marketresearchdashboard_marketresearc_13c033a8 -->|calls| store_usestore_usestore_09821344
+    admin_layout_81ac9da6 -->|imports| store_usestore_usestore_09821344
+    app_page_c77e992c -->|imports| store_usestore_usestore_09821344
+    components_competitordashboard_0bd15a4e -->|imports| store_usestore_usestore_09821344
+    components_marketresearchdashboard_c411af20 -->|imports| store_usestore_usestore_09821344
+    components_newprojectmodal_5c6e6cc9 -->|imports| store_usestore_usestore_09821344
+    components_projectsettingsmodal_09df7dc9 -->|imports| store_usestore_usestore_09821344
+    %% Omitted for readability: 19 nodes, 0 edges
+    class admin_layout_81ac9da6 ui;
+    class admin_layout_adminlayout_c354855a ui;
+    class app_page_c77e992c ui;
+    class app_page_apppage_d3039541 ui;
+    class components_competitordashboard_0bd15a4e ui;
+    class components_competitordashboard_competitordashboa_ce2c8161 ui;
+    class components_marketresearchdashboard_c411af20 ui;
+    class components_marketresearchdashboard_marketresearc_13c033a8 ui;
+    class components_aiconsultantdashboard_aiconsultantdas_eb8b2ef0 ui;
+    class components_authmodal_authmodal_da08808a ui;
+    class components_brandingpanel_brandingpanel_17363f1d ui;
+    class components_businessplandashboard_businessplandas_8ea21c29 ui;
+    class components_cofounderchat_cofounderchat_902f5c24 ui;
+    class components_creditindicator_creditindicator_50730c76 ui;
+    class components_financialengine_financialengine_e4a650eb ui;
+    class components_newprojectmodal_5c6e6cc9 ui;
+    class components_projectsettingsmodal_09df7dc9 ui;
+    class store_usestore_usestore_09821344 ui;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>layout.tsx</code><br><small style="color:var(--muted)">app/admin/layout.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>AdminSidebar()</code><br><small style="color:var(--muted)">components/admin/AdminSidebar.tsx</small><br><code>AdminSidebar.tsx</code><br><small style="color:var(--muted)">components/admin/AdminSidebar.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br>+1 more</td>
+  <td>Module file in app/admin/layout.tsx.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>AdminLayout()</code><br><small style="color:var(--muted)">app/admin/layout.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>AdminLayout() node in app/admin/layout.tsx.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>AuthModal.tsx</code><br><small style="color:var(--muted)">src/components/AuthModal.tsx</small><br><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small><br><code>CreditIndicator.tsx</code><br><small style="color:var(--muted)">src/components/CreditIndicator.tsx</small><br>+4 more</td>
+  <td>Module file in src/app/page.tsx.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>PROTECTED_TABS</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>PROTECTED_TABS node in src/app/page.tsx.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>AppPage()</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>AIConsultantDashboard()</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>AIConsultantDashboard() node in src/components/AIConsultantDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>AuthModal.tsx</code><br><small style="color:var(--muted)">src/components/AuthModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/AuthModal.tsx.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>AuthModal()</code><br><small style="color:var(--muted)">src/components/AuthModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>AuthModal() node in src/components/AuthModal.tsx.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>BrandingPanel()</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>BrandingPanel() node in src/components/BrandingPanel.tsx.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>BusinessPlanDashboard()</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>BusinessPlanDashboard() node in src/components/BusinessPlanDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/CofounderChat.tsx.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>CofounderChat()</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>CompetitorDashboard.tsx</code><br><small style="color:var(--muted)">src/components/CompetitorDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/CompetitorDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>CompetitorDashboard()</code><br><small style="color:var(--muted)">src/components/CompetitorDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>CompetitorDashboard() node in src/components/CompetitorDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>CreditIndicator.tsx</code><br><small style="color:var(--muted)">src/components/CreditIndicator.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/CreditIndicator.tsx.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>CreditIndicator()</code><br><small style="color:var(--muted)">src/components/CreditIndicator.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>CreditIndicator() node in src/components/CreditIndicator.tsx.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>FinancialEngine.tsx</code><br><small style="color:var(--muted)">src/components/FinancialEngine.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/FinancialEngine.tsx.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>FinancialEngine()</code><br><small style="color:var(--muted)">src/components/FinancialEngine.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>FinancialEngine() node in src/components/FinancialEngine.tsx.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>MarketResearchDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketResearchDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/MarketResearchDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>MarketResearchDashboard()</code><br><small style="color:var(--muted)">src/components/MarketResearchDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>MarketResearchDashboard() node in src/components/MarketResearchDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>MarketingDashboard()</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>MarketingDashboard() node in src/components/MarketingDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>NewProjectModal.tsx</code><br><small style="color:var(--muted)">src/components/NewProjectModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>ProjectSwitcher.tsx</code><br><small style="color:var(--muted)">src/components/ProjectSwitcher.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/NewProjectModal.tsx.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>NewProjectModal()</code><br><small style="color:var(--muted)">src/components/NewProjectModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>NewProjectModal() node in src/components/NewProjectModal.tsx.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>OpportunityExplorer()</code><br><small style="color:var(--muted)">src/components/OpportunityExplorer.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>OpportunityExplorer() node in src/components/OpportunityExplorer.tsx.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>PitchDashboard()</code><br><small style="color:var(--muted)">src/components/PitchDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>PitchDashboard() node in src/components/PitchDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>PricingModal.tsx</code><br><small style="color:var(--muted)">src/components/PricingModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/PricingModal.tsx.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>PricingModal()</code><br><small style="color:var(--muted)">src/components/PricingModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>PricingModal() node in src/components/PricingModal.tsx.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>ProjectSettingsModal.tsx</code><br><small style="color:var(--muted)">src/components/ProjectSettingsModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>ProjectSwitcher.tsx</code><br><small style="color:var(--muted)">src/components/ProjectSwitcher.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/ProjectSettingsModal.tsx.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>ProjectSettingsModal()</code><br><small style="color:var(--muted)">src/components/ProjectSettingsModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>ProjectSettingsModal() node in src/components/ProjectSettingsModal.tsx.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>ProjectSwitcher.tsx</code><br><small style="color:var(--muted)">src/components/ProjectSwitcher.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>NewProjectModal.tsx</code><br><small style="color:var(--muted)">src/components/NewProjectModal.tsx</small><br><code>ProjectSettingsModal.tsx</code><br><small style="color:var(--muted)">src/components/ProjectSettingsModal.tsx</small></td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/ProjectSwitcher.tsx.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/app/page.tsx</code></td><td>3 nodes</td></tr>
+<tr><td><code>src/store/useStore.ts</code></td><td>3 nodes</td></tr>
+<tr><td><code>app/admin/layout.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/AuthModal.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/CofounderChat.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/CompetitorDashboard.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/CreditIndicator.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/FinancialEngine.tsx</code></td><td>2 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x21, calls x20, contains x16, imports x14. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 13. Components Marketingstudio Apiclient Module ====== -->
+<h2 id="components-marketingstudio-apiclient-module">13. Components Marketingstudio Apiclient Module</h2>
+<p>Components Marketingstudio Apiclient Module groups implementation around apps, web, motion, presetsts, mostly in src/lib/motion-presets.ts, src/components/AIStudioPanel.tsx, components/ui/AILoadingOverlay.tsx. This section covers 35 nodes and 76 internal edges; the diagram shows only representative relationships to stay readable.</p>
+
+<div class="mermaid">
+%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
+flowchart LR
+    %% Section: Components Marketingstudio Apiclient Module (35 nodes, 76 edges)
+    subgraph components_marketingstudio_apiclient_module_src_3889b71e["src/lib/motion-presets.ts"]
+        lib_motion_presets_12c6a103("motion-presets.ts")
+        lib_motion_presets_fadein_18917a23("fadeIn<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_fadeinup_375182a2("fadeInUp<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_staggercontainer_5f593739("staggerContainer<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_chartreveal_94cfe9ff("chartReveal<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_hoverglow_946dd928("hoverGlow<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_hoverlift_ab1d7e79("hoverLift<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_scalein_f6b6dc77("scaleIn<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_slideinleft_26e2a5bd("slideInLeft<br/><small>src/lib/motion-presets.ts</small>")
+    end
+    subgraph components_marketingstudio_apiclient_module_comp_7b3bbdba["components/ui/AILoadingOverlay.tsx"]
+        ui_ailoadingoverlay_b210227e("AILoadingOverlay.tsx")
+        ui_ailoadingoverlay_ailoadingoverlay_48556d21("AILoadingOverlay()<br/><small>components/ui/AILoadingOverlay.tsx</small>")
+    end
+    components_aiconsultantdashboard_583e58d1("AIConsultantDashboard.tsx")
+    components_aistudiopanel_ca1c3788("AIStudioPanel.tsx")
+    components_brandingpanel_ac72d46d("BrandingPanel.tsx")
+    components_businessplandashboard_b3b6d800("BusinessPlanDashboard.tsx")
+    components_marketingdashboard_4c409713("MarketingDashboard.tsx")
+    components_opportunityexplorer_d659e6a2("OpportunityExplorer.tsx")
+    components_pitchdashboard_97dfc1b8("PitchDashboard.tsx")
+    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_12c6a103
+    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_fadein_18917a23
+    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_fadeinup_375182a2
+    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_staggercontainer_5f593739
+    components_aistudiopanel_ca1c3788 -->|imports| lib_motion_presets_12c6a103
+    components_aistudiopanel_ca1c3788 -->|imports| lib_motion_presets_fadein_18917a23
+    components_aistudiopanel_ca1c3788 -->|imports| lib_motion_presets_fadeinup_375182a2
+    components_aistudiopanel_ca1c3788 -->|imports| lib_motion_presets_staggercontainer_5f593739
+    components_brandingpanel_ac72d46d -->|imports| lib_motion_presets_12c6a103
+    components_brandingpanel_ac72d46d -->|imports| lib_motion_presets_fadein_18917a23
+    components_brandingpanel_ac72d46d -->|imports| lib_motion_presets_fadeinup_375182a2
+    components_brandingpanel_ac72d46d -->|imports| lib_motion_presets_staggercontainer_5f593739
+    components_brandingpanel_ac72d46d -->|imports| ui_ailoadingoverlay_b210227e
+    components_brandingpanel_ac72d46d -->|imports| ui_ailoadingoverlay_ailoadingoverlay_48556d21
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_12c6a103
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_chartreveal_94cfe9ff
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_fadein_18917a23
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_fadeinup_375182a2
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_hoverglow_946dd928
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_hoverlift_ab1d7e79
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_scalein_f6b6dc77
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_slideinleft_26e2a5bd
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_staggercontainer_5f593739
+    components_businessplandashboard_b3b6d800 -->|imports| ui_ailoadingoverlay_b210227e
+    %% Omitted for readability: 17 nodes, 19 edges
+    class lib_motion_presets_12c6a103 module;
+    class lib_motion_presets_fadein_18917a23 function;
+    class lib_motion_presets_fadeinup_375182a2 function;
+    class lib_motion_presets_staggercontainer_5f593739 function;
+    class lib_motion_presets_chartreveal_94cfe9ff function;
+    class lib_motion_presets_hoverglow_946dd928 function;
+    class lib_motion_presets_hoverlift_ab1d7e79 function;
+    class lib_motion_presets_scalein_f6b6dc77 function;
+    class lib_motion_presets_slideinleft_26e2a5bd function;
+    class ui_ailoadingoverlay_b210227e ui;
+    class ui_ailoadingoverlay_ailoadingoverlay_48556d21 ui;
+    class components_aiconsultantdashboard_583e58d1 ui;
+    class components_aistudiopanel_ca1c3788 ui;
+    class components_brandingpanel_ac72d46d ui;
+    class components_businessplandashboard_b3b6d800 ui;
+    class components_marketingdashboard_4c409713 ui;
+    class components_opportunityexplorer_d659e6a2 ui;
+    class components_pitchdashboard_97dfc1b8 ui;
+    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
+    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
+    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
+    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
+    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
+    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
+    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
+    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
+    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
+</div>
+
+<h3>Call Details</h3>
+<table class="call-table">
+<tr>
+  <th style="width:5%">#</th>
+  <th style="width:28%">Node</th>
+  <th style="width:10%">Type</th>
+  <th style="width:17%">Caller</th>
+  <th style="width:20%">Callees</th>
+  <th style="width:20%">Description</th>
+</tr>
+<tr>
+  <td>1</td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+1 more</td>
+  <td>Module file in src/components/AIConsultantDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><code>AIStudioPanel.tsx</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+1 more</td>
+  <td>Module file in src/components/AIStudioPanel.tsx.</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><code>StudioTab</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>StudioTab node in src/components/AIStudioPanel.tsx.</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><code>AIStudioPanel()</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>AIStudioPanel() node in src/components/AIStudioPanel.tsx.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>BrandingPanel.tsx</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+3 more</td>
+  <td>Module file in src/components/BrandingPanel.tsx.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>chartReveal</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+9 more</td>
+  <td>Module file in src/components/BusinessPlanDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>COLORS</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>COLORS node in src/components/BusinessPlanDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>MarketingDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+3 more</td>
+  <td>Module file in src/components/MarketingDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>OpportunityExplorer.tsx</code><br><small style="color:var(--muted)">src/components/OpportunityExplorer.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>cardReveal</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+7 more</td>
+  <td>Module file in src/components/OpportunityExplorer.tsx.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>PitchDashboard.tsx</code><br><small style="color:var(--muted)">src/components/PitchDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+3 more</td>
+  <td>Module file in src/components/PitchDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>RoadmapPanel.tsx</code><br><small style="color:var(--muted)">src/components/RoadmapPanel.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+1 more</td>
+  <td>Module file in src/components/RoadmapPanel.tsx.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>BrandingPanel.tsx</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small><br><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>MarketingDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small><br>+2 more</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in components/ui/AILoadingOverlay.tsx.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>PROGRESS_STEPS</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>PROGRESS_STEPS node in components/ui/AILoadingOverlay.tsx.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>BrandingPanel.tsx</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small><br><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>MarketingDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small><br>+2 more</td>
+  <td>No direct outbound edge</td>
+  <td>AILoadingOverlay() node in components/ui/AILoadingOverlay.tsx.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>checkbox.tsx</code><br><small style="color:var(--muted)">components/ui/checkbox.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>OpportunityExplorer.tsx</code><br><small style="color:var(--muted)">src/components/OpportunityExplorer.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>Module file in components/ui/checkbox.tsx.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>Checkbox</code><br><small style="color:var(--muted)">components/ui/checkbox.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>OpportunityExplorer.tsx</code><br><small style="color:var(--muted)">src/components/OpportunityExplorer.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>Checkbox node in components/ui/checkbox.tsx.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>AIStudioPanel.tsx</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small><br><code>BrandingPanel.tsx</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small><br>+5 more</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>pageTransition</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>cardReveal</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>OpportunityExplorer.tsx</code><br><small style="color:var(--muted)">src/components/OpportunityExplorer.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>cardReveal node in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>AIStudioPanel.tsx</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small><br><code>BrandingPanel.tsx</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small><br>+5 more</td>
+  <td>No direct outbound edge</td>
+  <td>fadeInUp node in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>AIStudioPanel.tsx</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small><br><code>BrandingPanel.tsx</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small><br>+5 more</td>
+  <td>No direct outbound edge</td>
+  <td>fadeIn node in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>slideFromLeft</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>slideFromLeft node in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>slideFromRight</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>slideFromRight node in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>24</td>
+  <td><code>modalTransition</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>OpportunityExplorer.tsx</code><br><small style="color:var(--muted)">src/components/OpportunityExplorer.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>modalTransition node in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>25</td>
+  <td><code>staggerContainer</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>AIStudioPanel.tsx</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small><br><code>BrandingPanel.tsx</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small><br>+5 more</td>
+  <td>No direct outbound edge</td>
+  <td>staggerContainer node in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>26</td>
+  <td><code>staggerItem</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>staggerItem node in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>floatingAnimation</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>floatingAnimation node in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>28</td>
+  <td><code>pulseAnimation</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>pulseAnimation node in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>29</td>
+  <td><code>successAnimation</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>successAnimation node in src/lib/motion-presets.ts.</td>
+</tr>
+<tr>
+  <td>30</td>
+  <td><code>slideInLeft</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>slideInLeft node in src/lib/motion-presets.ts.</td>
+</tr>
+</table>
+
+<div class="grid">
+  <div class="card">
+    <h4>Key Files</h4>
+    <table style="width:100%;font-size:0.85rem;">
+      <tr><th>File</th><th>Coverage</th></tr>
+      <tr><td><code>src/lib/motion-presets.ts</code></td><td>19 nodes</td></tr>
+<tr><td><code>src/components/AIStudioPanel.tsx</code></td><td>3 nodes</td></tr>
+<tr><td><code>components/ui/AILoadingOverlay.tsx</code></td><td>3 nodes</td></tr>
+<tr><td><code>src/components/BusinessPlanDashboard.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>components/ui/checkbox.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/AIConsultantDashboard.tsx</code></td><td>1 nodes</td></tr>
+<tr><td><code>src/components/BrandingPanel.tsx</code></td><td>1 nodes</td></tr>
+<tr><td><code>src/components/MarketingDashboard.tsx</code></td><td>1 nodes</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h4>Design Notes</h4>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x38, contains x24, imports x14. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+  </div>
+</div>
+<hr>
+
+<!-- ====== 14. Index Packages Types Module ====== -->
+<h2 id="index-packages-types-module">14. Index Packages Types Module</h2>
 <p>Index Packages Types Module groups implementation around indexts, packages, types, onboardingdata, mostly in types/src/index.ts. This section covers 29 nodes and 28 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
@@ -3340,14 +4057,14 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 13. Community 142 ====== -->
-<h2 id="community-142">13. Community 142</h2>
-<p>Community 142 groups implementation around apps, web, pagetsx, admin, mostly in admin/plans/page.tsx, admin/projects/page.tsx, components/ui/button.tsx. This section covers 23 nodes and 33 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 15. Community 142 ====== -->
+<h2 id="community-142">15. Community 142</h2>
+<p>Community 142 groups implementation around apps, web, pagetsx, admin, mostly in admin/plans/page.tsx, admin/projects/page.tsx, components/admin/CommandPalette.tsx. This section covers 27 nodes and 40 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 142 (23 nodes, 33 edges)
+    %% Section: Community 142 (27 nodes, 40 edges)
     subgraph community_142_admin_plans_page_tsx_6174aab5["admin/plans/page.tsx"]
         plans_page_6c434789("page.tsx")
         plans_page_adminplanspage_08cc04af("AdminPlansPage()<br/><small>admin/plans/page.tsx</small>")
@@ -3356,24 +4073,22 @@ flowchart LR
         plans_page_scheme_cycle_4b6a5c45("SCHEME_CYCLE<br/><small>admin/plans/page.tsx</small>")
         plans_page_slug_scheme_63974aaf("SLUG_SCHEME<br/><small>admin/plans/page.tsx</small>")
         plans_page_subscriptionplan_06b7b934("SubscriptionPlan<br/><small>admin/plans/page.tsx</small>")
-        plans_page_getscheme_8335849d("getScheme()<br/><small>admin/plans/page.tsx</small>")
     end
     subgraph community_142_components_ui_button_tsx_792e2c68["components/ui/button.tsx"]
         ui_button_buttonvariants_a1d3986d("buttonVariants<br/><small>components/ui/button.tsx</small>")
         ui_button_button_e9ca2d52("Button()<br/><small>components/ui/button.tsx</small>")
         ui_button_fad8ac47("button.tsx")
     end
-    subgraph community_142_admin_projects_page_tsx_2ccd587d["admin/projects/page.tsx"]
-        projects_page_0e19f39c("page.tsx")
-        projects_page_adminprojectspage_ce582e98("AdminProjectsPage()<br/><small>admin/projects/page.tsx</small>")
-    end
     subgraph community_142_src_lib_adminClient_ts_951f74b5["src/lib/adminClient.ts"]
         lib_adminclient_5243ec83("adminClient.ts")
         lib_adminclient_adminclient_97f55678("adminClient<br/><small>src/lib/adminClient.ts</small>")
     end
+    projects_page_0e19f39c("page.tsx")
     settings_page_f734b8a7("page.tsx")
     users_page_7e3d59b3("page.tsx")
     admin_commandpalette_cd08b5bd("CommandPalette.tsx")
+    components_dashboard_8d4ab098("Dashboard.tsx")
+    lib_authclient_authclient_20b1fbfe("authClient<br/><small>src/lib/authClient.ts</small>")
     ui_button_buttonvariants_a1d3986d -->|calls| ui_button_button_e9ca2d52
     plans_page_6c434789 -->|imports| lib_adminclient_5243ec83
     plans_page_6c434789 -->|imports| lib_adminclient_adminclient_97f55678
@@ -3385,13 +4100,18 @@ flowchart LR
     projects_page_0e19f39c -->|imports| ui_button_button_e9ca2d52
     settings_page_f734b8a7 -->|imports| lib_adminclient_5243ec83
     settings_page_f734b8a7 -->|imports| lib_adminclient_adminclient_97f55678
+    settings_page_f734b8a7 -->|imports| lib_authclient_authclient_20b1fbfe
     settings_page_f734b8a7 -->|imports| ui_button_fad8ac47
     settings_page_f734b8a7 -->|imports| ui_button_button_e9ca2d52
+    users_page_7e3d59b3 -->|imports| lib_authclient_authclient_20b1fbfe
     users_page_7e3d59b3 -->|imports| ui_button_fad8ac47
     users_page_7e3d59b3 -->|imports| ui_button_button_e9ca2d52
+    components_dashboard_8d4ab098 -->|imports| ui_button_fad8ac47
+    components_dashboard_8d4ab098 -->|imports| ui_button_button_e9ca2d52
     admin_commandpalette_cd08b5bd -->|imports| lib_adminclient_5243ec83
     admin_commandpalette_cd08b5bd -->|imports| lib_adminclient_adminclient_97f55678
-    %% Omitted for readability: 5 nodes, 0 edges
+    lib_adminclient_5243ec83 -->|imports| lib_authclient_authclient_20b1fbfe
+    %% Omitted for readability: 9 nodes, 0 edges
     class plans_page_6c434789 ui;
     class plans_page_adminplanspage_08cc04af ui;
     class plans_page_planscheme_bdea5ffe ui;
@@ -3399,17 +4119,17 @@ flowchart LR
     class plans_page_scheme_cycle_4b6a5c45 ui;
     class plans_page_slug_scheme_63974aaf ui;
     class plans_page_subscriptionplan_06b7b934 ui;
-    class plans_page_getscheme_8335849d ui;
     class ui_button_buttonvariants_a1d3986d ui;
     class ui_button_button_e9ca2d52 ui;
     class ui_button_fad8ac47 ui;
-    class projects_page_0e19f39c ui;
-    class projects_page_adminprojectspage_ce582e98 ui;
     class lib_adminclient_5243ec83 entry;
     class lib_adminclient_adminclient_97f55678 entry;
+    class projects_page_0e19f39c ui;
     class settings_page_f734b8a7 ui;
     class users_page_7e3d59b3 ui;
     class admin_commandpalette_cd08b5bd entry;
+    class components_dashboard_8d4ab098 ui;
+    class lib_authclient_authclient_20b1fbfe entry;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -3532,7 +4252,7 @@ flowchart LR
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/settings/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>adminClient</code><br><small style="color:var(--muted)">src/lib/adminClient.ts</small><br><code>adminClient.ts</code><br><small style="color:var(--muted)">src/lib/adminClient.ts</small><br><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br>+1 more</td>
+  <td><code>adminClient</code><br><small style="color:var(--muted)">src/lib/adminClient.ts</small><br><code>adminClient.ts</code><br><small style="color:var(--muted)">src/lib/adminClient.ts</small><br><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br>+2 more</td>
   <td>Module file in admin/settings/page.tsx.</td>
 </tr>
 <tr>
@@ -3548,7 +4268,7 @@ flowchart LR
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/users/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small></td>
+  <td><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small></td>
   <td>Module file in admin/users/page.tsx.</td>
 </tr>
 <tr>
@@ -3561,6 +4281,22 @@ flowchart LR
 </tr>
 <tr>
   <td>17</td>
+  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">src/components/Dashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small></td>
+  <td>Module file in src/components/Dashboard.tsx.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>Dashboard()</code><br><small style="color:var(--muted)">src/components/Dashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Dashboard() node in src/components/Dashboard.tsx.</td>
+</tr>
+<tr>
+  <td>19</td>
   <td><code>CommandPalette.tsx</code><br><small style="color:var(--muted)">components/admin/CommandPalette.tsx</small></td>
   <td><span class="tag tag-cmd">Entry</span></td>
   <td>External entry / no inbound edge</td>
@@ -3568,7 +4304,7 @@ flowchart LR
   <td>Module file in components/admin/CommandPalette.tsx.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>20</td>
   <td><code>CommandPaletteProps</code><br><small style="color:var(--muted)">components/admin/CommandPalette.tsx</small></td>
   <td><span class="tag tag-cmd">Entry</span></td>
   <td>External entry / no inbound edge</td>
@@ -3576,15 +4312,23 @@ flowchart LR
   <td>CommandPaletteProps node in components/admin/CommandPalette.tsx.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>21</td>
+  <td><code>CommandPalette()</code><br><small style="color:var(--muted)">components/admin/CommandPalette.tsx</small></td>
+  <td><span class="tag tag-cmd">Entry</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>CommandPalette() node in components/admin/CommandPalette.tsx.</td>
+</tr>
+<tr>
+  <td>22</td>
   <td><code>button.tsx</code><br><small style="color:var(--muted)">components/ui/button.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/projects/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/settings/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/users/page.tsx</small><br>+1 more</td>
+  <td><code>Dashboard.tsx</code><br><small style="color:var(--muted)">src/components/Dashboard.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/settings/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/users/page.tsx</small><br>+2 more</td>
   <td>No direct outbound edge</td>
   <td>Module file in components/ui/button.tsx.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>23</td>
   <td><code>buttonVariants</code><br><small style="color:var(--muted)">components/ui/button.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -3592,28 +4336,36 @@ flowchart LR
   <td>buttonVariants node in components/ui/button.tsx.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>24</td>
   <td><code>Button()</code><br><small style="color:var(--muted)">components/ui/button.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>buttonVariants</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/plans/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/projects/page.tsx</small><br>+2 more</td>
+  <td><code>buttonVariants</code><br><small style="color:var(--muted)">components/ui/button.tsx</small><br><code>Dashboard.tsx</code><br><small style="color:var(--muted)">src/components/Dashboard.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/settings/page.tsx</small><br>+3 more</td>
   <td>No direct outbound edge</td>
   <td>Button() node in components/ui/button.tsx.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>25</td>
   <td><code>adminClient.ts</code><br><small style="color:var(--muted)">src/lib/adminClient.ts</small></td>
   <td><span class="tag tag-cmd">Entry</span></td>
-  <td><code>CommandPalette.tsx</code><br><small style="color:var(--muted)">components/admin/CommandPalette.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/projects/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/settings/page.tsx</small><br>+1 more</td>
-  <td>No direct outbound edge</td>
+  <td><code>CommandPalette.tsx</code><br><small style="color:var(--muted)">components/admin/CommandPalette.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/settings/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/projects/page.tsx</small><br>+1 more</td>
+  <td><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small></td>
   <td>Module file in src/lib/adminClient.ts.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>26</td>
   <td><code>adminClient</code><br><small style="color:var(--muted)">src/lib/adminClient.ts</small></td>
   <td><span class="tag tag-cmd">Entry</span></td>
-  <td><code>CommandPalette.tsx</code><br><small style="color:var(--muted)">components/admin/CommandPalette.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/projects/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/settings/page.tsx</small><br>+1 more</td>
+  <td><code>CommandPalette.tsx</code><br><small style="color:var(--muted)">components/admin/CommandPalette.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/settings/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/projects/page.tsx</small><br>+1 more</td>
   <td>No direct outbound edge</td>
   <td>adminClient node in src/lib/adminClient.ts.</td>
+</tr>
+<tr>
+  <td>27</td>
+  <td><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small></td>
+  <td><span class="tag tag-cmd">Entry</span></td>
+  <td><code>adminClient.ts</code><br><small style="color:var(--muted)">src/lib/adminClient.ts</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/users/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/settings/page.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>authClient node in src/lib/authClient.ts.</td>
 </tr>
 </table>
 
@@ -3624,660 +4376,83 @@ flowchart LR
       <tr><th>File</th><th>Coverage</th></tr>
       <tr><td><code>admin/plans/page.tsx</code></td><td>8 nodes</td></tr>
 <tr><td><code>admin/projects/page.tsx</code></td><td>4 nodes</td></tr>
+<tr><td><code>components/admin/CommandPalette.tsx</code></td><td>3 nodes</td></tr>
 <tr><td><code>components/ui/button.tsx</code></td><td>3 nodes</td></tr>
 <tr><td><code>admin/settings/page.tsx</code></td><td>2 nodes</td></tr>
 <tr><td><code>admin/users/page.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>components/admin/CommandPalette.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/Dashboard.tsx</code></td><td>2 nodes</td></tr>
 <tr><td><code>src/lib/adminClient.ts</code></td><td>2 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x16, imports x8, imports x8, calls x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
-  </div>
-</div>
-<hr>
-
-<!-- ====== 14. Components Marketingstudio Apiclient Module ====== -->
-<h2 id="components-marketingstudio-apiclient-module">14. Components Marketingstudio Apiclient Module</h2>
-<p>Components Marketingstudio Apiclient Module groups implementation around apps, web, components, admin, mostly in components/ui/card.tsx, components/admin/DashboardObservability.tsx, components/admin/RevenueAnalytics.tsx. This section covers 21 nodes and 48 internal edges; the diagram shows only representative relationships to stay readable.</p>
-
-<div class="mermaid">
-%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
-flowchart LR
-    %% Section: Components Marketingstudio Apiclient Module (21 nodes, 48 edges)
-    subgraph components_marketingstudio_apiclient_module_comp_54774061["components/ui/card.tsx"]
-        ui_card_67c22e52("card.tsx")
-        ui_card_card_7890a788("Card()<br/><small>components/ui/card.tsx</small>")
-        ui_card_cardcontent_ed1cd563("CardContent()<br/><small>components/ui/card.tsx</small>")
-        ui_card_cardheader_cb718f02("CardHeader()<br/><small>components/ui/card.tsx</small>")
-        ui_card_cardtitle_f8dc8a4e("CardTitle()<br/><small>components/ui/card.tsx</small>")
-    end
-    subgraph components_marketingstudio_apiclient_module_comp_780a232f["components/admin/DashboardObservability.tsx"]
-        admin_dashboardobservability_ec173084("DashboardObservability.tsx")
-        admin_dashboardobservability_dashboardobservabil_5f77a471("DashboardObservability()<br/><small>components/admin/DashboardObservability.tsx</small>")
-        admin_dashboardobservability_dashboardobservabil_63e254bf("DashboardObservabilityProps<br/><small>components/admin/DashboardObservability.tsx</small>")
-    end
-    subgraph components_marketingstudio_apiclient_module_comp_2ae35fd7["components/admin/RevenueAnalytics.tsx"]
-        admin_revenueanalytics_fe9a80fd("RevenueAnalytics.tsx")
-        admin_revenueanalytics_revenueanalytics_7290bbfd("RevenueAnalytics()<br/><small>components/admin/RevenueAnalytics.tsx</small>")
-        admin_revenueanalytics_revenueanalyticsprops_e9bead4f("RevenueAnalyticsProps<br/><small>components/admin/RevenueAnalytics.tsx</small>")
-    end
-    subgraph components_marketingstudio_apiclient_module_comp_0846067e["components/admin/VentureFunnel.tsx"]
-        admin_venturefunnel_7b24daa5("VentureFunnel.tsx")
-        admin_venturefunnel_venturefunnel_90384c7b("VentureFunnel()<br/><small>components/admin/VentureFunnel.tsx</small>")
-        admin_venturefunnel_venturefunnelprops_3301dc78("VentureFunnelProps<br/><small>components/admin/VentureFunnel.tsx</small>")
-    end
-    subgraph components_marketingstudio_apiclient_module_admi_7ac0e481["admin/dashboard/page.tsx"]
-        dashboard_page_12dc22a5("page.tsx")
-        dashboard_page_trafficchart_25a0b12d("TrafficChart<br/><small>admin/dashboard/page.tsx</small>")
-    end
-    subgraph components_marketingstudio_apiclient_module_comp_f8b242e4["components/admin/KPICardsRow.tsx"]
-        admin_kpicardsrow_873e7f9c("KPICardsRow.tsx")
-        admin_kpicardsrow_kpicardsrow_4f621c81("KPICardsRow()<br/><small>components/admin/KPICardsRow.tsx</small>")
-    end
-    dashboard_page_12dc22a5 -->|imports| admin_dashboardobservability_ec173084
-    dashboard_page_12dc22a5 -->|imports| admin_dashboardobservability_dashboardobservabil_5f77a471
-    dashboard_page_12dc22a5 -->|imports| admin_kpicardsrow_873e7f9c
-    dashboard_page_12dc22a5 -->|imports| admin_kpicardsrow_kpicardsrow_4f621c81
-    dashboard_page_12dc22a5 -->|imports| admin_revenueanalytics_fe9a80fd
-    dashboard_page_12dc22a5 -->|imports| admin_revenueanalytics_revenueanalytics_7290bbfd
-    dashboard_page_12dc22a5 -->|imports| admin_venturefunnel_7b24daa5
-    dashboard_page_12dc22a5 -->|imports| admin_venturefunnel_venturefunnel_90384c7b
-    dashboard_page_12dc22a5 -->|imports| ui_card_67c22e52
-    dashboard_page_12dc22a5 -->|imports| ui_card_card_7890a788
-    dashboard_page_12dc22a5 -->|imports| ui_card_cardcontent_ed1cd563
-    dashboard_page_12dc22a5 -->|imports| ui_card_cardheader_cb718f02
-    dashboard_page_12dc22a5 -->|imports| ui_card_cardtitle_f8dc8a4e
-    admin_dashboardobservability_ec173084 -->|imports| ui_card_67c22e52
-    admin_dashboardobservability_ec173084 -->|imports| ui_card_card_7890a788
-    admin_dashboardobservability_ec173084 -->|imports| ui_card_cardcontent_ed1cd563
-    admin_dashboardobservability_ec173084 -->|imports| ui_card_cardheader_cb718f02
-    admin_dashboardobservability_ec173084 -->|imports| ui_card_cardtitle_f8dc8a4e
-    admin_kpicardsrow_873e7f9c -->|imports| ui_card_67c22e52
-    admin_kpicardsrow_873e7f9c -->|imports| ui_card_card_7890a788
-    admin_kpicardsrow_873e7f9c -->|imports| ui_card_cardcontent_ed1cd563
-    admin_kpicardsrow_873e7f9c -->|imports| ui_card_cardheader_cb718f02
-    admin_kpicardsrow_873e7f9c -->|imports| ui_card_cardtitle_f8dc8a4e
-    admin_revenueanalytics_fe9a80fd -->|imports| ui_card_67c22e52
-    %% Omitted for readability: 3 nodes, 9 edges
-    class ui_card_67c22e52 ui;
-    class ui_card_card_7890a788 ui;
-    class ui_card_cardcontent_ed1cd563 ui;
-    class ui_card_cardheader_cb718f02 ui;
-    class ui_card_cardtitle_f8dc8a4e ui;
-    class admin_dashboardobservability_ec173084 ui;
-    class admin_dashboardobservability_dashboardobservabil_5f77a471 ui;
-    class admin_dashboardobservability_dashboardobservabil_63e254bf ui;
-    class admin_revenueanalytics_fe9a80fd ui;
-    class admin_revenueanalytics_revenueanalytics_7290bbfd ui;
-    class admin_revenueanalytics_revenueanalyticsprops_e9bead4f ui;
-    class admin_venturefunnel_7b24daa5 ui;
-    class admin_venturefunnel_venturefunnel_90384c7b ui;
-    class admin_venturefunnel_venturefunnelprops_3301dc78 ui;
-    class dashboard_page_12dc22a5 ui;
-    class dashboard_page_trafficchart_25a0b12d ui;
-    class admin_kpicardsrow_873e7f9c ui;
-    class admin_kpicardsrow_kpicardsrow_4f621c81 ui;
-    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
-    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
-    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
-    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
-    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
-    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
-    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
-    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
-    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
-</div>
-
-<h3>Call Details</h3>
-<table class="call-table">
-<tr>
-  <th style="width:5%">#</th>
-  <th style="width:28%">Node</th>
-  <th style="width:10%">Type</th>
-  <th style="width:17%">Caller</th>
-  <th style="width:20%">Callees</th>
-  <th style="width:20%">Description</th>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+10 more</td>
-  <td>Module file in admin/dashboard/page.tsx.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>TrafficChart</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>TrafficChart node in admin/dashboard/page.tsx.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>DashboardObservability.tsx</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+2 more</td>
-  <td>Module file in components/admin/DashboardObservability.tsx.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>DashboardObservabilityProps</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>DashboardObservabilityProps node in components/admin/DashboardObservability.tsx.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>DashboardObservability()</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>DashboardObservability() node in components/admin/DashboardObservability.tsx.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+2 more</td>
-  <td>Module file in components/admin/KPICardsRow.tsx.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>KPICardsRow()</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>KPICardsRow() node in components/admin/KPICardsRow.tsx.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>RevenueAnalytics.tsx</code><br><small style="color:var(--muted)">components/admin/RevenueAnalytics.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+2 more</td>
-  <td>Module file in components/admin/RevenueAnalytics.tsx.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>RevenueAnalyticsProps</code><br><small style="color:var(--muted)">components/admin/RevenueAnalytics.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Orchestrates analysis and returns structured documentation data.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>RevenueAnalytics()</code><br><small style="color:var(--muted)">components/admin/RevenueAnalytics.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>Orchestrates analysis and returns structured documentation data.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>VentureFunnel.tsx</code><br><small style="color:var(--muted)">components/admin/VentureFunnel.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small><br>+2 more</td>
-  <td>Module file in components/admin/VentureFunnel.tsx.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>VentureFunnelProps</code><br><small style="color:var(--muted)">components/admin/VentureFunnel.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>VentureFunnelProps node in components/admin/VentureFunnel.tsx.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>VentureFunnel()</code><br><small style="color:var(--muted)">components/admin/VentureFunnel.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>VentureFunnel() node in components/admin/VentureFunnel.tsx.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>card.tsx</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>DashboardObservability.tsx</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small><br><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small><br>+2 more</td>
-  <td>No direct outbound edge</td>
-  <td>Module file in components/ui/card.tsx.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>Card()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>DashboardObservability.tsx</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small><br><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small><br>+2 more</td>
-  <td>No direct outbound edge</td>
-  <td>Card() node in components/ui/card.tsx.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>CardHeader()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>DashboardObservability.tsx</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small><br><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small><br>+2 more</td>
-  <td>No direct outbound edge</td>
-  <td>CardHeader() node in components/ui/card.tsx.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>CardTitle()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>DashboardObservability.tsx</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small><br><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small><br>+2 more</td>
-  <td>No direct outbound edge</td>
-  <td>CardTitle() node in components/ui/card.tsx.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>CardDescription()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>CardDescription() node in components/ui/card.tsx.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>CardAction()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>CardAction() node in components/ui/card.tsx.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>CardContent()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>DashboardObservability.tsx</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small><br><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small><br>+2 more</td>
-  <td>No direct outbound edge</td>
-  <td>CardContent() node in components/ui/card.tsx.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>CardFooter()</code><br><small style="color:var(--muted)">components/ui/card.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>CardFooter() node in components/ui/card.tsx.</td>
-</tr>
-</table>
-
-<div class="grid">
-  <div class="card">
-    <h4>Key Files</h4>
-    <table style="width:100%;font-size:0.85rem;">
-      <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>components/ui/card.tsx</code></td><td>8 nodes</td></tr>
-<tr><td><code>components/admin/DashboardObservability.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>components/admin/RevenueAnalytics.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>components/admin/VentureFunnel.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>admin/dashboard/page.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>components/admin/KPICardsRow.tsx</code></td><td>2 nodes</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x24, contains x15, imports x9. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
-  </div>
-</div>
-<hr>
-
-<!-- ====== 15. Community 5 ====== -->
-<h2 id="community-5">15. Community 5</h2>
-<p>Community 5 groups implementation around apps, web, admin, components, mostly in src/hooks/useModerationDashboard.ts, admin/moderation/page.tsx, components/admin/TrafficChart.tsx. This section covers 21 nodes and 28 internal edges; the diagram shows only representative relationships to stay readable.</p>
-
-<div class="mermaid">
-%%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
-flowchart LR
-    %% Section: Community 5 (21 nodes, 28 edges)
-    subgraph community_5_admin_moderation_page_tsx_e58b0047["admin/moderation/page.tsx"]
-        moderation_page_3293987c("page.tsx")
-        moderation_page_moderationpage_efa9a476("ModerationPage()<br/><small>admin/moderation/page.tsx</small>")
-        moderation_page_agentrun_ae7dfce6("AgentRun<br/><small>admin/moderation/page.tsx</small>")
-        moderation_page_observabilitystats_33e7b3e0("ObservabilityStats<br/><small>admin/moderation/page.tsx</small>")
-        moderation_page_projectformod_4f86020a("ProjectForMod<br/><small>admin/moderation/page.tsx</small>")
-    end
-    subgraph community_5_src_hooks_useModerationDashboard_ts_52e63759["src/hooks/useModerationDashboard.ts"]
-        hooks_usemoderationdashboard_usemoderationdashbo_ea7b0009("useModerationDashboard()<br/><small>src/hooks/useModerationDashboard.ts</small>")
-        hooks_usemoderationdashboard_191332d3("useModerationDashboard.ts")
-        hooks_usemoderationdashboard_moderationevent_464a1779("ModerationEvent<br/><small>src/hooks/useModerationDashboard.ts</small>")
-        hooks_usemoderationdashboard_trafficdata_62c719ae("TrafficData<br/><small>src/hooks/useModerationDashboard.ts</small>")
-    end
-    subgraph community_5_components_admin_TrafficChart_tsx_48481cb1["components/admin/TrafficChart.tsx"]
-        admin_trafficchart_5e80ca5a("TrafficChart.tsx")
-        admin_trafficchart_customtooltip_3a6ce663("CustomTooltip()<br/><small>components/admin/TrafficChart.tsx</small>")
-        admin_trafficchart_trafficchart_a4be623e("TrafficChart()<br/><small>components/admin/TrafficChart.tsx</small>")
-    end
-    subgraph community_5_components_ui_badge_tsx_6fe69274["components/ui/badge.tsx"]
-        ui_badge_badgevariants_0cd644a0("badgeVariants<br/><small>components/ui/badge.tsx</small>")
-        ui_badge_badge_62fe1c0e("Badge()<br/><small>components/ui/badge.tsx</small>")
-        ui_badge_ed1a65a1("badge.tsx")
-    end
-    subgraph community_5_components_admin_ModerationFeed_tsx_a2801933["components/admin/ModerationFeed.tsx"]
-        admin_moderationfeed_499dceb6("ModerationFeed.tsx")
-        admin_moderationfeed_moderationfeed_78494311("ModerationFeed()<br/><small>components/admin/ModerationFeed.tsx</small>")
-    end
-    dashboard_page_admindashboardpage_c0691e2a("AdminDashboardPage()<br/><small>admin/dashboard/page.tsx</small>")
-    dashboard_page_admindashboardpage_c0691e2a -->|calls| hooks_usemoderationdashboard_usemoderationdashbo_ea7b0009
-    moderation_page_moderationpage_efa9a476 -->|calls| hooks_usemoderationdashboard_usemoderationdashbo_ea7b0009
-    ui_badge_badgevariants_0cd644a0 -->|calls| ui_badge_badge_62fe1c0e
-    moderation_page_3293987c -->|imports| admin_moderationfeed_499dceb6
-    moderation_page_3293987c -->|imports| admin_moderationfeed_moderationfeed_78494311
-    moderation_page_3293987c -->|imports| hooks_usemoderationdashboard_191332d3
-    moderation_page_3293987c -->|imports| hooks_usemoderationdashboard_usemoderationdashbo_ea7b0009
-    admin_moderationfeed_499dceb6 -->|imports| hooks_usemoderationdashboard_191332d3
-    admin_moderationfeed_499dceb6 -->|imports| hooks_usemoderationdashboard_moderationevent_464a1779
-    admin_moderationfeed_499dceb6 -->|imports| ui_badge_ed1a65a1
-    admin_moderationfeed_499dceb6 -->|imports| ui_badge_badge_62fe1c0e
-    admin_trafficchart_5e80ca5a -->|imports| hooks_usemoderationdashboard_191332d3
-    admin_trafficchart_5e80ca5a -->|imports| hooks_usemoderationdashboard_trafficdata_62c719ae
-    %% Omitted for readability: 3 nodes, 0 edges
-    class moderation_page_3293987c ui;
-    class moderation_page_moderationpage_efa9a476 ui;
-    class moderation_page_agentrun_ae7dfce6 ui;
-    class moderation_page_observabilitystats_33e7b3e0 ui;
-    class moderation_page_projectformod_4f86020a ui;
-    class hooks_usemoderationdashboard_usemoderationdashbo_ea7b0009 ui;
-    class hooks_usemoderationdashboard_191332d3 ui;
-    class hooks_usemoderationdashboard_moderationevent_464a1779 klass;
-    class hooks_usemoderationdashboard_trafficdata_62c719ae klass;
-    class admin_trafficchart_5e80ca5a ui;
-    class admin_trafficchart_customtooltip_3a6ce663 ui;
-    class admin_trafficchart_trafficchart_a4be623e ui;
-    class ui_badge_badgevariants_0cd644a0 ui;
-    class ui_badge_badge_62fe1c0e ui;
-    class ui_badge_ed1a65a1 ui;
-    class admin_moderationfeed_499dceb6 ui;
-    class admin_moderationfeed_moderationfeed_78494311 ui;
-    class dashboard_page_admindashboardpage_c0691e2a ui;
-    classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
-    classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
-    classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
-    classDef klass fill:#064e3b,stroke:#34d399,color:#d1fae5,stroke-width:1px;
-    classDef ui fill:#831843,stroke:#f472b6,color:#fce7f3,stroke-width:1px;
-    classDef module fill:#172554,stroke:#60a5fa,color:#dbeafe,stroke-width:1px;
-    classDef test fill:#3f3f46,stroke:#a1a1aa,color:#f4f4f5,stroke-width:1px;
-    classDef concept fill:#292524,stroke:#a8a29e,color:#fafaf9,stroke-dasharray:4 3;
-    classDef function fill:#0f172a,stroke:#38bdf8,color:#e0f2fe,stroke-width:1px;
-</div>
-
-<h3>Call Details</h3>
-<table class="call-table">
-<tr>
-  <th style="width:5%">#</th>
-  <th style="width:28%">Node</th>
-  <th style="width:10%">Type</th>
-  <th style="width:17%">Caller</th>
-  <th style="width:20%">Callees</th>
-  <th style="width:20%">Description</th>
-</tr>
-<tr>
-  <td>1</td>
-  <td><code>AdminDashboardPage()</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useModerationDashboard()</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
-  <td>Organizes documentation pages, navigation, or content lookup.</td>
-</tr>
-<tr>
-  <td>2</td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>ModerationFeed()</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small><br><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small><br><code>useModerationDashboard()</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small><br>+1 more</td>
-  <td>Module file in admin/moderation/page.tsx.</td>
-</tr>
-<tr>
-  <td>3</td>
-  <td><code>AgentRun</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>AgentRun node in admin/moderation/page.tsx.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>ObservabilityStats</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>ObservabilityStats node in admin/moderation/page.tsx.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>ProjectForMod</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>ProjectForMod node in admin/moderation/page.tsx.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>ModerationPage()</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useModerationDashboard()</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
-  <td>Organizes documentation pages, navigation, or content lookup.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
-  <td><code>Badge()</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small><br><code>badge.tsx</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small><br><code>ModerationEvent</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small><br>+1 more</td>
-  <td>Module file in components/admin/ModerationFeed.tsx.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>ModerationFeed()</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>ModerationFeed() node in components/admin/ModerationFeed.tsx.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>TrafficChart.tsx</code><br><small style="color:var(--muted)">components/admin/TrafficChart.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>TrafficData</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small><br><code>useModerationDashboard.ts</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
-  <td>Module file in components/admin/TrafficChart.tsx.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>CustomTooltip()</code><br><small style="color:var(--muted)">components/admin/TrafficChart.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>CustomTooltip() node in components/admin/TrafficChart.tsx.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>TrafficChart()</code><br><small style="color:var(--muted)">components/admin/TrafficChart.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>TrafficChart() node in components/admin/TrafficChart.tsx.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>badge.tsx</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>Module file in components/ui/badge.tsx.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>badgeVariants</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>Badge()</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small></td>
-  <td>badgeVariants node in components/ui/badge.tsx.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>Badge()</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>badgeVariants</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small><br><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>Badge() node in components/ui/badge.tsx.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>useModerationDashboard.ts</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small><br><code>TrafficChart.tsx</code><br><small style="color:var(--muted)">components/admin/TrafficChart.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>Module file in src/hooks/useModerationDashboard.ts.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>ModerationStats</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>ModerationStats node in src/hooks/useModerationDashboard.ts.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>TrafficData</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>TrafficChart.tsx</code><br><small style="color:var(--muted)">components/admin/TrafficChart.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>TrafficData node in src/hooks/useModerationDashboard.ts.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>ModerationEvent</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>ModerationEvent node in src/hooks/useModerationDashboard.ts.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>DashboardExtendedData</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>DashboardExtendedData node in src/hooks/useModerationDashboard.ts.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>useModerationDashboard()</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>AdminDashboardPage()</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small><br><code>ModerationPage()</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>useModerationDashboard() node in src/hooks/useModerationDashboard.ts.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>FlaggedCategory</code><br><small style="color:var(--muted)">src/hooks/useModerationDashboard.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>FlaggedCategory node in src/hooks/useModerationDashboard.ts.</td>
-</tr>
-</table>
-
-<div class="grid">
-  <div class="card">
-    <h4>Key Files</h4>
-    <table style="width:100%;font-size:0.85rem;">
-      <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/hooks/useModerationDashboard.ts</code></td><td>7 nodes</td></tr>
-<tr><td><code>admin/moderation/page.tsx</code></td><td>5 nodes</td></tr>
-<tr><td><code>components/admin/TrafficChart.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>components/ui/badge.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>components/admin/ModerationFeed.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>admin/dashboard/page.tsx</code></td><td>1 nodes</td></tr>
-    </table>
-  </div>
-  <div class="card">
-    <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x15, imports x5, imports x5, calls x3. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x18, imports x12, imports x9, calls x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around apps, web, scripts, components, mostly in src/components/LandingPage.tsx, src/lib/authClient.ts, components/ui/select.tsx. This section covers 174 nodes and 167 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around apps, web, scripts, guidemd, mostly in ADMIN_DASHBOARD_GUIDE.md, src/components/LandingPage.tsx, src/lib/authClient.ts. This section covers 183 nodes and 156 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (174 nodes, 167 edges)
-    subgraph other_components_ui_select_tsx_a63d3603["components/ui/select.tsx"]
-        ui_select_selectgroup_26d9df78("SelectGroup()<br/><small>components/ui/select.tsx</small>")
-        ui_select_selectvalue_e6226d06("SelectValue()<br/><small>components/ui/select.tsx</small>")
-        ui_select_selecttrigger_ba3dba52("SelectTrigger()<br/><small>components/ui/select.tsx</small>")
-        ui_select_selectcontent_0e8c3125("SelectContent()<br/><small>components/ui/select.tsx</small>")
-        ui_select_selectlabel_5e9f580d("SelectLabel()<br/><small>components/ui/select.tsx</small>")
-        ui_select_selectitem_6d771bd5("SelectItem()<br/><small>components/ui/select.tsx</small>")
-        ui_select_selectseparator_f89fbdcb("SelectSeparator()<br/><small>components/ui/select.tsx</small>")
-    end
-    subgraph other_components_ui_Skeleton_tsx_58e898f3["components/ui/Skeleton.tsx"]
-        ui_skeleton_af03ce57("Skeleton.tsx")
-        ui_skeleton_skeleton_534f2370("Skeleton()<br/><small>components/ui/Skeleton.tsx</small>")
+    %% Section: Other (183 nodes, 156 edges)
+    subgraph other_src_lib_authClient_ts_e00c7dd5["src/lib/authClient.ts"]
+        lib_authclient_request_5f16eccf("request()<br/><small>src/lib/authClient.ts</small>")
+        lib_authclient_checkemail_43989275("checkEmail()<br/><small>src/lib/authClient.ts</small>")
+        lib_authclient_del_f86eab19("del()<br/><small>src/lib/authClient.ts</small>")
+        lib_authclient_get_91907843("get()<br/><small>src/lib/authClient.ts</small>")
+        lib_authclient_getme_48250342("getMe()<br/><small>src/lib/authClient.ts</small>")
+        lib_authclient_googlelogin_2a418998("googleLogin()<br/><small>src/lib/authClient.ts</small>")
+        lib_authclient_login_63570835("login()<br/><small>src/lib/authClient.ts</small>")
+        lib_authclient_post_bf2f2531("post()<br/><small>src/lib/authClient.ts</small>")
+        lib_authclient_put_43fadbeb("put()<br/><small>src/lib/authClient.ts</small>")
+        lib_authclient_logout_c4535272("logout()<br/><small>src/lib/authClient.ts</small>")
+        lib_authclient_signup_45502029("signup()<br/><small>src/lib/authClient.ts</small>")
     end
     subgraph other_components_ui_Toast_tsx_c9ae9c52["components/ui/Toast.tsx"]
         ui_toast_4da76dee("Toast.tsx")
         ui_toast_toastcontainer_5ff026a3("ToastContainer()<br/><small>components/ui/Toast.tsx</small>")
     end
-    ui_input_input_54fb3925("Input()<br/><small>components/ui/input.tsx</small>")
     src_index_queryrag_7d3f4391("queryRAG()<br/><small>rag-core/src/index.ts</small>")
+    scripts_agy_status_get_git_branch_b9689f66("get_git_branch()<br/><small>scripts/agy_status.py</small>")
     app_layout_ed349684("layout.tsx")
-    components_onboarding_39c17165("Onboarding.tsx")
-    lib_authclient_request_5f16eccf("request()<br/><small>src/lib/authClient.ts</small>")
-    lib_utils_cn_b8743bb6("cn()<br/><small>src/lib/utils.ts</small>")
+    components_accountdetails_2cdf79b5("AccountDetails.tsx")
     store_errorstore_useerrorstore_b18bad53("useErrorStore<br/><small>src/store/errorStore.ts</small>")
-    ui_skeleton_skeleton_534f2370 -->|calls| lib_utils_cn_b8743bb6
     ui_toast_toastcontainer_5ff026a3 -->|calls| store_errorstore_useerrorstore_b18bad53
-    ui_input_input_54fb3925 -->|calls| lib_utils_cn_b8743bb6
-    ui_select_selectgroup_26d9df78 -->|calls| lib_utils_cn_b8743bb6
-    ui_select_selectvalue_e6226d06 -->|calls| lib_utils_cn_b8743bb6
-    ui_select_selecttrigger_ba3dba52 -->|calls| lib_utils_cn_b8743bb6
-    ui_select_selectcontent_0e8c3125 -->|calls| lib_utils_cn_b8743bb6
-    ui_select_selectlabel_5e9f580d -->|calls| lib_utils_cn_b8743bb6
-    ui_select_selectitem_6d771bd5 -->|calls| lib_utils_cn_b8743bb6
-    ui_select_selectseparator_f89fbdcb -->|calls| lib_utils_cn_b8743bb6
+    lib_authclient_request_5f16eccf -->|calls| lib_authclient_checkemail_43989275
+    lib_authclient_request_5f16eccf -->|calls| lib_authclient_del_f86eab19
+    lib_authclient_request_5f16eccf -->|calls| lib_authclient_get_91907843
+    lib_authclient_request_5f16eccf -->|calls| lib_authclient_getme_48250342
+    lib_authclient_request_5f16eccf -->|calls| lib_authclient_googlelogin_2a418998
+    lib_authclient_request_5f16eccf -->|calls| lib_authclient_login_63570835
+    lib_authclient_request_5f16eccf -->|calls| lib_authclient_post_bf2f2531
+    lib_authclient_request_5f16eccf -->|calls| lib_authclient_put_43fadbeb
+    lib_authclient_request_5f16eccf -->|calls| lib_authclient_logout_c4535272
+    lib_authclient_request_5f16eccf -->|calls| lib_authclient_signup_45502029
     app_layout_ed349684 -->|imports| ui_toast_4da76dee
     app_layout_ed349684 -->|imports| ui_toast_toastcontainer_5ff026a3
-    components_onboarding_39c17165 -->|imports| ui_input_input_54fb3925
-    components_onboarding_39c17165 -->|imports| ui_select_selectcontent_0e8c3125
-    components_onboarding_39c17165 -->|imports| ui_select_selectitem_6d771bd5
-    components_onboarding_39c17165 -->|imports| ui_select_selecttrigger_ba3dba52
-    components_onboarding_39c17165 -->|imports| ui_select_selectvalue_e6226d06
-    ui_skeleton_af03ce57 -->|imports| lib_utils_cn_b8743bb6
     ui_toast_4da76dee -->|imports| store_errorstore_useerrorstore_b18bad53
-    %% Omitted for readability: 156 nodes, 0 edges
-    class ui_select_selectgroup_26d9df78 ui;
-    class ui_select_selectvalue_e6226d06 ui;
-    class ui_select_selecttrigger_ba3dba52 ui;
-    class ui_select_selectcontent_0e8c3125 ui;
-    class ui_select_selectlabel_5e9f580d ui;
-    class ui_select_selectitem_6d771bd5 ui;
-    class ui_select_selectseparator_f89fbdcb ui;
-    class ui_skeleton_af03ce57 ui;
-    class ui_skeleton_skeleton_534f2370 ui;
+    %% Omitted for readability: 165 nodes, 0 edges
+    class lib_authclient_request_5f16eccf function;
+    class lib_authclient_checkemail_43989275 function;
+    class lib_authclient_del_f86eab19 function;
+    class lib_authclient_get_91907843 function;
+    class lib_authclient_getme_48250342 function;
+    class lib_authclient_googlelogin_2a418998 function;
+    class lib_authclient_login_63570835 function;
+    class lib_authclient_post_bf2f2531 function;
+    class lib_authclient_put_43fadbeb function;
+    class lib_authclient_logout_c4535272 function;
+    class lib_authclient_signup_45502029 function;
     class ui_toast_4da76dee ui;
     class ui_toast_toastcontainer_5ff026a3 ui;
-    class ui_input_input_54fb3925 ui;
     class src_index_queryrag_7d3f4391 function;
+    class scripts_agy_status_get_git_branch_b9689f66 function;
     class app_layout_ed349684 ui;
-    class components_onboarding_39c17165 ui;
-    class lib_authclient_request_5f16eccf function;
-    class lib_utils_cn_b8743bb6 function;
+    class components_accountdetails_2cdf79b5 ui;
     class store_errorstore_useerrorstore_b18bad53 ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
@@ -4302,150 +4477,190 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>ADMIN_DASHBOARD_GUIDE.md</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>select.tsx</code><br><small style="color:var(--muted)">components/ui/select.tsx</small><br>+4 more</td>
-  <td>Module file in src/components/Onboarding.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing ADMIN_DASHBOARD_GUIDE.md.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>Onboarding()</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Creator Engine - Admin Dashboard &amp; Moderation Portal Guide</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Onboarding() node in src/components/Onboarding.tsx.</td>
+  <td>Documentation node describing Creator Engine - Admin Dashboard &amp; Moderation Portal Guide.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>Skeleton.tsx</code><br><small style="color:var(--muted)">components/ui/Skeleton.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Table of Contents</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>Module file in components/ui/Skeleton.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Table of Contents.</td>
 </tr>
 <tr>
   <td>4</td>
-  <td><code>Skeleton()</code><br><small style="color:var(--muted)">components/ui/Skeleton.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>1. System Architecture &amp; Authentication Flow</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>Skeleton() node in components/ui/Skeleton.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 1. System Architecture &amp; Authentication Flow.</td>
 </tr>
 <tr>
   <td>5</td>
-  <td><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>Module file in components/ui/input.tsx.</td>
+  <td><code>How Authentication Works:</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing How Authentication Works:.</td>
 </tr>
 <tr>
   <td>6</td>
-  <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>Input() node in components/ui/input.tsx.</td>
+  <td><code>2. Dashboard Navigation &amp; Global Layout</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 2. Dashboard Navigation &amp; Global Layout.</td>
 </tr>
 <tr>
   <td>7</td>
-  <td><code>select.tsx</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small><br><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>Module file in components/ui/select.tsx.</td>
+  <td><code>3. Page-by-Page Feature Breakdown</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 3. Page-by-Page Feature Breakdown.</td>
 </tr>
 <tr>
   <td>8</td>
-  <td><code>SelectGroup()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Overview Dashboard</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>SelectGroup() node in components/ui/select.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Overview Dashboard.</td>
 </tr>
 <tr>
   <td>9</td>
-  <td><code>SelectValue()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>SelectValue() node in components/ui/select.tsx.</td>
+  <td><code>Features:</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Features:.</td>
 </tr>
 <tr>
   <td>10</td>
-  <td><code>SelectTrigger()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>SelectTrigger() node in components/ui/select.tsx.</td>
+  <td><code>User Management</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing User Management.</td>
 </tr>
 <tr>
   <td>11</td>
-  <td><code>SelectContent()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>SelectContent() node in components/ui/select.tsx.</td>
+  <td><code>Features:</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Features:.</td>
 </tr>
 <tr>
   <td>12</td>
-  <td><code>SelectLabel()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Project Management</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>SelectLabel() node in components/ui/select.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Project Management.</td>
 </tr>
 <tr>
   <td>13</td>
-  <td><code>SelectItem()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>Onboarding.tsx</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>SelectItem() node in components/ui/select.tsx.</td>
+  <td><code>Features:</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Features:.</td>
 </tr>
 <tr>
   <td>14</td>
-  <td><code>SelectSeparator()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Observability &amp; Moderation</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>SelectSeparator() node in components/ui/select.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Observability &amp; Moderation.</td>
 </tr>
 <tr>
   <td>15</td>
-  <td><code>SelectScrollUpButton()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Features:</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>SelectScrollUpButton() node in components/ui/select.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Features:.</td>
 </tr>
 <tr>
   <td>16</td>
-  <td><code>SelectScrollDownButton()</code><br><small style="color:var(--muted)">components/ui/select.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>Subscription Plans Manager</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>SelectScrollDownButton() node in components/ui/select.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Subscription Plans Manager.</td>
 </tr>
 <tr>
   <td>17</td>
-  <td><code>utils.ts</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>select.tsx</code><br><small style="color:var(--muted)">components/ui/select.tsx</small><br><code>Skeleton.tsx</code><br><small style="color:var(--muted)">components/ui/Skeleton.tsx</small></td>
+  <td><code>Features:</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>Module file in src/lib/utils.ts.</td>
+  <td>Documentation node describing Features:.</td>
 </tr>
 <tr>
   <td>18</td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>Input()</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>input.tsx</code><br><small style="color:var(--muted)">components/ui/input.tsx</small><br><code>select.tsx</code><br><small style="color:var(--muted)">components/ui/select.tsx</small><br>+11 more</td>
+  <td><code>System Settings</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>cn() node in src/lib/utils.ts.</td>
+  <td>Documentation node describing System Settings.</td>
 </tr>
 <tr>
   <td>19</td>
+  <td><code>Features:</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Features:.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>4. Backend Mechanics &amp; Operational Gates</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing 4. Backend Mechanics &amp; Operational Gates.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>Emergency Lockdown System</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Emergency Lockdown System.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>Scheduled Maintenance Mode</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Scheduled Maintenance Mode.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>Observability &amp; Token Telemetry Tracking</code><br><small style="color:var(--muted)">ADMIN_DASHBOARD_GUIDE.md</small></td>
+  <td><span class="tag tag-func">Concept</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Documentation node describing Observability &amp; Token Telemetry Tracking.</td>
+</tr>
+<tr>
+  <td>24</td>
   <td><code>LandingPage.tsx</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4453,7 +4668,7 @@ flowchart LR
   <td>Module file in src/components/LandingPage.tsx.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>25</td>
   <td><code>LandingPageProps</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4461,7 +4676,7 @@ flowchart LR
   <td>Organizes documentation pages, navigation, or content lookup.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>26</td>
   <td><code>logoMarks</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4469,7 +4684,7 @@ flowchart LR
   <td>logoMarks node in src/components/LandingPage.tsx.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>27</td>
   <td><code>formationItems</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4477,7 +4692,7 @@ flowchart LR
   <td>formationItems node in src/components/LandingPage.tsx.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>28</td>
   <td><code>faqItems</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4485,7 +4700,7 @@ flowchart LR
   <td>faqItems node in src/components/LandingPage.tsx.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>29</td>
   <td><code>reveal</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -4493,52 +4708,12 @@ flowchart LR
   <td>reveal node in src/components/LandingPage.tsx.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>30</td>
   <td><code>stagger</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
   <td>stagger node in src/components/LandingPage.tsx.</td>
-</tr>
-<tr>
-  <td>26</td>
-  <td><code>PremiumCard()</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>PremiumCard() node in src/components/LandingPage.tsx.</td>
-</tr>
-<tr>
-  <td>27</td>
-  <td><code>Logo()</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Logo() node in src/components/LandingPage.tsx.</td>
-</tr>
-<tr>
-  <td>28</td>
-  <td><code>MiniBars()</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>MiniBars() node in src/components/LandingPage.tsx.</td>
-</tr>
-<tr>
-  <td>29</td>
-  <td><code>Donut()</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Donut() node in src/components/LandingPage.tsx.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>ProductMockup()</code><br><small style="color:var(--muted)">src/components/LandingPage.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>ProductMockup() node in src/components/LandingPage.tsx.</td>
 </tr>
 </table>
 
@@ -4547,9 +4722,9 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/components/LandingPage.tsx</code></td><td>17 nodes</td></tr>
+      <tr><td><code>ADMIN_DASHBOARD_GUIDE.md</code></td><td>23 nodes</td></tr>
+<tr><td><code>src/components/LandingPage.tsx</code></td><td>17 nodes</td></tr>
 <tr><td><code>src/lib/authClient.ts</code></td><td>12 nodes</td></tr>
-<tr><td><code>components/ui/select.tsx</code></td><td>10 nodes</td></tr>
 <tr><td><code>apps/web/README-FRONTEND-MONITORING.md</code></td><td>7 nodes</td></tr>
 <tr><td><code>n8n-workflows/README-RECOVERY.md</code></td><td>7 nodes</td></tr>
 <tr><td><code>rag-core/src/index.ts</code></td><td>7 nodes</td></tr>
@@ -4559,7 +4734,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x115, calls x25, imports x13, imports x10. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x127, calls x14, imports x6, imports x5. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -4605,8 +4780,8 @@ flowchart LR
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>1559</td></tr>
-      <tr><td>Edges</td><td>1955</td></tr>
+      <tr><td>Nodes</td><td>1582</td></tr>
+      <tr><td>Edges</td><td>1977</td></tr>
       <tr><td>Hyperedges</td><td>3</td></tr>
       <tr><td>Communities</td><td>148</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
@@ -4615,7 +4790,7 @@ flowchart LR
   <div class="card">
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>EXTRACTED</td><td>1927</td></tr>
+      <tr><td>EXTRACTED</td><td>1949</td></tr>
       <tr><td>INFERRED</td><td>28</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
@@ -4624,7 +4799,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>creator-engine — Architecture Documentation</p>
-  <p>Generated: 2026-06-28 12:30 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-06-29 23:32 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
