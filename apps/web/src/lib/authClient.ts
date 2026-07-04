@@ -1,8 +1,12 @@
 import { AuthResponse, LoginRequest, SignupRequest, AuthUser } from '@creator/types';
 
-const API_BASE = (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_API_URL)
-  ? `${process.env.NEXT_PUBLIC_API_URL}/api`
+const rawApiUrl = process.env.NEXT_PUBLIC_API_URL;
+const cleanApiUrl = rawApiUrl ? rawApiUrl.replace(/^['"]|['"]$/g, '') : undefined;
+
+const API_BASE = (typeof window !== 'undefined' && cleanApiUrl)
+  ? `${cleanApiUrl}/api`
   : 'http://localhost:5000/api';
+
 
 // Local storage logic removed in favor of HttpOnly cookies
 
@@ -15,6 +19,14 @@ async function request<T>(
     ...(options.headers as Record<string, string> || {}),
   };
 
+  // Automatically append local token if available
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('token');
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+  }
+
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
     headers,
@@ -23,16 +35,37 @@ async function request<T>(
 
   // Handle 401 — auto-logout
   if (res.status === 401) {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+    }
     // Dynamically import the store to avoid circular dependencies
     const { useStore } = await import('../store/useStore');
     useStore.getState().logout();
     throw new Error('Session expired. Please log in again.');
   }
 
+  if (res.status === 402) {
+    const data = await res.json();
+    const { useStore } = await import('../store/useStore');
+    useStore.getState().setShowPricingModal(true);
+    throw new Error(data.message || 'Insufficient AI credits.');
+  }
+  if (res.status === 403) {
+    const data = await res.json();
+    if (data.error === 'SUBSCRIPTION_REQUIRED') {
+      const { useStore } = await import('../store/useStore');
+      useStore.getState().setShowPricingModal(true);
+      throw new Error(`Subscription required: ${data.requiredPlan}`);
+    }
+  }
+
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.error || `Request failed with status ${res.status}`);
+    const errorMsg = typeof data.error === 'object' && data.error !== null 
+      ? data.error.message || JSON.stringify(data.error)
+      : data.error;
+    throw new Error(errorMsg || `Request failed with status ${res.status}`);
   }
 
   return data as T;
@@ -50,24 +83,36 @@ async function checkEmail(email: string): Promise<{ exists: boolean }> {
 }
 
 async function login(body: LoginRequest): Promise<AuthResponse> {
-  return request<AuthResponse>('/auth/login', {
+  const data = await request<AuthResponse>('/auth/login', {
     method: 'POST',
     body: JSON.stringify(body),
   });
+  if (typeof window !== 'undefined' && data.token) {
+    localStorage.setItem('token', data.token);
+  }
+  return data;
 }
 
 async function signup(body: SignupRequest): Promise<AuthResponse> {
-  return request<AuthResponse>('/auth/signup', {
+  const data = await request<AuthResponse>('/auth/signup', {
     method: 'POST',
     body: JSON.stringify(body),
   });
+  if (typeof window !== 'undefined' && data.token) {
+    localStorage.setItem('token', data.token);
+  }
+  return data;
 }
 
 async function googleLogin(credential: string): Promise<AuthResponse> {
-  return request<AuthResponse>('/auth/google', {
+  const data = await request<AuthResponse>('/auth/google', {
     method: 'POST',
     body: JSON.stringify({ credential }),
   });
+  if (typeof window !== 'undefined' && data.token) {
+    localStorage.setItem('token', data.token);
+  }
+  return data;
 }
 
 async function logout(): Promise<void> {
@@ -75,6 +120,9 @@ async function logout(): Promise<void> {
     await request<{ message: string }>('/auth/logout', { method: 'POST' });
   } catch {
     // Ignore errors — logout is best-effort on backend
+  }
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('token');
   }
 }
 
@@ -97,6 +145,19 @@ async function post<T>(path: string, body: any): Promise<T> {
   });
 }
 
+async function put<T>(path: string, body: any): Promise<T> {
+  return request<T>(path, {
+    method: 'PUT',
+    body: JSON.stringify(body),
+  });
+}
+
+async function del<T>(path: string): Promise<T> {
+  return request<T>(path, {
+    method: 'DELETE',
+  });
+}
+
 export const authClient = {
   checkEmail,
   login,
@@ -106,4 +167,6 @@ export const authClient = {
   getMe,
   get,
   post,
+  put,
+  delete: del,
 };

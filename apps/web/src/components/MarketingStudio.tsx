@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { api } from "../lib/api";
+import { useI18n } from "../lib/i18n/I18nContext";
+import { useStore } from "../store/useStore";
 
 const SCROLLBAR_STYLE = `
   .custom-scrollbar-thin::-webkit-scrollbar {
@@ -235,11 +237,13 @@ function SimpleDropdown({ isOpen, title, options, selected, onSelect, onClose }:
 
 export default function MarketingStudio() {
   const PERSIST_KEY = "hg_marketing_studio_persistent";
+  const { t } = useI18n();
   
   const [prompt, setPrompt] = useState("");
   const [productImage, setProductImage] = useState<string | null>(null);
   const [avatarImage, setAvatarImage] = useState<string | null>(null);
   const [additionalImages, setAdditionalImages] = useState<string[]>([]);
+  const { currentProject } = useStore();
   
   const [params, setParams] = useState({
     ratio: "9:16",
@@ -251,6 +255,8 @@ export default function MarketingStudio() {
 
   const [history, setHistory] = useState<any[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [genStage, setGenStage] = useState(0);
+  const [genResult, setGenResult] = useState<any>(null);
   const [dropdown, setDropdown] = useState<string | null>(null); // 'format' | 'avatar' | 'ratio' | 'res' | 'duration'
   const [uploadProgress, setUploadProgress] = useState({ product: 0, avatar: 0, additional: 0 });
   const [fullscreenUrl, setFullscreenUrl] = useState<string | null>(null);
@@ -281,6 +287,17 @@ export default function MarketingStudio() {
     }, 500);
     return () => clearTimeout(timer);
   }, [prompt, params, productImage, avatarImage, additionalImages, history]);
+
+  // Handle fake stage progression while generating
+  useEffect(() => {
+    let stageTimer: any;
+    if (isGenerating && genStage < 5) {
+      stageTimer = setTimeout(() => {
+        setGenStage(prev => prev + 1);
+      }, 3000); // Progress fake stages every 3 seconds
+    }
+    return () => clearTimeout(stageTimer);
+  }, [isGenerating, genStage]);
 
   // ── Handlers ───────────────────────────────────────────────────────────────
 
@@ -326,18 +343,24 @@ export default function MarketingStudio() {
   };
 
   const handleGenerate = async () => {
-    if (!prompt.trim()) return alert("Please enter an ad script.");
-    if (!productImage) return alert("Please upload a product image.");
+    if (!prompt.trim()) return alert(t('marketingStudio.alertNoScript') || "Please enter an ad script.");
+    if (!productImage) return alert(t('marketingStudio.alertNoProduct') || "Please upload a product image.");
+    if (!currentProject?.id) return alert(t('marketingStudio.alertNoProject') || "No active project found.");
 
     setIsGenerating(true);
+    setGenStage(0);
+    setGenResult(null);
     try {
       const result = await api.generateMarketingStudioAd({
+        projectId: currentProject.id,
         prompt,
         aspect_ratio: params.ratio,
         duration: params.duration,
         images_list: [productImage, avatarImage, ...additionalImages].filter((Boolean) as any),
         video_files: params.videoUrl ? [params.videoUrl] : []
       });
+
+      setGenResult(result);
 
       if (result?.url) {
         const entry = {
@@ -351,9 +374,11 @@ export default function MarketingStudio() {
         setFullscreenUrl(result.url);
       }
     } catch (err: any) {
+      setGenResult({ status: 'failed', error: err.message });
       alert("Generation failed: " + err.message);
     } finally {
       setIsGenerating(false);
+      setGenStage(5);
     }
   };
 
@@ -365,13 +390,62 @@ export default function MarketingStudio() {
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
+  const STAGES = [
+    "Writing marketing script...",
+    "Creating visual concepts...",
+    "Generating product images...",
+    "Creating voiceover...",
+    "Rendering video...",
+    "Saving assets..."
+  ];
+
   return (
     <div className="w-full h-[calc(100vh-80px)] flex flex-col items-center justify-center bg-slate-900 rounded-2xl relative p-4 md:p-6 overflow-hidden">
       <style>{SCROLLBAR_STYLE}</style>
       
       {/* ── MAIN CONTENT AREA ── */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-6 pb-40 w-full">
-        {history.length > 0 ? (
+        {isGenerating ? (
+          <div className="h-full flex flex-col items-center justify-center animate-fadeIn">
+            <div className="w-16 h-16 border-4 border-white/20 border-t-emerald-500 rounded-full animate-spin mb-8" />
+            <h2 className="text-2xl font-bold text-white mb-2">{STAGES[genStage] || "Processing..."}</h2>
+            <div className="flex gap-2">
+              {STAGES.map((_, i) => (
+                <div key={i} className={`w-2 h-2 rounded-full transition-colors ${i <= genStage ? 'bg-emerald-500' : 'bg-white/20'}`} />
+              ))}
+            </div>
+          </div>
+        ) : genResult && genResult.status !== 'success' && !genResult.url ? (
+          <div className="h-full flex flex-col items-center justify-center animate-fadeIn">
+            <h2 className="text-2xl font-bold text-white mb-4">Generation Result</h2>
+            <div className="bg-black/50 p-6 rounded-lg border border-white/10 flex flex-col gap-3 min-w-[300px]">
+              <div className="flex justify-between items-center text-sm font-bold">
+                <span className="text-white/70">Script</span>
+                <span>{genResult.script ? '✅' : '❌'}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm font-bold">
+                <span className="text-white/70">Image</span>
+                <span>{genResult.images?.length > 0 ? '✅' : '❌'}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm font-bold">
+                <span className="text-white/70">Voice</span>
+                <span>{genResult.voice ? '✅' : '❌'}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm font-bold">
+                <span className="text-white/70">Video</span>
+                <span>{genResult.video ? '✅' : '❌'}</span>
+              </div>
+              {genResult.error && (
+                <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-xs text-center font-medium">
+                  {genResult.error}
+                </div>
+              )}
+              <button onClick={() => setGenResult(null)} className="mt-4 text-emerald-500 text-sm hover:underline">
+                Dismiss
+              </button>
+            </div>
+          </div>
+        ) : history.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fadeIn">
             {history.map(entry => (
               <div key={entry.id} className="relative group rounded-lg overflow-hidden border border-white/10 bg-[#0a0a0a] shadow-xl hover:border-emerald-500/50 transition-all duration-300 flex flex-col">
@@ -422,12 +496,12 @@ export default function MarketingStudio() {
                 </div>
               </div>
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-4 text-center px-4">
-                <span className="text-white/40 font-medium uppercase tracking-widest">START CREATING WITH</span>
+                <span className="text-white/40 font-medium uppercase tracking-widest">{t('marketingStudio.startCreatingWith')}</span>
                 <br />
-                <span className="text-white uppercase tracking-tight">MARKETING STUDIO</span>
+                <span className="text-white uppercase tracking-tight">{t('marketingStudio.marketingStudioTitle')}</span>
               </h1>
               <p className="text-white/40 text-sm md:text-base font-medium tracking-wide text-center max-w-lg leading-relaxed px-6">
-                Describe your scene, upload your product, and watch high-converting AI video ads come to life.
+                {t('marketingStudio.description')}
               </p>
           </div>
         )}
@@ -459,7 +533,7 @@ export default function MarketingStudio() {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               onInput={handleTextareaInput}
-              placeholder="Describe your ad script... Use @image1 for product, @image2 for avatar."
+              placeholder={t('marketingStudio.promptPlaceholder') || "Describe your ad script... Use @image1 for product, @image2 for avatar."}
               rows={1}
               className="w-full bg-transparent border-none text-white text-sm placeholder:text-white/20 focus:outline-none resize-none pt-1 leading-relaxed min-h-[44px] max-h-[300px] custom-scrollbar font-medium"
             />
@@ -539,7 +613,7 @@ export default function MarketingStudio() {
                     <img src={avatarImage || ASSETS.avatar[0].url} alt="Avatar" className="w-full h-full object-cover" />
                   </div>
                   <span className="text-sm font-bold text-white/70 group-hover:text-emerald-500 transition-colors">
-                    {ASSETS.avatar.find(a => a.url === avatarImage)?.name || "Select Avatar"}
+                    {ASSETS.avatar.find(a => a.url === avatarImage)?.name || t('marketingStudio.selectAvatar')}
                   </span>
                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" className="opacity-20 group-hover:opacity-100 transition-opacity"><path d="M6 9l6 6 6-6" /></svg>
                 </button>
@@ -582,10 +656,10 @@ export default function MarketingStudio() {
               {isGenerating ? (
                 <>
                   <div className="w-3 h-3 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                  Generating...
+                  {t('marketingStudio.generating')}
                 </>
               ) : (
-                <span>Launch</span>
+                <span>{t('marketingStudio.launchBtn')}</span>
               )}
             </button>
           </div>

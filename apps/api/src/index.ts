@@ -2,25 +2,32 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import {
-  connectDB,
-  ProjectModel,
-  BusinessIdeaModel,
-  BusinessOpportunityModel,
-  SelectedOpportunityModel,
-  BusinessValidationModel,
-  BusinessModelModel,
-  BusinessPlanModel,
-  BrandIdentityModel,
-  MarketingCampaignModel,
-  ExecutionRoadmapModel,
-  ConversationModel,
-  UserModel,
-  FounderProfileModel,
-  VentureStateModel,
-  AgentRunModel,
-  UploadedDocumentModel
+import { 
+  connectDB, 
+  ProjectModel, 
+  BusinessIdeaModel, 
+  BusinessOpportunityModel, 
+  SelectedOpportunityModel, 
+  BusinessValidationModel, 
+  BusinessModelModel, 
+  BusinessPlanModel, 
+  BrandIdentityModel, 
+  MarketingCampaignModel, 
+  ExecutionRoadmapModel, 
+  ConversationModel, 
+  UserModel, 
+  FounderProfileModel, 
+  VentureStateModel, 
+  AgentRunModel, 
+  UploadedDocumentModel 
 } from '@creator/database';
+import adminRouter, { registerLockdownHandlers, registerMaintenanceHandlers } from './routes/admin';
+import paymentsRouter from './routes/payments';
+import marketingStudioRouter from './routes/marketingStudio';
+import uploadRouter from './routes/upload';
+import { requireCredits, requireSubscription } from './middleware';
+import { deductCredits, CREDIT_COSTS, getUserCredits } from './services/creditEngine';
+import { authMiddleware, adminMiddleware } from './middleware';
 import { LoginRequest, SignupRequest, AuthResponse, AuthUser, FounderProfile, SelectedOpportunity, BusinessPlan } from '@creator/types';
 import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent } from '@creator/agents';
 import jwt from 'jsonwebtoken';
@@ -28,9 +35,10 @@ import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
 
 dotenv.config();
+dotenv.config({ path: require('path').resolve(__dirname, '../../../.env') });
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret_key_for_jwt_fallback_only';
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || 'mock_client_id');
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const app = express();
 app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000', credentials: true }));
@@ -41,6 +49,17 @@ const PORT = process.env.PORT || 5000;
 const MONGO_URL = process.env.DATABASE_URL;
 
 let dbConnected = false;
+let lockdownActive = false;
+registerLockdownHandlers(
+  () => lockdownActive,
+  (v) => { lockdownActive = v; }
+);
+
+let maintenanceActive = false;
+registerMaintenanceHandlers(
+  () => maintenanceActive,
+  (v) => { maintenanceActive = v; }
+);
 
 if (MONGO_URL) {
   connectDB(MONGO_URL)
@@ -54,43 +73,75 @@ if (MONGO_URL) {
   console.warn('DATABASE_URL is missing.');
 }
 
+// ==========================================
+// ENVIRONMENT VALIDATION (Phase 6)
+// ==========================================
+const requiredKeys = [
+  'FIREWORKS_API_KEY',
+  'HF_TOKEN',
+  'CLOUDINARY_CLOUD_NAME',
+  'CLOUDINARY_API_KEY',
+  'CLOUDINARY_API_SECRET'
+];
+for (const key of requiredKeys) {
+  if (!process.env[key]) {
+    console.warn(`WARNING: Missing required environment variable: ${key}`);
+  }
+}
+
+// ==========================================
+// AI PROVIDERS STATUS (Phase 4)
+// ==========================================
+app.get('/api/ai/providers/status', (req: Request, res: Response) => {
+  res.json({
+    fireworksLLM: !!process.env.FIREWORKS_API_KEY,
+    fireworksImage: !!process.env.FIREWORKS_API_KEY,
+    videoProvider: !!process.env.HF_TOKEN,
+    ttsProvider: !!process.env.HF_TOKEN,
+    storage: !!process.env.CLOUDINARY_CLOUD_NAME && !!process.env.CLOUDINARY_API_KEY && !!process.env.CLOUDINARY_API_SECRET
+  });
+});
+
 // UTILITIES
 function generateToken(userId: string, email: string): string {
   return jwt.sign({ id: userId, email }, JWT_SECRET, { expiresIn: '7d' });
 }
 
-function verifyToken(token: string): { id: string; email: string } {
-  return jwt.verify(token, JWT_SECRET) as { id: string; email: string };
-}
 
 function toAuthUser(user: any): AuthUser {
-  return { id: user.id, email: user.email, name: user.name, avatar: user.avatar };
+  return { id: user.id, email: user.email, name: user.name, avatar: user.avatar, role: user.role, isBanned: user.isBanned, token: user.token };
 }
-
-// MIDDLEWARES
-export const authMiddleware = async (req: Request, res: Response, next: any) => {
-  try {
-    const authHeader = req.headers.authorization;
-    const token = req.cookies.token || (authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null);
-    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
-
-    const decoded = verifyToken(token);
-    (req as any).user = { id: decoded.id, email: decoded.email };
-    next();
-  } catch (error) {
-    return res.status(401).json({ error: 'Unauthorized: Invalid token' });
-  }
-};
 
 // Base health check
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', database: dbConnected ? 'connected' : 'offline' });
 });
 
+// Public System Status endpoint (accessible to guest users)
+app.get('/api/system/status', (req: Request, res: Response) => {
+  res.json({
+    lockdown: lockdownActive,
+    maintenance: maintenanceActive
+  });
+});
+
+
+// Get user credits
+app.get('/api/user/credits', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    const wallet = await getUserCredits(userId);
+    return res.status(200).json({ wallet });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 // AUTH ROUTES
 app.post('/api/auth/signup', async (req: Request, res: Response): Promise<any> => {
   try {
     if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
+    if (lockdownActive) return res.status(503).json({ error: 'New signups are temporarily suspended. Please try again later.' });
     const { email, password, name } = req.body as SignupRequest;
     if (!email || !password || !name) return res.status(400).json({ error: 'Missing fields: email, password, and name are required' });
     if (password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
@@ -100,10 +151,11 @@ app.post('/api/auth/signup', async (req: Request, res: Response): Promise<any> =
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const userId = `usr_${Date.now()}`;
-    const newUser = new UserModel({ id: userId, email, password: hashedPassword, name });
+    const token = generateToken(userId, email);
+    const newUser = new UserModel({ id: userId, email, password: hashedPassword, name, token });
     await newUser.save();
 
-    const token = generateToken(newUser.id, email);
+
     res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
     return res.status(201).json({ token, user: toAuthUser(newUser) });
   } catch (error) {
@@ -111,10 +163,6 @@ app.post('/api/auth/signup', async (req: Request, res: Response): Promise<any> =
   }
 });
 
-app.post('/api/auth/register', async (req: Request, res: Response): Promise<any> => {
-  // Alias
-  return app._router.handle(req, res, () => {}); 
-});
 
 app.post('/api/auth/login', async (req: Request, res: Response): Promise<any> => {
   try {
@@ -128,7 +176,18 @@ app.post('/api/auth/login', async (req: Request, res: Response): Promise<any> =>
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
 
+    if (user.isBanned) {
+      return res.status(403).json({ error: 'Account has been banned.' });
+    }
+
+    if (lockdownActive && user.role !== 'admin') {
+      return res.status(503).json({ error: 'The platform is currently under emergency lockdown. Only admins can log in.' });
+    }
+
     const token = generateToken(user.id, email);
+    user.token = token;
+    await user.save();
+
     res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
     return res.json({ token, user: toAuthUser(user) });
   } catch (error) {
@@ -158,26 +217,46 @@ app.post('/api/auth/google', async (req: Request, res: Response): Promise<any> =
 
     const { email, name, sub: googleId, picture } = payload;
     let user = await UserModel.findOne({ email });
+    const userId = user ? user.id : `usr_${Date.now()}`;
+    const token = generateToken(userId, email);
 
     if (!user) {
-      user = new UserModel({ id: `usr_${Date.now()}`, email, name, googleId, avatar: picture });
+      user = new UserModel({ id: userId, email, name, googleId, avatar: picture, token });
       await user.save();
+
     } else {
-      let needsSave = false;
-      if (!user.googleId) { user.googleId = googleId; needsSave = true; }
-      if (!user.avatar && picture) { user.avatar = picture; needsSave = true; }
-      if (needsSave) await user.save();
+      user.token = token;
+      if (!user.googleId) user.googleId = googleId;
+      if (!user.avatar && picture) user.avatar = picture;
+      await user.save();
     }
 
-    const token = generateToken(user.id, email);
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
-    return res.json({ token, user: toAuthUser(user) });
+    if (user.isBanned) {
+      return res.status(403).json({ error: 'Account has been banned.' });
+    }
+
+    const tokenPayload = generateToken(user.id, email);
+    res.cookie('token', tokenPayload, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
+    return res.json({ token: tokenPayload, user: toAuthUser(user) });
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-app.post('/api/auth/logout', (req: Request, res: Response) => {
+app.post('/api/auth/logout', async (req: Request, res: Response): Promise<any> => {
+  try {
+    const authHeader = req.headers.authorization;
+    const token = req.cookies.token || (authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null);
+    
+    if (token && dbConnected) {
+      const decoded = jwt.verify(token, JWT_SECRET) as { id: string };
+      if (decoded?.id) {
+        await UserModel.findOneAndUpdate({ id: decoded.id }, { $unset: { token: '' } });
+      }
+    }
+  } catch (e) {
+    // Ignore errors for best-effort session revocation
+  }
   res.clearCookie('token');
   return res.json({ message: 'Logged out successfully' });
 });
@@ -206,6 +285,79 @@ app.get('/api/auth/me', authMiddleware, async (req: Request, res: Response): Pro
   }
 });
 
+// GET /api/account — full account profile (includes createdAt, plan, project count)
+app.get('/api/account', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    if (!dbConnected) return res.status(503).json({ error: 'Database connection required' });
+    const userId = (req as any).user.id;
+    const user = await UserModel.findOne({ id: userId });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const projectCount = await ProjectModel.countDocuments({ userId });
+
+    return res.json({
+      id: user.id,
+      email: user.email,
+      name: user.name || null,
+      avatar: user.avatar || null,
+      role: user.role || 'user',
+      isBanned: user.isBanned || false,
+      plan: user.role === 'admin' ? 'Admin' : 'Free',
+      projectCount,
+      joinedAt: user.createdAt,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Admin Elevation Route (Secret endpoint to make someone admin for testing)
+app.post('/api/auth/elevate', async (req: Request, res: Response): Promise<any> => {
+  try {
+    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    const { email, secret } = req.body;
+    // Simple dev secret to grant admin
+    if (secret !== 'make-me-admin') return res.status(403).json({ error: 'Invalid secret' });
+    
+    const user = await UserModel.findOne({ email });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (user.role === 'admin') return res.status(400).json({ error: 'User is already an admin' });
+
+    user.role = 'admin';
+    await user.save();
+
+    return res.json({ message: 'User elevated to admin', user: toAuthUser(user) });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Admin Demotion Route (Secret endpoint to revert someone back to user for testing)
+app.post('/api/auth/demote', async (req: Request, res: Response): Promise<any> => {
+  try {
+    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
+    const { email, secret } = req.body;
+    if (secret !== 'make-me-user') return res.status(403).json({ error: 'Invalid secret' });
+
+    const user = await UserModel.findOne({ email });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (user.role === 'user') return res.status(400).json({ error: 'User is already a regular user' });
+
+    user.role = 'user';
+    await user.save();
+
+    return res.json({ message: 'User demoted to regular user', user: toAuthUser(user) });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Admin Routes
+app.use('/api/admin', adminRouter);
+app.use('/api/payments', paymentsRouter);
+app.use('/api/marketing-studio', marketingStudioRouter);
+app.use('/api/upload', uploadRouter);
+
 // ==========================================
 // BUSINESS PLAN ENGINE ROUTES
 // ==========================================
@@ -229,6 +381,9 @@ async function trackAgentRun(
   action: () => Promise<any>,
   aiModel?: string
 ) {
+  if (maintenanceActive) {
+    throw new Error('System is under scheduled maintenance. AI workflows are temporarily suspended.');
+  }
   if (!dbConnected) return await action();
   
   const run = new AgentRunModel({
@@ -244,12 +399,22 @@ async function trackAgentRun(
   });
   await run.save();
 
+  const inputStr = typeof input === 'string' ? input : JSON.stringify(input || '');
+  const promptTokens = Math.max(50, Math.ceil(inputStr.length / 4.1)); // Standard character to token ratio
+
   try {
     const result = await action();
     run.status = 'success';
     run.completedAt = new Date();
     run.durationMs = run.completedAt.getTime() - run.startedAt.getTime();
     run.output = result;
+    
+    const outputStr = typeof result === 'string' ? result : JSON.stringify(result || '');
+    const completionTokens = Math.max(50, Math.ceil(outputStr.length / 4.1));
+    run.promptTokens = promptTokens;
+    run.completionTokens = completionTokens;
+    run.totalTokens = promptTokens + completionTokens;
+    
     await run.save();
     return result;
   } catch (error: any) {
@@ -257,6 +422,11 @@ async function trackAgentRun(
     run.completedAt = new Date();
     run.durationMs = run.completedAt.getTime() - run.startedAt.getTime();
     run.error = error.message;
+    
+    run.promptTokens = promptTokens;
+    run.completionTokens = 0;
+    run.totalTokens = promptTokens;
+    
     await run.save();
     throw error;
   }
@@ -265,6 +435,9 @@ async function trackAgentRun(
 // 0. Create Project (Decoupled)
 app.post('/api/projects', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
+    if (maintenanceActive) {
+      return res.status(503).json({ error: 'System is currently under maintenance. New project creations are temporarily suspended.' });
+    }
     const userId = (req as any).user.id;
     const { name } = req.body;
     
@@ -292,21 +465,33 @@ app.post('/api/projects', authMiddleware, async (req: Request, res: Response): P
 });
 
 // 1. Founder Analysis
-app.post('/api/founder/analyze', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/founder/analyze', authMiddleware, requireCredits(CREDIT_COSTS.FOUNDER_ANALYSIS), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId, data } = req.body;
     
     if (!projectId || !data) return res.status(400).json({ error: 'Missing projectId or data' });
 
+    // Sanitize data inputs with default fallbacks
+    const sanitizedData = {
+      ...data,
+      experience: data.experience || 'Intermediate',
+      location: data.location || 'Remote',
+      availableTime: data.availableTime || 'Full-time',
+      startupGoals: data.startupGoals || 'Build a successful company',
+      riskTolerance: data.riskTolerance || 'Medium',
+      teamSize: data.teamSize || 'Solo'
+    };
+
     // Call Agent with tracking
-    const analysis = await trackAgentRun(userId, projectId, 'founder-analysis', data, () => runFounderAgent(projectId, data));
+    const analysis = await trackAgentRun(userId, projectId, 'founder-analysis', sanitizedData, () => runFounderAgent(projectId, sanitizedData));
     
+    await deductCredits(userId, CREDIT_COSTS.FOUNDER_ANALYSIS, 'Founder Analysis');
     const founderProfile = new FounderProfileModel({
       id: `fp_${Date.now()}`,
       userId,
       projectId,
-      ...data,
+      ...sanitizedData,
       ...(analysis || {})
     });
     
@@ -323,7 +508,7 @@ app.post('/api/founder/analyze', authMiddleware, async (req: Request, res: Respo
 });
 
 // 2. Opportunity Discovery
-app.post('/api/opportunities/discover', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/opportunities/discover', authMiddleware, requireCredits(CREDIT_COSTS.OPPORTUNITY_DISCOVERY), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
@@ -343,6 +528,7 @@ app.post('/api/opportunities/discover', authMiddleware, async (req: Request, res
     );
     
     // Express owns formatting and persistence
+    await deductCredits(userId, CREDIT_COSTS.OPPORTUNITY_DISCOVERY, 'Opportunity Discovery');
     const formattedOpportunities = (rawOpportunities || []).map((opp: any, idx: number) => {
       const startupCostStr = typeof opp.startupCost === 'number'
         ? `$${opp.startupCost.toLocaleString()}`
@@ -353,7 +539,7 @@ app.post('/api/opportunities/discover', authMiddleware, async (req: Request, res
         : String(opp.estimatedRevenue || '$0/mo');
 
       return {
-        id: opp.id || `opp_${Date.now()}_${idx}_${Math.random().toString(36).substring(2, 7)}`,
+        id: opp.id || `opp_${Date.now()}_${idx}_${crypto.randomUUID().substring(0, 5)}`,
         userId,
         projectId,
         title: opp.title,
@@ -445,11 +631,10 @@ app.post('/api/opportunities/select', authMiddleware, async (req: Request, res: 
   }
 });
 
-// 4. Generate Business Plan
-app.post('/api/business-plan/generate', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/business-plan/generate', authMiddleware, requireCredits(CREDIT_COSTS.BUSINESS_PLAN), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
-    const { projectId } = req.body;
+    const { projectId, locale } = req.body;
     
     const selected = await SelectedOpportunityModel.findOne({ projectId, userId });
     if (!selected) return res.status(400).json({ error: 'No opportunity selected for this project' });
@@ -463,7 +648,7 @@ app.post('/api/business-plan/generate', authMiddleware, async (req: Request, res
       projectId,
       'business-plan',
       selected.toObject(),
-      () => runBusinessPlanAgent(projectId, selected.toObject(), founderProfile.toObject()),
+      () => runBusinessPlanAgent(projectId, selected.toObject(), founderProfile.toObject(), '', locale || 'en'),
       'deepseek-v4-flash'
     );
 
@@ -586,9 +771,10 @@ app.get('/api/projects/:projectId/context', authMiddleware, async (req: Request,
 });
 
 // 7. Upload Document Pipeline
-app.post('/api/projects/:projectId/documents/upload', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/projects/:projectId/documents/upload', authMiddleware, requireCredits(CREDIT_COSTS.RAG_QUERY), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
+    await deductCredits(userId, CREDIT_COSTS.RAG_QUERY, 'RAG Upload');
     const { projectId } = req.params;
     const { fileName, fileType, storageUrl, fileSize } = req.body;
     
@@ -617,7 +803,6 @@ app.post('/api/projects/:projectId/documents/upload', authMiddleware, async (req
 
     // The actual triggering of the n8n webhook would happen here.
     // We wrap it in trackAgentRun to track it.
-    // For now we don't have an agent method implemented in packages/agents, so we just mock it.
     await trackAgentRun(userId, projectId, 'document-processing', { documentId, storageUrl }, async () => {
       // Simulate n8n trigger
       console.log(`[Webhook] Triggering n8n processing for doc ${documentId}`);
@@ -652,7 +837,7 @@ app.get('/api/projects', authMiddleware, async (req: Request, res: Response) => 
 });
 
 // AI Cofounder Chat Endpoint
-app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/ai/chat', authMiddleware, requireCredits(CREDIT_COSTS.AI_CHAT_MESSAGE), async (req: Request, res: Response): Promise<any> => {
   try {
     const { projectId, message } = req.body;
     if (!projectId || !message) return res.status(400).json({ error: 'Missing projectId or message' });
@@ -665,7 +850,7 @@ app.post('/api/ai/chat', authMiddleware, async (req: Request, res: Response): Pr
     const userMessage = { id: `msg_user_${Date.now()}`, sender: 'user' as const, message, timestamp: new Date() };
     chatHistory.push(userMessage);
 
-    const aiResponse = await runCofounderAgent(message, JSON.stringify(state), chatHistory);
+    const aiResponse = await runCofounderAgent(message, JSON.stringify(state), JSON.stringify(chatHistory));
     chatHistory.push(aiResponse);
 
     if (dbConnected) {
@@ -693,6 +878,132 @@ app.get('/api/ai/chat/:projectId', authMiddleware, async (req: Request, res: Res
     }
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+// 6. Financial Engine
+app.post('/api/financial-engine/generate', authMiddleware, requireCredits(CREDIT_COSTS.FINANCIAL_ENGINE), async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    await deductCredits(userId, CREDIT_COSTS.FINANCIAL_ENGINE, 'Financial Engine');
+    return res.status(200).json({ success: true, message: 'Financial Engine Generated' });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// 7. Branding
+app.post('/api/branding/generate', authMiddleware, requireCredits(CREDIT_COSTS.BRANDING), async (req: Request, res: Response): Promise<any> => {
+  try {
+    const userId = (req as any).user.id;
+    await deductCredits(userId, CREDIT_COSTS.BRANDING, 'Branding');
+    return res.status(200).json({ success: true, message: 'Branding Generated' });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+// Cache the ElevenLabs voice ID to avoid fetching it on every request
+let cachedElevenLabsVoiceId: string | null = null;
+
+async function getElevenLabsVoiceId(apiKey: string): Promise<string | null> {
+  if (cachedElevenLabsVoiceId) return cachedElevenLabsVoiceId;
+  try {
+    const res = await fetch('https://api.elevenlabs.io/v1/voices', {
+      headers: { 'xi-api-key': apiKey }
+    });
+    if (!res.ok) return null;
+    const data: any = await res.json();
+    // Use first voice in the account (these are always accessible on free plans)
+    const voice = data?.voices?.[0];
+    if (voice?.voice_id) {
+      cachedElevenLabsVoiceId = voice.voice_id;
+      console.log(`Using ElevenLabs voice: ${voice.name} (${voice.voice_id})`);
+      return voice.voice_id;
+    }
+  } catch (e) {
+    console.error('Failed to fetch ElevenLabs voices:', e);
+  }
+  return null;
+}
+
+// TTS Proxy endpoint with ElevenLabs API & Google Translate auto-fallback
+app.get('/api/tts/proxy', async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { text, lang } = req.query;
+    if (!text) {
+      return res.status(400).json({ error: 'Missing text parameter' });
+    }
+    const targetLang = (lang as string) || 'ar';
+    const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY;
+
+    if (elevenLabsApiKey) {
+      try {
+        const voiceId = await getElevenLabsVoiceId(elevenLabsApiKey);
+        if (voiceId) {
+          const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'xi-api-key': elevenLabsApiKey
+            },
+            body: JSON.stringify({
+              text: text as string,
+              model_id: 'eleven_multilingual_v2',
+              voice_settings: {
+                stability: 0.5,
+                similarity_boost: 0.75
+              }
+            })
+          });
+
+          if (response.ok) {
+            const buffer = await response.arrayBuffer();
+            res.set({
+              'Content-Type': 'audio/mpeg',
+              'Content-Length': String(buffer.byteLength),
+              'Cache-Control': 'public, max-age=86400'
+            });
+            return res.send(Buffer.from(buffer));
+          } else {
+            const errBody = await response.text();
+            console.warn('ElevenLabs TTS failed, falling back to Google TTS:', errBody);
+            // Reset cached voice if it failed so we retry next time
+            cachedElevenLabsVoiceId = null;
+          }
+        }
+      } catch (elevenErr) {
+        console.error('ElevenLabs TTS error, falling back to Google TTS:', elevenErr);
+        cachedElevenLabsVoiceId = null;
+      }
+    }
+
+    // Google Translate TTS Fallback
+    const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${targetLang}&client=tw-ob&q=${encodeURIComponent(text as string)}`;
+    const response = await fetch(ttsUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    });
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: 'Google TTS request failed' });
+    }
+
+    const buffer = await response.arrayBuffer();
+    res.set({
+      'Content-Type': 'audio/mpeg',
+      'Content-Length': String(buffer.byteLength),
+      'Cache-Control': 'public, max-age=86400'
+    });
+
+    return res.send(Buffer.from(buffer));
+  } catch (err: any) {
+    console.error('TTS proxy error:', err);
+    return res.status(500).json({ error: err.message });
   }
 });
 

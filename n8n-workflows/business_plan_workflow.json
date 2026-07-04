@@ -6,7 +6,14 @@
         "httpMethod": "POST",
         "path": "business-plan-flow",
         "responseMode": "responseNode",
-        "options": {}
+        "options": {},
+        "authentication": "headerAuth"
+      },
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Creator Engine API Key"
+        }
       },
       "id": "webhook",
       "name": "Webhook",
@@ -52,7 +59,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer YOUR_FIREWORKS_API_KEY"
+              "value": "={{\"Bearer \" + $env.FIREWORKS_API_KEY_CHAT}}"
             },
             {
               "name": "Content-Type",

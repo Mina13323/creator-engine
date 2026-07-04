@@ -178,3 +178,12 @@ html {
 .glow-purple {
   background: radial-gradient(circle, #8b5cf6 0%, #6d28d9 100%);
 }
+
+.recharts-wrapper { max-width: 100% !important; overflow-x: auto; overflow-y: hidden; }
+
+/* TTS SpeakButton – animated wave bars */
+@keyframes tts-bar {
+  0%   { height: 4px; }
+  100% { height: 12px; }
+}
+

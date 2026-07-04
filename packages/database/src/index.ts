@@ -16,14 +16,21 @@ import {
   VentureState,
   AgentRun,
   UploadedDocument,
-  OpportunityComparison
+  OpportunityComparison,
+  PitchDeck,
+  SubscriptionPlan,
+  UserSubscription,
+  CreditWallet,
+  CreditTransaction,
+  PaymentTransaction
 } from '@creator/types';
 
 // MongoDB Connection
 export async function connectDB(url: string) {
+  const cleanUrl = url.replace(/^["']|["']$/g, '');
   if (mongoose.connection.readyState >= 1) return;
   try {
-    await mongoose.connect(url);
+    await mongoose.connect(cleanUrl);
     console.log('MongoDB connected successfully');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
@@ -36,19 +43,28 @@ interface UserDocument extends User {
   password?: string;
   googleId?: string;
   avatar?: string;
+  role?: 'user' | 'admin';
+  isBanned?: boolean;
+  token?: string;
 }
 
 const UserSchema = new Schema<UserDocument & Document>(
   {
+    // @ts-ignore - id is added for easier querying along with _id
     id: { type: String, required: true, index: true },
     email: { type: String, required: true, unique: true },
     name: { type: String },
     password: { type: String },
     googleId: { type: String },
-    avatar: { type: String }
+    avatar: { type: String },
+    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    isBanned: { type: Boolean, default: false },
+    token: { type: String }
   },
   { timestamps: true }
 );
+
+UserSchema.index({ createdAt: -1 });
 
 // 0.5 Founder Profile Model
 const FounderProfileSchema = new Schema<FounderProfile & Document>(
@@ -57,14 +73,14 @@ const FounderProfileSchema = new Schema<FounderProfile & Document>(
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     skills: [{ type: String }],
-    experience: { type: String, required: true },
+    experience: { type: String },
     industryInterests: [{ type: String }],
     budget: { type: Number, required: true },
-    location: { type: String, required: true },
-    availableTime: { type: String, required: true },
-    startupGoals: { type: String, required: true },
-    riskTolerance: { type: String, required: true },
-    teamSize: { type: String, required: true },
+    location: { type: String },
+    availableTime: { type: String },
+    startupGoals: { type: String },
+    riskTolerance: { type: String },
+    teamSize: { type: String },
     founderType: { type: String },
     strengths: [{ type: String }],
     weaknesses: [{ type: String }],
@@ -84,13 +100,18 @@ const ProjectSchema = new Schema<Project & Document>(
     industry: { type: String, required: true },
     status: {
       type: String,
-      enum: ['draft', 'idea', 'validated', 'branded', 'marketing-ready', 'active'],
+      enum: ['draft', 'idea', 'validated', 'branded', 'marketing-ready', 'active', 'archived'],
       default: 'draft'
     },
-    selectedOpportunityId: { type: String }
+    selectedOpportunityId: { type: String },
+    isFlagged: { type: Boolean, default: false },
+    flagReason: { type: String }
   },
   { timestamps: true }
 );
+
+ProjectSchema.index({ userId: 1, status: 1 });
+ProjectSchema.index({ createdAt: -1 });
 
 // 2. Business Idea Model (Legacy, kept per spec)
 const BusinessIdeaSchema = new Schema<BusinessIdea & Document>(
@@ -205,25 +226,124 @@ const BusinessPlanSchema = new Schema<BusinessPlan & Document>(
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
-    executiveSummary: { type: String, required: true },
-    problemStatement: { type: String, required: true },
-    solution: { type: String, required: true },
-    targetAudience: { type: String, required: true },
-    marketOpportunity: { type: String, required: true },
-    leanCanvas: { type: LeanCanvasSchema, required: true },
-    customerSegments: [{ type: String }],
-    businessModel: { type: String, required: true },
-    revenueModel: { type: String },
-    pricingStrategy: { type: String, required: true },
-    goToMarketStrategy: { type: String, required: true },
-    mvpScope: [{ type: String }],
-    successMetrics: [{ type: String }],
-    growthStrategy: { type: String, required: true },
-    marketResearchSummary: { type: String },
-    generatedByModel: { type: String },
-    generatedAt: { type: Date, default: Date.now },
+    
+    // SECTION 1 — EXECUTIVE SUMMARY
+    executiveSummary: {
+      startupName: { type: String },
+      mission: { type: String },
+      vision: { type: String },
+      valueProposition: { type: String },
+      executiveSummary: { type: String },
+      strategicPositioning: { type: String },
+    },
+
+    // SECTION 2 — PROBLEM & SOLUTION
+    problemAndSolution: {
+      problem: { type: String },
+      solution: { type: String },
+      targetPainPoints: [{ type: String }],
+      customerNeeds: [{ type: String }],
+      uniqueAdvantages: [{ type: String }],
+      unfairAdvantage: { type: String },
+    },
+
+    // SECTION 3 — BUSINESS MODEL
+    businessModel: {
+      revenueStreams: [{ type: String }],
+      pricingStrategy: { type: String },
+      acquisitionModel: { type: String },
+      salesModel: { type: String },
+      distributionChannels: [{ type: String }],
+      partnerships: [{ type: String }],
+      subscriptions: [{ type: String }],
+    },
+
+    // SECTION 4 — VIABILITY ANALYSIS
+    viabilityAnalysis: {
+      marketOpportunityScore: { type: Number },
+      founderFitScore: { type: Number },
+      profitabilityScore: { type: Number },
+      scalabilityScore: { type: Number },
+      executionScore: { type: Number },
+      overallScore: { type: Number },
+      reasoning: { type: String },
+    },
+
+    // SECTION 5 — MARKET RESEARCH
+    marketResearch: {
+      marketSize: { type: String },
+      industryGrowthRate: { type: String },
+      trends: [{ type: String }],
+      competitors: [{
+        name: { type: String },
+        strengths: { type: String },
+        weaknesses: { type: String }
+      }],
+      marketGaps: [{ type: String }],
+      targetSegments: [{ type: String }],
+      customerBehavior: { type: String }
+    },
+
+    // SECTION 6 — PRODUCTS & SERVICES
+    productsAndServices: {
+      coreOfferings: [{ type: String }],
+      premiumOfferings: [{ type: String }],
+      supportServices: [{ type: String }],
+      futureExpansionOpportunities: [{ type: String }]
+    },
+
+    // SECTION 7 — SALES & MARKETING
+    salesAndMarketing: {
+      acquisitionChannels: [{ type: String }],
+      marketingFunnel: {
+        awareness: { type: String },
+        interest: { type: String },
+        consideration: { type: String },
+        purchase: { type: String },
+        retention: { type: String }
+      },
+      customerRetention: { type: String },
+      onlinePresence: { type: String },
+      contentStrategy: { type: String },
+      growthStrategy: { type: String }
+    },
+
+    // SECTION 8 — FINANCIAL INSIGHTS
+    financialInsights: {
+      revenueProjection: { type: String },
+      monthlyGrowth: { type: String },
+      breakEvenPoint: { type: String },
+      profitabilityTimeline: { type: String },
+      unitEconomics: { type: String },
+      keyRisks: [{ type: String }],
+      chartData: [{
+        month: { type: String },
+        revenue: { type: Number },
+        cost: { type: Number }
+      }]
+    },
+
+    // SECTION 9 — SWOT ANALYSIS
+    swotAnalysis: {
+      strengths: [{ type: String }],
+      weaknesses: [{ type: String }],
+      opportunities: [{ type: String }],
+      threats: [{ type: String }]
+    },
+
+    // SECTION 10 — RISK ASSESSMENT
+    riskAssessment: {
+      marketRisks: [{ type: String }],
+      operationalRisks: [{ type: String }],
+      technicalRisks: [{ type: String }],
+      financialRisks: [{ type: String }],
+      mitigationStrategies: [{ type: String }]
+    },
+
+    isLatest: { type: Boolean, default: false },
     version: { type: Number, default: 1 },
-    isLatest: { type: Boolean, default: true }
+    generatedByModel: { type: String },
+    generatedAt: { type: Date, default: Date.now }
   },
   { timestamps: true, collection: 'business_plans' }
 );
@@ -234,27 +354,50 @@ const BrandIdentitySchema = new Schema<BrandIdentity & Document>(
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
-    brandName: { type: String, required: true },
-    slogan: { type: String, required: true },
-    toneOfVoice: { type: String, required: true },
-    brandPositioning: { type: String, required: true },
-    logoPrompt: { type: String, required: true },
+    brandName: { type: String, default: '' },
+    tagline: { type: String, default: '' },
+    slogan: { type: String, default: '' },
+    toneOfVoice: { type: String, default: '' },
+    brandPositioning: { type: String, default: '' },
+    brandPersonality: [{ type: String }],
+    brandStory: { type: String, default: '' },
+    brandVoice: {
+      dos: [{ type: String }],
+      donts: [{ type: String }]
+    },
+    logoPrompt: { type: String, default: '' },
     colorPalette: {
-      primary: { type: String, required: true },
-      secondary: { type: String, required: true },
-      background: { type: String, required: true },
-      accent: { type: String, required: true }
-    }
+      primary: { type: String, default: '' },
+      secondary: { type: String, default: '' },
+      background: { type: String, default: '' },
+      accent: { type: String, default: '' }
+    },
+    generatedByModel: { type: String },
+    generatedAt: { type: Date, default: Date.now },
+    version: { type: Number, default: 1 },
+    isLatest: { type: Boolean, default: true }
   },
-  { timestamps: true }
+  { timestamps: true, collection: 'brand_identities' }
 );
 
 // 6. Marketing Campaign Model
+const MarketingCampaignItemSchema = new Schema({
+  name: { type: String, required: true },
+  platform: { type: String, required: true },
+  budget: { type: Number, default: 0 },
+  goal: { type: String, required: true },
+  duration: { type: String, required: true },
+  tactics: [{ type: String }]
+});
+
 const MarketingCampaignSchema = new Schema<MarketingCampaign & Document>(
   {
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
+    marketingPlan: { type: String, default: '' },
+    launchPlan: { type: Schema.Types.Mixed, default: '' },
+    campaigns: [MarketingCampaignItemSchema],
     targetChannels: [{ type: String }],
     budgetAllocation: { type: Map, of: Number },
     adCopies: [
@@ -266,9 +409,40 @@ const MarketingCampaignSchema = new Schema<MarketingCampaign & Document>(
       }
     ],
     contentHooks: [{ type: String }],
-    socialMediaStrategy: { type: String, required: true }
+    socialMediaStrategy: { type: String, default: '' },
+    generatedByModel: { type: String },
+    generatedAt: { type: Date, default: Date.now },
+    version: { type: Number, default: 1 },
+    isLatest: { type: Boolean, default: true }
   },
-  { timestamps: true }
+  { timestamps: true, collection: 'marketing_campaigns' }
+);
+
+// 6.5 Pitch Deck Model
+const PitchDeckSchema = new Schema<PitchDeck & Document>(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    startupPitch: { type: String, default: '' },
+    investorSummary: { type: String, default: '' },
+    elevatorPitch: { type: String, default: '' },
+    problemStatement: { type: String, default: '' },
+    solution: { type: String, default: '' },
+    keyMetrics: {
+      marketSize: { type: String },
+      revenueModel: { type: String },
+      targetCustomers: { type: String },
+      uniqueAdvantage: { type: String },
+      fundingAsk: { type: String }
+    },
+    traction: { type: String },
+    generatedByModel: { type: String },
+    generatedAt: { type: Date, default: Date.now },
+    version: { type: Number, default: 1 },
+    isLatest: { type: Boolean, default: true }
+  },
+  { timestamps: true, collection: 'pitch_decks' }
 );
 
 // 7. Execution Roadmap Model
@@ -309,6 +483,7 @@ const ConversationSchema = new Schema<Conversation & Document>(
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
+    title: { type: String },
     messages: [ChatMessageSchema]
   },
   { timestamps: true }
@@ -326,6 +501,7 @@ const VentureStateSchema = new Schema<VentureState & Document>(
     financialForecast: { type: Schema.Types.Mixed },
     branding: { type: Schema.Types.Mixed },
     marketing: { type: Schema.Types.Mixed },
+    pitchDeck: { type: Schema.Types.Mixed },
     roadmap: { type: Schema.Types.Mixed },
     lastUpdated: { type: Date, default: Date.now }
   },
@@ -347,10 +523,15 @@ const AgentRunSchema = new Schema<AgentRun & Document>(
     durationMs: { type: Number },
     input: { type: Schema.Types.Mixed, required: true },
     output: { type: Schema.Types.Mixed },
-    error: { type: String }
+    error: { type: String },
+    promptTokens: { type: Number, default: 0 },
+    completionTokens: { type: Number, default: 0 },
+    totalTokens: { type: Number, default: 0 }
   },
   { timestamps: true }
 );
+
+AgentRunSchema.index({ createdAt: -1 });
 
 // 11. Uploaded Document Model
 const UploadedDocumentSchema = new Schema<UploadedDocument & Document>(
@@ -378,6 +559,16 @@ const OpportunityComparisonSchema = new Schema<OpportunityComparison & Document>
   { timestamps: true }
 );
 
+const schemasWithIsLatest = [
+  FounderProfileSchema, BusinessPlanSchema, BrandIdentitySchema, 
+  MarketingCampaignSchema, PitchDeckSchema, ExecutionRoadmapSchema
+];
+schemasWithIsLatest.forEach(schema => {
+  schema.index({ projectId: 1, userId: 1 });
+  schema.index({ projectId: 1, isLatest: 1 });
+  schema.index({ projectId: 1, userId: 1, isLatest: 1 });
+});
+
 // Export Mongoose Models
 export const UserModel = mongoose.models.User || mongoose.model<UserDocument & Document>('User', UserSchema);
 export const FounderProfileModel = mongoose.models.FounderProfile || mongoose.model<FounderProfile & Document>('FounderProfile', FounderProfileSchema);
@@ -390,6 +581,7 @@ export const BusinessModelModel = mongoose.models.BusinessModel || mongoose.mode
 export const BusinessPlanModel = mongoose.models.BusinessPlan || mongoose.model<BusinessPlan & Document>('BusinessPlan', BusinessPlanSchema);
 export const BrandIdentityModel = mongoose.models.BrandIdentity || mongoose.model<BrandIdentity & Document>('BrandIdentity', BrandIdentitySchema);
 export const MarketingCampaignModel = mongoose.models.MarketingCampaign || mongoose.model<MarketingCampaign & Document>('MarketingCampaign', MarketingCampaignSchema);
+export const PitchDeckModel = mongoose.models.PitchDeck || mongoose.model<PitchDeck & Document>('PitchDeck', PitchDeckSchema);
 export const ExecutionRoadmapModel = mongoose.models.ExecutionRoadmap || mongoose.model<ExecutionRoadmap & Document>('ExecutionRoadmap', ExecutionRoadmapSchema);
 export const ConversationModel = mongoose.models.Conversation || mongoose.model<Conversation & Document>('Conversation', ConversationSchema);
 export const VentureStateModel = mongoose.models.VentureState || mongoose.model<VentureState & Document>('VentureState', VentureStateSchema);
@@ -443,7 +635,7 @@ export interface IRevenueProjection {
 }
 
 export interface IFinancialForecast extends Document {
-  projectId: mongoose.Types.ObjectId;
+  projectId: string;
   startupCosts: IStartupCost[];
   totalStartupCost: number;
   monthlyCosts: IMonthlyCost[];
@@ -465,7 +657,7 @@ export interface IPriceTier {
 }
 
 export interface IPricingStrategy extends Document {
-  projectId: mongoose.Types.ObjectId;
+  projectId: string;
   businessModel: 'SaaS' | 'Agency retainer' | 'E-commerce' | 'Freelance' | string;
   recommendedStrategyType: string;
   currency: 'EGP' | 'USD';
@@ -495,7 +687,7 @@ export const RevenueProjectionSchema = new Schema<IRevenueProjection>({
 }, { _id: false });
 
 export const FinancialForecastSchema = new Schema<IFinancialForecast>({
-  projectId: { type: Schema.Types.ObjectId, required: true, unique: true, index: true },
+  projectId: { type: String, required: true, index: true },
   startupCosts: [StartupCostSchema],
   totalStartupCost: { type: Number, required: true, default: 0 },
   monthlyCosts: [MonthlyCostSchema],
@@ -516,7 +708,7 @@ export const PriceTierSchema = new Schema<IPriceTier>({
 }, { _id: false });
 
 export const PricingStrategySchema = new Schema<IPricingStrategy>({
-  projectId: { type: Schema.Types.ObjectId, required: true, unique: true, index: true },
+  projectId: { type: String, required: true, index: true },
   businessModel: { type: String, required: true },
   recommendedStrategyType: { type: String, required: true },
   currency: { type: String, enum: ['EGP', 'USD'], default: 'EGP' },
@@ -532,3 +724,152 @@ FinancialForecastSchema.pre<IFinancialForecast>('save', function () {
 
 export const FinancialForecast = mongoose.models.FinancialForecast || mongoose.model<IFinancialForecast>('FinancialForecast', FinancialForecastSchema);
 export const PricingStrategy = mongoose.models.PricingStrategy || mongoose.model<IPricingStrategy>('PricingStrategy', PricingStrategySchema);
+
+// Monetization Schemas
+const SubscriptionPlanSchema = new Schema<SubscriptionPlan & Document>(
+  {
+    name: { type: String, required: true },
+    slug: { type: String, required: true, unique: true },
+    monthlyPriceEGP: { type: Number, required: true },
+    monthlyCredits: { type: Number, required: true },
+    maxProjects: { type: Number, required: true },
+    features: [{ type: String }],
+    isActive: { type: Boolean, default: true }
+  },
+  { timestamps: true, collection: 'subscription_plans' }
+);
+
+const UserSubscriptionSchema = new Schema<UserSubscription & Document>(
+  {
+    userId: { type: String, required: true, index: true },
+    planId: { type: String, required: true },
+    status: { type: String, enum: ['active', 'expired', 'cancelled', 'pending'], default: 'pending' },
+    startsAt: { type: Date, required: true },
+    expiresAt: { type: Date, required: true },
+    autoRenew: { type: Boolean, default: true }
+  },
+  { timestamps: true, collection: 'user_subscriptions' }
+);
+
+UserSubscriptionSchema.index({ userId: 1, status: 1 });
+
+const CreditWalletSchema = new Schema<CreditWallet & Document>(
+  {
+    userId: { type: String, required: true, index: true, unique: true },
+    availableCredits: { type: Number, required: true, default: 0 },
+    totalUsedCredits: { type: Number, required: true, default: 0 },
+    totalPurchasedCredits: { type: Number, required: true, default: 0 }
+  },
+  { timestamps: true, collection: 'credit_wallets' }
+);
+
+const CreditTransactionSchema = new Schema<CreditTransaction & Document>(
+  {
+    userId: { type: String, required: true, index: true },
+    type: { type: String, enum: ['usage', 'subscription', 'topup', 'refund'], required: true },
+    amount: { type: Number, required: true },
+    feature: { type: String, required: true },
+    referenceId: { type: String }
+  },
+  { timestamps: true, collection: 'credit_transactions' }
+);
+
+const PaymentTransactionSchema = new Schema<PaymentTransaction & Document>(
+  {
+    userId: { type: String, required: true, index: true },
+    amountEGP: { type: Number, required: true },
+    paymentProvider: { type: String, enum: ['paymob'], default: 'paymob' },
+    paymentIntentId: { type: String, required: true },
+    transactionId: { type: String },
+    status: { type: String, enum: ['pending', 'paid', 'failed'], default: 'pending' },
+    metadata: { type: Schema.Types.Mixed }
+  },
+  { timestamps: true, collection: 'payment_transactions' }
+);
+
+PaymentTransactionSchema.index({ createdAt: -1 });
+
+const CreditPackSchema = new Schema<any & Document>(
+  {
+    name: { type: String, required: true },
+    slug: { type: String, required: true, unique: true },
+    priceEGP: { type: Number, required: true },
+    credits: { type: Number, required: true },
+    isActive: { type: Boolean, default: true }
+  },
+  { timestamps: true, collection: 'credit_packs' }
+);
+
+export const SubscriptionPlanModel = mongoose.models.SubscriptionPlan || mongoose.model<SubscriptionPlan & Document>('SubscriptionPlan', SubscriptionPlanSchema);
+export const UserSubscriptionModel = mongoose.models.UserSubscription || mongoose.model<UserSubscription & Document>('UserSubscription', UserSubscriptionSchema);
+export const CreditWalletModel = mongoose.models.CreditWallet || mongoose.model<CreditWallet & Document>('CreditWallet', CreditWalletSchema);
+export const CreditTransactionModel = mongoose.models.CreditTransaction || mongoose.model<CreditTransaction & Document>('CreditTransaction', CreditTransactionSchema);
+export const PaymentTransactionModel = mongoose.models.PaymentTransaction || mongoose.model<PaymentTransaction & Document>('PaymentTransaction', PaymentTransactionSchema);
+export const CreditPackModel = mongoose.models.CreditPack || mongoose.model<any & Document>('CreditPack', CreditPackSchema);
+
+export interface AdminSettings {
+  key: string;
+  defaultModel: string;
+  aiTemperature: number;
+  maxTokensPerRun: number;
+  freeCredits: number;
+  maxProjects: number;
+  lockdown: boolean;
+  maintenance: boolean;
+  flagAlerts: boolean;
+  weeklyReports: boolean;
+}
+
+const AdminSettingsSchema = new Schema<AdminSettings & Document>(
+  {
+    key: { type: String, default: 'global_config', unique: true, index: true },
+    defaultModel: { type: String, default: 'deepseek-v4-flash' },
+    aiTemperature: { type: Number, default: 0.7 },
+    maxTokensPerRun: { type: Number, default: 150000 },
+    freeCredits: { type: Number, default: 50 },
+    maxProjects: { type: Number, default: 5 },
+    lockdown: { type: Boolean, default: false },
+    maintenance: { type: Boolean, default: false },
+    flagAlerts: { type: Boolean, default: true },
+    weeklyReports: { type: Boolean, default: false }
+  },
+  { timestamps: true, collection: 'admin_settings' }
+);
+
+export const AdminSettingsModel = mongoose.models.AdminSettings || mongoose.model<AdminSettings & Document>('AdminSettings', AdminSettingsSchema);
+
+const MarketingStudioGenerationSchema = new Schema(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    prompt: { type: String, required: true },
+    businessContextSnapshot: { type: Object },
+    script: { type: Object },
+    scenes: [{ type: Object }],
+    images: [
+      {
+        url: { type: String, required: true },
+        provider: { type: String, required: true }
+      }
+    ],
+    video: {
+      url: { type: String },
+      provider: { type: String },
+      duration: { type: Number }
+    },
+    voice: {
+      url: { type: String }
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'processing', 'completed', 'failed', 'PARTIAL_SUCCESS'],
+      default: 'pending'
+    }
+  },
+  { timestamps: true, collection: 'marketing_studio_generations' }
+);
+
+export const MarketingStudioGenerationModel = mongoose.models.MarketingStudioGeneration || mongoose.model('MarketingStudioGeneration', MarketingStudioGenerationSchema);
+
+export * from './services/projectContext';

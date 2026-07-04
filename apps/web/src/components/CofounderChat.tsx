@@ -3,6 +3,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { Send, Sparkles, User, Brain, ExternalLink } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { fadeInUp, staggerContainer } from '../lib/motion-presets';
+import { SpeakButton } from './ui/SpeakButton';
 
 export default function CofounderChat() {
   const { chatMessages, sendChatMessage, chatLoading, currentProject } = useStore();
@@ -35,14 +38,19 @@ export default function CofounderChat() {
             <Brain className="w-5 h-5 text-blue-400" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white leading-none">AI Cofounder</h3>
+            <h3 className="text-sm font-bold text-white leading-none">CEO Copilot</h3>
             <span className="text-[9px] text-slate-400 font-medium mt-1 block">Context-aware RAG active</span>
           </div>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
+      <motion.div 
+        className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0"
+        variants={staggerContainer}
+        initial="initial"
+        animate="animate"
+      >
         {chatMessages.length === 0 ? (
           <div className="h-full flex flex-col justify-center items-center text-center p-4">
             <div className="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-3">
@@ -53,11 +61,13 @@ export default function CofounderChat() {
               Ask about Egypt market sizing, custom pricing tiers, or request drafts for cold outreach emails.
             </p>
           </div>
-        ) : (
+          ) : (
           chatMessages.map((msg) => {
+            if (!msg) return null;
             const isUser = msg.sender === 'user';
             return (
-              <div 
+              <motion.div 
+                variants={fadeInUp}
                 key={msg.id}
                 className={`flex gap-2.5 max-w-[85%] ${isUser ? 'ml-auto flex-row-reverse' : ''}`}
               >
@@ -80,27 +90,39 @@ export default function CofounderChat() {
                     {msg.message}
                   </div>
 
-                  {/* RAG Sources Citations */}
-                  {!isUser && msg.ragSources && msg.ragSources.length > 0 && (
-                    <div className="flex flex-wrap gap-1 items-center">
-                      <span className="text-[9px] text-slate-500 mr-1">RAG citation:</span>
-                      {msg.ragSources.map((source, sIdx) => (
-                        <span key={sIdx} className="text-[9px] text-blue-400 border border-blue-500/10 bg-blue-500/5 px-1.5 py-0.5 rounded flex items-center gap-0.5 font-medium">
-                          {source} <ExternalLink className="w-2 h-2" />
-                        </span>
-                      ))}
+                  {/* Bubble Footer Actions */}
+                  {!isUser && (
+                    <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                      <SpeakButton 
+                        text={msg.message} 
+                        size="sm" 
+                        label="Listen"
+                        className="!bg-blue-600/20 !border-blue-500/30 !text-blue-300 hover:!bg-blue-600/30 hover:!text-blue-200" 
+                      />
+                      
+                      {/* RAG Sources Citations */}
+                      {msg.ragSources && msg.ragSources.length > 0 && (
+                        <div className="flex flex-wrap gap-1 items-center">
+                          <span className="text-[9px] text-slate-500 mr-1">RAG citation:</span>
+                          {msg.ragSources.map((source, sIdx) => (
+                            <span key={sIdx} className="text-[9px] text-blue-400 border border-blue-500/10 bg-blue-500/5 px-1.5 py-0.5 rounded flex items-center gap-0.5 font-medium">
+                              {source} <ExternalLink className="w-2 h-2" />
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             );
           })
         )}
 
         {/* Loading Indicator */}
         {chatLoading && (
-          <div className="flex gap-2.5 max-w-[85%]">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center border border-emerald-500/30 bg-emerald-600/10 text-emerald-400 flex-shrink-0">
+          <motion.div variants={fadeInUp} className={`flex gap-2.5 max-w-[85%]`}>
+            <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs border border-emerald-500/30 bg-emerald-600/10 text-emerald-400`}>
               <Brain className="w-3.5 h-3.5 animate-pulse" />
             </div>
             <div className="p-3 rounded-2xl bg-slate-900 border border-white/5 text-xs text-slate-400 rounded-tl-none flex items-center gap-1.5">
@@ -111,10 +133,10 @@ export default function CofounderChat() {
                 <span className="w-1 h-1 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: '300ms' }}></span>
               </span>
             </div>
-          </div>
+          </motion.div>
         )}
         <div ref={messagesEndRef} />
-      </div>
+      </motion.div>
 
       {/* Input Form */}
       <form onSubmit={handleSubmit} className="p-3 border-t border-white/5 bg-slate-900/10 backdrop-blur-md sticky bottom-0">

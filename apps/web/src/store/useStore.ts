@@ -1,12 +1,13 @@
 import { create } from 'zustand';
 import { Project, ChatMessage, AuthUser, FounderProfile, BusinessOpportunity, SelectedOpportunity, BusinessPlan, VentureState, OnboardingData } from '@creator/types';
 import { authClient } from '../lib/authClient';
+import { useErrorStore } from './errorStore';
 
 interface StoreState {
   projects: Project[];
   currentProject: Project | null;
   ventureState: VentureState | null;
-  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'roadmap' | 'ai-studio';
+  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'roadmap' | 'ai-studio' | 'account' | 'ai-consultant';
   isOnboarded: boolean;
   
   // Async states
@@ -20,11 +21,37 @@ interface StoreState {
   selectedOpportunity: SelectedOpportunity | null;
   isSelecting: boolean;
   selectionError: string | null;
+  marketingCampaign: any;
+  pitchDeck: any;
+  currentOutputs: any;
+  marketingLoading: boolean;
+  pitchLoading: boolean;
+  generateMarketing: any;
+  generatePitch: any;
+  resetProjectState: any;
+  archiveProject: any;
+  restoreProject: any;
+  deleteProject: any;
+
+  clearChat: any;
+  conversations: any;
+  setActiveConversation: any;
+  loadConversations: any;
+  activeConversationId: any;
+  generateImage: any;
+  brandIdentity: any;
+  brandingLoading: boolean;
+  generateBranding: any;
 
   // Auth State
   user: AuthUser | null;
   isAuthModalOpen: boolean;
   isAuthenticated: boolean;
+  credits: number;
+  isDemo: boolean;
+  loadCredits: () => Promise<void>;
+  showPricingModal: boolean;
+  setShowPricingModal: (show: boolean) => void;
 
   // Actions
   setAuthModalOpen: (isOpen: boolean) => void;
@@ -40,7 +67,7 @@ interface StoreState {
   analyzeFounder: (projectId: string, data: OnboardingData) => Promise<void>;
   discoverOpportunities: (projectId: string) => Promise<void>;
   selectOpportunity: (projectId: string, opportunityId: string) => Promise<void>;
-  generateBusinessPlan: (projectId: string) => Promise<void>;
+  generateBusinessPlan: (projectId: string, locale?: string) => Promise<void>;
   uploadDocument: (projectId: string, fileData: { fileName: string, fileType: string, storageUrl: string, fileSize: number }) => Promise<void>;
 
   sendChatMessage: (message: string) => Promise<void>;
@@ -64,9 +91,45 @@ export const useStore = create<StoreState>((set, get) => ({
   isSelecting: false,
   selectionError: null,
 
+  marketingCampaign: null,
+  pitchDeck: null,
+  currentOutputs: null,
+  marketingLoading: false,
+  pitchLoading: false,
+  generateMarketing: async () => {},
+  generatePitch: async () => {},
+  resetProjectState: () => {},
+  archiveProject: () => {},
+  restoreProject: () => {},
+  deleteProject: () => {},
+
+  clearChat: () => {},
+  conversations: [],
+  setActiveConversation: () => {},
+  loadConversations: async () => {},
+  activeConversationId: null,
+  generateImage: async () => {},
+  brandIdentity: null,
+  brandingLoading: false,
+  generateBranding: async () => {},
+
   user: null,
   isAuthModalOpen: false,
   isAuthenticated: false,
+
+  credits: 0,
+  isDemo: false,
+  showPricingModal: false,
+  setShowPricingModal: (show) => set({ showPricingModal: show }),
+  loadCredits: async () => {
+    try {
+      const res = await fetch('http://localhost:5000/api/user/credits', { headers: { Authorization: `Bearer ${get().user?.token}` } });
+      const data = await res.json();
+      if (data.wallet) {
+        set({ credits: data.wallet.availableCredits, isDemo: !!data.isDemo });
+      }
+    } catch (e) {}
+  },
 
   setAuthModalOpen: (isOpen: boolean) => set({ isAuthModalOpen: isOpen }),
   setAuth: (user) => {
@@ -77,6 +140,9 @@ export const useStore = create<StoreState>((set, get) => ({
     set({
       user: null,
       isAuthenticated: false,
+      credits: 0,
+      isDemo: false,
+      showPricingModal: false,
       isOnboarded: false,
       projects: [],
       currentProject: null,
@@ -107,7 +173,7 @@ export const useStore = create<StoreState>((set, get) => ({
       const data = await authClient.get<Project[]>('/projects');
       set({ projects: data });
       if (data.length > 0) {
-        await get().selectProject(data[0].id || data[0]._id as any);
+        await get().selectProject(data[0].id || (data[0] as any)._id);
         set({ isOnboarded: true });
       }
     } catch (e) {
@@ -154,9 +220,14 @@ export const useStore = create<StoreState>((set, get) => ({
         loading: false
       }));
       return res.projectId;
-    } catch (e) {
+    } catch (e: any) {
       console.error('createProject failed', e);
       set({ loading: false });
+      useErrorStore.getState().addError({
+        title: 'Project Creation Suspended',
+        message: e.message || 'System is currently under maintenance. New project creations are temporarily suspended.',
+        type: 'warning'
+      });
       throw e;
     }
   },
@@ -215,10 +286,10 @@ export const useStore = create<StoreState>((set, get) => ({
     }
   },
 
-  generateBusinessPlan: async (projectId) => {
+  generateBusinessPlan: async (projectId, locale = 'en') => {
     set({ loading: true, loadingMessage: 'Generating Lean Canvas & Business Plan...' });
     try {
-      const res = await authClient.post<{ businessPlan: BusinessPlan }>('/business-plan/generate', { projectId });
+      const res = await authClient.post<{ businessPlan: BusinessPlan }>('/business-plan/generate', { projectId, locale });
       set(state => {
         const updatedState = state.ventureState ? { ...state.ventureState, businessPlan: res.businessPlan } : state.ventureState;
         return { ventureState: updatedState as VentureState, activeTab: 'business-plan', loading: false };

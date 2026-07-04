@@ -9,6 +9,10 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}"
   ],
+  plugins: [
+    ...(sharedConfig.plugins || []),
+    require('@tailwindcss/typography'),
+  ],
 };
 
 export default config;

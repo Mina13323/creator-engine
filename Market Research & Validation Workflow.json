@@ -1,0 +1,260 @@
+{
+  "name": "Market Research & Validation Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "start-market-research",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "name": "Webhook: Start Research",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        192
+      ],
+      "webhookId": "start-market-research-trigger",
+      "notesInFlow": true,
+      "id": "67715be2-b69c-4f91-902e-adddb87a6161",
+      "notes": "Receives projectId and idea from Next.js"
+    },
+    {
+      "parameters": {
+        "collection": "projects",
+        "options": {},
+        "query": "={\n  \"id\": \"{{ $json.body.projectId }}\"\n}"
+      },
+      "name": "MongoDB: Get Project",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        192
+      ],
+      "id": "8519031a-bc08-4e72-a7de-fef887480b3c"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer YOUR_ACTUAL_SECRET_KEY_HERE\",\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.1-8b-instant\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a Competitor Intelligence Agent. Identify 3 key competitors and market gaps for the provided project idea.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Project Name: {{ $json.name }}. Description: {{ $json.description }}\"\n    }\n  ],\n  \"temperature\": 0.7\n}",
+        "options": {}
+      },
+      "name": "Competitor Agent (Gemini)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -16,
+        192
+      ],
+      "id": "7304caaa-6a9b-4046-bc5d-001f1eb2190f"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer YOUR_ACTUAL_SECRET_KEY_HERE\",\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.1-8b-instant\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a Trend Analysis Agent. Identify emerging trends and future opportunities for the provided project idea.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Project Name: {{ $json.name }}. Description: {{ $json.description }}\"\n    }\n  ],\n  \"temperature\": 0.7\n}",
+        "options": {}
+      },
+      "name": "Trend Agent (Gemini)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -16,
+        384
+      ],
+      "id": "25d167ef-83b2-4ceb-b6f9-e59cd210d6e3"
+    },
+    {
+      "parameters": {
+        "operation": "insert",
+        "collection": "marketresearch",
+        "fields": "validationReport, competitorAnalysis, trendAnalysis,  processedAt",
+        "options": {}
+      },
+      "name": "MongoDB: Save Reports",
+      "type": "n8n-nodes-base.mongoDb",
+      "typeVersion": 1,
+      "position": [
+        800,
+        128
+      ],
+      "id": "f7b57e21-366f-476a-875e-a3cc36ecfd10",
+      "credentials": {
+        "mongoDb": {
+          "id": "Si5pcKqSQtd6iaPA",
+          "name": "MongoDB account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Authorization\": \"Bearer YOUR_ACTUAL_SECRET_KEY_HERE\",\n  \"Content-Type\": \"application/json\"\n}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama-3.1-8b-instant\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a Market Validation Agent. Analyze the feasibility, demand, scalability, and startup cost for the provided project idea.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Project Name: {{ $json.name }}. Description: {{ $json.description }}\"\n    }\n  ],\n  \"temperature\": 0.7\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4440b07f-533c-4921-ab07-74d0d6ef76ee",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {
+          "clashHandling": {
+            "values": {
+              "resolveClash": "addSuffix"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        224,
+        176
+      ],
+      "id": "1220f4c8-ebd3-4960-85d2-e5483afb2777",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Start tracking local process execution speed\nconst start = Date.now();\n\nconst items = $input.all();\nconst mergedObject = {};\n\nconst cleanText = (text) => text ? text.replace(/^Thank you for providing.*?\\n+/i, '').trim() : \"\";\n\n// Shifting suffixes to match n8n's 1-based naming convention (choices_1, choices_2, choices_3)\nif (items[0] && items[0].json) {\n  const data = items[0].json;\n\n  mergedObject.validationReport = cleanText(data.choices_1?.[0]?.message?.content || \"\");\n  mergedObject.competitorAnalysis = cleanText(data.choices_2?.[0]?.message?.content || \"\");\n  mergedObject.trendAnalysis = cleanText(data.choices_3?.[0]?.message?.content || \"\");\n}\n\n// Append the database metrics tracking parameters\nmergedObject.processedAt = new Date().toISOString(); \n\n\nreturn [{ json: mergedObject }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        512,
+        192
+      ],
+      "id": "5fa4ed15-bc1d-4258-a3b1-f387febb0783",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook: Start Research": {
+      "main": [
+        [
+          {
+            "node": "MongoDB: Get Project",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MongoDB: Get Project": {
+      "main": [
+        [
+          {
+            "node": "Competitor Agent (Gemini)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Trend Agent (Gemini)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Competitor Agent (Gemini)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trend Agent (Gemini)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "MongoDB: Save Reports",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "2d673def-1920-4833-991a-8dc301adead6",
+  "meta": {
+    "instanceId": "259acdd0c353375988c1841b80ca6e70faa775cc0398e03743def1481d28476a"
+  },
+  "id": "tLAVd7EtA4U1dccf",
+  "tags": []
+}

@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+import Link from 'next/link';
 import { useStore } from '../store/useStore';
 import Onboarding from '../components/Onboarding';
 import LandingPage from '../components/LandingPage';
@@ -10,11 +12,15 @@ import BusinessPlanDashboard from '../components/BusinessPlanDashboard';
 import BrandingPanel from '../components/BrandingPanel';
 import MarketingStudio from '../components/MarketingStudio';
 import RoadmapPanel from '../components/RoadmapPanel';
-import CofounderChat from '../components/CofounderChat';
 import AIStudioPanel from '../components/AIStudioPanel';
+import AIConsultantDashboard from '../components/AIConsultantDashboard';
 import AuthModal from '../components/AuthModal';
+import CreditIndicator from '../components/CreditIndicator';
+import PricingModal from '../components/PricingModal';
 import FinancialEngine from '../components/FinancialEngine';
+import AccountDetails from '../components/AccountDetails';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useI18n } from '../lib/i18n/I18nContext';
 
 import { 
   Home, 
@@ -31,13 +37,17 @@ import {
   X,
   LogOut,
   ImagePlus,
-  Megaphone
+  Megaphone,
+  ShieldAlert,
+  UserCircle,
+  Globe
 } from 'lucide-react';
 
 // Tabs that require authentication
 const PROTECTED_TABS = ['dashboard', 'business-builder', 'financials', 'guides', 'ai-consultant', 'pitch', 'radar', 'market-research', 'branding', 'marketing', 'roadmap'];
 
 export default function AppPage() {
+  const { t, dir, locale, setLocale } = useI18n();
   const { 
     isOnboarded, 
     loadProjects, 
@@ -54,6 +64,9 @@ export default function AppPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
 
+  const effectivelyOnboarded = isOnboarded || isAuthenticated;
+
+
   // Verify auth on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -61,10 +74,47 @@ export default function AppPage() {
     }
   }, []);
 
-  // Hide landing page automatically if authenticated
+  const [prevAuth, setPrevAuth] = useState(isAuthenticated);
+
+  // Sync landing page visibility with authentication state transitions
   useEffect(() => {
-    if (isAuthenticated) {
-      setShowLanding(false);
+    if (isAuthenticated !== prevAuth) {
+      setPrevAuth(isAuthenticated);
+      if (isAuthenticated) {
+        setShowLanding(false);
+      } else {
+        setShowLanding(true);
+      }
+    }
+  }, [isAuthenticated, prevAuth]);
+
+
+  // Check for Paymob redirect
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const success = urlParams.get('success');
+    const merchantOrderId = urlParams.get('merchant_order_id');
+
+    if (success && merchantOrderId && isAuthenticated) {
+      // Clear URL params
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      if (success === 'true') {
+        const verifyPayment = async () => {
+          const res = await fetch('http://localhost:5000/api/payments/paymob/verify-redirect', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${useStore.getState().user?.token}` },
+            body: JSON.stringify({ merchant_order_id: merchantOrderId, success })
+          });
+          if (res.ok) {
+            toast.success('Payment successful! Credits added to your wallet.');
+            useStore.getState().loadCredits();
+          }
+        };
+        verifyPayment();
+      } else {
+        toast.error('Payment failed or was cancelled.');
+      }
     }
   }, [isAuthenticated]);
 
@@ -82,19 +132,20 @@ export default function AppPage() {
     loadProjects();
   }, [loadProjects, showLanding, isAuthenticated]);
 
-  if (showLanding && !isOnboarded) {
+  if (showLanding) {
     return (
       <>
         <LandingPage
           onGetStarted={() => setShowLanding(false)}
           onLogin={() => useStore.getState().setAuthModalOpen(true)}
+          isAuthenticated={isAuthenticated}
         />
         <AuthModal />
       </>
     );
   }
 
-  if (!isOnboarded) {
+  if (!effectivelyOnboarded) {
     return (
       <>
         <Onboarding />
@@ -104,14 +155,16 @@ export default function AppPage() {
   }
 
   const sidebarItems = [
-    { id: 'dashboard', label: 'Founder Profile', icon: Home, requiresProject: false },
-    { id: 'opportunities', label: 'Opportunities', icon: Radar, requiresProject: true },
-    { id: 'business-plan', label: 'Business Plan', icon: FileText, requiresProject: true },
-    { id: 'financials', label: 'Financials', icon: BarChart3, requiresProject: true },
-    { id: 'branding', label: 'Branding', icon: BookOpen, requiresProject: true },
-    { id: 'marketing', label: 'Marketing Studio', icon: Megaphone, requiresProject: true },
-    { id: 'roadmap', label: 'Roadmap', icon: Clock, requiresProject: true },
-    { id: 'ai-studio', label: 'AI Studio', icon: ImagePlus, requiresProject: false },
+    { id: 'dashboard', label: t('sidebar.dashboard'), icon: Home, requiresProject: false },
+    { id: 'opportunities', label: t('sidebar.opportunities'), icon: Radar, requiresProject: true },
+    { id: 'business-plan', label: t('sidebar.businessPlan'), icon: FileText, requiresProject: true },
+    { id: 'financials', label: t('sidebar.financials'), icon: BarChart3, requiresProject: true },
+    { id: 'branding', label: t('sidebar.branding'), icon: BookOpen, requiresProject: true },
+    { id: 'marketing', label: t('sidebar.marketing'), icon: Megaphone, requiresProject: true },
+    { id: 'roadmap', label: t('sidebar.roadmap'), icon: Clock, requiresProject: true },
+    { id: 'ai-consultant', label: t('sidebar.aiConsultant'), icon: MessageSquare, requiresProject: true },
+    { id: 'ai-studio', label: t('sidebar.aiStudio'), icon: ImagePlus, requiresProject: false },
+    { id: 'account', label: t('sidebar.account'), icon: UserCircle, requiresProject: false },
   ] as const;
 
   // User display info
@@ -121,6 +174,7 @@ export default function AppPage() {
   return (
     <div className="min-h-screen bg-[#FDFDFD] text-slate-900 flex font-sans overflow-hidden">
       
+      <Toaster />
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 z-50 flex items-center justify-between px-4">
         <div className="flex items-center gap-2">
@@ -128,11 +182,39 @@ export default function AppPage() {
             <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
             <div className="w-1/2 h-full bg-emerald-500 rounded-sm -skew-x-12"></div>
           </div>
-          <span className="font-bold text-lg text-slate-900 tracking-tight">Venturekit</span>
+          <span className="font-bold text-lg text-slate-900 tracking-tight">Creator Engine</span>
         </div>
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-slate-600">
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Language Switcher */}
+          <button
+            onClick={() => setLocale(locale === 'en' ? 'ar' : 'en')}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition-colors shadow-sm"
+            title="Switch Language / تغيير اللغة"
+          >
+            <Globe className="w-3.5 h-3.5 text-slate-500" />
+            <span>{locale === 'en' ? 'AR' : 'EN'}</span>
+          </button>
+
+          {isAuthenticated && user?.role === 'admin' && (
+            <Link
+              href="/admin/dashboard"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 transition-all shadow-sm"
+            >
+              <ShieldAlert className="w-3.5 h-3.5" />
+              {t('sidebar.admin')}
+            </Link>
+          )}
+          {isAuthenticated && <button
+            onClick={() => logout()}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-50/80 border border-rose-100 text-rose-600 hover:bg-rose-100 hover:text-rose-700 transition-all shadow-sm"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            {t('sidebar.logout')}
+          </button>}
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-slate-600" aria-label="Toggle Mobile Menu">
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Sidebar */}
@@ -148,7 +230,7 @@ export default function AppPage() {
               <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
               <div className="w-1/2 h-full bg-emerald-500 rounded-sm -skew-x-12"></div>
             </div>
-            <span className="font-bold text-xl text-slate-900 tracking-tight">Venturekit</span>
+            <span className="font-bold text-xl text-slate-900 tracking-tight">Creator Engine</span>
           </div>
 
           {/* Project Selector */}
@@ -169,6 +251,18 @@ export default function AppPage() {
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto px-4 pb-4 space-y-1">
+          {/* Landing Page Button */}
+          <button
+            onClick={() => {
+              setShowLanding(true);
+              setMobileMenuOpen(false);
+            }}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50 group mb-2"
+          >
+            <Globe className="w-4 h-4 text-slate-400 group-hover:text-slate-600" />
+            <span>{t('nav.home')}</span>
+          </button>
+
           {sidebarItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -179,33 +273,49 @@ export default function AppPage() {
                 key={item.id}
                 disabled={isDisabled}
                 onClick={() => {
-                  useStore.setState({ activeTab: item.id });
+                  useStore.setState({ activeTab: item.id as any });
                   setMobileMenuOpen(false);
                 }}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all
+                className={`relative w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all z-10 group
                   ${isDisabled ? 'opacity-40 cursor-not-allowed' : ''}
                   ${isActive 
-                    ? 'bg-slate-100 text-slate-900 font-semibold' 
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    ? 'text-emerald-900 font-bold' 
+                    : 'text-slate-600 hover:text-slate-900'
                   }
                 `}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-slate-900' : 'text-slate-500'}`} />
-                {item.label}
+                {isActive && (
+                  <motion.div
+                    layoutId="sidebar-active-pill"
+                    className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/20 rounded-xl -z-10 shadow-[0_0_12px_rgba(16,185,129,0.15)]"
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  />
+                )}
+                <Icon className={`w-4 h-4 relative z-10 transition-colors ${isActive ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-600'}`} />
+                <span className="relative z-10">{item.label}</span>
               </button>
             );
           })}
+          {user?.role === 'admin' && (
+            <Link
+              href="/admin/dashboard"
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 mt-2 transition-all"
+            >
+              <ShieldAlert className="w-4.5 h-4.5 text-emerald-600" />
+              {t('sidebar.adminDashboard')}
+            </Link>
+          )}
         </nav>
 
         {/* Bottom Actions */}
         <div className="p-4 border-t border-slate-100 space-y-2">
-          <button className="w-full bg-[#1e293b] hover:bg-slate-800 text-white font-semibold rounded-full py-2.5 text-sm transition-colors mb-4">
-            Upgrade
+          <button onClick={() => useStore.getState().setShowPricingModal(true)} className="w-full bg-[#1e293b] hover:bg-slate-800 text-white font-semibold rounded-full py-2.5 text-sm transition-colors mb-4">
+            {t('sidebar.upgrade')}
           </button>
           
           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50">
             <HelpCircle className="w-4 h-4 text-slate-500" />
-            Help
+            {t('sidebar.help')}
           </button>
           
           {/* User account section */}
@@ -238,28 +348,64 @@ export default function AppPage() {
       </motion.aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 relative flex flex-col h-screen overflow-y-auto pt-16 md:pt-0">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="flex-1 w-full max-w-6xl mx-auto"
-          >
-            {activeTab === 'dashboard' && <Dashboard />}
+      <main className="flex-1 relative flex flex-col h-screen overflow-hidden pt-16 md:pt-0">
+        {/* Top Header Navbar */}
+        <header className="h-16 border-b border-slate-100 bg-white flex items-center justify-between px-8 shrink-0">
+          <div className="text-slate-400 text-xs tracking-wider flex items-center gap-2 font-semibold">
+            <span>{t('sidebar.workspace')}</span>
+            <span className="text-slate-300">/</span>
+            <span className="text-slate-700 capitalize font-bold">{sidebarItems.find(item => item.id === activeTab)?.label || activeTab.replace('-', ' ')}</span>
+          </div>
+          <div className="flex items-center gap-4">
+            {/* Language Switcher */}
+            <button
+              onClick={() => setLocale(locale === 'en' ? 'ar' : 'en')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition-colors shadow-sm"
+              title="Switch Language / تغيير اللغة"
+            >
+              <Globe className="w-3.5 h-3.5 text-slate-500" />
+              <span>{locale === 'en' ? 'العربية' : 'English'}</span>
+            </button>
+
+            <CreditIndicator />
+            <span className="text-slate-500 text-xs font-semibold bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
+              {userDisplayName}
+            </span>
+            <button
+              onClick={() => logout()}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-50/80 border border-rose-100 text-rose-600 hover:bg-rose-100 hover:text-rose-700 transition-all shadow-sm"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              {t('sidebar.logout')}
+            </button>
+          </div>
+        </header>
+
+        {/* Workspace Viewport */}
+        <div className="flex-grow overflow-y-auto p-6 md:p-8">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="flex-1 w-full max-w-6xl mx-auto"
+            >
+              {activeTab === 'dashboard' && <Dashboard />}
             {activeTab === 'opportunities' && <OpportunityExplorer />}
             {activeTab === 'business-plan' && <BusinessPlanDashboard />}
             {activeTab === 'branding' && <BrandingPanel />}
             {activeTab === 'marketing' && <MarketingStudio />}
             {activeTab === 'roadmap' && <RoadmapPanel />}
             {activeTab === 'ai-studio' && <AIStudioPanel />}
+            {activeTab === 'ai-consultant' && <AIConsultantDashboard />}
+            {activeTab === 'account' && <AccountDetails />}
             
             {activeTab === 'financials' && <FinancialEngine />}
             
             {/* Fallbacks for new tabs if components don't exist yet */}
-            {['guides', 'ai-consultant', 'pitch', 'radar', 'market-research'].includes(activeTab) && (
+            {['guides', 'pitch', 'radar', 'market-research'].includes(activeTab) && (
               <div className="p-8 md:p-12 text-center text-slate-500">
                 <h2 className="text-2xl font-semibold mb-2 text-slate-800 capitalize">{activeTab.replace('-', ' ')}</h2>
                 <p>This module is under construction in the new UI.</p>
@@ -267,8 +413,10 @@ export default function AppPage() {
             )}
           </motion.div>
         </AnimatePresence>
-      </main>
-      <AuthModal />
-    </div>
+      </div>
+    </main>
+    <AuthModal />
+    <PricingModal />
+  </div>
   );
 }
