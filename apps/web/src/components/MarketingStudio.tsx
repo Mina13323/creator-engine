@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { api } from "../lib/api";
+import { useStore } from "../store/useStore";
 
 const SCROLLBAR_STYLE = `
   .custom-scrollbar-thin::-webkit-scrollbar {
@@ -240,6 +241,7 @@ export default function MarketingStudio() {
   const [productImage, setProductImage] = useState<string | null>(null);
   const [avatarImage, setAvatarImage] = useState<string | null>(null);
   const [additionalImages, setAdditionalImages] = useState<string[]>([]);
+  const { currentProject } = useStore();
   
   const [params, setParams] = useState({
     ratio: "9:16",
@@ -328,10 +330,12 @@ export default function MarketingStudio() {
   const handleGenerate = async () => {
     if (!prompt.trim()) return alert("Please enter an ad script.");
     if (!productImage) return alert("Please upload a product image.");
+    if (!currentProject?.id) return alert("No active project found.");
 
     setIsGenerating(true);
     try {
       const result = await api.generateMarketingStudioAd({
+        projectId: currentProject.id,
         prompt,
         aspect_ratio: params.ratio,
         duration: params.duration,

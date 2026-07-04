@@ -13,13 +13,12 @@ export interface KnowledgeDocument {
 
 /**
  * Generates vector embeddings for a given text using Fireworks AI.
- * Returns a dummy embedding array if no valid Fireworks key is found.
+ * Throws an error if no valid Fireworks key is found or API fails.
  */
 export async function embedText(text: string): Promise<number[]> {
   const fireworksKey = process.env.FIREWORKS_API_KEY;
   if (!fireworksKey) {
-    // Return a dummy embedding array of length 4096 for fallback testing
-    return Array(4096).fill(0).map(() => Math.random() - 0.5);
+    throw new Error('FIREWORKS_API_KEY is not configured');
   }
 
   try {
@@ -43,8 +42,7 @@ export async function embedText(text: string): Promise<number[]> {
     return data.data[0].embedding;
   } catch (error) {
     console.error('Failed to generate embeddings:', error);
-    // Return dummy on failure so the system doesn't crash completely
-    return Array(4096).fill(0).map(() => Math.random() - 0.5);
+    throw error;
   }
 }
 

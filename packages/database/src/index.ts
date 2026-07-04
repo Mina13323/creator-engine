@@ -794,4 +794,38 @@ export const CreditTransactionModel = mongoose.models.CreditTransaction || mongo
 export const PaymentTransactionModel = mongoose.models.PaymentTransaction || mongoose.model<PaymentTransaction & Document>('PaymentTransaction', PaymentTransactionSchema);
 export const CreditPackModel = mongoose.models.CreditPack || mongoose.model<any & Document>('CreditPack', CreditPackSchema);
 
+const MarketingStudioGenerationSchema = new Schema(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    prompt: { type: String, required: true },
+    businessContextSnapshot: { type: Object },
+    script: { type: Object },
+    scenes: [{ type: Object }],
+    images: [
+      {
+        url: { type: String, required: true },
+        provider: { type: String, required: true }
+      }
+    ],
+    video: {
+      url: { type: String },
+      provider: { type: String },
+      duration: { type: Number }
+    },
+    voice: {
+      url: { type: String }
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'processing', 'completed', 'failed', 'PARTIAL_SUCCESS'],
+      default: 'pending'
+    }
+  },
+  { timestamps: true, collection: 'marketing_studio_generations' }
+);
+
+export const MarketingStudioGenerationModel = mongoose.models.MarketingStudioGeneration || mongoose.model('MarketingStudioGeneration', MarketingStudioGenerationSchema);
+
 export * from './services/projectContext';

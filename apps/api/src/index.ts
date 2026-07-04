@@ -23,6 +23,8 @@ import {
 } from '@creator/database';
 import adminRouter, { registerLockdownHandlers } from './routes/admin';
 import paymentsRouter from './routes/payments';
+import marketingStudioRouter from './routes/marketingStudio';
+import uploadRouter from './routes/upload';
 import { requireCredits, requireSubscription } from './middleware';
 import { deductCredits, CREDIT_COSTS, getUserCredits } from './services/creditEngine';
 import { authMiddleware, adminMiddleware } from './middleware';
@@ -36,7 +38,7 @@ dotenv.config();
 dotenv.config({ path: require('path').resolve(__dirname, '../../../.env') });
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret_key_for_jwt_fallback_only';
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID || 'mock_client_id');
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const app = express();
 app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000', credentials: true }));
@@ -310,6 +312,8 @@ app.post('/api/auth/demote', async (req: Request, res: Response): Promise<any> =
 // Admin Routes
 app.use('/api/admin', adminRouter);
 app.use('/api/payments', paymentsRouter);
+app.use('/api/marketing-studio', marketingStudioRouter);
+app.use('/api/upload', uploadRouter);
 
 // ==========================================
 // BUSINESS PLAN ENGINE ROUTES
@@ -471,7 +475,7 @@ app.post('/api/opportunities/discover', authMiddleware, requireCredits(CREDIT_CO
         : String(opp.estimatedRevenue || '$0/mo');
 
       return {
-        id: opp.id || `opp_${Date.now()}_${idx}_${Math.random().toString(36).substring(2, 7)}`,
+        id: opp.id || `opp_${Date.now()}_${idx}_${crypto.randomUUID().substring(0, 5)}`,
         userId,
         projectId,
         title: opp.title,
@@ -736,7 +740,6 @@ app.post('/api/projects/:projectId/documents/upload', authMiddleware, requireCre
 
     // The actual triggering of the n8n webhook would happen here.
     // We wrap it in trackAgentRun to track it.
-    // For now we don't have an agent method implemented in packages/agents, so we just mock it.
     await trackAgentRun(userId, projectId, 'document-processing', { documentId, storageUrl }, async () => {
       // Simulate n8n trigger
       console.log(`[Webhook] Triggering n8n processing for doc ${documentId}`);
@@ -838,38 +841,7 @@ app.post('/api/branding/generate', authMiddleware, requireCredits(CREDIT_COSTS.B
   }
 });
 
-// 8. Marketing
-app.post('/api/marketing/generate', authMiddleware, requireCredits(CREDIT_COSTS.MARKETING), async (req: Request, res: Response): Promise<any> => {
-  try {
-    const userId = (req as any).user.id;
-    await deductCredits(userId, CREDIT_COSTS.MARKETING, 'Marketing');
-    return res.status(200).json({ success: true, message: 'Marketing Generated' });
-  } catch (err: any) {
-    return res.status(500).json({ error: err.message });
-  }
-});
 
-// 9. Pitch Deck
-app.post('/api/pitch-deck/generate', authMiddleware, requireCredits(CREDIT_COSTS.PITCH_DECK), async (req: Request, res: Response): Promise<any> => {
-  try {
-    const userId = (req as any).user.id;
-    await deductCredits(userId, CREDIT_COSTS.PITCH_DECK, 'Pitch Deck');
-    return res.status(200).json({ success: true, message: 'Pitch Deck Generated' });
-  } catch (err: any) {
-    return res.status(500).json({ error: err.message });
-  }
-});
-
-// 10. Image Generation
-app.post('/api/image/generate', authMiddleware, requireCredits(CREDIT_COSTS.IMAGE_GENERATION), async (req: Request, res: Response): Promise<any> => {
-  try {
-    const userId = (req as any).user.id;
-    await deductCredits(userId, CREDIT_COSTS.IMAGE_GENERATION, 'Image Generation');
-    return res.status(200).json({ success: true, url: 'https://via.placeholder.com/512' });
-  } catch (err: any) {
-    return res.status(500).json({ error: err.message });
-  }
-});
 
 app.listen(PORT, () => {
   console.log(`Creator Engine backend running on http://localhost:${PORT}`);

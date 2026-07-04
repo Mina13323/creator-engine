@@ -8,10 +8,12 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@creator/database": "workspace:*",
     "@creator/prompts": "workspace:*",
     "@creator/rag-core": "workspace:*",
     "@creator/types": "workspace:*",
-    "@google/generative-ai": "^0.24.1"
+    "@google/generative-ai": "^0.24.1",
+    "cloudinary": "^2.10.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.7",

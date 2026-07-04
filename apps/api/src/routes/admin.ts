@@ -46,7 +46,7 @@ router.get('/stats', async (req: Request, res: Response): Promise<any> => {
 router.get('/traffic', async (req: Request, res: Response): Promise<any> => {
   try {
     // Generate traffic data for the last 11 days or ticks
-    // For simplicity, we just return an array of dates with mock data for now, 
+    // For simplicity, we just return an array of dates with sample data for now, 
     // OR we can aggregate. Let's aggregate agent runs per day.
     const traffic = [];
     const now = new Date();
