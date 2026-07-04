@@ -3,11 +3,13 @@
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
 import { motion } from 'framer-motion';
-import { Button } from './ui/button';
-import { Card } from './ui/card';
+import { 
+  Button, Card, CardContent, CardHeader, CardTitle, 
+  AIThinkingPanel, EmptyState, MetricCard, PageHeader, AgentCard 
+} from './design-system';
 import { 
   Briefcase, DollarSign, Clock, ShieldAlert, Users, Target, Rocket, Plus,
-  Lightbulb, Sparkles, Pencil, MapPin, Loader2, ChevronRight
+  Sparkles, Search, FileText, Megaphone, CheckCircle2, ChevronRight
 } from 'lucide-react';
 
 export default function Dashboard() {
@@ -21,7 +23,8 @@ export default function Dashboard() {
     analyzeFounder, 
     projects, 
     selectProject,
-    resetToDashboard
+    resetToDashboard,
+    user
   } = useStore();
 
   const [projectName, setProjectName] = useState('');
@@ -55,7 +58,6 @@ export default function Dashboard() {
     e.preventDefault();
     if (!currentProject) return;
 
-    // Process comma separated lists
     const finalData = {
       ...formData,
       skills: skillsInput.split(',').map(s => s.trim()).filter(Boolean),
@@ -75,78 +77,65 @@ export default function Dashboard() {
   // 1. NO PROJECT SELECTED FLOW
   if (!currentProject) {
     return (
-      <div className="p-6 md:p-10 max-w-[1000px] mx-auto space-y-8 animate-in fade-in duration-500">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
-            Welcome to Creator Engine
-          </h1>
-          <p className="text-slate-500 mt-1">Initialize a venture project to build business plans, roadmap, branding, and marketing assets.</p>
-        </div>
+      <div className="p-6 md:p-10 max-w-5xl mx-auto space-y-8">
+        <PageHeader 
+          title="Welcome to Creator Engine" 
+          description="Your AI workspace is ready. Initialize a venture to start building." 
+        />
 
         {projects.length > 0 && (
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-slate-800">Your Ventures</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-4 mb-8">
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Your Ventures</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {projects.map((proj) => (
                 <Card 
                   key={proj.id} 
+                  hoverable
                   onClick={() => selectProject(proj.id)}
-                  className="p-5 border-slate-200 hover:border-emerald-500 hover:shadow-md cursor-pointer transition-all bg-white flex items-center justify-between group"
+                  className="p-5 cursor-pointer flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-slate-100 group-hover:bg-emerald-50 text-slate-700 group-hover:text-emerald-700 flex items-center justify-center font-bold text-sm transition-colors">
+                    <div className="w-10 h-10 rounded-full bg-[#E8F0FE] text-[#1A73E8] flex items-center justify-center font-bold">
                       {proj.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-800 group-hover:text-emerald-600 transition-colors">{proj.name}</h3>
-                      <p className="text-xs text-slate-400 capitalize">{proj.status || 'Draft'}</p>
+                      <h3 className="font-semibold text-gray-900 group-hover:text-[#1A73E8] transition-colors">{proj.name}</h3>
+                      <p className="text-xs text-gray-500 capitalize">{proj.status || 'Draft'}</p>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-emerald-500 transition-colors" />
+                  <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-[#1A73E8]" />
                 </Card>
               ))}
             </div>
           </div>
         )}
 
-        <Card className="p-6 md:p-8 border-slate-200 shadow-sm rounded-2xl bg-white max-w-xl">
-          <h2 className="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
-            <Rocket className="w-5 h-5 text-emerald-500" />
-            Create a New Venture
-          </h2>
-          <p className="text-sm text-slate-500 mb-6">Enter a name to set up a new project workspace.</p>
-          
-          <form onSubmit={handleCreateProjectSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">Project Name</label>
-              <input
-                required
-                type="text"
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
-                placeholder="e.g. Acme SaaS, Green Energy Analytics"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all"
-              />
-            </div>
-            
-            <Button 
-              type="submit" 
-              disabled={loading || !projectName.trim()}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-3.5 font-semibold text-sm flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Creating...
-                </>
-              ) : (
-                <>
-                  <Plus className="w-4 h-4" />
-                  Create Project
-                </>
-              )}
-            </Button>
-          </form>
+        <Card className="max-w-xl mx-auto">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Rocket className="w-5 h-5 text-[#1A73E8]" />
+              Initialize New Venture
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleCreateProjectSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Project Name</label>
+                <input
+                  required
+                  type="text"
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  placeholder="e.g. Acme SaaS"
+                  className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-3 px-4 text-sm text-gray-900 focus:ring-2 focus:ring-[#1A73E8] focus:bg-white outline-none transition-all"
+                />
+              </div>
+              <Button type="submit" fullWidth isLoading={loading} disabled={!projectName.trim()}>
+                <Plus className="w-4 h-4 mr-2" />
+                Initialize Workspace
+              </Button>
+            </form>
+          </CardContent>
         </Card>
       </div>
     );
@@ -154,322 +143,243 @@ export default function Dashboard() {
 
   // 2. PROJECT SELECTED BUT NO FOUNDER PROFILE ANALYZED YET
   if (!ventureState?.founderProfile) {
-    return (
-      <div className="p-6 md:p-10 max-w-[800px] mx-auto space-y-8 animate-in fade-in duration-500">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">
-            {currentProject.name.charAt(0).toUpperCase()}
-          </div>
-          <div>
-            <span className="text-xs font-semibold text-emerald-600 uppercase tracking-wider">ACTIVE VENTURE</span>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{currentProject.name}</h1>
-          </div>
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <AIThinkingPanel 
+            title="Analyzing Founder DNA..."
+            stages={[
+              { id: '1', label: 'Processing background & skills', status: 'completed' },
+              { id: '2', label: 'Mapping to market opportunities', status: 'active' },
+              { id: '3', label: 'Building founder archetype', status: 'pending' },
+            ]}
+          />
         </div>
+      );
+    }
 
-        <Card className="p-6 md:p-8 border-slate-200 shadow-sm rounded-2xl bg-white space-y-6">
-          <div>
-            <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-emerald-500 animate-pulse" />
-              Set Up Your Founder Profile
-            </h2>
-            <p className="text-sm text-slate-500 mt-1">
-              Provide some context about your skills, resources, and goals. Our AI will analyze your founder profile to recommend tailored opportunities and business strategies.
-            </p>
-          </div>
+    return (
+      <div className="p-6 md:p-10 max-w-4xl mx-auto space-y-8">
+        <PageHeader 
+          title={currentProject.name} 
+          description="Provide context about your skills and goals to build your founder profile."
+        >
+          <span className="px-3 py-1 bg-blue-50 text-[#1A73E8] text-xs font-bold rounded-full uppercase tracking-wider">
+            Setup Required
+          </span>
+        </PageHeader>
 
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-12 gap-4">
-              <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
-              <p className="text-sm text-slate-600 font-medium animate-pulse">{loadingMessage || 'Analyzing Founder Profile...'}</p>
-            </div>
-          ) : (
-            <form onSubmit={handleAnalyzeFounderSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* COLUMN 1 */}
-                <div className="space-y-4">
-                  <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">1. Skills & Background</h3>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-[#1A73E8]" />
+              Founder Context
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleAnalyzeFounderSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-5">
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">1. Skills & Background</h3>
                   
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-600">Skills (comma separated)</label>
-                    <input
-                      required
-                      type="text"
-                      value={skillsInput}
-                      onChange={(e) => setSkillsInput(e.target.value)}
-                      placeholder="e.g. Marketing, Python, Sales"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all"
-                    />
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-gray-700">Skills (comma separated)</label>
+                    <input required type="text" value={skillsInput} onChange={(e) => setSkillsInput(e.target.value)} placeholder="e.g. Marketing, Python, Sales" className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]" />
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-600">Experience Level</label>
-                    <select
-                      value={formData.experience}
-                      onChange={(e) => setFormData({...formData, experience: e.target.value})}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all"
-                    >
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-gray-700">Experience Level</label>
+                    <select value={formData.experience} onChange={(e) => setFormData({...formData, experience: e.target.value})} className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]">
                       <option value="Beginner">Beginner</option>
                       <option value="Intermediate">Intermediate</option>
                       <option value="Expert">Expert</option>
                     </select>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-600">Industry Interests (comma separated)</label>
-                    <input
-                      required
-                      type="text"
-                      value={industryInput}
-                      onChange={(e) => setIndustryInput(e.target.value)}
-                      placeholder="e.g. SaaS, E-commerce, Fintech"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-600">Startup Goals</label>
-                    <input
-                      required
-                      type="text"
-                      value={formData.startupGoals}
-                      onChange={(e) => setFormData({...formData, startupGoals: e.target.value})}
-                      placeholder="e.g. Build a lifestyle business, Change the world"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all"
-                    />
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-gray-700">Industry Interests (comma separated)</label>
+                    <input required type="text" value={industryInput} onChange={(e) => setIndustryInput(e.target.value)} placeholder="e.g. SaaS, E-commerce, Fintech" className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]" />
                   </div>
                 </div>
 
-                {/* COLUMN 2 */}
-                <div className="space-y-4">
-                  <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">2. Resources & Constraints</h3>
+                <div className="space-y-5">
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">2. Resources & Constraints</h3>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-600">Budget ($)</label>
-                    <input
-                      required
-                      type="number"
-                      value={formData.budget}
-                      onChange={(e) => setFormData({...formData, budget: Number(e.target.value)})}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all"
-                    />
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-gray-700">Budget ($)</label>
+                    <input required type="number" value={formData.budget} onChange={(e) => setFormData({...formData, budget: Number(e.target.value)})} className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]" />
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-600">Location</label>
-                    <input
-                      required
-                      type="text"
-                      value={formData.location}
-                      onChange={(e) => setFormData({...formData, location: e.target.value})}
-                      placeholder="e.g. Cairo, Egypt"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-600">Available Time</label>
-                    <select
-                      value={formData.availableTime}
-                      onChange={(e) => setFormData({...formData, availableTime: e.target.value})}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all"
-                    >
-                      <option value="Part-time (10-20 hrs/wk)">Part-time (10-20 hrs/wk)</option>
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-gray-700">Available Time</label>
+                    <select value={formData.availableTime} onChange={(e) => setFormData({...formData, availableTime: e.target.value})} className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]">
+                      <option value="Side Hustle (5-10 hrs/wk)">Side Hustle (5-10 hrs/wk)</option>
+                      <option value="Part-time (20 hrs/wk)">Part-time (20 hrs/wk)</option>
                       <option value="Full-time (40+ hrs/wk)">Full-time (40+ hrs/wk)</option>
                     </select>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-600">Risk Tolerance</label>
-                    <select
-                      value={formData.riskTolerance}
-                      onChange={(e) => setFormData({...formData, riskTolerance: e.target.value})}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all"
-                    >
-                      <option value="Low (Bootstrapped, profitable from day 1)">Low (Bootstrapped, profitable from day 1)</option>
-                      <option value="Medium (Willing to invest savings)">Medium (Willing to invest savings)</option>
-                      <option value="High (VC trajectory, high risk/reward)">High (VC trajectory, high risk/reward)</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-600">Team Size</label>
-                    <select
-                      value={formData.teamSize}
-                      onChange={(e) => setFormData({...formData, teamSize: e.target.value})}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3.5 text-sm text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:bg-white outline-none transition-all"
-                    >
-                      <option value="Solo">Solo Founder</option>
-                      <option value="2-3 Cofounders">2-3 Cofounders</option>
-                      <option value="Small Team (4-10)">Small Team (4-10)</option>
-                    </select>
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-gray-700">Startup Goals</label>
+                    <input required type="text" value={formData.startupGoals} onChange={(e) => setFormData({...formData, startupGoals: e.target.value})} placeholder="e.g. Build a lifestyle business" className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]" />
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex justify-end gap-3">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={() => resetToDashboard()}
-                  className="rounded-xl px-5 font-semibold text-slate-500 hover:bg-slate-50"
-                >
-                  Change Project
+              <div className="pt-6 border-t border-[rgba(60,64,67,0.12)] flex justify-end gap-3">
+                <Button type="button" variant="ghost" onClick={() => resetToDashboard()}>
+                  Switch Project
                 </Button>
-                <Button
-                  type="submit"
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl px-6 font-semibold shadow-sm text-sm"
-                >
+                <Button type="submit">
                   Analyze Founder Profile
                 </Button>
               </div>
             </form>
-          )}
+          </CardContent>
         </Card>
       </div>
     );
   }
 
-  // 3. FULL ACTIVE DASHBOARD
+  // 3. EXECUTIVE DASHBOARD
   const { founderProfile } = ventureState;
-
-  const handleDiscover = async () => {
-    await discoverOpportunities(currentProject.id);
-  };
+  
+  // Calculate Progress
+  const progress = [
+    { label: 'Founder Analysis', percent: 100 },
+    { label: 'Business Plan', percent: ventureState.businessPlan ? 100 : 0 },
+    { label: 'Marketing Assets', percent: ventureState.marketingCampaign ? 100 : 0 },
+  ];
 
   return (
-    <div className="p-6 md:p-10 max-w-[1200px] mx-auto space-y-8 animate-in fade-in duration-500">
-      
-      <div className="flex justify-between items-end">
-        <div>
-          <h1 className="text-2xl font-medium text-slate-800 tracking-tight">
-            Founder Profile
-          </h1>
-          <p className="text-slate-500 mt-1">Based on your onboarding analysis, here is your founder archetype and strengths.</p>
-        </div>
-        <Button 
-          onClick={handleDiscover}
-          disabled={loading}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl px-6 font-semibold shadow-sm text-sm flex items-center gap-2"
-        >
-          <Rocket className="w-4 h-4" />
-          Discover Opportunities
-        </Button>
+    <div className="p-6 md:p-10 max-w-7xl mx-auto space-y-8">
+      <PageHeader 
+        title="Executive Dashboard" 
+        description={`Venture Overview: ${currentProject.name}`}
+      />
+
+      {/* METRICS ROW */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <MetricCard title="Opportunities Found" value={ventureState.opportunities?.length || 0} icon={Search} delay={0.1} />
+        <MetricCard title="AI Documents" value={ventureState.businessPlan ? 2 : 1} icon={FileText} delay={0.2} />
+        <MetricCard title="Credits Used" value={user?.creditsUsed || 0} icon={Target} delay={0.3} />
+        <MetricCard title="Generated Assets" value={ventureState.marketingCampaign ? 3 : 0} icon={Megaphone} delay={0.4} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {/* Left Column */}
+        {/* LEFT COL */}
         <div className="lg:col-span-2 space-y-6">
-          <Card className="p-6 md:p-8 border-slate-200 shadow-sm rounded-xl bg-white space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-slate-800">Your Archetype</h3>
-                <h2 className="text-3xl font-bold text-emerald-600 mt-2">{founderProfile.founderType || 'Visionary Hustler'}</h2>
-              </div>
-              <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center">
-                <Users className="w-8 h-8 text-emerald-500" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-6 pt-4 border-t border-slate-100">
-              <div>
-                <h4 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Strengths</h4>
-                <div className="flex flex-wrap gap-2">
-                  {founderProfile.strengths?.map((s, i) => (
-                    <span key={i} className="px-3 py-1 bg-emerald-50 text-emerald-700 text-sm rounded-full font-medium">{s}</span>
-                  ))}
+          <Card hoverable>
+            <CardHeader>
+              <CardTitle>Venture Overview</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                  <p className="text-sm text-gray-500 mb-1">Founder Archetype</p>
+                  <h2 className="text-3xl font-bold text-[#1A73E8]">{founderProfile.founderType || 'Visionary Hustler'}</h2>
+                </div>
+                <div className="flex-1 bg-[#F8FAFD] rounded-xl p-4 border border-[rgba(60,64,67,0.12)]">
+                  <p className="text-sm font-medium text-gray-700 mb-2">AI Progress Timeline</p>
+                  <div className="space-y-3">
+                    {progress.map(p => (
+                      <div key={p.label}>
+                        <div className="flex justify-between text-xs mb-1">
+                          <span className="text-gray-600">{p.label}</span>
+                          <span className="font-medium">{p.percent}%</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-1.5">
+                          <div className="bg-[#1A73E8] h-1.5 rounded-full" style={{ width: `${p.percent}%` }}></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div>
-                <h4 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Weaknesses</h4>
-                <div className="flex flex-wrap gap-2">
-                  {founderProfile.weaknesses?.map((w, i) => (
-                    <span key={i} className="px-3 py-1 bg-rose-50 text-rose-700 text-sm rounded-full font-medium">{w}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
+            </CardContent>
           </Card>
 
-          <Card className="p-6 border-slate-200 shadow-sm rounded-xl bg-white">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Recommended Models & Industries</h3>
-            <div className="space-y-4">
-              <div>
-                <h4 className="text-sm font-medium text-slate-500 mb-2">Startup Types:</h4>
-                <div className="flex gap-2">
-                  {founderProfile.recommendedStartupTypes?.map((t, i) => (
-                    <span key={i} className="px-3 py-1 bg-slate-100 text-slate-700 text-sm rounded-md">{t}</span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h4 className="text-sm font-medium text-slate-500 mb-2">Business Models:</h4>
-                <div className="flex gap-2">
-                  {founderProfile.recommendedBusinessModels?.map((m, i) => (
-                    <span key={i} className="px-3 py-1 bg-indigo-50 text-indigo-700 text-sm rounded-md">{m}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Card>
+          <h3 className="text-lg font-semibold text-gray-900 mt-8 mb-4">Your AI Workforce</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <AgentCard 
+              name="Founder Agent"
+              status="Completed"
+              inputs={['Skills', 'Budget', 'Goals']}
+              outputs={['Founder Profile']}
+              lastGenerated="Just now"
+              onViewDetails={() => useStore.setState({ activeTab: 'dashboard' })}
+            />
+            <AgentCard 
+              name="Opportunity Agent"
+              status={ventureState.opportunities?.length ? 'Completed' : 'Ready'}
+              inputs={['Founder Profile']}
+              outputs={['Market Opportunities']}
+              isLoading={loading}
+              onRegenerate={() => discoverOpportunities(currentProject.id)}
+              onViewDetails={() => useStore.setState({ activeTab: 'opportunities' })}
+            />
+          </div>
         </div>
 
-        {/* Right Column */}
-        <div className="lg:col-span-1 space-y-6">
-          <Card className="p-6 border-slate-200 shadow-sm rounded-xl bg-white space-y-5">
-            <h3 className="text-base font-semibold text-slate-800 border-b border-slate-100 pb-3">Input Parameters</h3>
-            
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-sm">
-                <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
-                  <DollarSign className="w-4 h-4" />
+        {/* RIGHT COL */}
+        <div className="space-y-6">
+          <Card className="bg-[#E8F0FE] border-blue-100">
+            <CardHeader>
+              <CardTitle className="text-[#1A73E8] flex items-center gap-2">
+                <Sparkles className="w-5 h-5" />
+                Next Best Actions
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {!ventureState.opportunities?.length ? (
+                <div className="p-3 bg-white rounded-xl shadow-sm border border-blue-50 text-sm flex items-start gap-3 cursor-pointer hover:border-blue-200" onClick={() => discoverOpportunities(currentProject.id)}>
+                  <Search className="w-5 h-5 text-[#1A73E8] mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-gray-900">Discover Opportunities</p>
+                    <p className="text-gray-500 text-xs mt-0.5">Let AI scan the market based on your profile.</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-slate-500 text-xs">Budget</p>
-                  <p className="font-medium text-slate-800">${founderProfile.budget}</p>
+              ) : !ventureState.businessPlan ? (
+                <div className="p-3 bg-white rounded-xl shadow-sm border border-blue-50 text-sm flex items-start gap-3 cursor-pointer hover:border-blue-200" onClick={() => useStore.setState({ activeTab: 'business-plan' })}>
+                  <FileText className="w-5 h-5 text-[#1A73E8] mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-gray-900">Build Business Strategy</p>
+                    <p className="text-gray-500 text-xs mt-0.5">Generate your Lean Canvas and Model.</p>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="p-3 bg-white rounded-xl shadow-sm border border-blue-50 text-sm flex items-start gap-3 cursor-pointer hover:border-blue-200" onClick={() => useStore.setState({ activeTab: 'marketing' })}>
+                  <Megaphone className="w-5 h-5 text-[#1A73E8] mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-gray-900">Create Launch Campaign</p>
+                    <p className="text-gray-500 text-xs mt-0.5">Generate video ads and social copy.</p>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
 
-              <div className="flex items-center gap-3 text-sm">
-                <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
-                  <Briefcase className="w-4 h-4" />
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Founder Context</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex justify-between border-b border-gray-100 pb-2">
+                  <span className="text-sm text-gray-500">Budget</span>
+                  <span className="text-sm font-semibold">${founderProfile.budget}</span>
                 </div>
-                <div>
-                  <p className="text-slate-500 text-xs">Experience</p>
-                  <p className="font-medium text-slate-800">{founderProfile.experience}</p>
+                <div className="flex justify-between border-b border-gray-100 pb-2">
+                  <span className="text-sm text-gray-500">Time</span>
+                  <span className="text-sm font-semibold">{founderProfile.availableTime}</span>
                 </div>
-              </div>
-
-              <div className="flex items-center gap-3 text-sm">
-                <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
-                  <Clock className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-slate-500 text-xs">Time</p>
-                  <p className="font-medium text-slate-800">{founderProfile.availableTime}</p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 text-sm">
-                <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
-                  <ShieldAlert className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-slate-500 text-xs">Risk</p>
-                  <p className="font-medium text-slate-800">{founderProfile.riskTolerance}</p>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-500">Risk</span>
+                  <span className="text-sm font-semibold">{founderProfile.riskTolerance}</span>
                 </div>
               </div>
-
-              <div className="flex items-center gap-3 text-sm">
-                <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
-                  <Target className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="text-slate-500 text-xs">Goals</p>
-                  <p className="font-medium text-slate-800 truncate w-[180px]" title={founderProfile.startupGoals}>{founderProfile.startupGoals}</p>
-                </div>
-              </div>
-            </div>
+            </CardContent>
           </Card>
         </div>
 

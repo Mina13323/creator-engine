@@ -1,4 +1,4 @@
-import { callFireworksImage } from '../aiClient';
+import { callHuggingFaceImage } from '../aiClient';
 import { uploadBufferToStorage } from './storageProvider';
 
 export interface ImageResult {
@@ -15,13 +15,12 @@ export async function generateAdImage(input: {
   const fullPrompt = `${input.prompt} ${input.brandStyle ? 'Brand Style: ' + input.brandStyle : ''}`;
 
   try {
-    // Attempt Fireworks AI Image (SD/FLUX compatible fallback)
-    const buffer = await callFireworksImage(fullPrompt, "16:9");
+    const buffer = await callHuggingFaceImage(fullPrompt, "16:9");
     if (buffer) {
       const secureUrl = await uploadBufferToStorage(buffer, 'image');
       return {
         imageUrl: secureUrl,
-        provider: 'fireworks',
+        provider: 'huggingface-flux',
       };
     }
     

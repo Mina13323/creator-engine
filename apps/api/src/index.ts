@@ -84,16 +84,44 @@ for (const key of requiredKeys) {
 }
 
 // ==========================================
-// AI PROVIDERS STATUS (Phase 4)
+// AI PROVIDERS STATUS (Phase 4 & 5)
 // ==========================================
-app.get('/api/ai/providers/status', (req: Request, res: Response) => {
-  res.json({
-    fireworksLLM: !!process.env.FIREWORKS_API_KEY,
-    fireworksImage: !!process.env.FIREWORKS_API_KEY,
-    videoProvider: !!process.env.HF_TOKEN,
-    ttsProvider: !!process.env.HF_TOKEN,
-    storage: !!process.env.CLOUDINARY_CLOUD_NAME && !!process.env.CLOUDINARY_API_KEY && !!process.env.CLOUDINARY_API_SECRET
-  });
+app.get('/api/ai/providers/status', async (req: Request, res: Response) => {
+  const videoProvider = process.env.VIDEO_PROVIDER || 'chain';
+  const status = {
+    llm: { provider: 'fireworks', status: true },
+    image: { status: true },
+    video: { 
+      provider: videoProvider, 
+      type: videoProvider === 'json2video' ? 'COMPOSER_VIDEO' : 'AI_VIDEO',
+      status: true 
+    },
+    replicate: {
+      configured: !!process.env.REPLICATE_API_TOKEN,
+      creditsAvailable: true // Will be tested below
+    },
+    fallbackAvailable: !!process.env.JSON2VIDEO_API_KEY
+  };
+  
+  // Test Replicate Credits via a cheap/fast request (or we just mock it for the endpoint if we don't want to actually run a model)
+  // For the scope of this update, we will try to fetch Replicate account info or just set it based on config
+  try {
+    if (process.env.REPLICATE_API_TOKEN) {
+      const repRes = await fetch('https://api.replicate.com/v1/account', {
+        headers: { 'Authorization': `Bearer ${process.env.REPLICATE_API_TOKEN}` }
+      });
+      // If 402 or 429 or 401, credits/auth failed
+      if (repRes.status === 402 || repRes.status === 401) {
+        status.replicate.creditsAvailable = false;
+      }
+    } else {
+      status.replicate.creditsAvailable = false;
+    }
+  } catch (e) {
+    status.replicate.creditsAvailable = false;
+  }
+
+  res.json(status);
 });
 
 // UTILITIES

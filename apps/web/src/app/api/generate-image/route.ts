@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { callFireworksImage } from '@creator/agents';
+import { callHuggingFaceImage } from '@creator/agents';
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,17 +9,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
     }
 
-    const apiKey = process.env.FIREWORKS_API_KEY_CHAT || process.env.FIREWORKS_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json({ error: 'Fireworks API key not configured' }, { status: 500 });
+    const hfToken = process.env.HF_TOKEN;
+    if (!hfToken) {
+      return NextResponse.json({ error: 'HF_TOKEN not configured' }, { status: 500 });
     }
 
     const cleanPrompt = prompt.replace(/\n/g, ' ').trim();
 
-    const imageBuffer = await callFireworksImage(cleanPrompt, "1:1");
+    const imageBuffer = await callHuggingFaceImage(cleanPrompt, "1:1");
     if (!imageBuffer) {
       return NextResponse.json(
-        { error: `Fireworks Engine rejected request` },
+        { error: `Image Engine rejected request` },
         { status: 502 }
       );
     }

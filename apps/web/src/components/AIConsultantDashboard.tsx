@@ -1,12 +1,14 @@
-// @ts-nocheck
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../store/useStore';
-import { Send, Sparkles, User, Brain, ExternalLink, Lightbulb, History, HistoryIcon, FileText, Megaphone } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { fadeInUp, fadeIn, staggerContainer } from '../lib/motion-presets';
+import { 
+  Send, Sparkles, User, Brain, ExternalLink, Lightbulb, 
+  History as HistoryIcon, FileText, Megaphone, CheckCircle2, ChevronRight
+} from 'lucide-react';
+import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
+import { Button, Card, CardContent } from './design-system';
 
 export default function AIConsultantDashboard() {
   const { chatMessages, sendChatMessage, clearChat, chatLoading, currentProject, conversations, setActiveConversation, loadConversations, activeConversationId } = useStore();
@@ -26,7 +28,7 @@ export default function AIConsultantDashboard() {
 
   if (!currentProject) {
     return (
-      <div className="flex items-center justify-center h-full text-slate-500">
+      <div className="flex items-center justify-center h-full text-gray-500 bg-[#F8FAFD]">
         Please select a project to consult the AI.
       </div>
     );
@@ -45,106 +47,102 @@ export default function AIConsultantDashboard() {
   };
 
   return (
-    <div className="h-[calc(100vh-64px)] md:h-screen flex bg-[#FDFDFD]">
+    <div className="h-[calc(100vh-64px)] md:h-screen flex bg-white font-sans text-gray-900">
       
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col min-w-0 border-r border-slate-200">
-        <div className="p-6 border-b border-slate-200 bg-white flex items-center justify-between z-10">
+      <div className="flex-1 flex flex-col min-w-0">
+        
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-[rgba(60,64,67,0.12)] flex items-center justify-between sticky top-0 bg-white z-10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600">
-              <Brain className="w-5 h-5" />
+            <div className="w-8 h-8 rounded-full bg-[#E8F0FE] flex items-center justify-center text-[#1A73E8]">
+              <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-800">CEO Copilot</h1>
-              <p className="text-sm text-slate-500">Your dedicated startup mentor and strategist</p>
+              <h1 className="text-lg font-medium text-gray-900 tracking-tight">AI Strategy Consultant</h1>
             </div>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
+            <span className="w-2 h-2 rounded-full bg-[#34A853]"></span>
+            Gemini 1.5 Pro
           </div>
         </div>
 
         {/* Messages */}
-        <motion.div 
-          className="flex-1 overflow-y-auto p-6 space-y-6"
-          variants={staggerContainer}
-          initial="initial"
-          animate="animate"
-        >
+        <div className="flex-1 overflow-y-auto px-4 md:px-20 lg:px-40 py-8 space-y-8 custom-scrollbar">
           {chatMessages.length === 0 ? (
-            <div className="h-full flex flex-col justify-center items-center text-center max-w-lg mx-auto">
-              <div className="w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center mb-6">
-                <Sparkles className="w-8 h-8 text-indigo-500" />
+            <div className="h-full flex flex-col justify-center items-center max-w-2xl mx-auto py-12">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#1A73E8] to-[#c5221f] p-[2px] mb-8">
+                <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                  <Sparkles className="w-8 h-8 text-[#1A73E8]" />
+                </div>
               </div>
-              <h2 className="text-2xl font-bold text-slate-800 mb-2">How can I help you today?</h2>
-              <p className="text-slate-500 mb-8">
-                I can help you review your business plan, brainstorm marketing strategies, or act as a sounding board for your ideas.
-              </p>
+              <h2 className="text-3xl font-normal text-gray-900 mb-8 text-center tracking-tight">
+                Hello. How can I help you grow <span className="font-semibold">{currentProject.name}</span> today?
+              </h2>
               
-              <div className="grid grid-cols-1 gap-3 w-full">
-                <button onClick={() => handleActionClick("Review my current business plan and suggest improvements")} className="p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-left flex items-start gap-3 group">
-                  <FileText className="w-5 h-5 text-indigo-400 mt-0.5 group-hover:text-indigo-600" />
-                  <div>
-                    <div className="font-semibold text-slate-700">Review Business Plan</div>
-                    <div className="text-sm text-slate-500">Analyze current strategy and find gaps</div>
-                  </div>
-                </button>
-                <button onClick={() => handleActionClick("What are the best marketing channels for my startup?")} className="p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-left flex items-start gap-3 group">
-                  <Megaphone className="w-5 h-5 text-indigo-400 mt-0.5 group-hover:text-indigo-600" />
-                  <div>
-                    <div className="font-semibold text-slate-700">Marketing Strategy</div>
-                    <div className="text-sm text-slate-500">Identify the highest ROI channels</div>
-                  </div>
-                </button>
-                <button onClick={() => handleActionClick("Draft a cold outreach email to potential investors")} className="p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-left flex items-start gap-3 group">
-                  <Send className="w-5 h-5 text-indigo-400 mt-0.5 group-hover:text-indigo-600" />
-                  <div>
-                    <div className="font-semibold text-slate-700">Draft Investor Email</div>
-                    <div className="text-sm text-slate-500">Write a compelling cold outreach message</div>
-                  </div>
-                </button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
+                {[
+                  { icon: FileText, title: "Review Business Plan", desc: "Analyze current strategy and find gaps", prompt: "Review my current business plan and suggest improvements." },
+                  { icon: Megaphone, title: "Marketing Strategy", desc: "Identify the highest ROI channels", prompt: "What are the best marketing channels for my startup?" },
+                  { icon: Send, title: "Draft Investor Email", desc: "Write a compelling cold outreach", prompt: "Draft a cold outreach email to potential investors." },
+                  { icon: Lightbulb, title: "Brainstorm Features", desc: "Find new product opportunities", prompt: "Brainstorm 3 new product features for my target audience." }
+                ].map((action, i) => (
+                  <button 
+                    key={i}
+                    onClick={() => handleActionClick(action.prompt)} 
+                    className="p-4 rounded-2xl border border-[rgba(60,64,67,0.12)] hover:bg-[#F8FAFD] transition-colors text-left flex items-start gap-4 group"
+                  >
+                    <div className="p-2 bg-gray-50 rounded-lg group-hover:bg-blue-50 transition-colors">
+                      <action.icon className="w-5 h-5 text-gray-600 group-hover:text-[#1A73E8]" />
+                    </div>
+                    <div>
+                      <div className="font-medium text-gray-900">{action.title}</div>
+                      <div className="text-sm text-gray-500 mt-0.5">{action.desc}</div>
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
           ) : (
             chatMessages.map((msg) => {
               if (!msg) return null;
               const isUser = msg.sender === 'user';
+              
               return (
                 <motion.div 
-                  variants={fadeInUp}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
                   key={msg.id}
-                  className={`flex gap-4 max-w-[85%] ${isUser ? 'ml-auto flex-row-reverse' : ''}`}
+                  className={`flex gap-4 ${isUser ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border ${
-                    isUser 
-                      ? 'border-indigo-200 bg-indigo-50 text-indigo-600' 
-                      : 'border-emerald-200 bg-emerald-50 text-emerald-600'
-                  }`}>
-                    {isUser ? <User className="w-5 h-5" /> : <Brain className="w-5 h-5" />}
-                  </div>
-
-                  <div className="space-y-2 max-w-full">
-                    <div className={`p-4 rounded-2xl text-sm leading-relaxed ${
-                      isUser 
-                        ? 'bg-indigo-600 text-white rounded-tr-none' 
-                        : 'bg-white border border-slate-200 text-slate-700 rounded-tl-none shadow-sm'
-                    }`}>
-                      {isUser ? (
-                        <div className="whitespace-pre-wrap">{msg.message}</div>
-                      ) : (
-                        <div className="prose prose-sm max-w-none text-slate-700">
-                          <ReactMarkdown>{msg.message}</ReactMarkdown>
-                        </div>
-                      )}
+                  {!isUser && (
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1A73E8] to-[#A142F4] flex items-center justify-center flex-shrink-0 mt-1">
+                      <Sparkles className="w-4 h-4 text-white" />
                     </div>
+                  )}
+
+                  <div className={`space-y-3 max-w-[85%] ${isUser ? 'bg-[#F0F4F9] px-6 py-4 rounded-3xl rounded-tr-sm' : ''}`}>
+                    {isUser ? (
+                      <div className="whitespace-pre-wrap text-[15px] text-gray-900 font-medium">{msg.message}</div>
+                    ) : (
+                      <div className="prose prose-sm md:prose-base prose-slate max-w-none text-gray-800 leading-relaxed font-normal">
+                        <ReactMarkdown>{msg.message}</ReactMarkdown>
+                      </div>
+                    )}
 
                     {!isUser && msg.ragSources && msg.ragSources.length > 0 && (
-                      <div className="flex flex-wrap gap-2 items-center mt-2">
-                        <span className="text-xs text-slate-500 flex items-center gap-1">
-                          <ExternalLink className="w-3 h-3" /> Sources:
+                      <div className="mt-4 pt-4 border-t border-gray-100 flex flex-col gap-2">
+                        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5" /> Retrieved Context
                         </span>
-                        {msg.ragSources.map((source, sIdx) => (
-                          <span key={sIdx} className="text-xs text-emerald-600 border border-emerald-200 bg-emerald-50 px-2 py-1 rounded-md font-medium">
-                            {source}
-                          </span>
-                        ))}
+                        <div className="flex flex-wrap gap-2">
+                          {msg.ragSources.map((source, sIdx) => (
+                            <span key={sIdx} className="text-xs text-gray-600 bg-gray-50 border border-[rgba(60,64,67,0.12)] px-2.5 py-1 rounded-md font-medium hover:bg-gray-100 cursor-pointer transition-colors flex items-center gap-1">
+                              {source} <ExternalLink className="w-3 h-3" />
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -154,112 +152,107 @@ export default function AIConsultantDashboard() {
           )}
 
           {chatLoading && (
-            <motion.div variants={fadeInUp} className="flex gap-4 max-w-[85%]">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center border border-emerald-200 bg-emerald-50 text-emerald-600 flex-shrink-0">
-                <Brain className="w-5 h-5 animate-pulse" />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-4">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#1A73E8] to-[#A142F4] flex items-center justify-center flex-shrink-0 mt-1">
+                <Sparkles className="w-4 h-4 text-white animate-pulse" />
               </div>
-              <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm rounded-tl-none flex items-center gap-2">
-                <span className="text-sm text-slate-500">Co-founder is thinking</span>
-                <span className="flex gap-1 items-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" style={{ animationDelay: '300ms' }}></span>
-                </span>
+              <div className="flex flex-col gap-3">
+                {/* Gemini-style reasoning block */}
+                <div className="bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-2xl p-4 w-64">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Sparkles className="w-4 h-4 text-[#1A73E8] animate-spin-slow" />
+                    <span className="text-sm font-medium text-gray-700">Synthesizing strategy...</span>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-2 bg-blue-100 rounded animate-pulse w-full"></div>
+                    <div className="h-2 bg-blue-100 rounded animate-pulse w-3/4"></div>
+                    <div className="h-2 bg-blue-100 rounded animate-pulse w-5/6"></div>
+                  </div>
+                </div>
               </div>
             </motion.div>
           )}
-          <div ref={messagesEndRef} />
-        </motion.div>
+          <div ref={messagesEndRef} className="h-4" />
+        </div>
 
-        {/* Input Form */}
-        <div className="p-4 border-t border-slate-200 bg-white">
-          <form onSubmit={handleSubmit} className="relative max-w-4xl mx-auto">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              disabled={chatLoading}
-              placeholder="Ask CEO Copilot anything..."
-              className="w-full pl-5 pr-14 py-4 rounded-full border border-slate-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 text-slate-700 placeholder-slate-400 shadow-sm transition-all"
-            />
-            <button
-              type="submit"
-              disabled={!input.trim() || chatLoading}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white flex items-center justify-center transition-colors shadow-sm"
-            >
-              <Send className="w-5 h-5 -ml-0.5" />
-            </button>
+        {/* Input Area */}
+        <div className="px-4 md:px-20 lg:px-40 pb-6 pt-2 bg-gradient-to-t from-white via-white to-transparent">
+          <form onSubmit={handleSubmit} className="relative">
+            <div className="relative flex items-center bg-[#F0F4F9] rounded-[32px] px-2 py-2">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                disabled={chatLoading}
+                placeholder="Ask the Consultant anything..."
+                className="w-full bg-transparent px-4 py-3 text-[15px] text-gray-900 placeholder-gray-500 focus:outline-none disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={!input.trim() || chatLoading}
+                className="flex-shrink-0 w-12 h-12 rounded-full bg-white text-gray-400 disabled:opacity-50 flex items-center justify-center transition-colors shadow-sm border border-gray-100 hover:text-[#1A73E8] hover:bg-blue-50"
+              >
+                <Send className="w-5 h-5 ml-1" />
+              </button>
+            </div>
           </form>
-          <div className="text-center mt-2">
-             <span className="text-xs text-slate-400">CEO Copilot has full context of your venture and documents.</span>
+          <div className="text-center mt-3">
+             <span className="text-xs text-gray-400">Gemini may display inaccurate info, including about people, so double-check its responses.</span>
           </div>
         </div>
       </div>
 
       {/* Memory Side-panel */}
-      <div className="w-80 bg-slate-50 flex flex-col hidden lg:flex">
-        <div className="p-5 border-b border-slate-200">
-          <div className="flex items-center gap-2 text-slate-800 font-bold">
-            <HistoryIcon className="w-5 h-5 text-indigo-500" />
+      <div className="w-80 bg-white border-l border-[rgba(60,64,67,0.12)] flex flex-col hidden lg:flex">
+        <div className="p-4 border-b border-[rgba(60,64,67,0.12)] flex items-center justify-between">
+          <div className="flex items-center gap-2 text-gray-900 font-medium">
+            <HistoryIcon className="w-4 h-4 text-gray-500" />
             Project Memory
           </div>
-          <p className="text-xs text-slate-500 mt-1">Context actively used by AI</p>
+          <Button variant="outline" size="sm" onClick={() => clearChat()} className="text-xs h-7 px-2 border-gray-200">
+            New Chat
+          </Button>
         </div>
         
-        <div className="flex-1 p-5 overflow-y-auto space-y-4">
+        <div className="flex-1 p-4 overflow-y-auto space-y-6">
           <div className="space-y-2">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Current Venture</h3>
-            <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
-              <div className="font-semibold text-sm text-slate-700">{currentProject.name}</div>
-              <div className="text-xs text-slate-500 mt-1 capitalize">{currentProject.industry} Industry</div>
+            <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Context</h3>
+            <div className="bg-[#F8FAFD] p-3 rounded-xl border border-[rgba(60,64,67,0.12)]">
+              <div className="font-semibold text-sm text-gray-900">{currentProject.name}</div>
+              <div className="text-xs text-gray-500 mt-1 capitalize">{currentProject.industry} Industry</div>
             </div>
           </div>
           
-          <div className="space-y-2 mt-4">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Key Insights</h3>
+          <div className="space-y-2">
+            <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Reasoning Engine</h3>
             <div className="space-y-2">
-              <div className="bg-indigo-50 border border-indigo-100 p-3 rounded-lg flex items-start gap-2">
-                <Lightbulb className="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" />
-                <p className="text-xs text-indigo-900">
-                  AI is optimizing responses for a Bootstrapped go-to-market strategy based on your profile.
-                </p>
-              </div>
-              <div className="bg-emerald-50 border border-emerald-100 p-3 rounded-lg flex items-start gap-2">
-                <Brain className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                <p className="text-xs text-emerald-900">
-                  Memory synchronized with latest Business Plan generation.
+              <div className="bg-[#e6f4ea] p-3 rounded-xl flex items-start gap-2 border border-[#ceead6]">
+                <Brain className="w-4 h-4 text-[#137333] mt-0.5 flex-shrink-0" />
+                <p className="text-xs text-[#137333] font-medium leading-relaxed">
+                  Memory synchronized with Business Plan and Financial Engine outputs.
                 </p>
               </div>
             </div>
           </div>
           
-          <div className="space-y-2 mt-4 flex-1 overflow-y-auto">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Recent Conversations</h3>
-            <button
-              onClick={() => clearChat()}
-              className="w-full py-2 px-3 mb-3 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold transition-colors shadow-sm"
-            >
-              + Start New Session
-            </button>
-            
+          <div className="space-y-2 pt-2 border-t border-[rgba(60,64,67,0.12)]">
+            <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Recent Activity</h3>
             {conversations.length === 0 ? (
-              <p className="text-xs text-slate-500 italic">No previous chats.</p>
+              <p className="text-xs text-gray-400 italic">No previous chats.</p>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-1">
                 {conversations.map((conv, idx) => (
                   <button
                     key={conv.id || `conv-${idx}`}
                     onClick={() => setActiveConversation(conv.id)}
-                    className={`w-full text-left text-xs p-3 rounded-lg border shadow-sm transition-colors ${
+                    className={`w-full text-left text-sm p-3 rounded-xl transition-colors group flex items-center justify-between ${
                       activeConversationId === conv.id 
-                        ? 'bg-indigo-600 text-white border-indigo-700' 
-                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:border-indigo-300'
+                        ? 'bg-[#E8F0FE] text-[#1A73E8] font-medium' 
+                        : 'text-gray-600 hover:bg-gray-50'
                     }`}
                   >
-                    <div className="line-clamp-2">{conv.title || 'Conversation...'}</div>
-                    <div className={`mt-1 text-[10px] ${activeConversationId === conv.id ? 'text-indigo-200' : 'text-slate-400'}`}>
-                      {new Date(conv.updatedAt).toLocaleDateString()}
-                    </div>
+                    <div className="line-clamp-1 flex-1 pr-2">{conv.title || 'Conversation...'}</div>
+                    <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 text-gray-400 transition-opacity" />
                   </button>
                 ))}
               </div>

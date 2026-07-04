@@ -23,26 +23,32 @@ export async function runMarketingStudioAgent(input: {
   
   // 2. Ad Strategy Generation
   const systemPrompt = `You are a world-class AI Marketing Director.
-Your task is to generate a highly converting marketing video script based on the following business context and user prompt.
+Your task is to generate a highly converting TikTok/Reels style video ad script based on this business context:
 ${contextStr}
 
-Respond ONLY in valid JSON format with the following structure:
+Business Name: ${context.project?.name || 'Your Brand'}
+Product: ${prompt}
+
+Respond ONLY in valid JSON format:
 {
-  "hook": "Catchy opening phrase",
-  "script": "Full voiceover script",
+  "hook": "TikTok/Reels style catchy opening",
+  "script": "Full voiceover script with short emotional sentences",
   "scenes": [
     {
-      "sceneNumber": "1",
-      "visual": "Description of what is shown on screen",
-      "camera": "Camera movement/angle",
-      "voiceover": "Spoken text for this scene",
-      "duration": "2s"
+      "sceneNumber": 1,
+      "visual": "Detailed visual prompt for AI image generation (e.g. 'A sleek product shot of X on a marble table, cinematic lighting')",
+      "motionPrompt": "Cinematic camera movement and motion for AI video generator",
+      "cameraMovement": "Pan right, slow zoom, etc.",
+      "emotion": "Happy, energetic, luxurious, etc.",
+      "voiceover": "Short spoken sentence for this scene",
+      "caption": "Short text overlay for the screen",
+      "duration": 3
     }
   ],
-  "caption": "Social media post caption",
+  "caption": "Social media post description",
   "hashtags": ["#marketing", "#ai"],
-  "targetAudience": "Description of the target audience",
-  "platformRecommendation": "Instagram Reels, TikTok, etc."
+  "targetAudience": "Target audience",
+  "platformRecommendation": "TikTok/Reels"
 }`;
 
   const strategyStr = await callLLMWithFallback(systemPrompt, prompt, {
@@ -65,22 +71,27 @@ Respond ONLY in valid JSON format with the following structure:
   let finalStatus = 'processing';
   
   try {
-    // 3. Optional: Generate supplemental images (if product images not sufficient, or to create backgrounds)
-    // We can also skip this if we just use the user uploaded product images for the video.
-    // Let's generate one brand image as per Phase 3 Step 2.
+    // 3. Generate visual assets for EVERY scene via Flux
     const brandStyle = context.branding?.toneOfVoice || 'Premium and modern';
-    try {
-       const img = await generateAdImage({
-         prompt: strategy.scenes[0]?.visual || prompt,
-         brandStyle,
-         productImage: productImages[0]
-       });
-       generatedImages.push({
-         url: img.imageUrl,
-         provider: img.provider
-       });
-    } catch (e) {
-       console.warn('Image generation failed, proceeding without supplemental image', e);
+    
+    // We run them in sequence to avoid rate limits, or Promise.all if allowed
+    for (const scene of strategy.scenes) {
+      try {
+         const img = await generateAdImage({
+           prompt: scene.visual,
+           brandStyle,
+           productImage: productImages[0]
+         });
+         scene.imageUrl = img.imageUrl;
+         generatedImages.push({
+           url: img.imageUrl,
+           provider: img.provider
+         });
+      } catch (e) {
+         console.warn(`Image generation failed for scene ${scene.sceneNumber}`, e);
+         // fallback to main product image
+         scene.imageUrl = productImages[0];
+      }
     }
 
     // 4. Voice Generation
@@ -94,19 +105,28 @@ Respond ONLY in valid JSON format with the following structure:
     try {
       videoResult = await generateMarketingVideo({
         script: strategy.script,
+        scenes: strategy.scenes,
         images: [...productImages, ...(avatar ? [avatar] : [])],
         duration,
-        ratio
+        ratio,
+        audioUrl: voiceUrl
       });
-      finalStatus = 'completed';
     } catch (e) {
-      console.warn('Video generation failed or returned PARTIAL_SUCCESS', e);
-      finalStatus = 'PARTIAL_SUCCESS';
+      console.warn('Video generation failed', e);
     }
-
   } catch (error) {
     console.error('Pipeline error:', error);
-    finalStatus = 'PARTIAL_SUCCESS'; // Proceed with what we have
+  }
+
+  // Resolve final status based on available levels
+  if (videoResult) {
+    finalStatus = 'completed'; // Level 4
+  } else if (voiceUrl) {
+    finalStatus = 'SCRIPT_IMAGE_AUDIO_READY'; // Level 3
+  } else if (generatedImages.length > 0) {
+    finalStatus = 'SCRIPT_IMAGE_READY'; // Level 2
+  } else {
+    finalStatus = 'SCRIPT_READY'; // Level 1
   }
 
   // 6. DB Persistence
@@ -122,7 +142,8 @@ Respond ONLY in valid JSON format with the following structure:
     video: videoResult ? {
       url: videoResult.url,
       provider: videoResult.provider,
-      duration: videoResult.duration
+      duration: videoResult.duration,
+      generationType: videoResult.generationType
     } : undefined,
     voice: voiceUrl ? { url: voiceUrl } : undefined,
     status: finalStatus

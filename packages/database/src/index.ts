@@ -819,7 +819,7 @@ const MarketingStudioGenerationSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ['pending', 'processing', 'completed', 'failed', 'PARTIAL_SUCCESS'],
+      enum: ['pending', 'processing', 'completed', 'failed', 'PARTIAL_SUCCESS', 'SCRIPT_READY', 'SCRIPT_IMAGE_READY', 'SCRIPT_IMAGE_AUDIO_READY'],
       default: 'pending'
     }
   },

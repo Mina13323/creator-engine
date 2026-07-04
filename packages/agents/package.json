@@ -13,7 +13,9 @@
     "@creator/rag-core": "workspace:*",
     "@creator/types": "workspace:*",
     "@google/generative-ai": "^0.24.1",
-    "cloudinary": "^2.10.0"
+    "@gradio/client": "^2.3.0",
+    "cloudinary": "^2.10.0",
+    "replicate": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.7",

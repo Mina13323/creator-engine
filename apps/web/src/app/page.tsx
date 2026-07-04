@@ -170,8 +170,8 @@ export default function AppPage() {
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 z-50 flex items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 flex gap-1">
-            <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
-            <div className="w-1/2 h-full bg-emerald-500 rounded-sm -skew-x-12"></div>
+            <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm skew-x-12"></div>
+            <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm -skew-x-12"></div>
           </div>
           <span className="font-bold text-lg text-slate-900 tracking-tight">Creator Engine</span>
         </div>
@@ -208,8 +208,8 @@ export default function AppPage() {
           {/* Logo */}
           <div className="hidden md:flex items-center gap-2 mb-8">
             <div className="w-5 h-5 flex gap-1">
-              <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
-              <div className="w-1/2 h-full bg-emerald-500 rounded-sm -skew-x-12"></div>
+              <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm skew-x-12"></div>
+              <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm -skew-x-12"></div>
             </div>
             <span className="font-bold text-xl text-slate-900 tracking-tight">Creator Engine</span>
           </div>
@@ -256,21 +256,21 @@ export default function AppPage() {
                 {isActive && (
                   <motion.div
                     layoutId="sidebar-active-pill"
-                    className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/20 rounded-xl -z-10 shadow-[0_0_12px_rgba(16,185,129,0.15)]"
+                    className="absolute inset-0 bg-[#E8F0FE] rounded-full -z-10"
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   />
                 )}
-                <Icon className={`w-4 h-4 relative z-10 transition-colors ${isActive ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-600'}`} />
-                <span className="relative z-10">{item.label}</span>
+                <Icon className={`w-4 h-4 relative z-10 transition-colors ${isActive ? 'text-[#1A73E8]' : 'text-slate-500 group-hover:text-slate-700'}`} />
+                <span className={`relative z-10 ${isActive ? 'text-[#1A73E8] font-bold' : 'text-slate-700 font-medium'}`}>{item.label}</span>
               </button>
             );
           })}
           {user?.role === 'admin' && (
             <Link
               href="/admin/dashboard"
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 mt-2 transition-all"
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-full text-sm font-semibold text-[#1A73E8] bg-blue-50 hover:bg-blue-100 mt-2 transition-all"
             >
-              <ShieldAlert className="w-4.5 h-4.5 text-emerald-600" />
+              <ShieldAlert className="w-4 h-4 text-[#1A73E8]" />
               Admin Dashboard
             </Link>
           )}
