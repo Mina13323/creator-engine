@@ -39,7 +39,8 @@ export async function connectDB(url: string) {
 }
 
 // 0. User Model
-interface UserDocument extends User {
+interface UserDocument extends Omit<User, 'id'> {
+  id: string;
   password?: string;
   googleId?: string;
   avatar?: string;
@@ -50,7 +51,6 @@ interface UserDocument extends User {
 
 const UserSchema = new Schema<UserDocument & Document>(
   {
-    // @ts-ignore - id is added for easier querying along with _id
     id: { type: String, required: true, index: true },
     email: { type: String, required: true, unique: true },
     name: { type: String },
@@ -65,6 +65,7 @@ const UserSchema = new Schema<UserDocument & Document>(
 );
 
 UserSchema.index({ createdAt: -1 });
+UserSchema.index({ id: 1, email: 1 });
 
 // 0.5 Founder Profile Model
 const FounderProfileSchema = new Schema<FounderProfile & Document>(
@@ -112,6 +113,7 @@ const ProjectSchema = new Schema<Project & Document>(
 
 ProjectSchema.index({ userId: 1, status: 1 });
 ProjectSchema.index({ createdAt: -1 });
+ProjectSchema.index({ id: 1, userId: 1 });
 
 // 2. Business Idea Model (Legacy, kept per spec)
 const BusinessIdeaSchema = new Schema<BusinessIdea & Document>(
@@ -507,6 +509,8 @@ const VentureStateSchema = new Schema<VentureState & Document>(
   },
   { timestamps: true, collection: 'venture_states' }
 );
+VentureStateSchema.index({ projectId: 1, userId: 1 }, { unique: true });
+VentureStateSchema.index({ lastUpdated: -1 });
 
 // 10. Agent Run Model
 const AgentRunSchema = new Schema(
@@ -532,6 +536,7 @@ const AgentRunSchema = new Schema(
 );
 
 AgentRunSchema.index({ createdAt: -1 });
+AgentRunSchema.index({ projectId: 1, userId: 1, createdAt: -1 });
 
 // 11. Uploaded Document Model
 const UploadedDocumentSchema = new Schema<UploadedDocument & Document>(
@@ -548,6 +553,8 @@ const UploadedDocumentSchema = new Schema<UploadedDocument & Document>(
   },
   { timestamps: true }
 );
+UploadedDocumentSchema.index({ projectId: 1, userId: 1, createdAt: -1 });
+UploadedDocumentSchema.index({ processingStatus: 1, createdAt: -1 });
 
 // 12. Opportunity Comparison Model
 const OpportunityComparisonSchema = new Schema<OpportunityComparison & Document>(
@@ -595,6 +602,7 @@ export interface KnowledgeDocument {
   projectId?: string;
   documentId?: string;
   docId?: string;
+  title?: string;
   content: string;
   category: string;
   source: string;
@@ -606,12 +614,16 @@ const KnowledgeDocumentSchema = new Schema<KnowledgeDocument & Document>({
   projectId: { type: String },
   documentId: { type: String },
   docId: { type: String },
+  title: { type: String },
   content: { type: String, required: true },
   category: { type: String, required: true },
   source: { type: String, required: true },
   embedding: { type: [Number] }
 }, { timestamps: true, collection: 'knowledge_vectors' });
 
+KnowledgeDocumentSchema.index({ projectId: 1, userId: 1, createdAt: -1 });
+KnowledgeDocumentSchema.index({ documentId: 1 });
+KnowledgeDocumentSchema.index({ category: 1 });
 export const KnowledgeDocumentModel = mongoose.models.KnowledgeDocument || mongoose.model<KnowledgeDocument & Document>('KnowledgeDocument', KnowledgeDocumentSchema);
 
 // --- Financial Plan Interfaces ---
@@ -752,6 +764,7 @@ const UserSubscriptionSchema = new Schema<UserSubscription & Document>(
 );
 
 UserSubscriptionSchema.index({ userId: 1, status: 1 });
+UserSubscriptionSchema.index({ expiresAt: 1 });
 
 const CreditWalletSchema = new Schema<CreditWallet & Document>(
   {
@@ -773,6 +786,7 @@ const CreditTransactionSchema = new Schema<CreditTransaction & Document>(
   },
   { timestamps: true, collection: 'credit_transactions' }
 );
+CreditTransactionSchema.index({ userId: 1, createdAt: -1 });
 
 const PaymentTransactionSchema = new Schema<PaymentTransaction & Document>(
   {
@@ -788,6 +802,8 @@ const PaymentTransactionSchema = new Schema<PaymentTransaction & Document>(
 );
 
 PaymentTransactionSchema.index({ createdAt: -1 });
+PaymentTransactionSchema.index({ paymentIntentId: 1 }, { unique: true });
+PaymentTransactionSchema.index({ userId: 1, status: 1, createdAt: -1 });
 
 const CreditPackSchema = new Schema<any & Document>(
   {

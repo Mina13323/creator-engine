@@ -13,46 +13,81 @@ import {
   BusinessPlanModel, 
   BrandIdentityModel, 
   MarketingCampaignModel, 
+  PitchDeckModel,
   ExecutionRoadmapModel, 
   ConversationModel, 
   UserModel, 
   FounderProfileModel, 
   VentureStateModel, 
   AgentRunModel, 
-  UploadedDocumentModel 
+  UploadedDocumentModel,
+  FinancialForecast,
+  buildContextString,
+  getProjectContext
 } from '@creator/database';
 import adminRouter, { registerLockdownHandlers, registerMaintenanceHandlers } from './routes/admin';
 import paymentsRouter from './routes/payments';
 import marketingStudioRouter from './routes/marketingStudio';
 import uploadRouter from './routes/upload';
 import { requireCredits, requireSubscription } from './middleware';
-import { deductCredits, CREDIT_COSTS, getUserCredits } from './services/creditEngine';
+import { deductCredits, CREDIT_COSTS, getUserCredits, provisionUserMonetization } from './services/creditEngine';
 import { authMiddleware, adminMiddleware } from './middleware';
 import { LoginRequest, SignupRequest, AuthResponse, AuthUser, FounderProfile, SelectedOpportunity, BusinessPlan } from '@creator/types';
-import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent } from '@creator/agents';
+import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent, runFinancialAgent, runBrandingAgent, runMarketingAgent, runPitchAgent } from '@creator/agents';
+import { processAndIngestDocument } from '@creator/rag-core';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
 
 import helmet from 'helmet';
-import { generalRateLimiter } from './rateLimit';
+import { authRateLimiter, generalRateLimiter, aiRateLimiter } from './rateLimit';
+import { env } from './env';
+import { errorHandler } from './errorHandler';
+import { validateRequest } from './validate';
+import {
+  aiChatSchema,
+  analyzeFounderSchema,
+  checkEmailSchema,
+  createProjectSchema,
+  discoverOpportunitySchema,
+  financialAgentResponseSchema,
+  generateBusinessPlanSchema,
+  generateBrandingSchema,
+  generateFinancialSchema,
+  generateMarketingSchema,
+  generatePitchSchema,
+  googleAuthSchema,
+  loginSchema,
+  brandingAgentResponseSchema,
+  marketingAgentResponseSchema,
+  pitchAgentResponseSchema,
+  selectOpportunitySchema,
+  signupSchema,
+  uploadDocumentSchema
+} from './schemas';
 
 dotenv.config();
 dotenv.config({ path: require('path').resolve(__dirname, '../../../.env') });
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret_key_for_jwt_fallback_only';
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const googleClient = new OAuth2Client(env.GOOGLE_CLIENT_ID);
 
 const app = express();
 app.use(helmet());
 app.use(generalRateLimiter);
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000', credentials: true }));
+const allowedOrigins = env.FRONTEND_URL.split(',').map((origin) => origin.trim()).filter(Boolean);
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('CORS origin denied'));
+  },
+  credentials: true
+}));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 
-const PORT = process.env.PORT || 5000;
-const MONGO_URL = process.env.DATABASE_URL;
+const PORT = env.PORT;
+const MONGO_URL = env.DATABASE_URL;
 
 let dbConnected = false;
 let lockdownActive = false;
@@ -67,33 +102,14 @@ registerMaintenanceHandlers(
   (v) => { maintenanceActive = v; }
 );
 
-if (MONGO_URL) {
-  connectDB(MONGO_URL)
-    .then(() => {
-      dbConnected = true;
-    })
-    .catch((err) => {
-      console.warn('MongoDB connection failed. API requires DB.', err);
-    });
-} else {
-  console.warn('DATABASE_URL is missing.');
-}
-
-// ==========================================
-// ENVIRONMENT VALIDATION (Phase 6)
-// ==========================================
-const requiredKeys = [
-  'FIREWORKS_API_KEY',
-  'HF_TOKEN',
-  'CLOUDINARY_CLOUD_NAME',
-  'CLOUDINARY_API_KEY',
-  'CLOUDINARY_API_SECRET'
-];
-for (const key of requiredKeys) {
-  if (!process.env[key]) {
-    console.warn(`WARNING: Missing required environment variable: ${key}`);
-  }
-}
+connectDB(MONGO_URL)
+  .then(() => {
+    dbConnected = true;
+  })
+  .catch((err) => {
+    console.error('MongoDB connection failed. API requires DB.', err);
+    if (env.NODE_ENV === 'production') process.exit(1);
+  });
 
 // ==========================================
 // AI PROVIDERS STATUS (Phase 4 & 5)
@@ -115,8 +131,7 @@ app.get('/api/ai/providers/status', async (req: Request, res: Response) => {
     fallbackAvailable: !!process.env.JSON2VIDEO_API_KEY
   };
   
-  // Test Replicate Credits via a cheap/fast request (or we just mock it for the endpoint if we don't want to actually run a model)
-  // For the scope of this update, we will try to fetch Replicate account info or just set it based on config
+  // Probe Replicate account availability without running a model.
   try {
     if (process.env.REPLICATE_API_TOKEN) {
       const repRes = await fetch('https://api.replicate.com/v1/account', {
@@ -138,7 +153,7 @@ app.get('/api/ai/providers/status', async (req: Request, res: Response) => {
 
 // UTILITIES
 function generateToken(userId: string, email: string): string {
-  return jwt.sign({ id: userId, email }, JWT_SECRET, { expiresIn: '7d' });
+  return jwt.sign({ id: userId, email }, env.JWT_SECRET, { expiresIn: '7d' });
 }
 
 
@@ -159,6 +174,36 @@ app.get('/api/system/status', (req: Request, res: Response) => {
   });
 });
 
+app.get('/api/system/health', async (req: Request, res: Response): Promise<any> => {
+  const databaseOnline = dbConnected && ProjectModel.db.readyState === 1;
+  const hasFireworks = Boolean(process.env.FIREWORKS_API_KEY);
+  const hasCloudinary = Boolean(
+    process.env.CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET
+  );
+  const hasPaymob = Boolean(
+    process.env.PAYMOB_API_KEY &&
+    process.env.PAYMOB_HMAC &&
+    process.env.PAYMOB_INTEGRATION_ID &&
+    process.env.PAYMOB_IFRAME_ID
+  );
+
+  return res.status(databaseOnline ? 200 : 503).json({
+    database: databaseOnline ? 'online' : 'offline',
+    ai: {
+      fireworks: hasFireworks,
+      embeddings: hasFireworks
+    },
+    storage: {
+      cloudinary: hasCloudinary
+    },
+    payments: {
+      paymob: hasPaymob
+    }
+  });
+});
+
 
 // Get user credits
 app.get('/api/user/credits', authMiddleware, async (req: Request, res: Response): Promise<any> => {
@@ -172,7 +217,7 @@ app.get('/api/user/credits', authMiddleware, async (req: Request, res: Response)
 });
 
 // AUTH ROUTES
-app.post('/api/auth/signup', async (req: Request, res: Response): Promise<any> => {
+app.post('/api/auth/signup', authRateLimiter, validateRequest(signupSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
     if (lockdownActive) return res.status(503).json({ error: 'New signups are temporarily suspended. Please try again later.' });
@@ -188,9 +233,10 @@ app.post('/api/auth/signup', async (req: Request, res: Response): Promise<any> =
     const token = generateToken(userId, email);
     const newUser = new UserModel({ id: userId, email, password: hashedPassword, name, token });
     await newUser.save();
+    await provisionUserMonetization(userId);
 
 
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
+    res.cookie('token', token, { httpOnly: true, secure: env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
     return res.status(201).json({ token, user: toAuthUser(newUser) });
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
@@ -198,7 +244,7 @@ app.post('/api/auth/signup', async (req: Request, res: Response): Promise<any> =
 });
 
 
-app.post('/api/auth/login', async (req: Request, res: Response): Promise<any> => {
+app.post('/api/auth/login', authRateLimiter, validateRequest(loginSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     if (!dbConnected) return res.status(503).json({ error: 'Database connection required for authentication' });
     const { email, password } = req.body as LoginRequest;
@@ -222,30 +268,21 @@ app.post('/api/auth/login', async (req: Request, res: Response): Promise<any> =>
     user.token = token;
     await user.save();
 
-    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
+    res.cookie('token', token, { httpOnly: true, secure: env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
     return res.json({ token, user: toAuthUser(user) });
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-app.post('/api/auth/google', async (req: Request, res: Response): Promise<any> => {
+app.post('/api/auth/google', authRateLimiter, validateRequest(googleAuthSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     if (!dbConnected) return res.status(503).json({ error: 'Database connection required' });
     const { credential } = req.body;
     if (!credential) return res.status(400).json({ error: 'Missing Google credential' });
 
-    let payload: any = null;
-    try {
-      if (process.env.GOOGLE_CLIENT_ID) {
-        const ticket = await googleClient.verifyIdToken({ idToken: credential, audience: process.env.GOOGLE_CLIENT_ID });
-        payload = ticket.getPayload();
-      } else {
-        payload = jwt.decode(credential);
-      }
-    } catch (e) {
-      payload = jwt.decode(credential); 
-    }
+    const ticket = await googleClient.verifyIdToken({ idToken: credential, audience: env.GOOGLE_CLIENT_ID });
+    const payload = ticket.getPayload();
 
     if (!payload || !payload.email) return res.status(401).json({ error: 'Invalid Google token' });
 
@@ -257,6 +294,7 @@ app.post('/api/auth/google', async (req: Request, res: Response): Promise<any> =
     if (!user) {
       user = new UserModel({ id: userId, email, name, googleId, avatar: picture, token });
       await user.save();
+      await provisionUserMonetization(userId);
 
     } else {
       user.token = token;
@@ -270,7 +308,7 @@ app.post('/api/auth/google', async (req: Request, res: Response): Promise<any> =
     }
 
     const tokenPayload = generateToken(user.id, email);
-    res.cookie('token', tokenPayload, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
+    res.cookie('token', tokenPayload, { httpOnly: true, secure: env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
     return res.json({ token: tokenPayload, user: toAuthUser(user) });
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
@@ -283,7 +321,7 @@ app.post('/api/auth/logout', async (req: Request, res: Response): Promise<any> =
     const token = req.cookies.token || (authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null);
     
     if (token && dbConnected) {
-      const decoded = jwt.verify(token, JWT_SECRET) as { id: string };
+      const decoded = jwt.verify(token, env.JWT_SECRET) as { id: string };
       if (decoded?.id) {
         await UserModel.findOneAndUpdate({ id: decoded.id }, { $unset: { token: '' } });
       }
@@ -295,7 +333,7 @@ app.post('/api/auth/logout', async (req: Request, res: Response): Promise<any> =
   return res.json({ message: 'Logged out successfully' });
 });
 
-app.post('/api/auth/check-email', async (req: Request, res: Response): Promise<any> => {
+app.post('/api/auth/check-email', authRateLimiter, validateRequest(checkEmailSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     if (!dbConnected) return res.status(503).json({ error: 'Database connection required' });
     const { email } = req.body;
@@ -345,51 +383,10 @@ app.get('/api/account', authMiddleware, async (req: Request, res: Response): Pro
   }
 });
 
-// Admin Elevation Route (Secret endpoint to make someone admin for testing)
-app.post('/api/auth/elevate', async (req: Request, res: Response): Promise<any> => {
-  try {
-    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
-    const { email, secret } = req.body;
-    // Simple dev secret to grant admin
-    if (secret !== 'make-me-admin') return res.status(403).json({ error: 'Invalid secret' });
-    
-    const user = await UserModel.findOne({ email });
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    if (user.role === 'admin') return res.status(400).json({ error: 'User is already an admin' });
-
-    user.role = 'admin';
-    await user.save();
-
-    return res.json({ message: 'User elevated to admin', user: toAuthUser(user) });
-  } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-// Admin Demotion Route (Secret endpoint to revert someone back to user for testing)
-app.post('/api/auth/demote', async (req: Request, res: Response): Promise<any> => {
-  try {
-    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
-    const { email, secret } = req.body;
-    if (secret !== 'make-me-user') return res.status(403).json({ error: 'Invalid secret' });
-
-    const user = await UserModel.findOne({ email });
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    if (user.role === 'user') return res.status(400).json({ error: 'User is already a regular user' });
-
-    user.role = 'user';
-    await user.save();
-
-    return res.json({ message: 'User demoted to regular user', user: toAuthUser(user) });
-  } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
 // Admin Routes
 app.use('/api/admin', adminRouter);
 app.use('/api/payments', paymentsRouter);
-app.use('/api/marketing-studio', marketingStudioRouter);
+app.use('/api/marketing-studio', aiRateLimiter, marketingStudioRouter);
 app.use('/api/upload', uploadRouter);
 
 // ==========================================
@@ -401,7 +398,10 @@ async function updateVentureState(projectId: string, userId: string, update: Par
   if (!dbConnected) return;
   await VentureStateModel.findOneAndUpdate(
     { projectId, userId },
-    { $set: { ...update, lastUpdated: new Date() } },
+    {
+      $set: { ...update, lastUpdated: new Date() },
+      $setOnInsert: { id: `vs_${Date.now()}`, projectId, userId }
+    },
     { upsert: true, new: true }
   );
 }
@@ -466,8 +466,41 @@ async function trackAgentRun(
   }
 }
 
+function getLatestBusinessPlanFromState(context: any) {
+  return context.businessPlan || context.ventureState?.businessPlan || null;
+}
+
+function getBusinessIdeaFromContext(context: any, explicitIdea?: string) {
+  if (explicitIdea) return explicitIdea;
+  if (context.selectedOpportunity) {
+    return `${context.selectedOpportunity.title}: ${context.selectedOpportunity.description}`;
+  }
+  if (context.project?.name) return context.project.name;
+  return '';
+}
+
+function getBusinessModelFromContext(context: any, explicitModel?: string) {
+  if (explicitModel) return explicitModel;
+  const planModel = context.businessPlan?.businessModel;
+  if (typeof planModel === 'string') return planModel;
+  if (planModel?.pricingStrategy) return planModel.pricingStrategy;
+  if (planModel?.revenueStreams?.length) return planModel.revenueStreams.join(', ');
+  return 'SaaS';
+}
+
+async function loadOwnedProjectContext(projectId: string, userId: string) {
+  if (!dbConnected) throw new Error('Database connection required');
+  const context = await getProjectContext(projectId, userId);
+  if (!context.project) {
+    const error: any = new Error('Project not found');
+    error.statusCode = 404;
+    throw error;
+  }
+  return context;
+}
+
 // 0. Create Project (Decoupled)
-app.post('/api/projects', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/projects', authMiddleware, validateRequest(createProjectSchema), async (req: Request, res: Response): Promise<any> => {
   try {
     if (maintenanceActive) {
       return res.status(503).json({ error: 'System is currently under maintenance. New project creations are temporarily suspended.' });
@@ -499,7 +532,7 @@ app.post('/api/projects', authMiddleware, async (req: Request, res: Response): P
 });
 
 // 1. Founder Analysis
-app.post('/api/founder/analyze', authMiddleware, requireCredits(CREDIT_COSTS.FOUNDER_ANALYSIS), async (req: Request, res: Response): Promise<any> => {
+app.post('/api/founder/analyze', authMiddleware, aiRateLimiter, validateRequest(analyzeFounderSchema), requireCredits(CREDIT_COSTS.FOUNDER_ANALYSIS), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId, data } = req.body;
@@ -542,7 +575,7 @@ app.post('/api/founder/analyze', authMiddleware, requireCredits(CREDIT_COSTS.FOU
 });
 
 // 2. Opportunity Discovery
-app.post('/api/opportunities/discover', authMiddleware, requireCredits(CREDIT_COSTS.OPPORTUNITY_DISCOVERY), async (req: Request, res: Response): Promise<any> => {
+app.post('/api/opportunities/discover', authMiddleware, aiRateLimiter, validateRequest(discoverOpportunitySchema), requireCredits(CREDIT_COSTS.OPPORTUNITY_DISCOVERY), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
@@ -606,7 +639,7 @@ app.post('/api/opportunities/discover', authMiddleware, requireCredits(CREDIT_CO
 });
 
 // 3. Select Opportunity
-app.post('/api/opportunities/select', authMiddleware, async (req: Request, res: Response): Promise<any> => {
+app.post('/api/opportunities/select', authMiddleware, validateRequest(selectOpportunitySchema), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId, opportunityId } = req.body;
@@ -625,10 +658,7 @@ app.post('/api/opportunities/select', authMiddleware, async (req: Request, res: 
       'opportunity-selection',
       { opportunityId },
       async () => {
-        // Delete previous selected opportunity for this project
-        await SelectedOpportunityModel.deleteMany({ projectId, userId });
-
-        const newSelected = new SelectedOpportunityModel({
+        const selectedPayload = {
           id: `sel_${Date.now()}`,
           userId,
           projectId,
@@ -644,16 +674,21 @@ app.post('/api/opportunities/select', authMiddleware, async (req: Request, res: 
           estimatedRevenue: opportunity.estimatedRevenue,
           timeToMVP: opportunity.timeToMVP,
           selectedAt: new Date()
-        });
+        };
 
         if (dbConnected) {
-          await newSelected.save();
+          const newSelected = await SelectedOpportunityModel.findOneAndUpdate(
+            { projectId, userId },
+            { $set: selectedPayload },
+            { upsert: true, new: true }
+          );
           // Save selectedOpportunityId on Project document (instead of renaming project)
           await ProjectModel.findOneAndUpdate({ id: projectId, userId }, { selectedOpportunityId: opportunityId });
           await updateVentureState(projectId, userId, { selectedOpportunity: newSelected.toObject() });
+          return newSelected;
         }
 
-        return newSelected;
+        return selectedPayload;
       },
       'system'
     );
@@ -666,7 +701,7 @@ app.post('/api/opportunities/select', authMiddleware, async (req: Request, res: 
 });
 
 // 4. Generate Business Plan
-app.post('/api/business-plan/generate', authMiddleware, requireCredits(CREDIT_COSTS.BUSINESS_PLAN), async (req: Request, res: Response): Promise<any> => {
+app.post('/api/business-plan/generate', authMiddleware, aiRateLimiter, validateRequest(generateBusinessPlanSchema), requireCredits(CREDIT_COSTS.BUSINESS_PLAN), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
@@ -806,12 +841,11 @@ app.get('/api/projects/:projectId/context', authMiddleware, async (req: Request,
 });
 
 // 7. Upload Document Pipeline
-app.post('/api/projects/:projectId/documents/upload', authMiddleware, requireCredits(CREDIT_COSTS.RAG_QUERY), async (req: Request, res: Response): Promise<any> => {
+app.post('/api/projects/:projectId/documents/upload', authMiddleware, validateRequest(uploadDocumentSchema), requireCredits(CREDIT_COSTS.RAG_QUERY), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
-    await deductCredits(userId, CREDIT_COSTS.RAG_QUERY, 'RAG Upload');
     const { projectId } = req.params;
-    const { fileName, fileType, storageUrl, fileSize } = req.body;
+    const { fileName, fileType, storageUrl, fileSize, fileBase64 } = req.body;
     
     if (!fileName || !fileType || !storageUrl) {
       return res.status(400).json({ error: 'Missing required file details (fileName, fileType, storageUrl)' });
@@ -836,17 +870,21 @@ app.post('/api/projects/:projectId/documents/upload', authMiddleware, requireCre
     
     await uploadedDoc.save();
 
-    // The actual triggering of the n8n webhook would happen here.
-    // We wrap it in trackAgentRun to track it.
     await trackAgentRun(userId, projectId, 'document-processing', { documentId, storageUrl }, async () => {
-      // Simulate n8n trigger
-      console.info(`[Webhook] Triggering n8n processing for doc ${documentId}`);
       uploadedDoc.processingStatus = 'processing';
       await uploadedDoc.save();
-      // Assume completed later...
-    });
 
-    return res.status(201).json({ document: uploadedDoc });
+      if (!fileBase64) {
+        throw new Error('Document bytes are required for ingestion');
+      }
+
+      const fileBuffer = Buffer.from(fileBase64, 'base64');
+      await processAndIngestDocument(fileBuffer, fileName, fileType, userId, projectId, documentId);
+    });
+    await deductCredits(userId, CREDIT_COSTS.RAG_QUERY, 'RAG Upload');
+
+    const processedDoc = await UploadedDocumentModel.findOne({ id: documentId });
+    return res.status(201).json({ document: processedDoc || uploadedDoc });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
   }
@@ -872,26 +910,33 @@ app.get('/api/projects', authMiddleware, async (req: Request, res: Response) => 
 });
 
 // AI Cofounder Chat Endpoint
-app.post('/api/ai/chat', authMiddleware, requireCredits(CREDIT_COSTS.AI_CHAT_MESSAGE), async (req: Request, res: Response): Promise<any> => {
+app.post('/api/ai/chat', authMiddleware, aiRateLimiter, validateRequest(aiChatSchema), requireCredits(CREDIT_COSTS.AI_CHAT_MESSAGE), async (req: Request, res: Response): Promise<any> => {
   try {
+    const userId = (req as any).user.id;
     const { projectId, message } = req.body;
     if (!projectId || !message) return res.status(400).json({ error: 'Missing projectId or message' });
 
-    const state = await VentureStateModel.findOne({ projectId });
+    const context = await loadOwnedProjectContext(projectId, userId);
+    const state = await VentureStateModel.findOne({ projectId, userId });
     let chatHistory: any[] = [];
-    const conversation = await ConversationModel.findOne({ projectId });
+    const conversation = await ConversationModel.findOne({ projectId, userId });
     if (conversation) chatHistory = conversation.messages;
 
     const userMessage = { id: `msg_user_${Date.now()}`, sender: 'user' as const, message, timestamp: new Date() };
     chatHistory.push(userMessage);
 
-    const aiResponse = await runCofounderAgent(message, JSON.stringify(state), JSON.stringify(chatHistory));
+    const aiResponse = await runCofounderAgent(message, state?.toObject() || context.project, `${buildContextString(context)}\nConversation:\n${JSON.stringify(chatHistory)}`);
+    if (!aiResponse) return res.status(502).json({ error: 'AI consultant failed to produce a response' });
     chatHistory.push(aiResponse);
+    await deductCredits(userId, CREDIT_COSTS.AI_CHAT_MESSAGE, 'AI Chat Message');
 
     if (dbConnected) {
       await ConversationModel.findOneAndUpdate(
-        { projectId },
-        { $push: { messages: { $each: [userMessage, aiResponse] } } },
+        { projectId, userId },
+        {
+          $setOnInsert: { id: `conv_${Date.now()}`, projectId, userId },
+          $push: { messages: { $each: [userMessage, aiResponse] } }
+        },
         { upsert: true, new: true }
       );
     }
@@ -904,9 +949,10 @@ app.post('/api/ai/chat', authMiddleware, requireCredits(CREDIT_COSTS.AI_CHAT_MES
 
 app.get('/api/ai/chat/:projectId', authMiddleware, async (req: Request, res: Response) => {
   try {
+    const userId = (req as any).user.id;
     const { projectId } = req.params;
     if (dbConnected) {
-      const conv = await ConversationModel.findOne({ projectId });
+      const conv = await ConversationModel.findOne({ projectId, userId });
       res.json(conv?.messages || []);
     } else {
       res.json([]);
@@ -917,27 +963,265 @@ app.get('/api/ai/chat/:projectId', authMiddleware, async (req: Request, res: Res
 });
 
 
-// 6. Financial Engine
-app.post('/api/financial-engine/generate', authMiddleware, requireCredits(CREDIT_COSTS.FINANCIAL_ENGINE), async (req: Request, res: Response): Promise<any> => {
+async function generateFinancialHandler(req: Request, res: Response): Promise<any> {
   try {
     const userId = (req as any).user.id;
-    await deductCredits(userId, CREDIT_COSTS.FINANCIAL_ENGINE, 'Financial Engine');
-    return res.status(200).json({ success: true, message: 'Financial Engine Generated' });
-  } catch (err: any) {
-    return res.status(500).json({ error: err.message });
-  }
-});
+    const { projectId, businessIdea, businessModel, currency = 'EGP' } = req.body;
+    const context = await loadOwnedProjectContext(projectId, userId);
+    const contextStr = buildContextString(context);
+    const resolvedIdea = getBusinessIdeaFromContext(context, businessIdea);
+    const resolvedModel = getBusinessModelFromContext(context, businessModel);
 
-// 7. Branding
-app.post('/api/branding/generate', authMiddleware, requireCredits(CREDIT_COSTS.BRANDING), async (req: Request, res: Response): Promise<any> => {
-  try {
-    const userId = (req as any).user.id;
-    await deductCredits(userId, CREDIT_COSTS.BRANDING, 'Branding');
-    return res.status(200).json({ success: true, message: 'Branding Generated' });
+    if (!resolvedIdea) {
+      return res.status(400).json({ error: 'A business idea or selected opportunity is required' });
+    }
+
+    const rawFinancial = await trackAgentRun(
+      userId,
+      projectId,
+      'financial',
+      { businessIdea: resolvedIdea, businessModel: resolvedModel, context },
+      () => runFinancialAgent(projectId, resolvedIdea, resolvedModel, contextStr),
+      'deepseek-v4-flash'
+    );
+
+    if (!rawFinancial) {
+      return res.status(502).json({ error: 'Financial agent failed to produce a response' });
+    }
+
+    const parsedFinancial = financialAgentResponseSchema.parse(rawFinancial);
+    await deductCredits(userId, CREDIT_COSTS.FINANCIAL_ENGINE, 'Financial Engine');
+
+    const startupCosts = parsedFinancial.financial.startupCosts;
+    const monthlyCosts = parsedFinancial.financial.monthlyCosts;
+    const forecast = await FinancialForecast.findOneAndUpdate(
+      { projectId },
+      {
+        projectId,
+        startupCosts,
+        totalStartupCost: startupCosts.reduce((sum, item) => sum + item.amount, 0),
+        monthlyCosts,
+        totalMonthlyCost: monthlyCosts.reduce((sum, item) => sum + item.amount, 0),
+        revenueProjections: parsedFinancial.financial.revenueProjections,
+        breakEvenMonth: parsedFinancial.financial.breakEvenMonth,
+        currency,
+        assumptionsApplied: parsedFinancial.financial.assumptionsApplied
+      },
+      { upsert: true, new: true, runValidators: true }
+    );
+
+    await updateVentureState(projectId, userId, { financialForecast: forecast.toObject() });
+    return res.status(201).json({ financialForecast: forecast, pricing: parsedFinancial.pricing || null });
   } catch (err: any) {
+    if (err.statusCode) return res.status(err.statusCode).json({ error: err.message });
+    if (err.message === 'INSUFFICIENT_CREDITS') return res.status(402).json({ error: 'INSUFFICIENT_CREDITS' });
     return res.status(500).json({ error: err.message });
   }
-});
+}
+
+async function generateBrandingHandler(req: Request, res: Response): Promise<any> {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.body;
+    const context = await loadOwnedProjectContext(projectId, userId);
+    const selectedOpportunity = context.selectedOpportunity;
+    const businessPlan = getLatestBusinessPlanFromState(context);
+
+    if (!selectedOpportunity) {
+      return res.status(400).json({ error: 'A selected opportunity is required before branding generation' });
+    }
+    if (!businessPlan) {
+      return res.status(400).json({ error: 'A business plan is required before branding generation' });
+    }
+
+    const rawBranding = await trackAgentRun(
+      userId,
+      projectId,
+      'branding',
+      { selectedOpportunity, businessPlan, context },
+      () => runBrandingAgent(projectId, selectedOpportunity, businessPlan, buildContextString(context)),
+      'deepseek-v4-flash'
+    );
+
+    if (!rawBranding) {
+      return res.status(502).json({ error: 'Branding agent failed to produce a response' });
+    }
+
+    const parsedBranding = brandingAgentResponseSchema.parse(rawBranding);
+    await deductCredits(userId, CREDIT_COSTS.BRANDING, 'Branding');
+
+    const latest = await BrandIdentityModel.findOne({ projectId, userId, isLatest: true });
+    const version = latest ? (latest.version || 1) + 1 : 1;
+    await BrandIdentityModel.updateMany({ projectId, userId, isLatest: true }, { $set: { isLatest: false } });
+
+    const brandIdentity = new BrandIdentityModel({
+      id: `brand_${Date.now()}`,
+      userId,
+      projectId,
+      ...parsedBranding,
+      generatedByModel: 'deepseek-v4-flash',
+      generatedAt: new Date(),
+      version,
+      isLatest: true
+    });
+    await brandIdentity.save();
+    await updateVentureState(projectId, userId, { branding: brandIdentity.toObject() });
+
+    return res.status(201).json({ brandIdentity });
+  } catch (err: any) {
+    if (err.statusCode) return res.status(err.statusCode).json({ error: err.message });
+    if (err.message === 'INSUFFICIENT_CREDITS') return res.status(402).json({ error: 'INSUFFICIENT_CREDITS' });
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+async function generateMarketingHandler(req: Request, res: Response): Promise<any> {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.body;
+    const context = await loadOwnedProjectContext(projectId, userId);
+    const businessPlan = getLatestBusinessPlanFromState(context);
+    const brandIdentity = context.branding;
+
+    if (!businessPlan) {
+      return res.status(400).json({ error: 'A business plan is required before marketing generation' });
+    }
+    if (!brandIdentity) {
+      return res.status(400).json({ error: 'A brand identity is required before marketing generation' });
+    }
+
+    const rawMarketing = await trackAgentRun(
+      userId,
+      projectId,
+      'marketing',
+      { brandIdentity, businessPlan, context },
+      () => runMarketingAgent(projectId, brandIdentity, businessPlan, buildContextString(context)),
+      'deepseek-v4-flash'
+    );
+
+    if (!rawMarketing) {
+      return res.status(502).json({ error: 'Marketing agent failed to produce a response' });
+    }
+
+    const parsedMarketing = marketingAgentResponseSchema.parse(rawMarketing);
+    await deductCredits(userId, CREDIT_COSTS.MARKETING, 'Marketing');
+
+    const latest = await MarketingCampaignModel.findOne({ projectId, userId, isLatest: true });
+    const version = latest ? (latest.version || 1) + 1 : 1;
+    await MarketingCampaignModel.updateMany({ projectId, userId, isLatest: true }, { $set: { isLatest: false } });
+
+    const marketingCampaign = new MarketingCampaignModel({
+      id: `mkt_${Date.now()}`,
+      userId,
+      projectId,
+      ...parsedMarketing,
+      generatedByModel: 'deepseek-v4-flash',
+      generatedAt: new Date(),
+      version,
+      isLatest: true
+    });
+    await marketingCampaign.save();
+    await updateVentureState(projectId, userId, { marketing: marketingCampaign.toObject() });
+
+    return res.status(201).json({ marketingCampaign });
+  } catch (err: any) {
+    if (err.statusCode) return res.status(err.statusCode).json({ error: err.message });
+    if (err.message === 'INSUFFICIENT_CREDITS') return res.status(402).json({ error: 'INSUFFICIENT_CREDITS' });
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+async function generatePitchHandler(req: Request, res: Response): Promise<any> {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.body;
+    const context = await loadOwnedProjectContext(projectId, userId);
+    const businessPlan = getLatestBusinessPlanFromState(context);
+    const brandIdentity = context.branding;
+
+    if (!businessPlan) {
+      return res.status(400).json({ error: 'A business plan is required before pitch deck generation' });
+    }
+    if (!brandIdentity) {
+      return res.status(400).json({ error: 'A brand identity is required before pitch deck generation' });
+    }
+
+    const rawPitch = await trackAgentRun(
+      userId,
+      projectId,
+      'pitch',
+      { businessPlan, brandIdentity, context },
+      () => runPitchAgent(projectId, businessPlan, brandIdentity, buildContextString(context)),
+      'deepseek-v4-flash'
+    );
+
+    if (!rawPitch) {
+      return res.status(502).json({ error: 'Pitch agent failed to produce a response' });
+    }
+
+    const parsedPitch = pitchAgentResponseSchema.parse(rawPitch);
+    await deductCredits(userId, CREDIT_COSTS.PITCH_DECK, 'Pitch Deck');
+
+    const latest = await PitchDeckModel.findOne({ projectId, userId, isLatest: true });
+    const version = latest ? (latest.version || 1) + 1 : 1;
+    await PitchDeckModel.updateMany({ projectId, userId, isLatest: true }, { $set: { isLatest: false } });
+
+    const pitchDeck = new PitchDeckModel({
+      id: `pitch_${Date.now()}`,
+      userId,
+      projectId,
+      ...parsedPitch,
+      generatedByModel: 'deepseek-v4-flash',
+      generatedAt: new Date(),
+      version,
+      isLatest: true
+    });
+    await pitchDeck.save();
+    await updateVentureState(projectId, userId, { pitchDeck: pitchDeck.toObject() });
+
+    return res.status(201).json({ pitchDeck });
+  } catch (err: any) {
+    if (err.statusCode) return res.status(err.statusCode).json({ error: err.message });
+    if (err.message === 'INSUFFICIENT_CREDITS') return res.status(402).json({ error: 'INSUFFICIENT_CREDITS' });
+    return res.status(500).json({ error: err.message });
+  }
+}
+
+app.post(
+  ['/api/financial/generate', '/api/financial-engine/generate'],
+  authMiddleware,
+  aiRateLimiter,
+  validateRequest(generateFinancialSchema),
+  requireCredits(CREDIT_COSTS.FINANCIAL_ENGINE),
+  generateFinancialHandler
+);
+
+app.post(
+  '/api/branding/generate',
+  authMiddleware,
+  aiRateLimiter,
+  validateRequest(generateBrandingSchema),
+  requireCredits(CREDIT_COSTS.BRANDING),
+  generateBrandingHandler
+);
+
+app.post(
+  '/api/marketing/generate',
+  authMiddleware,
+  aiRateLimiter,
+  validateRequest(generateMarketingSchema),
+  requireCredits(CREDIT_COSTS.MARKETING),
+  generateMarketingHandler
+);
+
+app.post(
+  '/api/pitch/generate',
+  authMiddleware,
+  aiRateLimiter,
+  validateRequest(generatePitchSchema),
+  requireCredits(CREDIT_COSTS.PITCH_DECK),
+  generatePitchHandler
+);
 
 
 
@@ -946,5 +1230,7 @@ if (require.main === module) {
     console.info(`Creator Engine backend running on http://localhost:${PORT}`);
   });
 }
+
+app.use(errorHandler);
 
 export { app };

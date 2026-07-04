@@ -37,7 +37,7 @@ export default function FinancialEngine() {
   }, [opportunity]);
 
   const handleGenerate = async () => {
-    if (!businessIdea) return;
+    if (!businessIdea || !currentProject?.id) return;
     setLoading(true);
     try {
       const response = await fetch('/api/financial-engine', {
@@ -46,7 +46,7 @@ export default function FinancialEngine() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          projectId: currentProject?.id || 'demo-project',
+          projectId: currentProject.id,
           businessIdea,
           businessModel,
         }),

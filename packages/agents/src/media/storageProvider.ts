@@ -1,14 +1,13 @@
 import { v2 as cloudinary } from 'cloudinary';
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'demo',
-  api_key: process.env.CLOUDINARY_API_KEY || 'dummy_key',
-  api_secret: process.env.CLOUDINARY_API_SECRET || 'dummy_secret',
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 export async function uploadBufferToStorage(buffer: Buffer, resourceType: 'image' | 'video' | 'raw' | 'auto' = 'auto'): Promise<string> {
-  if (process.env.CLOUDINARY_API_KEY === 'dummy_key' || !process.env.CLOUDINARY_API_KEY) {
-    // If not configured, we throw error instead of returning mock URL (as per instructions)
+  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
     throw new Error('Cloudinary is not configured. Real storage is required.');
   }
 
@@ -27,7 +26,7 @@ export async function uploadBufferToStorage(buffer: Buffer, resourceType: 'image
 }
 
 export async function uploadUrlToStorage(url: string, resourceType: 'image' | 'video' | 'raw' | 'auto' = 'auto'): Promise<string> {
-  if (process.env.CLOUDINARY_API_KEY === 'dummy_key' || !process.env.CLOUDINARY_API_KEY) {
+  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
     throw new Error('Cloudinary is not configured. Real storage is required.');
   }
 

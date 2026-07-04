@@ -319,36 +319,22 @@ export async function runFinancialAgent(
   businessModel: string,
   contextStr: string = ''
 ): Promise<any | null> {
-  // Direct ngrok URL for financial engine (override via FINANCIAL_ENGINE_URL env)
-  const financialUrl = process.env.FINANCIAL_ENGINE_URL || 'https://anger-favorably-unburned.ngrok-free.dev/webhook/financial-engine';
+  const financialUrl = process.env.FINANCIAL_ENGINE_URL;
   let result: any = null;
   try {
+    if (!financialUrl) {
+      throw new Error('FINANCIAL_ENGINE_URL is not configured');
+    }
     console.info('[FinancialAgent] Calling direct URL:', financialUrl);
-    let res = await fetch(financialUrl, {
+    const res = await fetch(financialUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': 'true',
         'User-Agent': 'CreatorEngine/1.0'
       },
       body: JSON.stringify({ projectId, businessIdea, businessModel, contextStr }),
       signal: AbortSignal.timeout(30000),
     });
-
-    if (!res.ok && res.status === 404) {
-      const testUrl = financialUrl.replace('/webhook/', '/webhook-test/');
-      console.info('[FinancialAgent] Received 404. Retrying with test URL:', testUrl);
-      res = await fetch(testUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true',
-          'User-Agent': 'CreatorEngine/1.0'
-        },
-        body: JSON.stringify({ projectId, businessIdea, businessModel, contextStr }),
-        signal: AbortSignal.timeout(30000),
-      });
-    }
 
     if (res.ok) {
       const json = await res.json();
@@ -377,7 +363,10 @@ Output ONLY a JSON object matching this exact schema:
       { "category": "String", "description": "String", "amount": Number }
     ],
     "monthlyCosts": [
-      { "category": "String", "description": "String", "amount": Number }
+      { "category": "String", "description": "String", "amount": Number, "isVariable": Boolean }
+    ],
+    "revenueProjections": [
+      { "month": Number, "projected_revenue": Number, "cumulative_revenue": Number }
     ],
     "assumptionsApplied": ["String"]
   },
@@ -388,9 +377,10 @@ Output ONLY a JSON object matching this exact schema:
       {
         "tierName": "String",
         "amount": Number,
-        "billingCycle": "String (e.g. mo, yr)",
+        "billingCycle": "monthly | annual | one-time",
         "targetSegment": "String",
-        "features": ["String"]
+        "features": ["String"],
+        "justification": "String"
       }
     ]
   }

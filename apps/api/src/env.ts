@@ -6,7 +6,7 @@ const envPath = path.resolve(__dirname, '../../../.env');
 dotenv.config({ path: envPath });
 
 const envSchema = z.object({
-  MONGODB_URI: z.string().min(1, 'MONGODB_URI is required'),
+  DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
   JWT_SECRET: z.string().min(1, 'JWT_SECRET is required'),
   FIREWORKS_API_KEY: z.string().min(1, 'FIREWORKS_API_KEY is required'),
   GOOGLE_CLIENT_ID: z.string().min(1, 'GOOGLE_CLIENT_ID is required'),
@@ -25,6 +25,15 @@ const envSchema = z.object({
   
   // Monitoring
   SENTRY_DSN: z.string().url().optional(),
+
+  // Production payment/storage providers
+  PAYMOB_API_KEY: z.string().optional(),
+  PAYMOB_HMAC: z.string().optional(),
+  PAYMOB_INTEGRATION_ID: z.string().optional(),
+  PAYMOB_IFRAME_ID: z.string().optional(),
+  CLOUDINARY_CLOUD_NAME: z.string().optional(),
+  CLOUDINARY_API_KEY: z.string().optional(),
+  CLOUDINARY_API_SECRET: z.string().optional(),
 });
 
 const _env = envSchema.safeParse(process.env);

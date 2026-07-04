@@ -2,7 +2,7 @@ import { queryRAG } from "./index";
 
 // Helper to call LLM API (Gemini or OpenAI) with environment keys
 async function callLLM(systemPrompt: string, userPrompt: string): Promise<string | null> {
-  const geminiKey = process.env.AIzaSyDGbwbMTA429lt4uSEmJTphPzaYUm3P_2c;
+  const geminiKey = process.env.GEMINI_API_KEY;
 
   if (geminiKey && !geminiKey.includes('AIzaSy...')) {
     try {
@@ -78,70 +78,5 @@ export async function generateFinancialPrediction(
     } catch (_) {}
   }
 
-  // Realistic high-fidelity fallback matching the structures required on fallback
-  const isUSD = currency === 'USD';
-  const mult = isUSD ? 1 : 30; // Scale amounts for EGP vs USD
-
-  const startupCosts = [
-    { category: 'Software Design & MVP setup', amount: 500 * mult, description: 'UX prototype and landing page design' },
-    { category: 'Cloud Infrastructure Setup', amount: 150 * mult, description: 'Database setup and initial server hosting deployment' },
-    { category: 'Legal & Licenses', amount: 300 * mult, description: 'Company formation and corporate structure licensing registration' }
-  ];
-
-  const monthlyCosts = [
-    { category: 'Hosting & API Gateways', amount: 75 * mult, isVariable: false, description: 'Production database hosting resources' },
-    { category: 'Paid User Acquisition ads', amount: 150 * mult, isVariable: true, description: 'Social platform acquisition budgets' },
-    { category: 'Support & Escalation operations', amount: 100 * mult, isVariable: false, description: 'Customer dispute and transaction support managers' }
-  ];
-
-  // Generate 12-month projections
-  const revenueProjections = [];
-  let cumulative = 0;
-  const initialRevenue = 200 * mult;
-  for (let m = 1; m <= 12; m++) {
-    const revenue = Math.round(initialRevenue * Math.pow(1.18, m - 1));
-    cumulative += revenue;
-    revenueProjections.push({
-      month: m,
-      projected_revenue: revenue,
-      cumulative_revenue: cumulative
-    });
-  }
-
-  const financial = {
-    startupCosts,
-    monthlyCosts,
-    revenueProjections,
-    breakEvenMonth: 3,
-    assumptionsApplied: [
-      `DENOMINATED IN: ${currency}`,
-      '18% month-over-month growth from compound user acquisition channels',
-      'Operating costs estimated based on lean MVP setup'
-    ]
-  };
-
-  const pricing = {
-    recommendedStrategyType: 'Value-Based Freemium Subscription',
-    priceTiers: [
-      {
-        tierName: 'Free',
-        amount: 0,
-        billingCycle: 'one-time' as const,
-        targetSegment: 'Hobbyists & New Entrants',
-        features: ['Access to basic builder boards', 'Limit of 1 active layout', 'Community email support'],
-        justification: 'Lower barriers to entry in local markets'
-      },
-      {
-        tierName: 'Pro',
-        amount: 15 * mult,
-        billingCycle: 'monthly' as const,
-        targetSegment: 'Growing Freelancers & Startups',
-        features: ['Unlimited boards', 'Advanced analytics integration', 'Priority chat support', 'Zero take-rate commissions'],
-        justification: 'Highly affordable mid-tier option targeted at active developers and contractors'
-      }
-    ],
-    marketPositioningRationale: `Denominated in ${currency}. Value alignment targets affordability while maximizing conversions through local transaction channels.`
-  };
-
-  return { financial, pricing };
+  throw new Error('Financial prediction failed: AI provider did not return valid JSON.');
 }

@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { authMiddleware } from '../middleware';
+import { adminMiddleware, authMiddleware } from '../middleware';
 import { PaymentTransactionModel, UserSubscriptionModel } from '@creator/database';
 import { addCredits } from '../services/creditEngine';
 import crypto from 'crypto';
@@ -27,12 +27,8 @@ router.get('/packs', async (req: Request, res: Response): Promise<any> => {
 });
 
 // Admin Route to Seed Plans
-router.post('/seed', async (req: Request, res: Response): Promise<any> => {
+router.post('/seed', authMiddleware, adminMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
-    if (process.env.NODE_ENV === 'production' && !req.headers.authorization) {
-        return res.status(403).json({ error: 'Forbidden' });
-    }
-    
     const plans = [
         { name: 'Free', slug: 'free', monthlyPriceEGP: 0, monthlyCredits: 100, maxProjects: 1, features: ['Basic Features'] },
         { name: 'Starter', slug: 'starter', monthlyPriceEGP: 499, monthlyCredits: 1000, maxProjects: 3, features: ['Advanced Features'] },
@@ -66,7 +62,6 @@ const PAYMOB_API_KEY = process.env.PAYMOB_API_KEY || '';
 const PAYMOB_HMAC = process.env.PAYMOB_HMAC || '';
 const PAYMOB_INTEGRATION_ID = process.env.PAYMOB_INTEGRATION_ID || '';
 const PAYMOB_IFRAME_ID = process.env.PAYMOB_IFRAME_ID || '';
-const DEMO_MODE = process.env.DEMO_MODE === 'true';
 
 router.post('/paymob/create', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
@@ -90,11 +85,9 @@ router.post('/paymob/create', authMiddleware, async (req: Request, res: Response
     
     await tx.save();
 
-    if (DEMO_MODE || !PAYMOB_API_KEY) {
-      console.warn('Paymob is running in DEMO or missing API_KEY mode. Returning sandbox checkout URL.');
-      return res.status(200).json({ 
-        checkoutUrl: `/checkout/sandbox?intent=${paymentIntentId}&amount=${amountEGP}`,
-        paymentIntentId 
+    if (!PAYMOB_API_KEY || !PAYMOB_INTEGRATION_ID || !PAYMOB_IFRAME_ID) {
+      return res.status(503).json({
+        error: 'Paymob is not configured. Checkout is unavailable.'
       });
     }
 
@@ -165,6 +158,9 @@ router.post('/paymob/create', authMiddleware, async (req: Request, res: Response
 // Localhost testing redirect handler
 router.post('/paymob/verify-redirect', async (req: Request, res: Response): Promise<any> => {
   try {
+    if (process.env.NODE_ENV === 'production') {
+      return res.status(404).json({ error: 'Not found' });
+    }
     const { merchant_order_id, success } = req.body;
     
     if (!merchant_order_id) return res.status(400).json({ error: 'Missing merchant_order_id' });
@@ -249,7 +245,11 @@ router.post('/paymob/webhook', async (req: Request, res: Response): Promise<any>
     const { obj, hmac: queryHmac } = req.query as any;
     const hmacParam = queryHmac || req.body.hmac;
 
-    if (!DEMO_MODE && PAYMOB_HMAC && hmacParam) {
+    if (!req.body.obj || !req.body.obj.order) {
+        return res.status(400).json({ error: 'Invalid webhook payload' });
+    }
+
+    if (PAYMOB_HMAC) {
         // HMAC Verification
         const { amount_cents, created_at, currency, error_occured, has_parent_transaction, id, integration_id, is_3d_secure, is_auth, is_capture, is_refunded, is_standalone_payment, is_voided, order, owner, pending, source_data, success } = req.body.obj;
         
@@ -260,14 +260,14 @@ router.post('/paymob/webhook', async (req: Request, res: Response): Promise<any>
 
         const hashed = crypto.createHmac('sha512', PAYMOB_HMAC).update(lexoString).digest('hex');
         
-        if (hashed !== hmacParam) {
+        const expected = Buffer.from(hashed, 'hex');
+        const received = Buffer.from(String(hmacParam), 'hex');
+        if (expected.length !== received.length || !crypto.timingSafeEqual(expected, received)) {
             console.error('HMAC validation failed');
             return res.status(401).json({ error: 'Unauthorized payload' });
         }
-    }
-
-    if (!req.body.obj || !req.body.obj.order) {
-        return res.status(400).json({ error: 'Invalid webhook payload' });
+    } else if (process.env.NODE_ENV === 'production') {
+        return res.status(503).json({ error: 'Paymob HMAC is not configured' });
     }
 
     const paymentIntentId = req.body.obj.order.merchant_order_id;
@@ -283,18 +283,24 @@ router.post('/paymob/webhook', async (req: Request, res: Response): Promise<any>
     }
 
     if (success) {
-        tx.status = 'paid';
-        tx.transactionId = String(req.body.obj.id);
-        await tx.save();
+        const claimedTx = await PaymentTransactionModel.findOneAndUpdate(
+          { paymentIntentId, status: 'pending' },
+          { $set: { status: 'paid', transactionId: String(req.body.obj.id) } },
+          { new: true }
+        );
 
-        const { type, planId, packId } = tx.metadata;
+        if (!claimedTx) {
+          return res.status(200).json({ message: 'Already processed' });
+        }
+
+        const { type, planId, packId } = claimedTx.metadata;
 
         if (type === 'subscription' && planId) {
             const expiresAt = new Date();
             expiresAt.setMonth(expiresAt.getMonth() + 1);
 
             await UserSubscriptionModel.findOneAndUpdate(
-                { userId: tx.userId },
+                { userId: claimedTx.userId },
                 {
                     planId,
                     status: 'active',
@@ -308,20 +314,22 @@ router.post('/paymob/webhook', async (req: Request, res: Response): Promise<any>
             let plan;
             try { plan = await SubscriptionPlanModel.findOne({ slug: planId }); if (!plan) plan = await SubscriptionPlanModel.findById(planId); } catch(e) {}
             if (plan) {
-                await addCredits(tx.userId, plan.monthlyCredits, 'subscription', paymentIntentId);
+                await addCredits(claimedTx.userId, plan.monthlyCredits, 'subscription', paymentIntentId);
             }
         } else if (type === 'credit_pack' && packId) {
             let pack;
             try { pack = await CreditPackModel.findOne({ slug: packId }); if (!pack) pack = await CreditPackModel.findById(packId); } catch(e) {}
             if (pack) {
-                await addCredits(tx.userId, pack.credits, 'topup', paymentIntentId);
+                await addCredits(claimedTx.userId, pack.credits, 'topup', paymentIntentId);
             }
         }
 
         return res.status(200).json({ message: 'Payment processed successfully' });
     } else {
-        tx.status = 'failed';
-        await tx.save();
+        await PaymentTransactionModel.findOneAndUpdate(
+          { paymentIntentId, status: 'pending' },
+          { $set: { status: 'failed', transactionId: String(req.body.obj.id) } }
+        );
         return res.status(200).json({ message: 'Payment recorded as failed' });
     }
   } catch (err: any) {

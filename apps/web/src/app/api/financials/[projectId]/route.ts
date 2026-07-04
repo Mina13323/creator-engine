@@ -4,7 +4,10 @@ import mongoose from 'mongoose';
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ projectId: string }> }) {
   try {
-    await connectDB(process.env.MONGODB_URI || '');
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'DATABASE_URL is required' }, { status: 503 });
+    }
+    await connectDB(process.env.DATABASE_URL);
     const { projectId } = await params;
 
     if (!projectId || !mongoose.Types.ObjectId.isValid(projectId)) {

@@ -13,7 +13,10 @@ const PredictPayloadSchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
-    await connectDB(process.env.MONGODB_URI || '');
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'DATABASE_URL is required' }, { status: 503 });
+    }
+    await connectDB(process.env.DATABASE_URL);
     const rawBody = await req.json();
     const parsedBody = PredictPayloadSchema.safeParse(rawBody);
 

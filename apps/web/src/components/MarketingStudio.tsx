@@ -149,7 +149,7 @@ export default function MarketingStudio() {
     return () => clearTimeout(timer);
   }, [prompt, params, productImage, avatarImage, additionalImages, history]);
 
-  // Handle fake stage progression while generating
+  // Advance the visible generation stage while the backend job is running.
   useEffect(() => {
     let stageTimer: any;
     if (isGenerating && genStage < 5) {

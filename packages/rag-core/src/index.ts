@@ -8,7 +8,7 @@ export interface KnowledgeDocument {
 }
 
 // =========================================================================
-// KNOWLEDGE BASE — Removed fake data per request
+// KNOWLEDGE BASE — no seeded production data
 // =========================================================================
 
 /**
@@ -30,7 +30,7 @@ export async function embedText(text: string): Promise<number[]> {
       },
       body: JSON.stringify({
         input: text,
-        model: 'nomic-ai/nomic-embed-text-v1.5'
+        model: 'accounts/fireworks/models/qwen3-embedding-8b'
       })
     });
     
@@ -89,7 +89,8 @@ export async function queryRAG(query: string, limit: number = 3): Promise<Knowle
       }
     }
   } catch (err) {
-    console.warn('MongoDB Vector Search failed or not configured.', err);
+    console.error('MongoDB Vector Search failed or is not configured.', err);
+    throw err;
   }
 
   return [];
