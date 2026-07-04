@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, ShieldAlert, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Folder, ShieldAlert, CreditCard, Settings, Home, LogOut } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 import { Button } from '@/components/ui/button';
 
@@ -11,8 +11,11 @@ export function AdminSidebar() {
   const navItems = [
     { name: 'Overview', href: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Users', href: '/admin/users', icon: Users },
+    { name: 'Projects', href: '/admin/projects', icon: Folder },
     { name: 'Moderation', href: '/admin/moderation', icon: ShieldAlert },
+    { name: 'Plans', href: '/admin/plans', icon: CreditCard },
     { name: 'Settings', href: '/admin/settings', icon: Settings },
+    { name: 'Return to App', href: '/', icon: Home },
   ];
 
   return (

@@ -109,9 +109,11 @@ export default function MarketingDashboard() {
           {/* Left Column - Core Strategy */}
           <div className="xl:col-span-1 space-y-8">
             <Card className="p-6 border-slate-200 shadow-sm rounded-3xl bg-white hover:shadow-md transition-all">
-              <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-                <Target className="w-5 h-5 text-indigo-500" /> Core Strategy
-              </h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                  <Target className="w-5 h-5 text-indigo-500" /> Core Strategy
+                </h3>
+              </div>
               <p className="text-sm text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl">
                 {marketingCampaign.marketingPlan}
               </p>
@@ -263,12 +265,14 @@ export default function MarketingDashboard() {
                       {selectedItem.type === 'campaign' ? selectedItem.data.name : selectedItem.data.headline}
                     </h2>
                   </div>
-                  <button 
-                    onClick={() => setSelectedItem(null)}
-                    className="p-2 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-500 transition-colors"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => setSelectedItem(null)}
+                      className="p-2 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-500 transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar-thin">

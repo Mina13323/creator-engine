@@ -1,4 +1,4 @@
-import { CreditWalletModel, CreditTransactionModel, SubscriptionPlanModel, UserSubscriptionModel } from '@creator/database';
+import { CreditWalletModel, CreditTransactionModel, SubscriptionPlanModel, UserSubscriptionModel, UserModel } from '@creator/database';
 
 // PHASE 2 — Credit Cost Matrix
 export const CREDIT_COSTS = {
@@ -19,6 +19,15 @@ import mongoose from 'mongoose';
 export async function getUserCredits(userId: string) {
   if (process.env.DEMO_MODE === 'true') {
     return { availableCredits: 999999, totalUsedCredits: 0, totalPurchasedCredits: 999999 };
+  }
+
+  try {
+    const user = await UserModel.findOne({ id: userId });
+    if (user && user.role === 'admin') {
+      return { availableCredits: 999999, totalUsedCredits: 0, totalPurchasedCredits: 999999 };
+    }
+  } catch (err) {
+    console.error('Error checking user role in getUserCredits:', err);
   }
   
   let wallet = await CreditWalletModel.findOne({ userId });
@@ -63,6 +72,15 @@ export async function addCredits(userId: string, amount: number, type: 'subscrip
 export async function deductCredits(userId: string, amount: number, feature: string) {
   if (process.env.DEMO_MODE === 'true') return true;
 
+  try {
+    const user = await UserModel.findOne({ id: userId });
+    if (user && user.role === 'admin') {
+      return true;
+    }
+  } catch (err) {
+    console.error('Error checking user role in deductCredits:', err);
+  }
+
   const wallet = await CreditWalletModel.findOne({ userId });
   if (!wallet || wallet.availableCredits < amount) {
     throw new Error('INSUFFICIENT_CREDITS');
@@ -86,6 +104,15 @@ export async function deductCredits(userId: string, amount: number, feature: str
 
 export async function hasEnoughCredits(userId: string, amount: number) {
   if (process.env.DEMO_MODE === 'true') return true;
+
+  try {
+    const user = await UserModel.findOne({ id: userId });
+    if (user && user.role === 'admin') {
+      return true;
+    }
+  } catch (err) {
+    console.error('Error checking user role in hasEnoughCredits:', err);
+  }
 
   const wallet = await getUserCredits(userId);
   return wallet && wallet.availableCredits >= amount;

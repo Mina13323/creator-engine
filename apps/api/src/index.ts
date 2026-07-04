@@ -21,7 +21,7 @@ import {
   AgentRunModel, 
   UploadedDocumentModel 
 } from '@creator/database';
-import adminRouter, { registerLockdownHandlers } from './routes/admin';
+import adminRouter, { registerLockdownHandlers, registerMaintenanceHandlers } from './routes/admin';
 import paymentsRouter from './routes/payments';
 import marketingStudioRouter from './routes/marketingStudio';
 import uploadRouter from './routes/upload';
@@ -53,6 +53,12 @@ let lockdownActive = false;
 registerLockdownHandlers(
   () => lockdownActive,
   (v) => { lockdownActive = v; }
+);
+
+let maintenanceActive = false;
+registerMaintenanceHandlers(
+  () => maintenanceActive,
+  (v) => { maintenanceActive = v; }
 );
 
 if (MONGO_URL) {
@@ -109,6 +115,14 @@ function toAuthUser(user: any): AuthUser {
 // Base health check
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', database: dbConnected ? 'connected' : 'offline' });
+});
+
+// Public System Status endpoint (accessible to guest users)
+app.get('/api/system/status', (req: Request, res: Response) => {
+  res.json({
+    lockdown: lockdownActive,
+    maintenance: maintenanceActive
+  });
 });
 
 
@@ -367,6 +381,9 @@ async function trackAgentRun(
   action: () => Promise<any>,
   aiModel?: string
 ) {
+  if (maintenanceActive) {
+    throw new Error('System is under scheduled maintenance. AI workflows are temporarily suspended.');
+  }
   if (!dbConnected) return await action();
   
   const run = new AgentRunModel({
@@ -382,12 +399,22 @@ async function trackAgentRun(
   });
   await run.save();
 
+  const inputStr = typeof input === 'string' ? input : JSON.stringify(input || '');
+  const promptTokens = Math.max(50, Math.ceil(inputStr.length / 4.1)); // Standard character to token ratio
+
   try {
     const result = await action();
     run.status = 'success';
     run.completedAt = new Date();
     run.durationMs = run.completedAt.getTime() - run.startedAt.getTime();
     run.output = result;
+    
+    const outputStr = typeof result === 'string' ? result : JSON.stringify(result || '');
+    const completionTokens = Math.max(50, Math.ceil(outputStr.length / 4.1));
+    run.promptTokens = promptTokens;
+    run.completionTokens = completionTokens;
+    run.totalTokens = promptTokens + completionTokens;
+    
     await run.save();
     return result;
   } catch (error: any) {
@@ -395,6 +422,11 @@ async function trackAgentRun(
     run.completedAt = new Date();
     run.durationMs = run.completedAt.getTime() - run.startedAt.getTime();
     run.error = error.message;
+    
+    run.promptTokens = promptTokens;
+    run.completionTokens = 0;
+    run.totalTokens = promptTokens;
+    
     await run.save();
     throw error;
   }
@@ -403,6 +435,9 @@ async function trackAgentRun(
 // 0. Create Project (Decoupled)
 app.post('/api/projects', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
+    if (maintenanceActive) {
+      return res.status(503).json({ error: 'System is currently under maintenance. New project creations are temporarily suspended.' });
+    }
     const userId = (req as any).user.id;
     const { name } = req.body;
     
@@ -596,11 +631,10 @@ app.post('/api/opportunities/select', authMiddleware, async (req: Request, res: 
   }
 });
 
-// 4. Generate Business Plan
 app.post('/api/business-plan/generate', authMiddleware, requireCredits(CREDIT_COSTS.BUSINESS_PLAN), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
-    const { projectId } = req.body;
+    const { projectId, locale } = req.body;
     
     const selected = await SelectedOpportunityModel.findOne({ projectId, userId });
     if (!selected) return res.status(400).json({ error: 'No opportunity selected for this project' });
@@ -614,7 +648,7 @@ app.post('/api/business-plan/generate', authMiddleware, requireCredits(CREDIT_CO
       projectId,
       'business-plan',
       selected.toObject(),
-      () => runBusinessPlanAgent(projectId, selected.toObject(), founderProfile.toObject()),
+      () => runBusinessPlanAgent(projectId, selected.toObject(), founderProfile.toObject(), '', locale || 'en'),
       'deepseek-v4-flash'
     );
 
@@ -871,6 +905,107 @@ app.post('/api/branding/generate', authMiddleware, requireCredits(CREDIT_COSTS.B
 });
 
 
+
+// Cache the ElevenLabs voice ID to avoid fetching it on every request
+let cachedElevenLabsVoiceId: string | null = null;
+
+async function getElevenLabsVoiceId(apiKey: string): Promise<string | null> {
+  if (cachedElevenLabsVoiceId) return cachedElevenLabsVoiceId;
+  try {
+    const res = await fetch('https://api.elevenlabs.io/v1/voices', {
+      headers: { 'xi-api-key': apiKey }
+    });
+    if (!res.ok) return null;
+    const data: any = await res.json();
+    // Use first voice in the account (these are always accessible on free plans)
+    const voice = data?.voices?.[0];
+    if (voice?.voice_id) {
+      cachedElevenLabsVoiceId = voice.voice_id;
+      console.log(`Using ElevenLabs voice: ${voice.name} (${voice.voice_id})`);
+      return voice.voice_id;
+    }
+  } catch (e) {
+    console.error('Failed to fetch ElevenLabs voices:', e);
+  }
+  return null;
+}
+
+// TTS Proxy endpoint with ElevenLabs API & Google Translate auto-fallback
+app.get('/api/tts/proxy', async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { text, lang } = req.query;
+    if (!text) {
+      return res.status(400).json({ error: 'Missing text parameter' });
+    }
+    const targetLang = (lang as string) || 'ar';
+    const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY;
+
+    if (elevenLabsApiKey) {
+      try {
+        const voiceId = await getElevenLabsVoiceId(elevenLabsApiKey);
+        if (voiceId) {
+          const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'xi-api-key': elevenLabsApiKey
+            },
+            body: JSON.stringify({
+              text: text as string,
+              model_id: 'eleven_multilingual_v2',
+              voice_settings: {
+                stability: 0.5,
+                similarity_boost: 0.75
+              }
+            })
+          });
+
+          if (response.ok) {
+            const buffer = await response.arrayBuffer();
+            res.set({
+              'Content-Type': 'audio/mpeg',
+              'Content-Length': String(buffer.byteLength),
+              'Cache-Control': 'public, max-age=86400'
+            });
+            return res.send(Buffer.from(buffer));
+          } else {
+            const errBody = await response.text();
+            console.warn('ElevenLabs TTS failed, falling back to Google TTS:', errBody);
+            // Reset cached voice if it failed so we retry next time
+            cachedElevenLabsVoiceId = null;
+          }
+        }
+      } catch (elevenErr) {
+        console.error('ElevenLabs TTS error, falling back to Google TTS:', elevenErr);
+        cachedElevenLabsVoiceId = null;
+      }
+    }
+
+    // Google Translate TTS Fallback
+    const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${targetLang}&client=tw-ob&q=${encodeURIComponent(text as string)}`;
+    const response = await fetch(ttsUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    });
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: 'Google TTS request failed' });
+    }
+
+    const buffer = await response.arrayBuffer();
+    res.set({
+      'Content-Type': 'audio/mpeg',
+      'Content-Length': String(buffer.byteLength),
+      'Cache-Control': 'public, max-age=86400'
+    });
+
+    return res.send(Buffer.from(buffer));
+  } catch (err: any) {
+    console.error('TTS proxy error:', err);
+    return res.status(500).json({ error: err.message });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Creator Engine backend running on http://localhost:${PORT}`);

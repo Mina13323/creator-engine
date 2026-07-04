@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
+import { useI18n } from '../lib/i18n/I18nContext';
+import toast from 'react-hot-toast';
 import { AILoadingOverlay } from './ui/AILoadingOverlay';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -24,10 +26,87 @@ const COLORS = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#ec4899'
 
 export default function BusinessPlanDashboard() {
   const { currentProject, ventureState, generateBusinessPlan, loading, loadingMessage } = useStore();
+  const { locale } = useI18n();
   const [selectedSection, setSelectedSection] = useState<{title: string, content: React.ReactNode} | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [genLanguage, setGenLanguage] = useState(locale || 'en');
+  const [genModel, setGenModel] = useState('deepseek-v4-flash');
 
   const businessPlan = ventureState?.businessPlan as any;
   const selectedOpportunity = ventureState?.selectedOpportunity;
+
+  const handleShare = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(window.location.href);
+      toast.success(locale === 'ar' ? 'تم نسخ رابط المشاركة إلى الحافظة!' : 'Share link copied to clipboard!');
+    }
+  };
+
+  const handleExport = () => {
+    if (!businessPlan) return;
+    const bp = businessPlan;
+    const startupName = bp.executiveSummary?.startupName || 'Startup';
+    let md = `# Business Plan: ${startupName}\n\n`;
+    
+    if (bp.executiveSummary) {
+      md += `## 1. Executive Summary\n`;
+      md += `**Mission**: ${bp.executiveSummary.mission || ''}\n\n`;
+      md += `**Vision**: ${bp.executiveSummary.vision || ''}\n\n`;
+      md += `**Value Proposition**: ${bp.executiveSummary.valueProposition || ''}\n\n`;
+      md += `**Strategic Positioning**: ${bp.executiveSummary.strategicPositioning || ''}\n\n`;
+      md += `${bp.executiveSummary.executiveSummary || ''}\n\n`;
+    }
+    
+    if (bp.problemAndSolution) {
+      md += `## 2. Problem & Solution\n`;
+      md += `### The Problem\n${bp.problemAndSolution.problem || ''}\n\n`;
+      md += `### The Solution\n${bp.problemAndSolution.solution || ''}\n\n`;
+      md += `**Unfair Advantage**: ${bp.problemAndSolution.unfairAdvantage || ''}\n\n`;
+      if (bp.problemAndSolution.targetPainPoints?.length) {
+        md += `**Target Pain Points**:\n`;
+        bp.problemAndSolution.targetPainPoints.forEach((p: string) => { md += `- ${p}\n`; });
+        md += `\n`;
+      }
+      if (bp.problemAndSolution.uniqueAdvantages?.length) {
+        md += `**Unique Advantages**:\n`;
+        bp.problemAndSolution.uniqueAdvantages.forEach((a: string) => { md += `- ${a}\n`; });
+        md += `\n`;
+      }
+    }
+    
+    if (bp.businessModel) {
+      md += `## 3. Business Model\n`;
+      md += `**Pricing Strategy**: ${bp.businessModel.pricingStrategy || ''}\n\n`;
+      md += `**Acquisition Model**: ${bp.businessModel.acquisitionModel || ''}\n\n`;
+      md += `**Sales Model**: ${bp.businessModel.salesModel || ''}\n\n`;
+      if (bp.businessModel.revenueStreams?.length) {
+        md += `**Revenue Streams**:\n`;
+        bp.businessModel.revenueStreams.forEach((r: string) => { md += `- ${r}\n`; });
+        md += `\n`;
+      }
+    }
+
+    if (bp.viabilityAnalysis) {
+      md += `## 4. Viability Analysis\n`;
+      md += `**Overall Score**: ${bp.viabilityAnalysis.overallScore || 0}/100\n\n`;
+      md += `**Reasoning**: ${bp.viabilityAnalysis.reasoning || ''}\n\n`;
+    }
+    
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${startupName.replace(/\s+/g, '_')}_Business_Plan.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success(locale === 'ar' ? 'تم تصدير خطة العمل بنجاح!' : 'Business plan exported successfully!');
+  };
+
+  const handleRegenerate = async () => {
+    if (!currentProject) return;
+    setSettingsOpen(false);
+    await generateBusinessPlan(currentProject.id, genLanguage);
+  };
 
   if (!currentProject || !selectedOpportunity) {
     return <AILoadingOverlay message={loadingMessage || "Generating Business Plan..."} />;
@@ -46,7 +125,7 @@ export default function BusinessPlanDashboard() {
         </p>
         <div className="pt-8">
           <Button 
-            onClick={() => generateBusinessPlan(currentProject.id)}
+            onClick={() => generateBusinessPlan(currentProject.id, locale)}
             className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-xl shadow-slate-900/20 transition-all hover:scale-105"
           >
             <Wand2 className="w-5 h-5 mr-3" />
@@ -91,15 +170,15 @@ export default function BusinessPlanDashboard() {
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="rounded-full w-10 h-10 p-0 border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow">
+            <Button onClick={handleShare} variant="outline" className="rounded-full w-10 h-10 p-0 border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow" title="Share">
               <Share className="w-4 h-4 text-slate-600" />
             </Button>
-            <Button variant="outline" className="rounded-full w-10 h-10 p-0 border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow">
+            <Button onClick={() => setSettingsOpen(true)} variant="outline" className="rounded-full w-10 h-10 p-0 border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow" title="Settings">
               <Settings className="w-4 h-4 text-slate-600" />
             </Button>
-            <Button className="rounded-full bg-slate-900 text-white font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
+            <Button onClick={handleExport} className="rounded-full bg-slate-900 text-white font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
               <Download className="w-4 h-4 mr-2" />
-              Export Deck
+              Export Plan
             </Button>
           </div>
         </div>
@@ -114,18 +193,20 @@ export default function BusinessPlanDashboard() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="col-span-1 md:col-span-2 p-8 border-0 shadow-xl shadow-slate-200/40 rounded-3xl bg-white/80 backdrop-blur-xl bg-gradient-to-br from-white to-purple-50/30">
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">{bp.executiveSummary?.startupName || 'Startup'}</h3>
-                <p className="text-lg text-purple-600 font-medium mb-6">{bp.executiveSummary?.valueProposition}</p>
-                <p className="text-slate-600 leading-relaxed mb-8">{bp.executiveSummary?.executiveSummary}</p>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-2xl font-bold text-slate-900" dir="auto">{bp.executiveSummary?.startupName || 'Startup'}</h3>
+                </div>
+                <p className="text-lg text-purple-600 font-medium mb-6" dir="auto">{bp.executiveSummary?.valueProposition}</p>
+                <p className="text-slate-600 leading-relaxed mb-8" dir="auto">{bp.executiveSummary?.executiveSummary}</p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Mission</h4>
-                    <p className="text-slate-800 font-medium text-sm">{bp.executiveSummary?.mission}</p>
+                    <p className="text-slate-800 font-medium text-sm" dir="auto">{bp.executiveSummary?.mission}</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Vision</h4>
-                    <p className="text-slate-800 font-medium text-sm">{bp.executiveSummary?.vision}</p>
+                    <p className="text-slate-800 font-medium text-sm" dir="auto">{bp.executiveSummary?.vision}</p>
                   </div>
                 </div>
               </Card>
@@ -166,7 +247,7 @@ export default function BusinessPlanDashboard() {
                     </div>
                   </div>
 
-                  <p className="text-sm text-slate-300 leading-relaxed text-center italic border-t border-slate-700 pt-4 w-full">
+                  <p className="text-sm text-slate-300 leading-relaxed text-center italic border-t border-slate-700 pt-4 w-full" dir="auto">
                     {bp.viabilityAnalysis?.reasoning ? `&quot;${bp.viabilityAnalysis.reasoning}&quot;` : 'Analyzing...'}
                   </p>
                 </div>
@@ -185,20 +266,20 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-6 flex-1">
                   <div className="bg-blue-50/50 p-5 rounded-2xl border border-blue-100/50">
                     <h4 className="text-sm font-bold text-blue-900 mb-3 flex items-center gap-2"><AlertTriangle className="w-4 h-4"/> The Problem</h4>
-                    <p className="text-slate-700 text-sm leading-relaxed mb-4">{bp.problemAndSolution?.problem}</p>
+                    <p className="text-slate-700 text-sm leading-relaxed mb-4" dir="auto">{bp.problemAndSolution?.problem}</p>
                     <div className="flex flex-wrap gap-2">
                       {bp.problemAndSolution?.targetPainPoints?.map((p: string, i: number) => (
-                        <span key={i} className="bg-white text-blue-700 text-xs px-3 py-1 rounded-full border border-blue-200 shadow-sm">{p}</span>
+                        <span key={i} className="bg-white text-blue-700 text-xs px-3 py-1 rounded-full border border-blue-200 shadow-sm" dir="auto">{p}</span>
                       ))}
                     </div>
                   </div>
                   
                   <div className="bg-emerald-50/50 p-5 rounded-2xl border border-emerald-100/50 mt-4">
                     <h4 className="text-sm font-bold text-emerald-900 mb-3 flex items-center gap-2"><Zap className="w-4 h-4"/> The Solution</h4>
-                    <p className="text-slate-700 text-sm leading-relaxed mb-4">{bp.problemAndSolution?.solution}</p>
+                    <p className="text-slate-700 text-sm leading-relaxed mb-4" dir="auto">{bp.problemAndSolution?.solution}</p>
                     <div className="flex flex-wrap gap-2">
                       {bp.problemAndSolution?.uniqueAdvantages?.map((a: string, i: number) => (
-                        <span key={i} className="bg-white text-emerald-700 text-xs px-3 py-1 rounded-full border border-emerald-200 shadow-sm">{a}</span>
+                        <span key={i} className="bg-white text-emerald-700 text-xs px-3 py-1 rounded-full border border-emerald-200 shadow-sm" dir="auto">{a}</span>
                       ))}
                     </div>
                   </div>
@@ -215,15 +296,15 @@ export default function BusinessPlanDashboard() {
                 <div className="grid grid-cols-2 gap-4 flex-1">
                   <div className="col-span-2 bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Pricing Strategy</h4>
-                    <p className="text-slate-800 font-medium">{bp.businessModel?.pricingStrategy}</p>
+                    <p className="text-slate-800 font-medium" dir="auto">{bp.businessModel?.pricingStrategy}</p>
                   </div>
                   
                   <div className="col-span-1 bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Revenue Streams</h4>
                     <ul className="space-y-2">
                       {bp.businessModel?.revenueStreams?.map((r: string, i: number) => (
-                        <li key={i} className="text-sm text-slate-700 flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5"></div>
+                        <li key={i} className="text-sm text-slate-700 flex items-start gap-2" dir="auto">
+                          <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
                           {r}
                         </li>
                       ))}
@@ -234,8 +315,8 @@ export default function BusinessPlanDashboard() {
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Distribution</h4>
                     <ul className="space-y-2">
                       {bp.businessModel?.distributionChannels?.map((d: string, i: number) => (
-                        <li key={i} className="text-sm text-slate-700 flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-1.5"></div>
+                        <li key={i} className="text-sm text-slate-700 flex items-start gap-2" dir="auto">
+                          <div className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-1.5 shrink-0"></div>
                           {d}
                         </li>
                       ))}
@@ -257,17 +338,17 @@ export default function BusinessPlanDashboard() {
                 <div className="w-full space-y-6">
                   <div>
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Market Size</h4>
-                    <div className="text-3xl font-black text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-emerald-500">{bp.marketResearch?.marketSize || 'TBD'}</div>
+                    <div className="text-3xl font-black text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-emerald-500" dir="auto">{bp.marketResearch?.marketSize || 'TBD'}</div>
                   </div>
                   <div className="h-px w-full bg-slate-100"></div>
                   <div>
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Growth Rate</h4>
-                    <div className="text-3xl font-black text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-500">{bp.marketResearch?.industryGrowthRate || 'TBD'}</div>
+                    <div className="text-3xl font-black text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-500" dir="auto">{bp.marketResearch?.industryGrowthRate || 'TBD'}</div>
                   </div>
                   <div className="h-px w-full bg-slate-100"></div>
                   <div>
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Customer Behavior</h4>
-                    <p className="text-sm font-medium text-slate-700 line-clamp-3">{bp.marketResearch?.customerBehavior}</p>
+                    <p className="text-sm font-medium text-slate-700 line-clamp-3" dir="auto">{bp.marketResearch?.customerBehavior}</p>
                   </div>
                 </div>
               </Card>
@@ -277,15 +358,15 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-4">
                   {bp.marketResearch?.competitors?.map((comp: any, i: number) => (
                     <div key={i} className="flex flex-col md:flex-row gap-4 p-4 rounded-xl border border-slate-100 hover:border-slate-200 transition-colors bg-slate-50/50">
-                      <div className="w-full md:w-1/3 font-bold text-slate-800">{comp.name}</div>
+                      <div className="w-full md:w-1/3 font-bold text-slate-800" dir="auto">{comp.name}</div>
                       <div className="w-full md:w-2/3 grid grid-cols-2 gap-4">
                         <div>
                           <div className="text-[10px] uppercase font-bold text-emerald-600 mb-1">Strength</div>
-                          <div className="text-xs text-slate-600">{comp.strengths}</div>
+                          <div className="text-xs text-slate-600" dir="auto">{comp.strengths}</div>
                         </div>
                         <div>
                           <div className="text-[10px] uppercase font-bold text-rose-600 mb-1">Weakness</div>
-                          <div className="text-xs text-slate-600">{comp.weaknesses}</div>
+                          <div className="text-xs text-slate-600" dir="auto">{comp.weaknesses}</div>
                         </div>
                       </div>
                     </div>
@@ -307,7 +388,7 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-3">
                   {bp.productsAndServices?.coreOfferings?.map((item: string, i: number) => (
                     <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                      <h4 className="text-sm font-medium text-slate-900">{item}</h4>
+                      <h4 className="text-sm font-medium text-slate-900" dir="auto">{item}</h4>
                     </div>
                   ))}
                 </div>
@@ -317,7 +398,7 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-3">
                   {bp.productsAndServices?.premiumOfferings?.map((item: string, i: number) => (
                     <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                      <h4 className="text-sm font-medium text-slate-900">{item}</h4>
+                      <h4 className="text-sm font-medium text-slate-900" dir="auto">{item}</h4>
                     </div>
                   ))}
                 </div>
@@ -327,7 +408,7 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-3">
                   {bp.productsAndServices?.supportServices?.map((item: string, i: number) => (
                     <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                      <h4 className="text-sm font-medium text-slate-900">{item}</h4>
+                      <h4 className="text-sm font-medium text-slate-900" dir="auto">{item}</h4>
                     </div>
                   ))}
                 </div>
@@ -375,15 +456,15 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-6">
                   <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100/50">
                     <h4 className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-1">Break-Even Point</h4>
-                    <p className="text-lg font-bold text-slate-900">{bp.financialInsights?.breakEvenPoint}</p>
+                    <p className="text-lg font-bold text-slate-900" dir="auto">{bp.financialInsights?.breakEvenPoint}</p>
                   </div>
                   <div className="bg-blue-50/50 p-4 rounded-2xl border border-blue-100/50">
                     <h4 className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1">Monthly Growth</h4>
-                    <p className="text-lg font-bold text-slate-900">{bp.financialInsights?.monthlyGrowth}</p>
+                    <p className="text-lg font-bold text-slate-900" dir="auto">{bp.financialInsights?.monthlyGrowth}</p>
                   </div>
                   <div className="bg-purple-50/50 p-4 rounded-2xl border border-purple-100/50">
                     <h4 className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-1">Unit Economics</h4>
-                    <p className="text-sm font-medium text-slate-800">{bp.financialInsights?.unitEconomics}</p>
+                    <p className="text-sm font-medium text-slate-800" dir="auto">{bp.financialInsights?.unitEconomics}</p>
                   </div>
                 </div>
               </Card>
@@ -404,7 +485,7 @@ export default function BusinessPlanDashboard() {
                     <div key={key} className="relative group">
                       <div className={`p-3 rounded-xl border border-slate-100 bg-slate-50 transition-colors hover:border-pink-200 hover:bg-pink-50 relative z-10 mx-auto`} style={{ width: `${100 - (i*10)}%` }}>
                         <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">{key}</div>
-                        <div className="text-xs text-slate-700 font-medium truncate" title={value as string}>{value as string}</div>
+                        <div className="text-xs text-slate-700 font-medium truncate" title={value as string} dir="auto">{value as string}</div>
                       </div>
                     </div>
                   ))}
@@ -417,23 +498,23 @@ export default function BusinessPlanDashboard() {
                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Acquisition Channels</h4>
                     <div className="flex flex-wrap gap-2 mb-6">
                       {bp.salesAndMarketing?.acquisitionChannels?.map((ch: string, i: number) => (
-                        <span key={i} className="px-3 py-1.5 bg-pink-50 text-pink-700 text-xs font-semibold rounded-lg">{ch}</span>
+                        <span key={i} className="px-3 py-1.5 bg-pink-50 text-pink-700 text-xs font-semibold rounded-lg" dir="auto">{ch}</span>
                       ))}
                     </div>
                     
                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Retention Strategy</h4>
-                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100" dir="auto">
                       {bp.salesAndMarketing?.customerRetention}
                     </p>
                   </div>
                   <div className="flex flex-col justify-center">
                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Content Strategy</h4>
-                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6">
+                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6" dir="auto">
                       {bp.salesAndMarketing?.contentStrategy}
                     </p>
                     
                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Online Presence</h4>
-                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100" dir="auto">
                       {bp.salesAndMarketing?.onlinePresence}
                     </p>
                   </div>
@@ -453,8 +534,8 @@ export default function BusinessPlanDashboard() {
                 <h4 className="text-lg font-bold text-emerald-900 mb-4 flex items-center gap-2">Strengths</h4>
                 <ul className="space-y-3">
                   {bp.swotAnalysis?.strengths?.map((s: string, i: number) => (
-                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-emerald-50/30 p-3 rounded-xl border border-emerald-50">
-                      <div className="mt-0.5 text-emerald-500"><Award className="w-4 h-4" /></div>
+                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-emerald-50/30 p-3 rounded-xl border border-emerald-50" dir="auto">
+                      <div className="mt-0.5 text-emerald-500 shrink-0"><Award className="w-4 h-4" /></div>
                       {s}
                     </li>
                   ))}
@@ -465,8 +546,8 @@ export default function BusinessPlanDashboard() {
                 <h4 className="text-lg font-bold text-rose-900 mb-4 flex items-center gap-2">Weaknesses</h4>
                 <ul className="space-y-3">
                   {bp.swotAnalysis?.weaknesses?.map((w: string, i: number) => (
-                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-rose-50/30 p-3 rounded-xl border border-rose-50">
-                      <div className="mt-0.5 text-rose-500"><AlertTriangle className="w-4 h-4" /></div>
+                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-rose-50/30 p-3 rounded-xl border border-rose-50" dir="auto">
+                      <div className="mt-0.5 text-rose-500 shrink-0"><AlertTriangle className="w-4 h-4" /></div>
                       {w}
                     </li>
                   ))}
@@ -477,8 +558,8 @@ export default function BusinessPlanDashboard() {
                 <h4 className="text-lg font-bold text-blue-900 mb-4 flex items-center gap-2">Opportunities</h4>
                 <ul className="space-y-3">
                   {bp.swotAnalysis?.opportunities?.map((o: string, i: number) => (
-                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-blue-50/30 p-3 rounded-xl border border-blue-50">
-                      <div className="mt-0.5 text-blue-500"><TrendingUp className="w-4 h-4" /></div>
+                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-blue-50/30 p-3 rounded-xl border border-blue-50" dir="auto">
+                      <div className="mt-0.5 text-blue-500 shrink-0"><TrendingUp className="w-4 h-4" /></div>
                       {o}
                     </li>
                   ))}
@@ -489,8 +570,8 @@ export default function BusinessPlanDashboard() {
                 <h4 className="text-lg font-bold text-amber-900 mb-4 flex items-center gap-2">Threats</h4>
                 <ul className="space-y-3">
                   {bp.swotAnalysis?.threats?.map((t: string, i: number) => (
-                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-amber-50/30 p-3 rounded-xl border border-amber-50">
-                      <div className="mt-0.5 text-amber-500"><ShieldAlert className="w-4 h-4" /></div>
+                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-amber-50/30 p-3 rounded-xl border border-amber-50" dir="auto">
+                      <div className="mt-0.5 text-amber-500 shrink-0"><ShieldAlert className="w-4 h-4" /></div>
                       {t}
                     </li>
                   ))}
@@ -513,15 +594,15 @@ export default function BusinessPlanDashboard() {
                     <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
                       <h5 className="text-sm font-bold text-slate-800 mb-2">Market & Operational</h5>
                       <ul className="list-disc pl-5 text-sm text-slate-600 space-y-1">
-                        {bp.riskAssessment?.marketRisks?.map((r: string, i: number) => <li key={i}>{r}</li>)}
-                        {bp.riskAssessment?.operationalRisks?.map((r: string, i: number) => <li key={i}>{r}</li>)}
+                        {bp.riskAssessment?.marketRisks?.map((r: string, i: number) => <li key={i} dir="auto">{r}</li>)}
+                        {bp.riskAssessment?.operationalRisks?.map((r: string, i: number) => <li key={i} dir="auto">{r}</li>)}
                       </ul>
                     </div>
                     <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
                       <h5 className="text-sm font-bold text-slate-800 mb-2">Technical & Financial</h5>
                       <ul className="list-disc pl-5 text-sm text-slate-600 space-y-1">
-                        {bp.riskAssessment?.technicalRisks?.map((r: string, i: number) => <li key={i}>{r}</li>)}
-                        {bp.riskAssessment?.financialRisks?.map((r: string, i: number) => <li key={i}>{r}</li>)}
+                        {bp.riskAssessment?.technicalRisks?.map((r: string, i: number) => <li key={i} dir="auto">{r}</li>)}
+                        {bp.riskAssessment?.financialRisks?.map((r: string, i: number) => <li key={i} dir="auto">{r}</li>)}
                       </ul>
                     </div>
                   </div>
@@ -530,7 +611,7 @@ export default function BusinessPlanDashboard() {
                   <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Mitigation Strategies</h4>
                   <div className="space-y-3">
                     {bp.riskAssessment?.mitigationStrategies?.map((strat: string, i: number) => (
-                      <div key={i} className="flex gap-4 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100/50">
+                      <div key={i} className="flex gap-4 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100/50" dir="auto">
                         <div className="shrink-0 mt-0.5"><div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-bold">{i+1}</div></div>
                         <p className="text-sm text-emerald-900 font-medium">{strat}</p>
                       </div>
@@ -543,6 +624,128 @@ export default function BusinessPlanDashboard() {
 
         </motion.div>
       </motion.div>
+
+      {/* Settings Modal */}
+      <AnimatePresence>
+        {settingsOpen && (
+          <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSettingsOpen(false)}
+              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            />
+            {/* Modal Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-[480px] bg-white border border-slate-200 shadow-2xl rounded-3xl p-6 z-10 max-h-[90vh] overflow-y-auto"
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                  <Settings className="w-5 h-5 text-purple-600 animate-spin-slow" />
+                  {locale === 'ar' ? 'إعدادات خطة العمل' : 'Business Plan Settings'}
+                </h3>
+                <button
+                  onClick={() => setSettingsOpen(false)}
+                  className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                {/* Language selection */}
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">
+                    {locale === 'ar' ? 'لغة التوليد' : 'Generation Language'}
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setGenLanguage('en')}
+                      className={`py-3 px-4 rounded-xl border text-sm font-semibold transition-all ${
+                        genLanguage === 'en'
+                          ? 'border-purple-600 bg-purple-50 text-purple-700 shadow-sm shadow-purple-600/5'
+                          : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                      }`}
+                    >
+                      English
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setGenLanguage('ar')}
+                      className={`py-3 px-4 rounded-xl border text-sm font-semibold transition-all ${
+                        genLanguage === 'ar'
+                          ? 'border-purple-600 bg-purple-50 text-purple-700 shadow-sm shadow-purple-600/5'
+                          : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                      }`}
+                    >
+                      العربية (Arabic)
+                    </button>
+                  </div>
+                </div>
+
+                {/* AI Model selection */}
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">
+                    {locale === 'ar' ? 'محرك الذكاء الاصطناعي' : 'AI Engine Model'}
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { id: 'deepseek-v4-flash', name: 'DeepSeek R1 (Flash)', desc: 'Ultra-fast business modeling & canvases.' },
+                      { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro', desc: 'Deep logical reasoning & advanced strategies.' }
+                    ].map(model => (
+                      <button
+                        key={model.id}
+                        type="button"
+                        onClick={() => setGenModel(model.id)}
+                        className={`w-full text-start p-3.5 rounded-xl border text-sm transition-all flex justify-between items-center ${
+                          genModel === model.id
+                            ? 'border-purple-600 bg-purple-50 text-purple-900 shadow-sm shadow-purple-600/5'
+                            : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                        }`}
+                      >
+                        <div className="text-start">
+                          <p className="font-semibold text-slate-900">{model.name}</p>
+                          <p className="text-xs text-slate-500 mt-0.5">{model.desc}</p>
+                        </div>
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
+                          genModel === model.id ? 'border-purple-600 bg-purple-600' : 'border-slate-300'
+                        }`}>
+                          {genModel === model.id && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Info Note */}
+                <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-100/50 flex items-start gap-2.5 text-xs text-amber-800 leading-relaxed">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                  <span>
+                    {locale === 'ar' 
+                      ? 'ملاحظة: ستتطلب عملية إعادة التوليد 1 نقطة ائتمانية من رصيد محرك خطط العمل الخاص بك.'
+                      : 'Note: Regenerating will consume 1 credit of your Business Plan execution balance.'}
+                  </span>
+                </div>
+
+                {/* Action button */}
+                <Button
+                  onClick={handleRegenerate}
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-full py-3.5 text-sm font-semibold shadow-lg transition-transform hover:-translate-y-0.5"
+                >
+                  <Wand2 className="w-4 h-4 mr-2" />
+                  {locale === 'ar' ? 'إعادة توليد خطة العمل' : 'Regenerate Business Plan'}
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

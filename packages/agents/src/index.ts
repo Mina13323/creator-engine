@@ -17,7 +17,7 @@ import { callLLMWithFallback, callFireworksChat, parseLLMJson } from './aiClient
 // HELPER: Call n8n Webhook
 // =========================================================================
 async function callN8n<T>(workflowPath: string, payload: any): Promise<N8nWebhookResponse<T> | null> {
-  const n8nUrl = process.env.N8N_API_URL || 'http://localhost:5678';
+  const n8nUrl = process.env.N8N_API_URL;
   const token = process.env.N8N_TOKEN;
   const startTime = Date.now();
   
@@ -191,13 +191,15 @@ export async function runBusinessPlanAgent(
   projectId: string,
   selectedOpportunity: any,
   founderProfile: any,
-  contextStr: string = ''
+  contextStr: string = '',
+  locale: string = 'en'
 ): Promise<Partial<BusinessPlan> | null> {
   const result = await callN8n<Partial<BusinessPlan>>('business-plan-flow', {
     projectId,
     opportunity: selectedOpportunity,
     founderProfile,
-    contextStr
+    contextStr,
+    locale
   });
 
   if (result && result.success) {
@@ -205,7 +207,12 @@ export async function runBusinessPlanAgent(
   }
 
   console.log('[BusinessPlanAgent] n8n unavailable — calling Fireworks LLM directly...');
+  const languageInstruction = locale === 'ar'
+    ? 'IMPORTANT: All textual values (descriptions, startup name, mission, vision, reasoning, target points, pricing strategy, etc.) in the JSON object MUST be written in the Arabic language. Keep the JSON keys in English, but all string values must be standard Arabic.'
+    : 'Generate all content in English.';
+
   const systemPrompt = `You are a strategic Business Plan Generator. Generate a comprehensive business plan based on the selected opportunity and founder profile.
+${languageInstruction}
 Output ONLY a JSON object.
 ${contextStr ? '\nProject Context:\n' + contextStr : ''}`;
   
@@ -319,12 +326,47 @@ export async function runFinancialAgent(
   businessModel: string,
   contextStr: string = ''
 ): Promise<any | null> {
-  const result = await callN8n<any>('financial-engine', {
-    projectId,
-    businessIdea,
-    businessModel,
-    contextStr
-  });
+  // Direct ngrok URL for financial engine (override via FINANCIAL_ENGINE_URL env)
+  const financialUrl = process.env.FINANCIAL_ENGINE_URL || 'https://anger-favorably-unburned.ngrok-free.dev/webhook/financial-engine';
+  let result: any = null;
+  try {
+    console.log('[FinancialAgent] Calling direct URL:', financialUrl);
+    let res = await fetch(financialUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+        'User-Agent': 'CreatorEngine/1.0'
+      },
+      body: JSON.stringify({ projectId, businessIdea, businessModel, contextStr }),
+      signal: AbortSignal.timeout(30000),
+    });
+
+    if (!res.ok && res.status === 404) {
+      const testUrl = financialUrl.replace('/webhook/', '/webhook-test/');
+      console.log('[FinancialAgent] Received 404. Retrying with test URL:', testUrl);
+      res = await fetch(testUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+          'User-Agent': 'CreatorEngine/1.0'
+        },
+        body: JSON.stringify({ projectId, businessIdea, businessModel, contextStr }),
+        signal: AbortSignal.timeout(30000),
+      });
+    }
+
+    if (res.ok) {
+      const json = await res.json();
+      result = json?.success ? json : { success: true, data: json };
+    } else {
+      throw new Error(`Status ${res.status}`);
+    }
+  } catch (e) {
+    console.warn('[FinancialAgent] Direct URL failed, falling back to shared n8n:', e);
+    result = await callN8n<any>('financial-engine', { projectId, businessIdea, businessModel, contextStr });
+  }
 
   if (result && result.success) {
     return result.data;

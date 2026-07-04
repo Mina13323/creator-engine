@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Project, ChatMessage, AuthUser, FounderProfile, BusinessOpportunity, SelectedOpportunity, BusinessPlan, VentureState, OnboardingData } from '@creator/types';
 import { authClient } from '../lib/authClient';
+import { useErrorStore } from './errorStore';
 
 interface StoreState {
   projects: Project[];
@@ -66,7 +67,7 @@ interface StoreState {
   analyzeFounder: (projectId: string, data: OnboardingData) => Promise<void>;
   discoverOpportunities: (projectId: string) => Promise<void>;
   selectOpportunity: (projectId: string, opportunityId: string) => Promise<void>;
-  generateBusinessPlan: (projectId: string) => Promise<void>;
+  generateBusinessPlan: (projectId: string, locale?: string) => Promise<void>;
   uploadDocument: (projectId: string, fileData: { fileName: string, fileType: string, storageUrl: string, fileSize: number }) => Promise<void>;
 
   sendChatMessage: (message: string) => Promise<void>;
@@ -219,9 +220,14 @@ export const useStore = create<StoreState>((set, get) => ({
         loading: false
       }));
       return res.projectId;
-    } catch (e) {
+    } catch (e: any) {
       console.error('createProject failed', e);
       set({ loading: false });
+      useErrorStore.getState().addError({
+        title: 'Project Creation Suspended',
+        message: e.message || 'System is currently under maintenance. New project creations are temporarily suspended.',
+        type: 'warning'
+      });
       throw e;
     }
   },
@@ -280,10 +286,10 @@ export const useStore = create<StoreState>((set, get) => ({
     }
   },
 
-  generateBusinessPlan: async (projectId) => {
+  generateBusinessPlan: async (projectId, locale = 'en') => {
     set({ loading: true, loadingMessage: 'Generating Lean Canvas & Business Plan...' });
     try {
-      const res = await authClient.post<{ businessPlan: BusinessPlan }>('/business-plan/generate', { projectId });
+      const res = await authClient.post<{ businessPlan: BusinessPlan }>('/business-plan/generate', { projectId, locale });
       set(state => {
         const updatedState = state.ventureState ? { ...state.ventureState, businessPlan: res.businessPlan } : state.ventureState;
         return { ventureState: updatedState as VentureState, activeTab: 'business-plan', loading: false };

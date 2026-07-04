@@ -20,6 +20,7 @@ import PricingModal from '../components/PricingModal';
 import FinancialEngine from '../components/FinancialEngine';
 import AccountDetails from '../components/AccountDetails';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useI18n } from '../lib/i18n/I18nContext';
 
 import { 
   Home, 
@@ -38,13 +39,15 @@ import {
   ImagePlus,
   Megaphone,
   ShieldAlert,
-  UserCircle
+  UserCircle,
+  Globe
 } from 'lucide-react';
 
 // Tabs that require authentication
 const PROTECTED_TABS = ['dashboard', 'business-builder', 'financials', 'guides', 'ai-consultant', 'pitch', 'radar', 'market-research', 'branding', 'marketing', 'roadmap'];
 
 export default function AppPage() {
+  const { t, dir, locale, setLocale } = useI18n();
   const { 
     isOnboarded, 
     loadProjects, 
@@ -71,14 +74,19 @@ export default function AppPage() {
     }
   }, []);
 
-  // Sync landing page visibility with authentication state
+  const [prevAuth, setPrevAuth] = useState(isAuthenticated);
+
+  // Sync landing page visibility with authentication state transitions
   useEffect(() => {
-    if (isAuthenticated) {
-      setShowLanding(false);
-    } else {
-      setShowLanding(true);
+    if (isAuthenticated !== prevAuth) {
+      setPrevAuth(isAuthenticated);
+      if (isAuthenticated) {
+        setShowLanding(false);
+      } else {
+        setShowLanding(true);
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, prevAuth]);
 
 
   // Check for Paymob redirect
@@ -124,12 +132,13 @@ export default function AppPage() {
     loadProjects();
   }, [loadProjects, showLanding, isAuthenticated]);
 
-  if (showLanding && !effectivelyOnboarded) {
+  if (showLanding) {
     return (
       <>
         <LandingPage
           onGetStarted={() => setShowLanding(false)}
           onLogin={() => useStore.getState().setAuthModalOpen(true)}
+          isAuthenticated={isAuthenticated}
         />
         <AuthModal />
       </>
@@ -146,16 +155,16 @@ export default function AppPage() {
   }
 
   const sidebarItems = [
-    { id: 'dashboard', label: 'Founder Profile', icon: Home, requiresProject: false },
-    { id: 'opportunities', label: 'Opportunities', icon: Radar, requiresProject: true },
-    { id: 'business-plan', label: 'Business Plan', icon: FileText, requiresProject: true },
-    { id: 'financials', label: 'Financials', icon: BarChart3, requiresProject: true },
-    { id: 'branding', label: 'Branding', icon: BookOpen, requiresProject: true },
-    { id: 'marketing', label: 'Marketing Studio', icon: Megaphone, requiresProject: true },
-    { id: 'roadmap', label: 'Roadmap', icon: Clock, requiresProject: true },
-    { id: 'ai-consultant', label: 'AI Cofounder', icon: MessageSquare, requiresProject: true },
-    { id: 'ai-studio', label: 'AI Studio', icon: ImagePlus, requiresProject: false },
-    { id: 'account', label: 'Account', icon: UserCircle, requiresProject: false },
+    { id: 'dashboard', label: t('sidebar.dashboard'), icon: Home, requiresProject: false },
+    { id: 'opportunities', label: t('sidebar.opportunities'), icon: Radar, requiresProject: true },
+    { id: 'business-plan', label: t('sidebar.businessPlan'), icon: FileText, requiresProject: true },
+    { id: 'financials', label: t('sidebar.financials'), icon: BarChart3, requiresProject: true },
+    { id: 'branding', label: t('sidebar.branding'), icon: BookOpen, requiresProject: true },
+    { id: 'marketing', label: t('sidebar.marketing'), icon: Megaphone, requiresProject: true },
+    { id: 'roadmap', label: t('sidebar.roadmap'), icon: Clock, requiresProject: true },
+    { id: 'ai-consultant', label: t('sidebar.aiConsultant'), icon: MessageSquare, requiresProject: true },
+    { id: 'ai-studio', label: t('sidebar.aiStudio'), icon: ImagePlus, requiresProject: false },
+    { id: 'account', label: t('sidebar.account'), icon: UserCircle, requiresProject: false },
   ] as const;
 
   // User display info
@@ -176,13 +185,23 @@ export default function AppPage() {
           <span className="font-bold text-lg text-slate-900 tracking-tight">Creator Engine</span>
         </div>
         <div className="flex items-center gap-2">
+          {/* Language Switcher */}
+          <button
+            onClick={() => setLocale(locale === 'en' ? 'ar' : 'en')}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition-colors shadow-sm"
+            title="Switch Language / تغيير اللغة"
+          >
+            <Globe className="w-3.5 h-3.5 text-slate-500" />
+            <span>{locale === 'en' ? 'AR' : 'EN'}</span>
+          </button>
+
           {isAuthenticated && user?.role === 'admin' && (
             <Link
               href="/admin/dashboard"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 transition-all shadow-sm"
             >
               <ShieldAlert className="w-3.5 h-3.5" />
-              Admin
+              {t('sidebar.admin')}
             </Link>
           )}
           {isAuthenticated && <button
@@ -190,7 +209,7 @@ export default function AppPage() {
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-50/80 border border-rose-100 text-rose-600 hover:bg-rose-100 hover:text-rose-700 transition-all shadow-sm"
           >
             <LogOut className="w-3.5 h-3.5" />
-            Logout
+            {t('sidebar.logout')}
           </button>}
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-slate-600" aria-label="Toggle Mobile Menu">
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -232,6 +251,18 @@ export default function AppPage() {
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto px-4 pb-4 space-y-1">
+          {/* Landing Page Button */}
+          <button
+            onClick={() => {
+              setShowLanding(true);
+              setMobileMenuOpen(false);
+            }}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-50 group mb-2"
+          >
+            <Globe className="w-4 h-4 text-slate-400 group-hover:text-slate-600" />
+            <span>{t('nav.home')}</span>
+          </button>
+
           {sidebarItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -271,7 +302,7 @@ export default function AppPage() {
               className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 mt-2 transition-all"
             >
               <ShieldAlert className="w-4.5 h-4.5 text-emerald-600" />
-              Admin Dashboard
+              {t('sidebar.adminDashboard')}
             </Link>
           )}
         </nav>
@@ -279,12 +310,12 @@ export default function AppPage() {
         {/* Bottom Actions */}
         <div className="p-4 border-t border-slate-100 space-y-2">
           <button onClick={() => useStore.getState().setShowPricingModal(true)} className="w-full bg-[#1e293b] hover:bg-slate-800 text-white font-semibold rounded-full py-2.5 text-sm transition-colors mb-4">
-            Upgrade
+            {t('sidebar.upgrade')}
           </button>
           
           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50">
             <HelpCircle className="w-4 h-4 text-slate-500" />
-            Help
+            {t('sidebar.help')}
           </button>
           
           {/* User account section */}
@@ -321,11 +352,21 @@ export default function AppPage() {
         {/* Top Header Navbar */}
         <header className="h-16 border-b border-slate-100 bg-white flex items-center justify-between px-8 shrink-0">
           <div className="text-slate-400 text-xs tracking-wider flex items-center gap-2 font-semibold">
-            <span>WORKSPACE</span>
+            <span>{t('sidebar.workspace')}</span>
             <span className="text-slate-300">/</span>
-            <span className="text-slate-700 capitalize font-bold">{activeTab.replace('-', ' ')}</span>
+            <span className="text-slate-700 capitalize font-bold">{sidebarItems.find(item => item.id === activeTab)?.label || activeTab.replace('-', ' ')}</span>
           </div>
           <div className="flex items-center gap-4">
+            {/* Language Switcher */}
+            <button
+              onClick={() => setLocale(locale === 'en' ? 'ar' : 'en')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition-colors shadow-sm"
+              title="Switch Language / تغيير اللغة"
+            >
+              <Globe className="w-3.5 h-3.5 text-slate-500" />
+              <span>{locale === 'en' ? 'العربية' : 'English'}</span>
+            </button>
+
             <CreditIndicator />
             <span className="text-slate-500 text-xs font-semibold bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
               {userDisplayName}
@@ -335,7 +376,7 @@ export default function AppPage() {
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-50/80 border border-rose-100 text-rose-600 hover:bg-rose-100 hover:text-rose-700 transition-all shadow-sm"
             >
               <LogOut className="w-3.5 h-3.5" />
-              Logout
+              {t('sidebar.logout')}
             </button>
           </div>
         </header>

@@ -5,6 +5,7 @@ import { useStore } from '../store/useStore';
 import { Send, Sparkles, User, Brain, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeInUp, staggerContainer } from '../lib/motion-presets';
+import { SpeakButton } from './ui/SpeakButton';
 
 export default function CofounderChat() {
   const { chatMessages, sendChatMessage, chatLoading, currentProject } = useStore();
@@ -89,15 +90,27 @@ export default function CofounderChat() {
                     {msg.message}
                   </div>
 
-                  {/* RAG Sources Citations */}
-                  {!isUser && msg.ragSources && msg.ragSources.length > 0 && (
-                    <div className="flex flex-wrap gap-1 items-center">
-                      <span className="text-[9px] text-slate-500 mr-1">RAG citation:</span>
-                      {msg.ragSources.map((source, sIdx) => (
-                        <span key={sIdx} className="text-[9px] text-blue-400 border border-blue-500/10 bg-blue-500/5 px-1.5 py-0.5 rounded flex items-center gap-0.5 font-medium">
-                          {source} <ExternalLink className="w-2 h-2" />
-                        </span>
-                      ))}
+                  {/* Bubble Footer Actions */}
+                  {!isUser && (
+                    <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                      <SpeakButton 
+                        text={msg.message} 
+                        size="sm" 
+                        label="Listen"
+                        className="!bg-blue-600/20 !border-blue-500/30 !text-blue-300 hover:!bg-blue-600/30 hover:!text-blue-200" 
+                      />
+                      
+                      {/* RAG Sources Citations */}
+                      {msg.ragSources && msg.ragSources.length > 0 && (
+                        <div className="flex flex-wrap gap-1 items-center">
+                          <span className="text-[9px] text-slate-500 mr-1">RAG citation:</span>
+                          {msg.ragSources.map((source, sIdx) => (
+                            <span key={sIdx} className="text-[9px] text-blue-400 border border-blue-500/10 bg-blue-500/5 px-1.5 py-0.5 rounded flex items-center gap-0.5 font-medium">
+                              {source} <ExternalLink className="w-2 h-2" />
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

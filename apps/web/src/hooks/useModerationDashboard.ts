@@ -14,8 +14,11 @@ export interface ModerationStats {
 
 export interface TrafficData {
   time: string;
+  signups: number;
   logins: number;
   actions: number;
+  projectsCount?: number;
+  projectNames?: string[];
 }
 
 
@@ -24,44 +27,86 @@ export interface ModerationEvent {
   timestamp: string;
   user: string;
   type: string;
-  status: 'Pending' | 'Resolved' | 'Dismissed';
+  status: 'Pending' | 'Resolved' | 'Dismissed' | 'Failed' | 'Banned';
+  details?: string;
+}
+
+export interface DashboardExtendedData {
+  activeUsers: number;
+  totalProjects: number;
+  agentRuns: number;
+  projectsStatus: Record<string, number>;
+  totalRevenue: number;
+  subscriptionDistribution: Record<string, number>;
+  recentPayments: Array<{
+    id: string;
+    userId: string;
+    amountEGP: number;
+    paymentProvider: string;
+    paymentIntentId: string;
+    status: 'pending' | 'paid' | 'failed';
+    metadata: any;
+    createdAt: string;
+    creator: { name: string; email: string } | null;
+  }>;
+  flaggedContent: number;
+  observability: {
+    totalTokens: number;
+    totalPromptTokens: number;
+    totalCompletionTokens: number;
+    totalRuns: number;
+    successfulRuns: number;
+    successRate: number;
+    averageLatencyMs: number;
+  };
+  settings: {
+    defaultModel: string;
+    aiTemperature: number;
+    maxTokensPerRun: number;
+    freeCredits: number;
+    maxProjects: number;
+    lockdown: boolean;
+    maintenance: boolean;
+    flagAlerts: boolean;
+    weeklyReports: boolean;
+  };
 }
 
 export function useModerationDashboard() {
   const [stats, setStats] = useState<ModerationStats | null>(null);
   const [traffic, setTraffic] = useState<TrafficData[]>([]);
   const [feed, setFeed] = useState<ModerationEvent[]>([]);
+  const [offset, setOffset] = useState(0);
+  const [extendedData, setExtendedData] = useState<DashboardExtendedData | null>(null);
 
   const fetchDashboardData = useCallback(async () => {
     try {
-      const [statsData, trafficData, projectsData] = await Promise.all([
+      const [statsData, trafficData, feedData, extended] = await Promise.all([
         authClient.get<ModerationStats>('/admin/stats'),
-        authClient.get<TrafficData[]>('/admin/traffic'),
-        authClient.get<any[]>('/admin/projects'),
+        authClient.get<TrafficData[]>(`/admin/traffic?offset=${offset}`),
+        authClient.get<any[]>('/admin/feed'),
+        authClient.get<DashboardExtendedData>('/admin/dashboard-extended'),
       ]);
 
       setStats(statsData);
-      setTraffic(trafficData.reverse()); // Ensure chronological order
+      setTraffic(trafficData);
+      setExtendedData(extended);
 
-      // Map projects to the generic event feed (tracking project creations and flags)
-      const mappedFeed = projectsData.slice(0, 15).map(p => ({
-        id: p.id,
-        timestamp: new Date(p.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        user: p.userId,
-        type: p.isFlagged ? 'Flagged Project' : 'New Project',
-        status: p.isFlagged ? 'Pending' : 'Resolved'
+      const mappedFeed = feedData.map(e => ({
+        ...e,
+        timestamp: new Date(e.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }));
-      setFeed(mappedFeed as ModerationEvent[]);
+      setFeed(mappedFeed);
 
     } catch (e) {
       console.error('Failed to fetch admin dashboard data:', e);
     }
-  }, []);
+  }, [offset]);
 
   useEffect(() => {
     fetchDashboardData();
-    // Poll real-time backend every 5 seconds
-    const interval = setInterval(fetchDashboardData, 5000);
+    // Poll real-time backend every 15 seconds
+    const interval = setInterval(fetchDashboardData, 15000);
     return () => clearInterval(interval);
   }, [fetchDashboardData]);
 
@@ -84,5 +129,13 @@ export function useModerationDashboard() {
     }
   };
 
-  return { stats: stats || { activeUsers: 0, totalProjects: 0, agentRuns: 0, successRate: 100, flaggedContent: 0, reportsToday: 0, actionsTaken: 0, systemHealth: 'Loading...' }, traffic, feed, handleAction };
+  return { 
+    stats: stats || { activeUsers: 0, totalProjects: 0, agentRuns: 0, successRate: 100, flaggedContent: 0, reportsToday: 0, actionsTaken: 0, systemHealth: 'Loading...' }, 
+    traffic, 
+    feed, 
+    handleAction, 
+    offset, 
+    setOffset,
+    extendedData
+  };
 }

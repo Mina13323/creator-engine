@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useStore } from '@/store/useStore';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
-import { Loader2, ShieldAlert, LogOut } from 'lucide-react';
+import { Loader2, ShieldAlert, LogOut, Search } from 'lucide-react';
+import { CommandPalette } from '@/components/admin/CommandPalette';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, verifyAuth, user, logout } = useStore();
   const router = useRouter();
   const pathname = usePathname();
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -18,6 +20,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       });
     }
   }, [isAuthenticated, verifyAuth, router]);
+
+  // Global hotkey Ctrl+K listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsPaletteOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   if (!isAuthenticated) {
     return (
@@ -53,8 +67,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <span className="text-slate-700">/</span>
             <span className="text-emerald-400 font-semibold capitalize">{currentPage}</span>
           </div>
+          
           <div className="flex items-center gap-4">
-            <span className="text-slate-300 text-xs font-medium bg-slate-800/40 px-3 py-1 rounded-full border border-slate-800/30">
+            {/* Quick Search Shortcut Trigger Button */}
+            <button
+              onClick={() => setIsPaletteOpen(true)}
+              className="flex items-center gap-2 text-slate-400 hover:text-white px-3.5 py-1.5 rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-950/40 text-xs font-semibold transition-all hover:bg-slate-900"
+              title="Search dashboard (Ctrl+K)"
+            >
+              <Search className="w-3.5 h-3.5" />
+              <span>Search...</span>
+              <kbd className="hidden sm:inline-block ml-2.5 font-mono text-[9px] bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded text-slate-500">
+                Ctrl K
+              </kbd>
+            </button>
+
+            <span className="text-slate-355 text-xs font-semibold bg-slate-800/40 px-3 py-1.5 rounded-xl border border-slate-800/30">
               {user?.name || user?.email}
             </span>
             <button
@@ -62,7 +90,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 logout();
                 window.location.href = '/';
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 hover:text-rose-300 transition-all shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-500/10 border border-rose-500/20 text-rose-450 hover:bg-rose-500/20 hover:text-rose-300 transition-all shadow-sm"
             >
               <LogOut className="w-3.5 h-3.5" />
               Logout
@@ -75,6 +103,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </main>
       </div>
+
+      {/* Global Command Palette search modal */}
+      <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
     </div>
   );
 }

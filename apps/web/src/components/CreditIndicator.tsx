@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
+import { useI18n } from '../lib/i18n/I18nContext';
 
 export default function CreditIndicator() {
+  const { t } = useI18n();
   const { credits, isDemo, loadCredits, setShowPricingModal, isAuthenticated } = useStore();
 
   useEffect(() => {
@@ -25,9 +27,9 @@ export default function CreditIndicator() {
       <Sparkles className="w-4 h-4 text-blue-400" />
       <span className="text-sm font-medium text-blue-200">
         {isDemo ? (
-          <span className="bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded text-xs">DEMO MODE</span>
+          <span className="bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded text-xs">{t('pricing.demoMode')}</span>
         ) : (
-          `${(credits || 0).toLocaleString()} Credits`
+          `${(credits || 0).toLocaleString()} ${t('pricing.credits')}`
         )}
       </span>
     </motion.button>
