@@ -194,19 +194,19 @@ export default function BusinessPlanDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="col-span-1 md:col-span-2 p-8 border-0 shadow-xl shadow-slate-200/40 rounded-3xl bg-white/80 backdrop-blur-xl bg-gradient-to-br from-white to-purple-50/30">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-2xl font-bold text-slate-900">{bp.executiveSummary?.startupName || 'Startup'}</h3>
+                  <h3 className="text-2xl font-bold text-slate-900" dir="auto">{bp.executiveSummary?.startupName || 'Startup'}</h3>
                 </div>
-                <p className="text-lg text-purple-600 font-medium mb-6">{bp.executiveSummary?.valueProposition}</p>
-                <p className="text-slate-600 leading-relaxed mb-8">{bp.executiveSummary?.executiveSummary}</p>
+                <p className="text-lg text-purple-600 font-medium mb-6" dir="auto">{bp.executiveSummary?.valueProposition}</p>
+                <p className="text-slate-600 leading-relaxed mb-8" dir="auto">{bp.executiveSummary?.executiveSummary}</p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Mission</h4>
-                    <p className="text-slate-800 font-medium text-sm">{bp.executiveSummary?.mission}</p>
+                    <p className="text-slate-800 font-medium text-sm" dir="auto">{bp.executiveSummary?.mission}</p>
                   </div>
                   <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Vision</h4>
-                    <p className="text-slate-800 font-medium text-sm">{bp.executiveSummary?.vision}</p>
+                    <p className="text-slate-800 font-medium text-sm" dir="auto">{bp.executiveSummary?.vision}</p>
                   </div>
                 </div>
               </Card>
@@ -247,7 +247,7 @@ export default function BusinessPlanDashboard() {
                     </div>
                   </div>
 
-                  <p className="text-sm text-slate-300 leading-relaxed text-center italic border-t border-slate-700 pt-4 w-full">
+                  <p className="text-sm text-slate-300 leading-relaxed text-center italic border-t border-slate-700 pt-4 w-full" dir="auto">
                     {bp.viabilityAnalysis?.reasoning ? `&quot;${bp.viabilityAnalysis.reasoning}&quot;` : 'Analyzing...'}
                   </p>
                 </div>
@@ -266,20 +266,20 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-6 flex-1">
                   <div className="bg-blue-50/50 p-5 rounded-2xl border border-blue-100/50">
                     <h4 className="text-sm font-bold text-blue-900 mb-3 flex items-center gap-2"><AlertTriangle className="w-4 h-4"/> The Problem</h4>
-                    <p className="text-slate-700 text-sm leading-relaxed mb-4">{bp.problemAndSolution?.problem}</p>
+                    <p className="text-slate-700 text-sm leading-relaxed mb-4" dir="auto">{bp.problemAndSolution?.problem}</p>
                     <div className="flex flex-wrap gap-2">
                       {bp.problemAndSolution?.targetPainPoints?.map((p: string, i: number) => (
-                        <span key={i} className="bg-white text-blue-700 text-xs px-3 py-1 rounded-full border border-blue-200 shadow-sm">{p}</span>
+                        <span key={i} className="bg-white text-blue-700 text-xs px-3 py-1 rounded-full border border-blue-200 shadow-sm" dir="auto">{p}</span>
                       ))}
                     </div>
                   </div>
                   
                   <div className="bg-emerald-50/50 p-5 rounded-2xl border border-emerald-100/50 mt-4">
                     <h4 className="text-sm font-bold text-emerald-900 mb-3 flex items-center gap-2"><Zap className="w-4 h-4"/> The Solution</h4>
-                    <p className="text-slate-700 text-sm leading-relaxed mb-4">{bp.problemAndSolution?.solution}</p>
+                    <p className="text-slate-700 text-sm leading-relaxed mb-4" dir="auto">{bp.problemAndSolution?.solution}</p>
                     <div className="flex flex-wrap gap-2">
                       {bp.problemAndSolution?.uniqueAdvantages?.map((a: string, i: number) => (
-                        <span key={i} className="bg-white text-emerald-700 text-xs px-3 py-1 rounded-full border border-emerald-200 shadow-sm">{a}</span>
+                        <span key={i} className="bg-white text-emerald-700 text-xs px-3 py-1 rounded-full border border-emerald-200 shadow-sm" dir="auto">{a}</span>
                       ))}
                     </div>
                   </div>
@@ -296,15 +296,15 @@ export default function BusinessPlanDashboard() {
                 <div className="grid grid-cols-2 gap-4 flex-1">
                   <div className="col-span-2 bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Pricing Strategy</h4>
-                    <p className="text-slate-800 font-medium">{bp.businessModel?.pricingStrategy}</p>
+                    <p className="text-slate-800 font-medium" dir="auto">{bp.businessModel?.pricingStrategy}</p>
                   </div>
                   
                   <div className="col-span-1 bg-slate-50 p-5 rounded-2xl border border-slate-100">
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Revenue Streams</h4>
                     <ul className="space-y-2">
                       {bp.businessModel?.revenueStreams?.map((r: string, i: number) => (
-                        <li key={i} className="text-sm text-slate-700 flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5"></div>
+                        <li key={i} className="text-sm text-slate-700 flex items-start gap-2" dir="auto">
+                          <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0"></div>
                           {r}
                         </li>
                       ))}
@@ -315,8 +315,8 @@ export default function BusinessPlanDashboard() {
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Distribution</h4>
                     <ul className="space-y-2">
                       {bp.businessModel?.distributionChannels?.map((d: string, i: number) => (
-                        <li key={i} className="text-sm text-slate-700 flex items-start gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-1.5"></div>
+                        <li key={i} className="text-sm text-slate-700 flex items-start gap-2" dir="auto">
+                          <div className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-1.5 shrink-0"></div>
                           {d}
                         </li>
                       ))}
@@ -338,17 +338,17 @@ export default function BusinessPlanDashboard() {
                 <div className="w-full space-y-6">
                   <div>
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Market Size</h4>
-                    <div className="text-3xl font-black text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-emerald-500">{bp.marketResearch?.marketSize || 'TBD'}</div>
+                    <div className="text-3xl font-black text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-emerald-500" dir="auto">{bp.marketResearch?.marketSize || 'TBD'}</div>
                   </div>
                   <div className="h-px w-full bg-slate-100"></div>
                   <div>
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Growth Rate</h4>
-                    <div className="text-3xl font-black text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-500">{bp.marketResearch?.industryGrowthRate || 'TBD'}</div>
+                    <div className="text-3xl font-black text-slate-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-500" dir="auto">{bp.marketResearch?.industryGrowthRate || 'TBD'}</div>
                   </div>
                   <div className="h-px w-full bg-slate-100"></div>
                   <div>
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Customer Behavior</h4>
-                    <p className="text-sm font-medium text-slate-700 line-clamp-3">{bp.marketResearch?.customerBehavior}</p>
+                    <p className="text-sm font-medium text-slate-700 line-clamp-3" dir="auto">{bp.marketResearch?.customerBehavior}</p>
                   </div>
                 </div>
               </Card>
@@ -358,15 +358,15 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-4">
                   {bp.marketResearch?.competitors?.map((comp: any, i: number) => (
                     <div key={i} className="flex flex-col md:flex-row gap-4 p-4 rounded-xl border border-slate-100 hover:border-slate-200 transition-colors bg-slate-50/50">
-                      <div className="w-full md:w-1/3 font-bold text-slate-800">{comp.name}</div>
+                      <div className="w-full md:w-1/3 font-bold text-slate-800" dir="auto">{comp.name}</div>
                       <div className="w-full md:w-2/3 grid grid-cols-2 gap-4">
                         <div>
                           <div className="text-[10px] uppercase font-bold text-emerald-600 mb-1">Strength</div>
-                          <div className="text-xs text-slate-600">{comp.strengths}</div>
+                          <div className="text-xs text-slate-600" dir="auto">{comp.strengths}</div>
                         </div>
                         <div>
                           <div className="text-[10px] uppercase font-bold text-rose-600 mb-1">Weakness</div>
-                          <div className="text-xs text-slate-600">{comp.weaknesses}</div>
+                          <div className="text-xs text-slate-600" dir="auto">{comp.weaknesses}</div>
                         </div>
                       </div>
                     </div>
@@ -388,7 +388,7 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-3">
                   {bp.productsAndServices?.coreOfferings?.map((item: string, i: number) => (
                     <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                      <h4 className="text-sm font-medium text-slate-900">{item}</h4>
+                      <h4 className="text-sm font-medium text-slate-900" dir="auto">{item}</h4>
                     </div>
                   ))}
                 </div>
@@ -398,7 +398,7 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-3">
                   {bp.productsAndServices?.premiumOfferings?.map((item: string, i: number) => (
                     <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                      <h4 className="text-sm font-medium text-slate-900">{item}</h4>
+                      <h4 className="text-sm font-medium text-slate-900" dir="auto">{item}</h4>
                     </div>
                   ))}
                 </div>
@@ -408,7 +408,7 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-3">
                   {bp.productsAndServices?.supportServices?.map((item: string, i: number) => (
                     <div key={i} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                      <h4 className="text-sm font-medium text-slate-900">{item}</h4>
+                      <h4 className="text-sm font-medium text-slate-900" dir="auto">{item}</h4>
                     </div>
                   ))}
                 </div>
@@ -456,15 +456,15 @@ export default function BusinessPlanDashboard() {
                 <div className="space-y-6">
                   <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100/50">
                     <h4 className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-1">Break-Even Point</h4>
-                    <p className="text-lg font-bold text-slate-900">{bp.financialInsights?.breakEvenPoint}</p>
+                    <p className="text-lg font-bold text-slate-900" dir="auto">{bp.financialInsights?.breakEvenPoint}</p>
                   </div>
                   <div className="bg-blue-50/50 p-4 rounded-2xl border border-blue-100/50">
                     <h4 className="text-xs font-bold text-blue-700 uppercase tracking-wider mb-1">Monthly Growth</h4>
-                    <p className="text-lg font-bold text-slate-900">{bp.financialInsights?.monthlyGrowth}</p>
+                    <p className="text-lg font-bold text-slate-900" dir="auto">{bp.financialInsights?.monthlyGrowth}</p>
                   </div>
                   <div className="bg-purple-50/50 p-4 rounded-2xl border border-purple-100/50">
                     <h4 className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-1">Unit Economics</h4>
-                    <p className="text-sm font-medium text-slate-800">{bp.financialInsights?.unitEconomics}</p>
+                    <p className="text-sm font-medium text-slate-800" dir="auto">{bp.financialInsights?.unitEconomics}</p>
                   </div>
                 </div>
               </Card>
@@ -485,7 +485,7 @@ export default function BusinessPlanDashboard() {
                     <div key={key} className="relative group">
                       <div className={`p-3 rounded-xl border border-slate-100 bg-slate-50 transition-colors hover:border-pink-200 hover:bg-pink-50 relative z-10 mx-auto`} style={{ width: `${100 - (i*10)}%` }}>
                         <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">{key}</div>
-                        <div className="text-xs text-slate-700 font-medium truncate" title={value as string}>{value as string}</div>
+                        <div className="text-xs text-slate-700 font-medium truncate" title={value as string} dir="auto">{value as string}</div>
                       </div>
                     </div>
                   ))}
@@ -498,23 +498,23 @@ export default function BusinessPlanDashboard() {
                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Acquisition Channels</h4>
                     <div className="flex flex-wrap gap-2 mb-6">
                       {bp.salesAndMarketing?.acquisitionChannels?.map((ch: string, i: number) => (
-                        <span key={i} className="px-3 py-1.5 bg-pink-50 text-pink-700 text-xs font-semibold rounded-lg">{ch}</span>
+                        <span key={i} className="px-3 py-1.5 bg-pink-50 text-pink-700 text-xs font-semibold rounded-lg" dir="auto">{ch}</span>
                       ))}
                     </div>
                     
                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Retention Strategy</h4>
-                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100" dir="auto">
                       {bp.salesAndMarketing?.customerRetention}
                     </p>
                   </div>
                   <div className="flex flex-col justify-center">
                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Content Strategy</h4>
-                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6">
+                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6" dir="auto">
                       {bp.salesAndMarketing?.contentStrategy}
                     </p>
                     
                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Online Presence</h4>
-                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
+                    <p className="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100" dir="auto">
                       {bp.salesAndMarketing?.onlinePresence}
                     </p>
                   </div>
@@ -534,8 +534,8 @@ export default function BusinessPlanDashboard() {
                 <h4 className="text-lg font-bold text-emerald-900 mb-4 flex items-center gap-2">Strengths</h4>
                 <ul className="space-y-3">
                   {bp.swotAnalysis?.strengths?.map((s: string, i: number) => (
-                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-emerald-50/30 p-3 rounded-xl border border-emerald-50">
-                      <div className="mt-0.5 text-emerald-500"><Award className="w-4 h-4" /></div>
+                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-emerald-50/30 p-3 rounded-xl border border-emerald-50" dir="auto">
+                      <div className="mt-0.5 text-emerald-500 shrink-0"><Award className="w-4 h-4" /></div>
                       {s}
                     </li>
                   ))}
@@ -546,8 +546,8 @@ export default function BusinessPlanDashboard() {
                 <h4 className="text-lg font-bold text-rose-900 mb-4 flex items-center gap-2">Weaknesses</h4>
                 <ul className="space-y-3">
                   {bp.swotAnalysis?.weaknesses?.map((w: string, i: number) => (
-                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-rose-50/30 p-3 rounded-xl border border-rose-50">
-                      <div className="mt-0.5 text-rose-500"><AlertTriangle className="w-4 h-4" /></div>
+                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-rose-50/30 p-3 rounded-xl border border-rose-50" dir="auto">
+                      <div className="mt-0.5 text-rose-500 shrink-0"><AlertTriangle className="w-4 h-4" /></div>
                       {w}
                     </li>
                   ))}
@@ -558,8 +558,8 @@ export default function BusinessPlanDashboard() {
                 <h4 className="text-lg font-bold text-blue-900 mb-4 flex items-center gap-2">Opportunities</h4>
                 <ul className="space-y-3">
                   {bp.swotAnalysis?.opportunities?.map((o: string, i: number) => (
-                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-blue-50/30 p-3 rounded-xl border border-blue-50">
-                      <div className="mt-0.5 text-blue-500"><TrendingUp className="w-4 h-4" /></div>
+                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-blue-50/30 p-3 rounded-xl border border-blue-50" dir="auto">
+                      <div className="mt-0.5 text-blue-500 shrink-0"><TrendingUp className="w-4 h-4" /></div>
                       {o}
                     </li>
                   ))}
@@ -570,8 +570,8 @@ export default function BusinessPlanDashboard() {
                 <h4 className="text-lg font-bold text-amber-900 mb-4 flex items-center gap-2">Threats</h4>
                 <ul className="space-y-3">
                   {bp.swotAnalysis?.threats?.map((t: string, i: number) => (
-                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-amber-50/30 p-3 rounded-xl border border-amber-50">
-                      <div className="mt-0.5 text-amber-500"><ShieldAlert className="w-4 h-4" /></div>
+                    <li key={i} className="text-sm text-slate-700 flex items-start gap-3 bg-amber-50/30 p-3 rounded-xl border border-amber-50" dir="auto">
+                      <div className="mt-0.5 text-amber-500 shrink-0"><ShieldAlert className="w-4 h-4" /></div>
                       {t}
                     </li>
                   ))}
@@ -594,15 +594,15 @@ export default function BusinessPlanDashboard() {
                     <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
                       <h5 className="text-sm font-bold text-slate-800 mb-2">Market & Operational</h5>
                       <ul className="list-disc pl-5 text-sm text-slate-600 space-y-1">
-                        {bp.riskAssessment?.marketRisks?.map((r: string, i: number) => <li key={i}>{r}</li>)}
-                        {bp.riskAssessment?.operationalRisks?.map((r: string, i: number) => <li key={i}>{r}</li>)}
+                        {bp.riskAssessment?.marketRisks?.map((r: string, i: number) => <li key={i} dir="auto">{r}</li>)}
+                        {bp.riskAssessment?.operationalRisks?.map((r: string, i: number) => <li key={i} dir="auto">{r}</li>)}
                       </ul>
                     </div>
                     <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
                       <h5 className="text-sm font-bold text-slate-800 mb-2">Technical & Financial</h5>
                       <ul className="list-disc pl-5 text-sm text-slate-600 space-y-1">
-                        {bp.riskAssessment?.technicalRisks?.map((r: string, i: number) => <li key={i}>{r}</li>)}
-                        {bp.riskAssessment?.financialRisks?.map((r: string, i: number) => <li key={i}>{r}</li>)}
+                        {bp.riskAssessment?.technicalRisks?.map((r: string, i: number) => <li key={i} dir="auto">{r}</li>)}
+                        {bp.riskAssessment?.financialRisks?.map((r: string, i: number) => <li key={i} dir="auto">{r}</li>)}
                       </ul>
                     </div>
                   </div>
@@ -611,7 +611,7 @@ export default function BusinessPlanDashboard() {
                   <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">Mitigation Strategies</h4>
                   <div className="space-y-3">
                     {bp.riskAssessment?.mitigationStrategies?.map((strat: string, i: number) => (
-                      <div key={i} className="flex gap-4 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100/50">
+                      <div key={i} className="flex gap-4 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100/50" dir="auto">
                         <div className="shrink-0 mt-0.5"><div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-bold">{i+1}</div></div>
                         <p className="text-sm text-emerald-900 font-medium">{strat}</p>
                       </div>
@@ -628,21 +628,21 @@ export default function BusinessPlanDashboard() {
       {/* Settings Modal */}
       <AnimatePresence>
         {settingsOpen && (
-          <>
+          <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
               onClick={() => setSettingsOpen(false)}
-              className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50"
+              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
             />
-            {/* Drawer */}
+            {/* Modal Card */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="fixed inset-x-4 bottom-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[480px] bg-white border border-slate-200 shadow-2xl rounded-3xl p-6 z-50 max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-[480px] bg-white border border-slate-200 shadow-2xl rounded-3xl p-6 z-10 max-h-[90vh] overflow-y-auto"
             >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
@@ -703,17 +703,17 @@ export default function BusinessPlanDashboard() {
                         key={model.id}
                         type="button"
                         onClick={() => setGenModel(model.id)}
-                        className={`w-full text-left p-3.5 rounded-xl border text-sm transition-all flex justify-between items-center ${
+                        className={`w-full text-start p-3.5 rounded-xl border text-sm transition-all flex justify-between items-center ${
                           genModel === model.id
                             ? 'border-purple-600 bg-purple-50 text-purple-900 shadow-sm shadow-purple-600/5'
                             : 'border-slate-200 hover:border-slate-300 text-slate-600'
                         }`}
                       >
-                        <div className={locale === 'ar' ? 'text-right' : 'text-left'}>
+                        <div className="text-start">
                           <p className="font-semibold text-slate-900">{model.name}</p>
                           <p className="text-xs text-slate-500 mt-0.5">{model.desc}</p>
                         </div>
-                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
                           genModel === model.id ? 'border-purple-600 bg-purple-600' : 'border-slate-300'
                         }`}>
                           {genModel === model.id && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
@@ -743,7 +743,7 @@ export default function BusinessPlanDashboard() {
                 </Button>
               </div>
             </motion.div>
-          </>
+          </div>
         )}
       </AnimatePresence>
     </div>
