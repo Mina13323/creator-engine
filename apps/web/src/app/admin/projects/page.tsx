@@ -467,7 +467,7 @@ export default function AdminProjectsPage() {
               
               <h3 className="text-xl font-bold text-slate-100 mb-2">Delete Project?</h3>
               <p className="text-sm text-slate-400 mb-4">
-                Are you sure you want to delete <span className="font-semibold text-slate-200">"{deletingProject.name}"</span>?
+                Are you sure you want to delete <span className="font-semibold text-slate-200">&quot;{deletingProject.name}&quot;</span>?
                 This action is <span className="text-rose-500 font-bold uppercase">irreversible</span>.
               </p>
               
@@ -492,7 +492,7 @@ export default function AdminProjectsPage() {
 
               <div className="mb-6 text-left">
                 <label className="block text-xs font-semibold text-slate-400 mb-1.5">
-                  To confirm deletion, type the project name <span className="font-bold text-slate-200">"{deletingProject.name}"</span> below:
+                  To confirm deletion, type the project name <span className="font-bold text-slate-200">&quot;{deletingProject.name}&quot;</span> below:
                 </label>
                 <input
                   type="text"

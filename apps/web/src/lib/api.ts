@@ -4,7 +4,7 @@ export class ApiClient {
     aspect_ratio?: string;
     model?: string;
   }) {
-    console.log('[API] generateImage requested:', params);
+    console.info('[API] generateImage requested:', params);
 
     const response = await fetch('/api/generate-image', {
       method: 'POST',
@@ -24,7 +24,7 @@ export class ApiClient {
   }
 
   async uploadFile(file: File, onProgress?: (pct: number) => void): Promise<string> {
-    console.log('[API] Real uploadFile requested:', file.name);
+    console.info('[API] Real uploadFile requested:', file.name);
     
     const formData = new FormData();
     formData.append('file', file);
@@ -82,7 +82,7 @@ export class ApiClient {
     images_list?: string[];
     video_files?: string[];
   }) {
-    console.log('[API] generateMarketingStudioAd requested:', params);
+    console.info('[API] generateMarketingStudioAd requested:', params);
     
     // We get the token manually to avoid circular dependencies
     let token = '';

@@ -97,7 +97,7 @@ export default function MarketingStudio() {
   const [prompt, setPrompt] = useState("");
   const [productImage, setProductImage] = useState<string | null>(null);
   const [avatarImage, setAvatarImage] = useState<string | null>(null);
-  const [additionalImages, setAdditionalImages] = useState<string[]>([]);
+  const [additionalImages, setAdditionalImages] = useState<(string|null)[]>([]);
   const { currentProject } = useStore();
   
   const [params, setParams] = useState({
@@ -217,7 +217,7 @@ export default function MarketingStudio() {
         prompt,
         aspect_ratio: params.ratio,
         duration: params.duration,
-        images_list: [productImage, avatarImage, ...additionalImages].filter(Boolean),
+        images_list: [productImage, avatarImage, ...additionalImages].filter(Boolean) as string[],
         video_files: params.videoUrl ? [params.videoUrl] : []
       });
 

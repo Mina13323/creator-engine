@@ -241,7 +241,7 @@ export default function AIConsultantDashboard() {
               <p className="text-xs text-gray-400 italic">No previous chats.</p>
             ) : (
               <div className="space-y-1">
-                {conversations.map((conv, idx) => (
+                {conversations.map((conv: any, idx: number) => (
                   <button
                     key={conv.id || `conv-${idx}`}
                     onClick={() => setActiveConversation(conv.id)}

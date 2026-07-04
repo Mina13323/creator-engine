@@ -237,11 +237,11 @@ export async function callGemini(systemPrompt: string, userPrompt: string, optio
 }
 
 export async function callLLMWithFallback(systemPrompt: string, userPrompt: string, options: AIClientOptions = {}): Promise<string | null> {
-  console.log('[AIClient] Attempting primary LLM (Gemini)...');
+  console.info('[AIClient] Attempting primary LLM (Gemini)...');
   const geminiRes = await callGemini(systemPrompt, userPrompt, options);
   if (geminiRes) return geminiRes;
 
-  console.log('[AIClient] Falling back to secondary LLM (Fireworks)...');
+  console.info('[AIClient] Falling back to secondary LLM (Fireworks)...');
   const fwRes = await callFireworksChat(systemPrompt, userPrompt, options);
   if (fwRes) return fwRes;
 

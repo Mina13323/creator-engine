@@ -28,7 +28,7 @@ async function callN8n<T>(workflowPath: string, payload: any): Promise<N8nWebhoo
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    console.log(`[Agents] Calling n8n webhook: ${url}`);
+    console.info(`[Agents] Calling n8n webhook: ${url}`);
     const response = await fetch(url, {
       method: 'POST',
       headers,
@@ -96,7 +96,7 @@ export async function runFounderAgent(
     return result.data;
   }
   
-  console.log('[FounderAgent] n8n unavailable — calling Fireworks LLM directly...');
+  console.info('[FounderAgent] n8n unavailable — calling Fireworks LLM directly...');
   const systemPrompt = `You are an expert startup founder analyst. Output ONLY valid JSON matching this schema:
 {
   "founderType": "String",
@@ -138,7 +138,7 @@ export async function runOpportunityAgent(
     return result.data;
   }
 
-  console.log('[OpportunityAgent] n8n unavailable — calling Fireworks LLM directly...');
+  console.info('[OpportunityAgent] n8n unavailable — calling Fireworks LLM directly...');
   const systemPrompt = `You are an expert startup opportunity generator. Based on the founder's profile, generate 2-3 tailored business opportunities.
 Output ONLY a JSON object containing an "opportunities" array. Example schema:
 {
@@ -167,7 +167,7 @@ ${contextStr ? '\nProject Context:\n' + contextStr : ''}`;
   });
 
   const parsed = parseLLMJson<any>(rawJson);
-  console.log('[OpportunityAgent] raw JSON returned:', rawJson);
+  console.info('[OpportunityAgent] raw JSON returned:', rawJson);
   
   if (parsed) {
     // If wrapped in an object like { "opportunities": [...] }
@@ -204,7 +204,7 @@ export async function runBusinessPlanAgent(
     return result.data;
   }
 
-  console.log('[BusinessPlanAgent] n8n unavailable — calling Fireworks LLM directly...');
+  console.info('[BusinessPlanAgent] n8n unavailable — calling Fireworks LLM directly...');
   const systemPrompt = `You are a strategic Business Plan Generator. Generate a comprehensive business plan based on the selected opportunity and founder profile.
 Output ONLY a JSON object.
 ${contextStr ? '\nProject Context:\n' + contextStr : ''}`;
@@ -323,7 +323,7 @@ export async function runFinancialAgent(
   const financialUrl = process.env.FINANCIAL_ENGINE_URL || 'https://anger-favorably-unburned.ngrok-free.dev/webhook/financial-engine';
   let result: any = null;
   try {
-    console.log('[FinancialAgent] Calling direct URL:', financialUrl);
+    console.info('[FinancialAgent] Calling direct URL:', financialUrl);
     let res = await fetch(financialUrl, {
       method: 'POST',
       headers: {
@@ -337,7 +337,7 @@ export async function runFinancialAgent(
 
     if (!res.ok && res.status === 404) {
       const testUrl = financialUrl.replace('/webhook/', '/webhook-test/');
-      console.log('[FinancialAgent] Received 404. Retrying with test URL:', testUrl);
+      console.info('[FinancialAgent] Received 404. Retrying with test URL:', testUrl);
       res = await fetch(testUrl, {
         method: 'POST',
         headers: {
@@ -365,7 +365,7 @@ export async function runFinancialAgent(
     return result.data;
   }
 
-  console.log('[FinancialAgent] n8n unavailable — calling Fireworks LLM directly...');
+  console.info('[FinancialAgent] n8n unavailable — calling Fireworks LLM directly...');
   const systemPrompt = `You are a startup financial modeler for the Egyptian market (values in EGP). Generate a realistic financial projection based on the business idea and model.
 Output ONLY a JSON object matching this exact schema:
 {
@@ -437,7 +437,7 @@ export async function runCofounderAgent(
   const ragDocs = await queryRAG(message, 3);
   const ragContext = ragDocs.map((doc: any) => `[${doc.title}]\n${doc.content}`).join('\n\n');
 
-  console.log('[Agents] Falling back to direct LLM fetch...');
+  console.info('[Agents] Falling back to direct LLM fetch...');
   const systemPrompt = `You are the Principal AI Consultant and Cofounder. You are actively building the user's startup. 
 Use the following context to provide tailored advice.
 
@@ -489,12 +489,12 @@ export async function runBrandingAgent(
   });
 
   if (n8nResult && n8nResult.success) {
-    console.log('[BrandingAgent] n8n workflow succeeded.');
+    console.info('[BrandingAgent] n8n workflow succeeded.');
     return n8nResult.data;
   }
 
   // ── 2. Query RAG for branding context ──────────────────────────────────
-  console.log('[BrandingAgent] n8n unavailable — querying RAG and calling LLM directly...');
+  console.info('[BrandingAgent] n8n unavailable — querying RAG and calling LLM directly...');
   const ragDocs = await queryRAG('branding case studies brand identity brand story', 4);
   const ragContext = ragDocs
     .map((doc: any) => `[${doc.title}]\n${doc.content}`)
@@ -516,7 +516,7 @@ export async function runBrandingAgent(
 
   const parsed = parseLLMJson<any>(rawJson);
   if (parsed && parsed.brandName) {
-    console.log(`[BrandingAgent] LLM generated brand: "${parsed.brandName}"`);
+    console.info(`[BrandingAgent] LLM generated brand: "${parsed.brandName}"`);
     return parsed as Partial<BrandIdentity>;
   }
 
@@ -544,12 +544,12 @@ export async function runMarketingAgent(
   });
 
   if (n8nResult && n8nResult.success) {
-    console.log('[MarketingAgent] n8n workflow succeeded.');
+    console.info('[MarketingAgent] n8n workflow succeeded.');
     return n8nResult.data;
   }
 
   // ── 2. Query RAG for marketing campaign examples ────────────────────────
-  console.log('[MarketingAgent] n8n unavailable — querying RAG and calling LLM directly...');
+  console.info('[MarketingAgent] n8n unavailable — querying RAG and calling LLM directly...');
   const ragDocs = await queryRAG(
     'marketing campaign launch strategy social media Instagram WhatsApp B2B outreach',
     4
@@ -575,7 +575,7 @@ export async function runMarketingAgent(
 
   const parsed = parseLLMJson<any>(rawJson);
   if (parsed && parsed.marketingPlan) {
-    console.log('[MarketingAgent] LLM generated marketing campaign successfully.');
+    console.info('[MarketingAgent] LLM generated marketing campaign successfully.');
     return parsed as Partial<MarketingCampaign>;
   }
 
@@ -603,12 +603,12 @@ export async function runPitchAgent(
   });
 
   if (n8nResult && n8nResult.success) {
-    console.log('[PitchAgent] n8n workflow succeeded.');
+    console.info('[PitchAgent] n8n workflow succeeded.');
     return n8nResult.data;
   }
 
   // ── 2. Query RAG for pitch deck examples ───────────────────────────────
-  console.log('[PitchAgent] n8n unavailable — querying RAG and calling LLM directly...');
+  console.info('[PitchAgent] n8n unavailable — querying RAG and calling LLM directly...');
   const ragDocs = await queryRAG(
     'startup pitch deck investor summary elevator pitch narrative arc funding',
     4
@@ -634,7 +634,7 @@ export async function runPitchAgent(
 
   const parsed = parseLLMJson<any>(rawJson);
   if (parsed && parsed.startupPitch) {
-    console.log('[PitchAgent] LLM generated pitch deck successfully.');
+    console.info('[PitchAgent] LLM generated pitch deck successfully.');
     return parsed as Partial<PitchDeck>;
   }
 

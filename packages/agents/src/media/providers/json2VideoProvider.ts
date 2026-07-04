@@ -80,7 +80,7 @@ export class JSON2VideoProvider implements VideoProvider {
     }
 
     const { project } = await res.json();
-    console.log("[JSON2Video] Project ID:", project);
+    console.info("[JSON2Video] Project ID:", project);
 
     // Poll for the result
     while (true) {

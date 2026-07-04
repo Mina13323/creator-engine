@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import React, { useState } from 'react';
@@ -147,7 +146,7 @@ export default function BrandingPanel() {
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2 mb-4">
-                {brandIdentity.brandPersonality?.map((trait, index) => (
+                {brandIdentity.brandPersonality?.map((trait: string, index: number) => (
                   <span
                     key={index}
                     className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[#F8FAFD] text-gray-700 border border-[rgba(60,64,67,0.12)]"
@@ -173,10 +172,10 @@ export default function BrandingPanel() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-[#e6f4ea] border border-[#ceead6] rounded-xl p-5">
                   <div className="text-xs font-bold text-[#137333] uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <Check className="w-4 h-4" /> Do's
+                    <Check className="w-4 h-4" /> Do&apos;s
                   </div>
                   <ul className="text-gray-700 text-sm space-y-2">
-                    {brandIdentity.brandVoice.dos?.map((item, i) => (
+                    {brandIdentity.brandVoice.dos?.map((item: string, i: number) => (
                       <li key={i} className="flex items-start gap-2">
                         <span className="text-[#34A853] mt-0.5 select-none">•</span>
                         <span>{item}</span>
@@ -186,10 +185,10 @@ export default function BrandingPanel() {
                 </div>
                 <div className="bg-[#fce8e6] border border-[#fad2cf] rounded-xl p-5">
                   <div className="text-xs font-bold text-[#c5221f] uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <X className="w-4 h-4" /> Don'ts
+                    <X className="w-4 h-4" /> Don&apos;ts
                   </div>
                   <ul className="text-gray-700 text-sm space-y-2">
-                    {brandIdentity.brandVoice.donts?.map((item, i) => (
+                    {brandIdentity.brandVoice.donts?.map((item: string, i: number) => (
                       <li key={i} className="flex items-start gap-2">
                         <span className="text-[#EA4335] mt-0.5 select-none">•</span>
                         <span>{item}</span>

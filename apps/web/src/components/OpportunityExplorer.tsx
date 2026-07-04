@@ -136,7 +136,7 @@ export default function OpportunityExplorer() {
                         <Trophy className="w-3.5 h-3.5" />
                         Opportunity Score
                       </div>
-                      <span className="font-bold text-[#1A73E8] bg-blue-50 px-2 py-0.5 rounded-md">{opp.score}/100</span>
+                      <span className="font-bold text-[#1A73E8] bg-blue-50 px-2 py-0.5 rounded-md">{(opp as any).score}/100</span>
                     </div>
                     
                     <div className="flex items-center justify-between">
@@ -152,7 +152,7 @@ export default function OpportunityExplorer() {
                         <TrendingUp className="w-3.5 h-3.5" />
                         Market Demand
                       </div>
-                      <span className="font-semibold text-gray-900 text-sm capitalize">{opp.marketDemand}</span>
+                      <span className="font-semibold text-gray-900 text-sm capitalize">{(opp as any).marketDemand}</span>
                     </div>
                   </div>
                   

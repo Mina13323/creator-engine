@@ -248,7 +248,7 @@ export default function Dashboard() {
   const progress = [
     { label: 'Founder Analysis', percent: 100 },
     { label: 'Business Plan', percent: ventureState.businessPlan ? 100 : 0 },
-    { label: 'Marketing Assets', percent: ventureState.marketingCampaign ? 100 : 0 },
+    { label: 'Marketing Assets', percent: (ventureState as any).marketingCampaign ? 100 : 0 },
   ];
 
   return (
@@ -260,10 +260,10 @@ export default function Dashboard() {
 
       {/* METRICS ROW */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <MetricCard title="Opportunities Found" value={ventureState.opportunities?.length || 0} icon={Search} delay={0.1} />
+        <MetricCard title="Opportunities Found" value={(ventureState as any).opportunities?.length || 0} icon={Search} delay={0.1} />
         <MetricCard title="AI Documents" value={ventureState.businessPlan ? 2 : 1} icon={FileText} delay={0.2} />
-        <MetricCard title="Credits Used" value={user?.creditsUsed || 0} icon={Target} delay={0.3} />
-        <MetricCard title="Generated Assets" value={ventureState.marketingCampaign ? 3 : 0} icon={Megaphone} delay={0.4} />
+        <MetricCard title="Credits Used" value={(user as any)?.creditsUsed || 0} icon={Target} delay={0.3} />
+        <MetricCard title="Generated Assets" value={(ventureState as any).marketingCampaign ? 3 : 0} icon={Megaphone} delay={0.4} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -312,7 +312,7 @@ export default function Dashboard() {
             />
             <AgentCard 
               name="Opportunity Agent"
-              status={ventureState.opportunities?.length ? 'Completed' : 'Ready'}
+              status={(ventureState as any).opportunities?.length ? 'Completed' : 'Ready'}
               inputs={['Founder Profile']}
               outputs={['Market Opportunities']}
               isLoading={loading}
@@ -332,7 +332,7 @@ export default function Dashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {!ventureState.opportunities?.length ? (
+              {!(ventureState as any).opportunities?.length ? (
                 <div className="p-3 bg-white rounded-xl shadow-sm border border-blue-50 text-sm flex items-start gap-3 cursor-pointer hover:border-blue-200" onClick={() => discoverOpportunities(currentProject.id)}>
                   <Search className="w-5 h-5 text-[#1A73E8] mt-0.5" />
                   <div>

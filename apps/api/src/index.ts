@@ -834,7 +834,7 @@ app.post('/api/projects/:projectId/documents/upload', authMiddleware, requireCre
     // We wrap it in trackAgentRun to track it.
     await trackAgentRun(userId, projectId, 'document-processing', { documentId, storageUrl }, async () => {
       // Simulate n8n trigger
-      console.log(`[Webhook] Triggering n8n processing for doc ${documentId}`);
+      console.info(`[Webhook] Triggering n8n processing for doc ${documentId}`);
       uploadedDoc.processingStatus = 'processing';
       await uploadedDoc.save();
       // Assume completed later...
@@ -936,5 +936,5 @@ app.post('/api/branding/generate', authMiddleware, requireCredits(CREDIT_COSTS.B
 
 
 app.listen(PORT, () => {
-  console.log(`Creator Engine backend running on http://localhost:${PORT}`);
+  console.info(`Creator Engine backend running on http://localhost:${PORT}`);
 });

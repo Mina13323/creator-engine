@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     try {
       const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL || 'https://anger-favorably-unburned.ngrok-free.dev/webhook/financial-engine';
 
-      console.log('[FinancialEngine] Calling webhook:', n8nWebhookUrl);
+      console.info('[FinancialEngine] Calling webhook:', n8nWebhookUrl);
       let n8nResponse = await fetch(n8nWebhookUrl, {
         method: 'POST',
         headers: {
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
         // If it returned 404, n8n might not be active and is waiting for a test execution via /webhook-test/
         if (n8nResponse.status === 404) {
           const testWebhookUrl = n8nWebhookUrl.replace('/webhook/', '/webhook-test/');
-          console.log('[FinancialEngine] Webhook returned 404. Retrying with test webhook:', testWebhookUrl);
+          console.info('[FinancialEngine] Webhook returned 404. Retrying with test webhook:', testWebhookUrl);
           n8nResponse = await fetch(testWebhookUrl, {
             method: 'POST',
             headers: {

@@ -31,7 +31,7 @@ export async function connectDB(url: string) {
   if (mongoose.connection.readyState >= 1) return;
   try {
     await mongoose.connect(cleanUrl);
-    console.log('MongoDB connected successfully');
+    console.info('MongoDB connected successfully');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
     throw error;
@@ -509,7 +509,7 @@ const VentureStateSchema = new Schema<VentureState & Document>(
 );
 
 // 10. Agent Run Model
-const AgentRunSchema = new Schema<AgentRun & Document>(
+const AgentRunSchema = new Schema(
   {
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },

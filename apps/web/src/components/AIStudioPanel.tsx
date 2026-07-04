@@ -213,6 +213,7 @@ export default function AIStudioPanel() {
                 <motion.div variants={fadeInUp} className="pt-8 border-t border-slate-200">
                   <h3 className="text-sm font-bold text-slate-800 mb-4">Generated Result</h3>
                   <div className="relative group rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 aspect-[16/9] md:aspect-[21/9]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
                       src={generatedImageUrl} 
                       alt="Generated AI asset" 
@@ -273,6 +274,7 @@ export default function AIStudioPanel() {
                 {[1, 2, 3].map((item) => (
                   <motion.div variants={fadeInUp} key={item} className="group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all">
                     <div className="aspect-square bg-slate-100 relative">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img 
                         src={`https://images.unsplash.com/photo-${1618005182384 + item}-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop`} 
                         alt="Saved asset placeholder" 

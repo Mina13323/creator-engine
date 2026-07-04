@@ -284,7 +284,7 @@ export default function SettingsPage() {
                   Maintenance Window Mode
                   {maintenance && <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-ping" />}
                 </label>
-                <p className="text-[10px] text-slate-400 leading-relaxed">Renders a "Scheduled System Maintenance" banner, disabling database creation queries.</p>
+                <p className="text-[10px] text-slate-400 leading-relaxed">Renders a &quot;Scheduled System Maintenance&quot; banner, disabling database creation queries.</p>
               </div>
               <button 
                 onClick={() => setMaintenance(!maintenance)}
