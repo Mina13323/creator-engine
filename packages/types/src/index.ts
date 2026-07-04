@@ -552,6 +552,9 @@ export interface AgentRun {
   input: any;
   output?: any;
   error?: string;
+  promptTokens?: number;
+  completionTokens?: number;
+  totalTokens?: number;
   createdAt: Date;
 }
 

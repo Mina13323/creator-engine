@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "apps/web/package.json": {
-    "mtime": 1782649837.7929902,
-    "ast_hash": "bc8a9d9a3686e320238d05ef843540e6",
+    "mtime": 1782649537.4103503,
+    "ast_hash": "4a2da3cde4ba40c8381864c97b3ffa6a",
     "semantic_hash": ""
   },
   "apps/web/postcss.config.js": {

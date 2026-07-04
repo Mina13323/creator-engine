@@ -1,11 +1,11 @@
 # Graph Report - creator-engine  (2026-06-28)
 
 ## Corpus Check
-- 195 files · ~207,318 words
+- 195 files · ~207,314 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1559 nodes · 1955 edges · 148 communities (114 shown, 34 thin omitted)
+- 1557 nodes · 1953 edges · 146 communities (113 shown, 33 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 28 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
 
@@ -132,8 +132,6 @@
 - [[_COMMUNITY_Community 143|Community 143]]
 - [[_COMMUNITY_Community 144|Community 144]]
 - [[_COMMUNITY_Community 145|Community 145]]
-- [[_COMMUNITY_Community 146|Community 146]]
-- [[_COMMUNITY_Community 147|Community 147]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `useStore` - 51 edges
@@ -150,14 +148,14 @@
 ## Surprising Connections (you probably didn't know these)
 - `GET()` --calls--> `connectDB()`  [INFERRED]
   apps/web/src/app/api/financials/[projectId]/route.ts → packages/database/src/index.ts
-- `POST()` --calls--> `generateFinancialPrediction()`  [INFERRED]
-  apps/web/src/app/api/predictFinances/route.ts → packages/rag-core/src/ragService.ts
 - `POST()` --calls--> `connectDB()`  [INFERRED]
   apps/web/src/app/api/financial-engine/route.ts → packages/database/src/index.ts
 - `POST()` --calls--> `callFireworksImage()`  [INFERRED]
   apps/web/src/app/api/generate-image/route.ts → packages/agents/src/aiClient.ts
 - `POST()` --calls--> `connectDB()`  [INFERRED]
   apps/web/src/app/api/predictFinances/route.ts → packages/database/src/index.ts
+- `POST()` --calls--> `generateFinancialPrediction()`  [INFERRED]
+  apps/web/src/app/api/predictFinances/route.ts → packages/rag-core/src/ragService.ts
 
 ## Import Cycles
 - 1-file cycle: `apps/api/src/index.ts -> apps/api/src/index.ts`
@@ -171,19 +169,19 @@
 - **Financial Engine Pipeline** — n8n_workflows_financial_agents_guide_webhook, n8n_workflows_financial_agents_guide_vector_search, n8n_workflows_financial_agents_guide_openai, n8n_workflows_financial_agents_guide_code_node [EXTRACTED 0.95]
 - **Graphify Core Pipeline** — graphify_skill_detect, graphify_skill_extract, graphify_skill_cluster, graphify_skill_analyze, graphify_skill_report [EXTRACTED 1.00]
 
-## Communities (148 total, 34 thin omitted)
+## Communities (146 total, 33 thin omitted)
 
 ### Community 0 - "Components Authclient Select Module"
-Cohesion: 0.06
-Nodes (52): AdminSidebar(), CommandPalette(), AdminLayout(), AppPage(), PROTECTED_TABS, AccountDetails(), AccountProfile, AIConsultantDashboard() (+44 more)
+Cohesion: 0.10
+Nodes (23): AdminSidebar(), AdminLayout(), AppPage(), PROTECTED_TABS, AccountDetails(), AccountProfile, AIConsultantDashboard(), AuthModal() (+15 more)
 
 ### Community 1 - "Index Packages Database Module"
 Cohesion: 0.04
-Nodes (46): KnowledgeDocument, AdminSettings, AdminSettingsSchema, AgentRunSchema, BrandIdentitySchema, BusinessIdeaSchema, BusinessModelSchema, BusinessOpportunitySchema (+38 more)
+Nodes (48): KnowledgeDocument, AdminSettings, AdminSettingsSchema, AgentRunSchema, BrandIdentitySchema, BusinessIdeaSchema, BusinessModelSchema, BusinessOpportunitySchema (+40 more)
 
 ### Community 2 - "Package Dependencies Devdependencies Module"
-Cohesion: 0.05
-Nodes (42): dependencies, @base-ui/react, class-variance-authority, clsx, @creator/rag-core, @creator/types, framer-motion, lucide-react (+34 more)
+Cohesion: 0.06
+Nodes (40): dependencies, @base-ui/react, class-variance-authority, clsx, @creator/rag-core, @creator/types, framer-motion, lucide-react (+32 more)
 
 ### Community 3 - "Package Dependencies Devdependencies Module"
 Cohesion: 0.05
@@ -194,8 +192,8 @@ Cohesion: 0.33
 Nodes (4): Code B: Deterministic Financial Forecasting (Code Node), n8n Financial Engine Workflow Specification, Prompt A: OpenAI System Prompt, Workflow Architecture (Nodes)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.13
-Nodes (15): ModerationFeed(), TrafficChart(), AdminDashboardPage(), DashboardExtendedData, FlaggedCategory, ModerationEvent, ModerationStats, TrafficData (+7 more)
+Cohesion: 0.21
+Nodes (10): router, addCredits(), CREDIT_COSTS, deductCredits(), getUserCredits(), hasEnoughCredits(), authMiddleware(), requireCredits() (+2 more)
 
 ### Community 6 - "Package Dependencies Scripts Module"
 Cohesion: 0.04
@@ -214,8 +212,8 @@ Cohesion: 0.10
 Nodes (19): AgentRun, AgentRunSchema, BusinessPlan, BusinessPlanSchema, FounderProfile, FounderProfileSchema, fs, jwt (+11 more)
 
 ### Community 10 - "Components Marketingstudio Apiclient Module"
-Cohesion: 0.23
-Nodes (15): DashboardObservability(), DashboardObservabilityProps, KPICardsRow(), RevenueAnalytics(), RevenueAnalyticsProps, VentureFunnel(), VentureFunnelProps, TrafficChart (+7 more)
+Cohesion: 0.08
+Nodes (43): DashboardObservability(), DashboardObservabilityProps, KPICardsRow(), ModerationFeed(), RevenueAnalytics(), RevenueAnalyticsProps, TrafficChart(), VentureFunnel() (+35 more)
 
 ### Community 11 - "Turbo Package Devdependencies Module"
 Cohesion: 0.13
@@ -227,11 +225,11 @@ Nodes (44): analyze, cluster, detect, extract, For /graphify add and --watch, Fo
 
 ### Community 13 - "Index Packages Types Module"
 Cohesion: 0.07
-Nodes (28): AgentRun, BillingPlan, BrandIdentity, BusinessIdea, BusinessModel, BusinessOpportunity, BusinessValidation, ChatMessage (+20 more)
+Nodes (26): AgentRun, BillingPlan, BrandIdentity, BusinessIdea, BusinessModel, BusinessValidation, ChatMessage, CompetitorAnalysis (+18 more)
 
 ### Community 14 - "Landingpage Components Concept Module"
-Cohesion: 0.12
-Nodes (9): Multi-Agent System, RAG Architecture, faqItems, formationItems, LandingPage(), LandingPageProps, logoMarks, reveal (+1 more)
+Cohesion: 0.11
+Nodes (10): CofounderChat(), Multi-Agent System, RAG Architecture, faqItems, formationItems, LandingPage(), LandingPageProps, logoMarks (+2 more)
 
 ### Community 15 - "Tsconfig Compileroptions Allowjs Module"
 Cohesion: 0.12
@@ -254,8 +252,8 @@ Cohesion: 0.17
 Nodes (15): dependencies, @creator/prompts, @creator/rag-core, @creator/types, @google/generative-ai, devDependencies, @types/node, typescript (+7 more)
 
 ### Community 20 - "Index Apps Authmiddleware Module"
-Cohesion: 0.24
-Nodes (13): Onboarding(), cn(), Input(), SelectContent(), SelectGroup(), SelectItem(), SelectLabel(), SelectScrollDownButton() (+5 more)
+Cohesion: 0.22
+Nodes (4): registerLockdownHandlers(), registerMaintenanceHandlers(), router, adminMiddleware()
 
 ### Community 21 - "Workflows Opportunity Ranking Module"
 Cohesion: 0.09
@@ -430,8 +428,8 @@ Cohesion: 0.22
 Nodes (8): 1. Implementation of `express-rate-limit`, 2. Zod Environment Validation & Fallback Removal, 3. Secure n8n Webhooks & Secret Management, 4. Security Regression Tests, Objectives Met, Overview, Readiness Score, Security Hardening Audit & Implementation Report
 
 ### Community 99 - "Community 99"
-Cohesion: 0.08
-Nodes (25): registerLockdownHandlers(), registerMaintenanceHandlers(), router, router, addCredits(), CREDIT_COSTS, deductCredits(), getUserCredits() (+17 more)
+Cohesion: 0.12
+Nodes (11): app, authMiddleware(), AuthResponse, AuthUser, BusinessPlan, FounderProfile, googleClient, LoginRequest (+3 more)
 
 ### Community 100 - "Community 100"
 Cohesion: 0.29
@@ -474,8 +472,8 @@ Cohesion: 0.50
 Nodes (3): Creator Engine - CI/CD Architecture, Strict Rules, Workflow Overview (`.github/workflows/ci.yml`)
 
 ### Community 129 - "Community 129"
-Cohesion: 0.36
-Nodes (12): testAgents(), callFireworksChat(), callLLMWithFallback(), parseLLMJson(), runBrandingAgent(), runBusinessPlanAgent(), runCofounderAgent(), runFinancialAgent() (+4 more)
+Cohesion: 0.40
+Nodes (4): OpportunityExplorer(), cardReveal, modalTransition, Checkbox
 
 ### Community 132 - "Community 132"
 Cohesion: 0.07
@@ -490,16 +488,16 @@ Cohesion: 0.15
 Nodes (12): computedHash, skillPath, source, sourceType, computedHash, skillPath, source, sourceType (+4 more)
 
 ### Community 140 - "Community 140"
-Cohesion: 0.24
-Nodes (8): POST(), AIClientOptions, AIError, callFireworksImage(), callGemini(), delay(), fetchWithRetry(), fetchMock
+Cohesion: 0.14
+Nodes (21): AIStudioPanel(), StudioTab, COLORS, chartReveal, fadeIn, fadeInUp, floatingAnimation, hoverGlow (+13 more)
 
 ### Community 141 - "Community 141"
-Cohesion: 0.17
-Nodes (12): POST(), POST(), PredictPayloadSchema, GET(), run(), main(), runTest(), connectDB() (+4 more)
+Cohesion: 0.07
+Nodes (39): POST(), POST(), KnowledgeDocument, POST(), PredictPayloadSchema, GET(), run(), testAgents() (+31 more)
 
 ### Community 142 - "Community 142"
-Cohesion: 0.13
-Nodes (12): CommandPaletteProps, adminClient, PlanScheme, SCHEME_CYCLE, SCHEMES, SLUG_SCHEME, SubscriptionPlan, CreatorInfo (+4 more)
+Cohesion: 0.11
+Nodes (15): CommandPalette(), CommandPaletteProps, Dashboard(), adminClient, authClient, PlanScheme, SCHEME_CYCLE, SCHEMES (+7 more)
 
 ### Community 143 - "Community 143"
 Cohesion: 0.13
@@ -509,29 +507,25 @@ Nodes (14): createdAt, worktreeId, sessions, ses_0f58b6744ffe90nXao4EuycvSa, tab
 Cohesion: 0.32
 Nodes (11): checkEmail(), del(), get(), getMe(), googleLogin(), login(), logout(), post() (+3 more)
 
-### Community 146 - "Community 146"
-Cohesion: 0.29
-Nodes (5): KnowledgeDocument, KNOWLEDGE_BASE, queryRAG(), callLLM(), generateFinancialPrediction()
-
 ## Knowledge Gaps
-- **777 isolated node(s):** `PreToolUse`, `branch`, `path`, `parentBranch`, `createdAt` (+772 more)
+- **775 isolated node(s):** `PreToolUse`, `branch`, `path`, `parentBranch`, `createdAt` (+770 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **34 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **33 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useStore` connect `Components Authclient Select Module` to `Index Apps Authmiddleware Module`, `Community 142`?**
+- **Why does `useStore` connect `Components Authclient Select Module` to `Community 129`, `Components Marketingstudio Apiclient Module`, `Community 140`, `Community 142`, `Landingpage Components Concept Module`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **Why does `connectDB()` connect `Community 141` to `Index Packages Database Module`, `Community 99`?**
   _High betweenness centrality (0.003) - this node is a cross-community bridge._
-- **Why does `Button()` connect `Community 142` to `Components Authclient Select Module`, `Components Marketingstudio Apiclient Module`, `Index Apps Authmiddleware Module`, `Community 5`?**
+- **Why does `Button()` connect `Community 142` to `Components Authclient Select Module`, `Community 129`, `Components Marketingstudio Apiclient Module`, `Community 140`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `PreToolUse`, `branch`, `path` to the rest of the system?**
-  _778 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _776 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Components Authclient Select Module` be split into smaller, more focused modules?**
-  _Cohesion score 0.06234177215189873 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10241820768136557 - nodes in this community are weakly interconnected._
 - **Should `Index Packages Database Module` be split into smaller, more focused modules?**
-  _Cohesion score 0.043478260869565216 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.04251700680272109 - nodes in this community are weakly interconnected._
 - **Should `Package Dependencies Devdependencies Module` be split into smaller, more focused modules?**
-  _Cohesion score 0.05454545454545454 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05758582502768549 - nodes in this community are weakly interconnected._

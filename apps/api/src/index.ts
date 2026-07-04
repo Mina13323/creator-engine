@@ -21,7 +21,7 @@ import {
   AgentRunModel, 
   UploadedDocumentModel 
 } from '@creator/database';
-import adminRouter, { registerLockdownHandlers } from './routes/admin';
+import adminRouter, { registerLockdownHandlers, registerMaintenanceHandlers } from './routes/admin';
 import paymentsRouter from './routes/payments';
 import marketingStudioRouter from './routes/marketingStudio';
 import uploadRouter from './routes/upload';
@@ -53,6 +53,12 @@ let lockdownActive = false;
 registerLockdownHandlers(
   () => lockdownActive,
   (v) => { lockdownActive = v; }
+);
+
+let maintenanceActive = false;
+registerMaintenanceHandlers(
+  () => maintenanceActive,
+  (v) => { maintenanceActive = v; }
 );
 
 if (MONGO_URL) {
@@ -137,6 +143,14 @@ function toAuthUser(user: any): AuthUser {
 // Base health check
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', database: dbConnected ? 'connected' : 'offline' });
+});
+
+// Public System Status endpoint (accessible to guest users)
+app.get('/api/system/status', (req: Request, res: Response) => {
+  res.json({
+    lockdown: lockdownActive,
+    maintenance: maintenanceActive
+  });
 });
 
 
@@ -395,6 +409,9 @@ async function trackAgentRun(
   action: () => Promise<any>,
   aiModel?: string
 ) {
+  if (maintenanceActive) {
+    throw new Error('System is under scheduled maintenance. AI workflows are temporarily suspended.');
+  }
   if (!dbConnected) return await action();
   
   const run = new AgentRunModel({
@@ -410,12 +427,22 @@ async function trackAgentRun(
   });
   await run.save();
 
+  const inputStr = typeof input === 'string' ? input : JSON.stringify(input || '');
+  const promptTokens = Math.max(50, Math.ceil(inputStr.length / 4.1)); // Standard character to token ratio
+
   try {
     const result = await action();
     run.status = 'success';
     run.completedAt = new Date();
     run.durationMs = run.completedAt.getTime() - run.startedAt.getTime();
     run.output = result;
+    
+    const outputStr = typeof result === 'string' ? result : JSON.stringify(result || '');
+    const completionTokens = Math.max(50, Math.ceil(outputStr.length / 4.1));
+    run.promptTokens = promptTokens;
+    run.completionTokens = completionTokens;
+    run.totalTokens = promptTokens + completionTokens;
+    
     await run.save();
     return result;
   } catch (error: any) {
@@ -423,6 +450,11 @@ async function trackAgentRun(
     run.completedAt = new Date();
     run.durationMs = run.completedAt.getTime() - run.startedAt.getTime();
     run.error = error.message;
+    
+    run.promptTokens = promptTokens;
+    run.completionTokens = 0;
+    run.totalTokens = promptTokens;
+    
     await run.save();
     throw error;
   }
@@ -431,6 +463,9 @@ async function trackAgentRun(
 // 0. Create Project (Decoupled)
 app.post('/api/projects', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
+    if (maintenanceActive) {
+      return res.status(503).json({ error: 'System is currently under maintenance. New project creations are temporarily suspended.' });
+    }
     const userId = (req as any).user.id;
     const { name } = req.body;
     

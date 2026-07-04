@@ -13,20 +13,41 @@ export async function POST(req: Request) {
 
     // In a real environment, this calls the n8n webhook which processes the RAG & Gemini nodes
     try {
-      const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
-      
-      if (!n8nWebhookUrl) {
-        throw new Error('N8N_WEBHOOK_URL is not configured in environment variables');
-      }
+      const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL || 'https://anger-favorably-unburned.ngrok-free.dev/webhook/financial-engine';
 
-      const n8nResponse = await fetch(n8nWebhookUrl, {
+      console.log('[FinancialEngine] Calling webhook:', n8nWebhookUrl);
+      let n8nResponse = await fetch(n8nWebhookUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ businessIdea, businessModel }),
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+          'User-Agent': 'CreatorEngine/1.0'
+        },
+        body: JSON.stringify({ projectId, businessIdea, businessModel }),
+        signal: AbortSignal.timeout(30000),
       });
 
       if (!n8nResponse.ok) {
-        throw new Error(`n8n webhook failed with status ${n8nResponse.status}`);
+        // If it returned 404, n8n might not be active and is waiting for a test execution via /webhook-test/
+        if (n8nResponse.status === 404) {
+          const testWebhookUrl = n8nWebhookUrl.replace('/webhook/', '/webhook-test/');
+          console.log('[FinancialEngine] Webhook returned 404. Retrying with test webhook:', testWebhookUrl);
+          n8nResponse = await fetch(testWebhookUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': 'true',
+              'User-Agent': 'CreatorEngine/1.0'
+            },
+            body: JSON.stringify({ projectId, businessIdea, businessModel }),
+            signal: AbortSignal.timeout(30000),
+          });
+        }
+      }
+
+      if (!n8nResponse.ok) {
+        const errBody = await n8nResponse.text().catch(() => '');
+        throw new Error(`Webhook returned status ${n8nResponse.status}: ${errBody.slice(0, 300)}`);
       }
 
       resultData = await n8nResponse.json();

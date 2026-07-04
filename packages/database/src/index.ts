@@ -27,9 +27,10 @@ import {
 
 // MongoDB Connection
 export async function connectDB(url: string) {
+  const cleanUrl = url.replace(/^["']|["']$/g, '');
   if (mongoose.connection.readyState >= 1) return;
   try {
-    await mongoose.connect(url);
+    await mongoose.connect(cleanUrl);
     console.log('MongoDB connected successfully');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
@@ -62,6 +63,8 @@ const UserSchema = new Schema<UserDocument & Document>(
   },
   { timestamps: true }
 );
+
+UserSchema.index({ createdAt: -1 });
 
 // 0.5 Founder Profile Model
 const FounderProfileSchema = new Schema<FounderProfile & Document>(
@@ -108,6 +111,7 @@ const ProjectSchema = new Schema<Project & Document>(
 );
 
 ProjectSchema.index({ userId: 1, status: 1 });
+ProjectSchema.index({ createdAt: -1 });
 
 // 2. Business Idea Model (Legacy, kept per spec)
 const BusinessIdeaSchema = new Schema<BusinessIdea & Document>(
@@ -519,10 +523,15 @@ const AgentRunSchema = new Schema<AgentRun & Document>(
     durationMs: { type: Number },
     input: { type: Schema.Types.Mixed, required: true },
     output: { type: Schema.Types.Mixed },
-    error: { type: String }
+    error: { type: String },
+    promptTokens: { type: Number, default: 0 },
+    completionTokens: { type: Number, default: 0 },
+    totalTokens: { type: Number, default: 0 }
   },
   { timestamps: true }
 );
+
+AgentRunSchema.index({ createdAt: -1 });
 
 // 11. Uploaded Document Model
 const UploadedDocumentSchema = new Schema<UploadedDocument & Document>(
@@ -742,6 +751,8 @@ const UserSubscriptionSchema = new Schema<UserSubscription & Document>(
   { timestamps: true, collection: 'user_subscriptions' }
 );
 
+UserSubscriptionSchema.index({ userId: 1, status: 1 });
+
 const CreditWalletSchema = new Schema<CreditWallet & Document>(
   {
     userId: { type: String, required: true, index: true, unique: true },
@@ -775,6 +786,8 @@ const PaymentTransactionSchema = new Schema<PaymentTransaction & Document>(
   },
   { timestamps: true, collection: 'payment_transactions' }
 );
+
+PaymentTransactionSchema.index({ createdAt: -1 });
 
 const CreditPackSchema = new Schema<any & Document>(
   {
@@ -827,5 +840,36 @@ const MarketingStudioGenerationSchema = new Schema(
 );
 
 export const MarketingStudioGenerationModel = mongoose.models.MarketingStudioGeneration || mongoose.model('MarketingStudioGeneration', MarketingStudioGenerationSchema);
+
+export interface AdminSettings {
+  key: string;
+  defaultModel: string;
+  aiTemperature: number;
+  maxTokensPerRun: number;
+  freeCredits: number;
+  maxProjects: number;
+  lockdown: boolean;
+  maintenance: boolean;
+  flagAlerts: boolean;
+  weeklyReports: boolean;
+}
+
+const AdminSettingsSchema = new Schema<AdminSettings & Document>(
+  {
+    key: { type: String, default: 'global_config', unique: true, index: true },
+    defaultModel: { type: String, default: 'deepseek-v4-flash' },
+    aiTemperature: { type: Number, default: 0.7 },
+    maxTokensPerRun: { type: Number, default: 150000 },
+    freeCredits: { type: Number, default: 50 },
+    maxProjects: { type: Number, default: 5 },
+    lockdown: { type: Boolean, default: false },
+    maintenance: { type: Boolean, default: false },
+    flagAlerts: { type: Boolean, default: true },
+    weeklyReports: { type: Boolean, default: false }
+  },
+  { timestamps: true, collection: 'admin_settings' }
+);
+
+export const AdminSettingsModel = mongoose.models.AdminSettings || mongoose.model<AdminSettings & Document>('AdminSettings', AdminSettingsSchema);
 
 export * from './services/projectContext';
