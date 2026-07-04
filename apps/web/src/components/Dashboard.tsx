@@ -363,7 +363,9 @@ export default function Dashboard() {
           <Card className="p-6 md:p-8 border-slate-200 shadow-sm rounded-xl bg-white space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-slate-800">Your Archetype</h3>
+                <div className="flex items-center gap-3">
+                  <h3 className="text-lg font-semibold text-slate-800">Your Archetype</h3>
+                </div>
                 <h2 className="text-3xl font-bold text-emerald-600 mt-2">{founderProfile.founderType || 'Visionary Hustler'}</h2>
               </div>
               <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center">

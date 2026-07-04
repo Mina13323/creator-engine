@@ -906,6 +906,107 @@ app.post('/api/image/generate', authMiddleware, requireCredits(CREDIT_COSTS.IMAG
   }
 });
 
+// Cache the ElevenLabs voice ID to avoid fetching it on every request
+let cachedElevenLabsVoiceId: string | null = null;
+
+async function getElevenLabsVoiceId(apiKey: string): Promise<string | null> {
+  if (cachedElevenLabsVoiceId) return cachedElevenLabsVoiceId;
+  try {
+    const res = await fetch('https://api.elevenlabs.io/v1/voices', {
+      headers: { 'xi-api-key': apiKey }
+    });
+    if (!res.ok) return null;
+    const data: any = await res.json();
+    // Use first voice in the account (these are always accessible on free plans)
+    const voice = data?.voices?.[0];
+    if (voice?.voice_id) {
+      cachedElevenLabsVoiceId = voice.voice_id;
+      console.log(`Using ElevenLabs voice: ${voice.name} (${voice.voice_id})`);
+      return voice.voice_id;
+    }
+  } catch (e) {
+    console.error('Failed to fetch ElevenLabs voices:', e);
+  }
+  return null;
+}
+
+// TTS Proxy endpoint with ElevenLabs API & Google Translate auto-fallback
+app.get('/api/tts/proxy', async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { text, lang } = req.query;
+    if (!text) {
+      return res.status(400).json({ error: 'Missing text parameter' });
+    }
+    const targetLang = (lang as string) || 'ar';
+    const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY;
+
+    if (elevenLabsApiKey) {
+      try {
+        const voiceId = await getElevenLabsVoiceId(elevenLabsApiKey);
+        if (voiceId) {
+          const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'xi-api-key': elevenLabsApiKey
+            },
+            body: JSON.stringify({
+              text: text as string,
+              model_id: 'eleven_multilingual_v2',
+              voice_settings: {
+                stability: 0.5,
+                similarity_boost: 0.75
+              }
+            })
+          });
+
+          if (response.ok) {
+            const buffer = await response.arrayBuffer();
+            res.set({
+              'Content-Type': 'audio/mpeg',
+              'Content-Length': String(buffer.byteLength),
+              'Cache-Control': 'public, max-age=86400'
+            });
+            return res.send(Buffer.from(buffer));
+          } else {
+            const errBody = await response.text();
+            console.warn('ElevenLabs TTS failed, falling back to Google TTS:', errBody);
+            // Reset cached voice if it failed so we retry next time
+            cachedElevenLabsVoiceId = null;
+          }
+        }
+      } catch (elevenErr) {
+        console.error('ElevenLabs TTS error, falling back to Google TTS:', elevenErr);
+        cachedElevenLabsVoiceId = null;
+      }
+    }
+
+    // Google Translate TTS Fallback
+    const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${targetLang}&client=tw-ob&q=${encodeURIComponent(text as string)}`;
+    const response = await fetch(ttsUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      }
+    });
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: 'Google TTS request failed' });
+    }
+
+    const buffer = await response.arrayBuffer();
+    res.set({
+      'Content-Type': 'audio/mpeg',
+      'Content-Length': String(buffer.byteLength),
+      'Cache-Control': 'public, max-age=86400'
+    });
+
+    return res.send(Buffer.from(buffer));
+  } catch (err: any) {
+    console.error('TTS proxy error:', err);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Creator Engine backend running on http://localhost:${PORT}`);
 });

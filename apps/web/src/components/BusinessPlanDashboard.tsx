@@ -114,7 +114,9 @@ export default function BusinessPlanDashboard() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="col-span-1 md:col-span-2 p-8 border-0 shadow-xl shadow-slate-200/40 rounded-3xl bg-white/80 backdrop-blur-xl bg-gradient-to-br from-white to-purple-50/30">
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">{bp.executiveSummary?.startupName || 'Startup'}</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-2xl font-bold text-slate-900">{bp.executiveSummary?.startupName || 'Startup'}</h3>
+                </div>
                 <p className="text-lg text-purple-600 font-medium mb-6">{bp.executiveSummary?.valueProposition}</p>
                 <p className="text-slate-600 leading-relaxed mb-8">{bp.executiveSummary?.executiveSummary}</p>
                 
