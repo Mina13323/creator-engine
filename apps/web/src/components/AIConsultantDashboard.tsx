@@ -8,8 +8,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { fadeInUp, fadeIn, staggerContainer } from '../lib/motion-presets';
 import ReactMarkdown from 'react-markdown';
 import { SpeakButton } from './ui/SpeakButton';
+import { useI18n } from '../lib/i18n/I18nContext';
 
 export default function AIConsultantDashboard() {
+  const { t } = useI18n();
   const { chatMessages, sendChatMessage, clearChat, chatLoading, currentProject, conversations, setActiveConversation, loadConversations, activeConversationId } = useStore();
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -56,8 +58,8 @@ export default function AIConsultantDashboard() {
               <Brain className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-800">CEO Copilot</h1>
-              <p className="text-sm text-slate-500">Your dedicated startup mentor and strategist</p>
+              <h1 className="text-xl font-bold text-slate-800">{t('projectMemory.ceoCopilot')}</h1>
+              <p className="text-sm text-slate-500">{t('projectMemory.ceoCopilotDesc')}</p>
             </div>
           </div>
         </div>
@@ -70,39 +72,59 @@ export default function AIConsultantDashboard() {
           animate="animate"
         >
           {chatMessages.length === 0 ? (
-            <div className="h-full flex flex-col justify-center items-center text-center max-w-lg mx-auto">
-              <div className="w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center mb-6">
-                <Sparkles className="w-8 h-8 text-indigo-500" />
-              </div>
-              <h2 className="text-2xl font-bold text-slate-800 mb-2">How can I help you today?</h2>
-              <p className="text-slate-500 mb-8">
-                I can help you review your business plan, brainstorm marketing strategies, or act as a sounding board for your ideas.
-              </p>
-              
-              <div className="grid grid-cols-1 gap-3 w-full">
-                <button onClick={() => handleActionClick("Review my current business plan and suggest improvements")} className="p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-left flex items-start gap-3 group">
-                  <FileText className="w-5 h-5 text-indigo-400 mt-0.5 group-hover:text-indigo-600" />
-                  <div>
-                    <div className="font-semibold text-slate-700">Review Business Plan</div>
-                    <div className="text-sm text-slate-500">Analyze current strategy and find gaps</div>
-                  </div>
-                </button>
-                <button onClick={() => handleActionClick("What are the best marketing channels for my startup?")} className="p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-left flex items-start gap-3 group">
-                  <Megaphone className="w-5 h-5 text-indigo-400 mt-0.5 group-hover:text-indigo-600" />
-                  <div>
-                    <div className="font-semibold text-slate-700">Marketing Strategy</div>
-                    <div className="text-sm text-slate-500">Identify the highest ROI channels</div>
-                  </div>
-                </button>
-                <button onClick={() => handleActionClick("Draft a cold outreach email to potential investors")} className="p-4 rounded-xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 transition-colors text-left flex items-start gap-3 group">
-                  <Send className="w-5 h-5 text-indigo-400 mt-0.5 group-hover:text-indigo-600" />
-                  <div>
-                    <div className="font-semibold text-slate-700">Draft Investor Email</div>
-                    <div className="text-sm text-slate-500">Write a compelling cold outreach message</div>
-                  </div>
-                </button>
-              </div>
+            <div className="flex-1 flex flex-col items-center justify-center max-w-2xl mx-auto w-full text-center space-y-6">
+            <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center transform -rotate-6">
+              <Sparkles className="w-8 h-8" />
             </div>
+            
+            <div className="space-y-2">
+              <h2 className="text-2xl font-bold text-slate-800">{t('consultant.greeting')}</h2>
+              <p className="text-slate-500 max-w-lg">
+                {t('consultant.subtitle')}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 w-full gap-3 mt-8">
+              <button 
+                onClick={() => setInput('Review my business plan and suggest improvements.')}
+                className="p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-md transition-all text-left flex items-start gap-4 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-800">{t('consultant.reviewPlan')}</h3>
+                  <p className="text-sm text-slate-500">{t('consultant.reviewPlanDesc')}</p>
+                </div>
+              </button>
+
+              <button 
+                onClick={() => setInput('What are the best marketing channels for my business?')}
+                className="p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-md transition-all text-left flex items-start gap-4 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Megaphone className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-800">{t('consultant.marketingStrategy')}</h3>
+                  <p className="text-sm text-slate-500">{t('consultant.marketingStrategyDesc')}</p>
+                </div>
+              </button>
+
+              <button 
+                onClick={() => setInput('Draft a cold outreach email to a potential investor.')}
+                className="p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-md transition-all text-left flex items-start gap-4 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Send className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-800">{t('consultant.draftEmail')}</h3>
+                  <p className="text-sm text-slate-500">{t('consultant.draftEmailDesc')}</p>
+                </div>
+              </button>
+            </div>
+          </div>
           ) : (
             chatMessages.map((msg) => {
               if (!msg) return null;
@@ -186,7 +208,7 @@ export default function AIConsultantDashboard() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               disabled={chatLoading}
-              placeholder="Ask CEO Copilot anything..."
+              placeholder={t('projectMemory.askCopilot')}
               className="w-full pl-5 pr-14 py-4 rounded-full border border-slate-300 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 text-slate-700 placeholder-slate-400 shadow-sm transition-all"
             />
             <button
@@ -198,7 +220,7 @@ export default function AIConsultantDashboard() {
             </button>
           </form>
           <div className="text-center mt-2">
-             <span className="text-xs text-slate-400">CEO Copilot has full context of your venture and documents.</span>
+             <span className="text-xs text-slate-400">{t('projectMemory.fullContext')}</span>
           </div>
         </div>
       </div>
@@ -208,49 +230,49 @@ export default function AIConsultantDashboard() {
         <div className="p-5 border-b border-slate-200">
           <div className="flex items-center gap-2 text-slate-800 font-bold">
             <HistoryIcon className="w-5 h-5 text-indigo-500" />
-            Project Memory
+            {t('projectMemory.title')}
           </div>
-          <p className="text-xs text-slate-500 mt-1">Context actively used by AI</p>
+          <p className="text-xs text-slate-500 mt-1">{t('projectMemory.contextActivelyUsed')}</p>
         </div>
         
         <div className="flex-1 p-5 overflow-y-auto space-y-4">
           <div className="space-y-2">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Current Venture</h3>
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{t('projectMemory.currentVenture')}</h3>
             <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
               <div className="font-semibold text-sm text-slate-700">{currentProject.name}</div>
-              <div className="text-xs text-slate-500 mt-1 capitalize">{currentProject.industry} Industry</div>
+              <div className="text-xs text-slate-500 mt-1 capitalize">{currentProject.industry || t('projectMemory.unknownIndustry')}</div>
             </div>
           </div>
           
           <div className="space-y-2 mt-4">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Key Insights</h3>
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{t('projectMemory.keyInsights')}</h3>
             <div className="space-y-2">
               <div className="bg-indigo-50 border border-indigo-100 p-3 rounded-lg flex items-start gap-2">
                 <Lightbulb className="w-4 h-4 text-indigo-500 mt-0.5 flex-shrink-0" />
                 <p className="text-xs text-indigo-900">
-                  AI is optimizing responses for a Bootstrapped go-to-market strategy based on your profile.
+                  {t('projectMemory.insight1')}
                 </p>
               </div>
               <div className="bg-emerald-50 border border-emerald-100 p-3 rounded-lg flex items-start gap-2">
                 <Brain className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
                 <p className="text-xs text-emerald-900">
-                  Memory synchronized with latest Business Plan generation.
+                  {t('projectMemory.insight2')}
                 </p>
               </div>
             </div>
           </div>
           
           <div className="space-y-2 mt-4 flex-1 overflow-y-auto">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Recent Conversations</h3>
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{t('projectMemory.recentConversations')}</h3>
             <button
               onClick={() => clearChat()}
               className="w-full py-2 px-3 mb-3 bg-indigo-50 border border-indigo-200 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-semibold transition-colors shadow-sm"
             >
-              + Start New Session
+              {t('projectMemory.startNewSession')}
             </button>
             
             {conversations.length === 0 ? (
-              <p className="text-xs text-slate-500 italic">No previous chats.</p>
+              <p className="text-xs text-slate-500 italic">{t('projectMemory.noPreviousChats')}</p>
             ) : (
               <div className="space-y-2">
                 {conversations.map((conv, idx) => (

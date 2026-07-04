@@ -598,11 +598,10 @@ app.post('/api/opportunities/select', authMiddleware, async (req: Request, res: 
   }
 });
 
-// 4. Generate Business Plan
 app.post('/api/business-plan/generate', authMiddleware, requireCredits(CREDIT_COSTS.BUSINESS_PLAN), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
-    const { projectId } = req.body;
+    const { projectId, locale } = req.body;
     
     const selected = await SelectedOpportunityModel.findOne({ projectId, userId });
     if (!selected) return res.status(400).json({ error: 'No opportunity selected for this project' });
@@ -616,7 +615,7 @@ app.post('/api/business-plan/generate', authMiddleware, requireCredits(CREDIT_CO
       projectId,
       'business-plan',
       selected.toObject(),
-      () => runBusinessPlanAgent(projectId, selected.toObject(), founderProfile.toObject()),
+      () => runBusinessPlanAgent(projectId, selected.toObject(), founderProfile.toObject(), '', locale || 'en'),
       'deepseek-v4-flash'
     );
 

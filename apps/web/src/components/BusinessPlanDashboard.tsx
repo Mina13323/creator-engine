@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
+import { useI18n } from '../lib/i18n/I18nContext';
+import toast from 'react-hot-toast';
 import { AILoadingOverlay } from './ui/AILoadingOverlay';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -24,10 +26,87 @@ const COLORS = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#ec4899'
 
 export default function BusinessPlanDashboard() {
   const { currentProject, ventureState, generateBusinessPlan, loading, loadingMessage } = useStore();
+  const { locale } = useI18n();
   const [selectedSection, setSelectedSection] = useState<{title: string, content: React.ReactNode} | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [genLanguage, setGenLanguage] = useState(locale || 'en');
+  const [genModel, setGenModel] = useState('deepseek-v4-flash');
 
   const businessPlan = ventureState?.businessPlan as any;
   const selectedOpportunity = ventureState?.selectedOpportunity;
+
+  const handleShare = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(window.location.href);
+      toast.success(locale === 'ar' ? 'تم نسخ رابط المشاركة إلى الحافظة!' : 'Share link copied to clipboard!');
+    }
+  };
+
+  const handleExport = () => {
+    if (!businessPlan) return;
+    const bp = businessPlan;
+    const startupName = bp.executiveSummary?.startupName || 'Startup';
+    let md = `# Business Plan: ${startupName}\n\n`;
+    
+    if (bp.executiveSummary) {
+      md += `## 1. Executive Summary\n`;
+      md += `**Mission**: ${bp.executiveSummary.mission || ''}\n\n`;
+      md += `**Vision**: ${bp.executiveSummary.vision || ''}\n\n`;
+      md += `**Value Proposition**: ${bp.executiveSummary.valueProposition || ''}\n\n`;
+      md += `**Strategic Positioning**: ${bp.executiveSummary.strategicPositioning || ''}\n\n`;
+      md += `${bp.executiveSummary.executiveSummary || ''}\n\n`;
+    }
+    
+    if (bp.problemAndSolution) {
+      md += `## 2. Problem & Solution\n`;
+      md += `### The Problem\n${bp.problemAndSolution.problem || ''}\n\n`;
+      md += `### The Solution\n${bp.problemAndSolution.solution || ''}\n\n`;
+      md += `**Unfair Advantage**: ${bp.problemAndSolution.unfairAdvantage || ''}\n\n`;
+      if (bp.problemAndSolution.targetPainPoints?.length) {
+        md += `**Target Pain Points**:\n`;
+        bp.problemAndSolution.targetPainPoints.forEach((p: string) => { md += `- ${p}\n`; });
+        md += `\n`;
+      }
+      if (bp.problemAndSolution.uniqueAdvantages?.length) {
+        md += `**Unique Advantages**:\n`;
+        bp.problemAndSolution.uniqueAdvantages.forEach((a: string) => { md += `- ${a}\n`; });
+        md += `\n`;
+      }
+    }
+    
+    if (bp.businessModel) {
+      md += `## 3. Business Model\n`;
+      md += `**Pricing Strategy**: ${bp.businessModel.pricingStrategy || ''}\n\n`;
+      md += `**Acquisition Model**: ${bp.businessModel.acquisitionModel || ''}\n\n`;
+      md += `**Sales Model**: ${bp.businessModel.salesModel || ''}\n\n`;
+      if (bp.businessModel.revenueStreams?.length) {
+        md += `**Revenue Streams**:\n`;
+        bp.businessModel.revenueStreams.forEach((r: string) => { md += `- ${r}\n`; });
+        md += `\n`;
+      }
+    }
+
+    if (bp.viabilityAnalysis) {
+      md += `## 4. Viability Analysis\n`;
+      md += `**Overall Score**: ${bp.viabilityAnalysis.overallScore || 0}/100\n\n`;
+      md += `**Reasoning**: ${bp.viabilityAnalysis.reasoning || ''}\n\n`;
+    }
+    
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${startupName.replace(/\s+/g, '_')}_Business_Plan.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success(locale === 'ar' ? 'تم تصدير خطة العمل بنجاح!' : 'Business plan exported successfully!');
+  };
+
+  const handleRegenerate = async () => {
+    if (!currentProject) return;
+    setSettingsOpen(false);
+    await generateBusinessPlan(currentProject.id, genLanguage);
+  };
 
   if (!currentProject || !selectedOpportunity) {
     return <AILoadingOverlay message={loadingMessage || "Generating Business Plan..."} />;
@@ -46,7 +125,7 @@ export default function BusinessPlanDashboard() {
         </p>
         <div className="pt-8">
           <Button 
-            onClick={() => generateBusinessPlan(currentProject.id)}
+            onClick={() => generateBusinessPlan(currentProject.id, locale)}
             className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-8 py-6 text-lg font-semibold shadow-xl shadow-slate-900/20 transition-all hover:scale-105"
           >
             <Wand2 className="w-5 h-5 mr-3" />
@@ -91,15 +170,15 @@ export default function BusinessPlanDashboard() {
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="outline" className="rounded-full w-10 h-10 p-0 border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow">
+            <Button onClick={handleShare} variant="outline" className="rounded-full w-10 h-10 p-0 border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow" title="Share">
               <Share className="w-4 h-4 text-slate-600" />
             </Button>
-            <Button variant="outline" className="rounded-full w-10 h-10 p-0 border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow">
+            <Button onClick={() => setSettingsOpen(true)} variant="outline" className="rounded-full w-10 h-10 p-0 border-slate-200 bg-white shadow-sm hover:shadow-md transition-shadow" title="Settings">
               <Settings className="w-4 h-4 text-slate-600" />
             </Button>
-            <Button className="rounded-full bg-slate-900 text-white font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
+            <Button onClick={handleExport} className="rounded-full bg-slate-900 text-white font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
               <Download className="w-4 h-4 mr-2" />
-              Export Deck
+              Export Plan
             </Button>
           </div>
         </div>
@@ -545,6 +624,128 @@ export default function BusinessPlanDashboard() {
 
         </motion.div>
       </motion.div>
+
+      {/* Settings Modal */}
+      <AnimatePresence>
+        {settingsOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSettingsOpen(false)}
+              className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50"
+            />
+            {/* Drawer */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="fixed inset-x-4 bottom-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[480px] bg-white border border-slate-200 shadow-2xl rounded-3xl p-6 z-50 max-h-[90vh] overflow-y-auto"
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                  <Settings className="w-5 h-5 text-purple-600 animate-spin-slow" />
+                  {locale === 'ar' ? 'إعدادات خطة العمل' : 'Business Plan Settings'}
+                </h3>
+                <button
+                  onClick={() => setSettingsOpen(false)}
+                  className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                {/* Language selection */}
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">
+                    {locale === 'ar' ? 'لغة التوليد' : 'Generation Language'}
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setGenLanguage('en')}
+                      className={`py-3 px-4 rounded-xl border text-sm font-semibold transition-all ${
+                        genLanguage === 'en'
+                          ? 'border-purple-600 bg-purple-50 text-purple-700 shadow-sm shadow-purple-600/5'
+                          : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                      }`}
+                    >
+                      English
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setGenLanguage('ar')}
+                      className={`py-3 px-4 rounded-xl border text-sm font-semibold transition-all ${
+                        genLanguage === 'ar'
+                          ? 'border-purple-600 bg-purple-50 text-purple-700 shadow-sm shadow-purple-600/5'
+                          : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                      }`}
+                    >
+                      العربية (Arabic)
+                    </button>
+                  </div>
+                </div>
+
+                {/* AI Model selection */}
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">
+                    {locale === 'ar' ? 'محرك الذكاء الاصطناعي' : 'AI Engine Model'}
+                  </label>
+                  <div className="space-y-2">
+                    {[
+                      { id: 'deepseek-v4-flash', name: 'DeepSeek R1 (Flash)', desc: 'Ultra-fast business modeling & canvases.' },
+                      { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro', desc: 'Deep logical reasoning & advanced strategies.' }
+                    ].map(model => (
+                      <button
+                        key={model.id}
+                        type="button"
+                        onClick={() => setGenModel(model.id)}
+                        className={`w-full text-left p-3.5 rounded-xl border text-sm transition-all flex justify-between items-center ${
+                          genModel === model.id
+                            ? 'border-purple-600 bg-purple-50 text-purple-900 shadow-sm shadow-purple-600/5'
+                            : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                        }`}
+                      >
+                        <div className={locale === 'ar' ? 'text-right' : 'text-left'}>
+                          <p className="font-semibold text-slate-900">{model.name}</p>
+                          <p className="text-xs text-slate-500 mt-0.5">{model.desc}</p>
+                        </div>
+                        <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                          genModel === model.id ? 'border-purple-600 bg-purple-600' : 'border-slate-300'
+                        }`}>
+                          {genModel === model.id && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Info Note */}
+                <div className="p-3.5 rounded-2xl bg-amber-50/50 border border-amber-100/50 flex items-start gap-2.5 text-xs text-amber-800 leading-relaxed">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                  <span>
+                    {locale === 'ar' 
+                      ? 'ملاحظة: ستتطلب عملية إعادة التوليد 1 نقطة ائتمانية من رصيد محرك خطط العمل الخاص بك.'
+                      : 'Note: Regenerating will consume 1 credit of your Business Plan execution balance.'}
+                  </span>
+                </div>
+
+                {/* Action button */}
+                <Button
+                  onClick={handleRegenerate}
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-full py-3.5 text-sm font-semibold shadow-lg transition-transform hover:-translate-y-0.5"
+                >
+                  <Wand2 className="w-4 h-4 mr-2" />
+                  {locale === 'ar' ? 'إعادة توليد خطة العمل' : 'Regenerate Business Plan'}
+                </Button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

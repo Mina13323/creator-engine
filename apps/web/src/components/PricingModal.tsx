@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { useState, useEffect } from 'react';
 import { Check, X, Sparkles } from 'lucide-react';
+import { useI18n } from '../lib/i18n/I18nContext';
 
 export default function PricingModal() {
+  const { t } = useI18n();
   const { showPricingModal, setShowPricingModal, user } = useStore();
   const [plans, setPlans] = useState<any[]>([]);
   const [packs, setPacks] = useState<any[]>([]);
@@ -85,9 +87,9 @@ export default function PricingModal() {
           <div className="text-center mb-10">
             <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent inline-flex items-center gap-2">
               <Sparkles className="w-8 h-8 text-blue-400" />
-              Upgrade Your Creator Engine
+              {t('pricing.title')}
             </h2>
-            <p className="text-gray-400 mt-2">Get more AI credits and unlock powerful features.</p>
+            <p className="text-gray-400 mt-2">{t('pricing.subtitle')}</p>
           </div>
 
           <div className="flex justify-center gap-4 mb-8">
@@ -95,13 +97,13 @@ export default function PricingModal() {
               onClick={() => setActiveTab('subscriptions')}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${activeTab === 'subscriptions' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
             >
-              Subscription Plans
+              {t('pricing.subscriptions')}
             </button>
             <button 
               onClick={() => setActiveTab('credits')}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${activeTab === 'credits' ? 'bg-indigo-600 text-white' : 'bg-gray-800 text-gray-400 hover:text-white'}`}
             >
-              Credit Packs
+              {t('pricing.creditPacks')}
             </button>
           </div>
 
@@ -121,8 +123,8 @@ export default function PricingModal() {
                         <span className="text-gray-400 text-sm"> EGP / mo</span>
                       </div>
                       <div className="mb-6 pb-6 border-b border-gray-700">
-                        <p className="text-sm text-blue-300 font-medium">{plan.monthlyCredits.toLocaleString()} Credits / mo</p>
-                        <p className="text-xs text-gray-500 mt-1">Up to {plan.maxProjects} Projects</p>
+                        <p className="text-sm text-blue-300 font-medium">{plan.monthlyCredits.toLocaleString()} {t('pricing.creditsPerMo')}</p>
+                        <p className="text-xs text-gray-500 mt-1">{t('pricing.upToProjects').replace('{count}', plan.maxProjects)}</p>
                       </div>
                       <ul className="space-y-3 mb-8 flex-1">
                         {plan.features.map((f: string, i: number) => (
@@ -136,7 +138,7 @@ export default function PricingModal() {
                         onClick={() => handlePurchase('subscription', plan.slug, plan.monthlyPriceEGP)}
                         className={`w-full py-2.5 rounded-lg font-medium transition-colors ${plan.slug === 'pro' ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'}`}
                       >
-                        {plan.monthlyPriceEGP === 0 ? 'Current Plan' : 'Upgrade'}
+                        {plan.monthlyPriceEGP === 0 ? t('pricing.currentPlan') : t('pricing.upgradeBtn')}
                       </button>
                     </div>
                   ))}
@@ -149,7 +151,7 @@ export default function PricingModal() {
                     <div key={pack.slug} className="bg-gray-800/50 border border-indigo-500/30 rounded-xl p-8 text-center hover:border-indigo-500 transition-all">
                       <Sparkles className="w-12 h-12 text-indigo-400 mx-auto mb-4" />
                       <h3 className="text-2xl font-bold text-white mb-2">{pack.credits.toLocaleString()}</h3>
-                      <p className="text-indigo-300 font-medium mb-6">AI Credits</p>
+                      <p className="text-indigo-300 font-medium mb-6">{t('pricing.aiCredits')}</p>
                       <div className="mb-8">
                         <span className="text-3xl font-bold text-white">{pack.priceEGP}</span>
                         <span className="text-gray-400 text-sm"> EGP</span>
@@ -158,7 +160,7 @@ export default function PricingModal() {
                         onClick={() => handlePurchase('credit_pack', pack.slug, pack.priceEGP)}
                         className="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors"
                       >
-                        Buy Credits
+                        {t('pricing.buyCredits')}
                       </button>
                     </div>
                   ))}

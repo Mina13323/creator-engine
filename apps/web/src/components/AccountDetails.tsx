@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { authClient } from '@/lib/authClient';
 import { useStore } from '@/store/useStore';
+import { useI18n } from '@/lib/i18n/I18nContext';
 import {
   User,
   Mail,
@@ -61,6 +62,7 @@ function InfoRow({
 }
 
 export default function AccountDetails() {
+  const { t } = useI18n();
   const { projects } = useStore();
   const [profile, setProfile] = useState<AccountProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -89,32 +91,32 @@ export default function AccountDetails() {
   const roleBadge =
     profile?.role === 'admin'
       ? {
-          text: 'Admin',
+          text: t('account.roleAdmin'),
           color: 'text-emerald-700 bg-emerald-50 border-emerald-200',
         }
-      : { text: 'User', color: 'text-slate-600 bg-slate-50 border-slate-200' };
+      : { text: t('account.roleUser'), color: 'text-slate-600 bg-slate-50 border-slate-200' };
 
   const planBadge =
     profile?.plan === 'Admin'
       ? {
-          text: '★ Admin Plan',
+          text: t('account.planAdmin'),
           color: 'text-amber-700 bg-amber-50 border-amber-200',
         }
-      : { text: 'Free Plan', color: 'text-indigo-700 bg-indigo-50 border-indigo-200' };
+      : { text: t('account.planFree'), color: 'text-indigo-700 bg-indigo-50 border-indigo-200' };
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Account Details</h1>
+        <h1 className="text-2xl font-bold text-slate-900">{t('account.title')}</h1>
         <p className="text-slate-500 text-sm mt-1">
-          Your personal profile and workspace summary.
+          {t('account.subtitle')}
         </p>
       </div>
 
       {loading && (
         <div className="flex items-center gap-3 text-slate-500 py-12 justify-center">
           <Loader2 className="w-5 h-5 animate-spin" />
-          <span className="text-sm">Loading account details…</span>
+          <span className="text-sm">{t('account.loading')}</span>
         </div>
       )}
 
@@ -143,7 +145,7 @@ export default function AccountDetails() {
             )}
             <div className="min-w-0">
               <h2 className="text-xl font-bold text-slate-900 truncate">
-                {profile.name || 'Unnamed User'}
+                {profile.name || t('account.unnamed')}
               </h2>
               <p className="text-sm text-slate-500 truncate">{profile.email}</p>
               <div className="flex items-center gap-2 mt-2">
@@ -163,19 +165,19 @@ export default function AccountDetails() {
 
           {/* Info rows */}
           <div className="bg-white border border-slate-200 rounded-2xl px-6 py-2 shadow-sm divide-y divide-slate-100">
-            <InfoRow icon={User} label="Full Name" value={profile.name || 'Not set'} />
-            <InfoRow icon={Mail} label="Email" value={profile.email} />
-            <InfoRow icon={Hash} label="User ID" value={profile.id} />
+            <InfoRow icon={User} label={t('account.fullName')} value={profile.name || t('account.notSet')} />
+            <InfoRow icon={Mail} label={t('account.email')} value={profile.email} />
+            <InfoRow icon={Hash} label={t('account.userId')} value={profile.id} />
             <InfoRow
               icon={Calendar}
-              label="Date Joined"
+              label={t('account.dateJoined')}
               value={formatDate(profile.joinedAt)}
             />
-            <InfoRow icon={Shield} label="Role" badge={roleBadge} />
-            <InfoRow icon={Star} label="Plan" badge={planBadge} />
+            <InfoRow icon={Shield} label={t('account.role')} badge={roleBadge} />
+            <InfoRow icon={Star} label={t('account.plan')} badge={planBadge} />
             <InfoRow
               icon={FolderKanban}
-              label="Projects Created"
+              label={t('account.projectsCreated')}
               value={profile.projectCount}
             />
           </div>
@@ -185,7 +187,7 @@ export default function AccountDetails() {
             <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
               <h3 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Briefcase className="w-4 h-4 text-slate-400" />
-                Your Projects
+                {t('account.yourProjects')}
               </h3>
               <ul className="space-y-2">
                 {projects.map((p) => (
@@ -201,7 +203,9 @@ export default function AccountDetails() {
                         <p className="text-sm font-semibold text-slate-800 truncate max-w-[200px]">
                           {p.name}
                         </p>
-                        <p className="text-xs text-slate-400 capitalize">{p.industry}</p>
+                        <p className="text-xs text-slate-400 capitalize">
+                          {!p.industry || p.industry.toLowerCase() === 'unknown' ? t('account.unknownIndustry') : p.industry}
+                        </p>
                       </div>
                     </div>
                     <span
@@ -211,7 +215,7 @@ export default function AccountDetails() {
                           : 'text-slate-500 bg-slate-50 border-slate-200'
                       }`}
                     >
-                      {p.status}
+                      {p.status === 'active' ? t('account.statusActive') : p.status === 'draft' ? t('account.statusDraft') : p.status === 'archived' ? t('account.statusArchived') : p.status}
                     </span>
                   </li>
                 ))}

@@ -191,13 +191,15 @@ export async function runBusinessPlanAgent(
   projectId: string,
   selectedOpportunity: any,
   founderProfile: any,
-  contextStr: string = ''
+  contextStr: string = '',
+  locale: string = 'en'
 ): Promise<Partial<BusinessPlan> | null> {
   const result = await callN8n<Partial<BusinessPlan>>('business-plan-flow', {
     projectId,
     opportunity: selectedOpportunity,
     founderProfile,
-    contextStr
+    contextStr,
+    locale
   });
 
   if (result && result.success) {
@@ -205,7 +207,12 @@ export async function runBusinessPlanAgent(
   }
 
   console.log('[BusinessPlanAgent] n8n unavailable — calling Fireworks LLM directly...');
+  const languageInstruction = locale === 'ar'
+    ? 'IMPORTANT: All textual values (descriptions, startup name, mission, vision, reasoning, target points, pricing strategy, etc.) in the JSON object MUST be written in the Arabic language. Keep the JSON keys in English, but all string values must be standard Arabic.'
+    : 'Generate all content in English.';
+
   const systemPrompt = `You are a strategic Business Plan Generator. Generate a comprehensive business plan based on the selected opportunity and founder profile.
+${languageInstruction}
 Output ONLY a JSON object.
 ${contextStr ? '\nProject Context:\n' + contextStr : ''}`;
   
