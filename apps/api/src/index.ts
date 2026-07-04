@@ -34,6 +34,9 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { OAuth2Client } from 'google-auth-library';
 
+import helmet from 'helmet';
+import { generalRateLimiter } from './rateLimit';
+
 dotenv.config();
 dotenv.config({ path: require('path').resolve(__dirname, '../../../.env') });
 
@@ -41,6 +44,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'secret_key_for_jwt_fallback_only';
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const app = express();
+app.use(helmet());
+app.use(generalRateLimiter);
 app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000', credentials: true }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -936,6 +941,10 @@ app.post('/api/branding/generate', authMiddleware, requireCredits(CREDIT_COSTS.B
 
 
 
-app.listen(PORT, () => {
-  console.info(`Creator Engine backend running on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.info(`Creator Engine backend running on http://localhost:${PORT}`);
+  });
+}
+
+export { app };

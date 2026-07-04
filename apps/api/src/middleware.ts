@@ -15,13 +15,13 @@ export const authMiddleware = async (req: Request, res: Response, next: any) => 
   try {
     const authHeader = req.headers.authorization;
     const token = req.cookies.token || (authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null);
-    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+    if (!token) return res.status(401).json({ success: false, error: { code: 'UNAUTHORIZED', message: 'Unauthorized: No token provided' } });
 
     const decoded = verifyToken(token);
     (req as any).user = { id: decoded.id, email: decoded.email };
     next();
   } catch (error) {
-    return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    return res.status(401).json({ success: false, error: { code: 'UNAUTHORIZED', message: 'Unauthorized: Invalid token' } });
   }
 };
 

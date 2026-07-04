@@ -25,8 +25,9 @@ describe('Error Handler Middleware', () => {
   });
 
   it('should handle ZodError correctly', () => {
-    const error = new ZodError([]);
-    (error as any).errors = [{ code: 'custom', message: 'Invalid field', path: ['email'] }];
+    const error = new ZodError([
+      { code: 'custom', message: 'Invalid field', path: ['email'] } as any
+    ]);
     errorHandler(error, mockRequest, mockResponse, mockNext);
 
     expect(mockResponse.status).toHaveBeenCalledWith(400);
