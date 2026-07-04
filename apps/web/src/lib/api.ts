@@ -107,8 +107,20 @@ export class ApiClient {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error?.error || 'Marketing Studio Generation failed');
+      let errorMessage = 'Marketing Studio Generation failed';
+      try {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          errorMessage = errorData?.error || errorMessage;
+        } else {
+          const text = await response.text();
+          errorMessage = text || errorMessage;
+        }
+      } catch (e) {
+        console.warn('Failed to parse error response:', e);
+      }
+      throw new Error(errorMessage);
     }
 
     return response.json();
