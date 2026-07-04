@@ -117,8 +117,8 @@ Respond ONLY in valid JSON format with the following structure:
     scenes: strategy.scenes,
     images: generatedImages,
     video: videoResult ? {
-      url: videoResult.videoUrl,
-      provider: 'ltx',
+      url: videoResult.url,
+      provider: videoResult.provider,
       duration: videoResult.duration
     } : undefined,
     voice: voiceUrl ? { url: voiceUrl } : undefined,
