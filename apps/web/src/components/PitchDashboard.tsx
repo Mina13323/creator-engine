@@ -104,7 +104,7 @@ export default function PitchDashboard() {
             <Download className="w-3.5 h-3.5" /> Export PDF
           </button>
           <button
-            onClick={handleGeneratePitch} disabled={pitchLoading} disabled={pitchLoading}
+            onClick={handleGeneratePitch} disabled={pitchLoading}
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" /> Regenerate Pitch
