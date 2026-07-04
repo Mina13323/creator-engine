@@ -21,6 +21,8 @@ export interface TTSProviderInput {
 export interface TTSProviderOutput {
   url: string;
   provider: string;
+  audioUrl?: string;
+  duration?: number;
 }
 
 export interface TTSProvider {

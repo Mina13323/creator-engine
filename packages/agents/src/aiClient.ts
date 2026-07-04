@@ -257,7 +257,7 @@ export async function callFireworksImage(prompt: string, aspectRatio: string = "
   }
 
   const {
-    model = 'black-forest-labs/FLUX.1-schnell',
+    model = 'accounts/fireworks/models/flux-1-schnell',
     timeoutMs = 30000, // Image generation takes longer
     retries = 1,
     retryDelayMs = 2000

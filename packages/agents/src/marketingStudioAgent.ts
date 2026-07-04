@@ -75,7 +75,10 @@ Respond ONLY in valid JSON format with the following structure:
          brandStyle,
          productImage: productImages[0]
        });
-       generatedImages.push(img);
+       generatedImages.push({
+         url: img.imageUrl,
+         provider: img.provider
+       });
     } catch (e) {
        console.warn('Image generation failed, proceeding without supplemental image', e);
     }
