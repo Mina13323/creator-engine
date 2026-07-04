@@ -648,3 +648,6 @@ export async function runPitchAgent(
   console.error('[PitchAgent] LLM fallback failed.');
   return null;
 }
+
+export * from './marketingStudioAgent';
+export * from './media/storageProvider';

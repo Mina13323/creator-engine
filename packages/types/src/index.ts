@@ -576,3 +576,18 @@ export interface OpportunityComparison {
   selectedOpportunityIds: string[];
   createdAt: Date;
 }
+
+export interface MarketingStudioGeneration {
+  id: string;
+  userId: string;
+  projectId: string;
+  prompt: string;
+  businessContextSnapshot: any;
+  script: any;
+  scenes: any[];
+  images: { url: string; provider: string }[];
+  video?: { url: string; provider: string; duration: number };
+  voice?: { url: string };
+  status: 'pending' | 'processing' | 'completed' | 'failed' | 'PARTIAL_SUCCESS';
+  createdAt: Date;
+}

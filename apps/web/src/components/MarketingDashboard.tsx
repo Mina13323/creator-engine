@@ -93,7 +93,7 @@ export default function MarketingDashboard() {
           </div>
           <div className="flex items-center gap-3 mt-4 md:mt-0">
             <button
-              onClick={handleGenerateMarketing} disabled={marketingLoading} disabled={marketingLoading}
+              onClick={handleGenerateMarketing} disabled={marketingLoading}
               className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-sm font-medium transition-all flex items-center gap-2"
             >
               <RefreshCw className="w-4 h-4" /> Regenerate

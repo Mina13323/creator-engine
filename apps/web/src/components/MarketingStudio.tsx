@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { api } from "../lib/api";
 import { useI18n } from "../lib/i18n/I18nContext";
+import { useStore } from "../store/useStore";
 
 const SCROLLBAR_STYLE = `
   .custom-scrollbar-thin::-webkit-scrollbar {
@@ -242,6 +243,7 @@ export default function MarketingStudio() {
   const [productImage, setProductImage] = useState<string | null>(null);
   const [avatarImage, setAvatarImage] = useState<string | null>(null);
   const [additionalImages, setAdditionalImages] = useState<string[]>([]);
+  const { currentProject } = useStore();
   
   const [params, setParams] = useState({
     ratio: "9:16",
@@ -330,10 +332,12 @@ export default function MarketingStudio() {
   const handleGenerate = async () => {
     if (!prompt.trim()) return alert(t('marketingStudio.alertNoScript') || "Please enter an ad script.");
     if (!productImage) return alert(t('marketingStudio.alertNoProduct') || "Please upload a product image.");
+    if (!currentProject?.id) return alert(t('marketingStudio.alertNoProject') || "No active project found.");
 
     setIsGenerating(true);
     try {
       const result = await api.generateMarketingStudioAd({
+        projectId: currentProject.id,
         prompt,
         aspect_ratio: params.ratio,
         duration: params.duration,
