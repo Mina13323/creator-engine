@@ -10,7 +10,7 @@ export class HuggingFaceVideoProvider implements VideoProvider {
 
     // Default to Wan-AI/Wan2.1-T2V-1.3B, fallback to Damovilab
     const model = process.env.HF_VIDEO_MODEL || 'Wan-AI/Wan2.1-T2V-1.3B';
-    const url = `https://api-inference.huggingface.co/models/${model}`;
+    const url = `https://router.huggingface.co/hf-inference/models/${model}`;
 
     const response = await fetch(url, {
       method: 'POST',

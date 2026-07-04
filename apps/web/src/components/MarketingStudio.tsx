@@ -253,6 +253,8 @@ export default function MarketingStudio() {
 
   const [history, setHistory] = useState<any[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [genStage, setGenStage] = useState(0);
+  const [genResult, setGenResult] = useState<any>(null);
   const [dropdown, setDropdown] = useState<string | null>(null); // 'format' | 'avatar' | 'ratio' | 'res' | 'duration'
   const [uploadProgress, setUploadProgress] = useState({ product: 0, avatar: 0, additional: 0 });
   const [fullscreenUrl, setFullscreenUrl] = useState<string | null>(null);
@@ -283,6 +285,17 @@ export default function MarketingStudio() {
     }, 500);
     return () => clearTimeout(timer);
   }, [prompt, params, productImage, avatarImage, additionalImages, history]);
+
+  // Handle fake stage progression while generating
+  useEffect(() => {
+    let stageTimer: any;
+    if (isGenerating && genStage < 5) {
+      stageTimer = setTimeout(() => {
+        setGenStage(prev => prev + 1);
+      }, 3000); // Progress fake stages every 3 seconds
+    }
+    return () => clearTimeout(stageTimer);
+  }, [isGenerating, genStage]);
 
   // ── Handlers ───────────────────────────────────────────────────────────────
 
@@ -333,6 +346,8 @@ export default function MarketingStudio() {
     if (!currentProject?.id) return alert("No active project found.");
 
     setIsGenerating(true);
+    setGenStage(0);
+    setGenResult(null);
     try {
       const result = await api.generateMarketingStudioAd({
         projectId: currentProject.id,
@@ -342,6 +357,8 @@ export default function MarketingStudio() {
         images_list: [productImage, avatarImage, ...additionalImages].filter((Boolean) as any),
         video_files: params.videoUrl ? [params.videoUrl] : []
       });
+
+      setGenResult(result);
 
       if (result?.url) {
         const entry = {
@@ -355,9 +372,11 @@ export default function MarketingStudio() {
         setFullscreenUrl(result.url);
       }
     } catch (err: any) {
+      setGenResult({ status: 'failed', error: err.message });
       alert("Generation failed: " + err.message);
     } finally {
       setIsGenerating(false);
+      setGenStage(5);
     }
   };
 
@@ -369,13 +388,62 @@ export default function MarketingStudio() {
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
+  const STAGES = [
+    "Writing marketing script...",
+    "Creating visual concepts...",
+    "Generating product images...",
+    "Creating voiceover...",
+    "Rendering video...",
+    "Saving assets..."
+  ];
+
   return (
     <div className="w-full h-[calc(100vh-80px)] flex flex-col items-center justify-center bg-slate-900 rounded-2xl relative p-4 md:p-6 overflow-hidden">
       <style>{SCROLLBAR_STYLE}</style>
       
       {/* ── MAIN CONTENT AREA ── */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-6 pb-40 w-full">
-        {history.length > 0 ? (
+        {isGenerating ? (
+          <div className="h-full flex flex-col items-center justify-center animate-fadeIn">
+            <div className="w-16 h-16 border-4 border-white/20 border-t-emerald-500 rounded-full animate-spin mb-8" />
+            <h2 className="text-2xl font-bold text-white mb-2">{STAGES[genStage] || "Processing..."}</h2>
+            <div className="flex gap-2">
+              {STAGES.map((_, i) => (
+                <div key={i} className={`w-2 h-2 rounded-full transition-colors ${i <= genStage ? 'bg-emerald-500' : 'bg-white/20'}`} />
+              ))}
+            </div>
+          </div>
+        ) : genResult && genResult.status !== 'success' && !genResult.url ? (
+          <div className="h-full flex flex-col items-center justify-center animate-fadeIn">
+            <h2 className="text-2xl font-bold text-white mb-4">Generation Result</h2>
+            <div className="bg-black/50 p-6 rounded-lg border border-white/10 flex flex-col gap-3 min-w-[300px]">
+              <div className="flex justify-between items-center text-sm font-bold">
+                <span className="text-white/70">Script</span>
+                <span>{genResult.script ? '✅' : '❌'}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm font-bold">
+                <span className="text-white/70">Image</span>
+                <span>{genResult.images?.length > 0 ? '✅' : '❌'}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm font-bold">
+                <span className="text-white/70">Voice</span>
+                <span>{genResult.voice ? '✅' : '❌'}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm font-bold">
+                <span className="text-white/70">Video</span>
+                <span>{genResult.video ? '✅' : '❌'}</span>
+              </div>
+              {genResult.error && (
+                <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-xs text-center font-medium">
+                  {genResult.error}
+                </div>
+              )}
+              <button onClick={() => setGenResult(null)} className="mt-4 text-emerald-500 text-sm hover:underline">
+                Dismiss
+              </button>
+            </div>
+          </div>
+        ) : history.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fadeIn">
             {history.map(entry => (
               <div key={entry.id} className="relative group rounded-lg overflow-hidden border border-white/10 bg-[#0a0a0a] shadow-xl hover:border-emerald-500/50 transition-all duration-300 flex flex-col">

@@ -67,6 +67,35 @@ if (MONGO_URL) {
   console.warn('DATABASE_URL is missing.');
 }
 
+// ==========================================
+// ENVIRONMENT VALIDATION (Phase 6)
+// ==========================================
+const requiredKeys = [
+  'FIREWORKS_API_KEY',
+  'HF_TOKEN',
+  'CLOUDINARY_CLOUD_NAME',
+  'CLOUDINARY_API_KEY',
+  'CLOUDINARY_API_SECRET'
+];
+for (const key of requiredKeys) {
+  if (!process.env[key]) {
+    console.warn(`WARNING: Missing required environment variable: ${key}`);
+  }
+}
+
+// ==========================================
+// AI PROVIDERS STATUS (Phase 4)
+// ==========================================
+app.get('/api/ai/providers/status', (req: Request, res: Response) => {
+  res.json({
+    fireworksLLM: !!process.env.FIREWORKS_API_KEY,
+    fireworksImage: !!process.env.FIREWORKS_API_KEY,
+    videoProvider: !!process.env.HF_TOKEN,
+    ttsProvider: !!process.env.HF_TOKEN,
+    storage: !!process.env.CLOUDINARY_CLOUD_NAME && !!process.env.CLOUDINARY_API_KEY && !!process.env.CLOUDINARY_API_SECRET
+  });
+});
+
 // UTILITIES
 function generateToken(userId: string, email: string): string {
   return jwt.sign({ id: userId, email }, JWT_SECRET, { expiresIn: '7d' });
