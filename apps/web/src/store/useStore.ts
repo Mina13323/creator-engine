@@ -41,7 +41,7 @@ interface StoreState {
   generateImage: any;
   brandIdentity: any;
   brandingLoading: boolean;
-  generateBranding: any;
+  generateBranding: (projectId: string) => Promise<void>;
 
   // Auth State
   user: AuthUser | null;
@@ -119,7 +119,33 @@ export const useStore = create<StoreState>((set, get) => ({
   generateImage: async () => {},
   brandIdentity: null,
   brandingLoading: false,
-  generateBranding: async () => {},
+  generateBranding: async (projectId: string) => {
+    set({ brandingLoading: true });
+    try {
+      const res = await authClient.post<{ brandIdentity: any }>('/branding/generate', { projectId });
+      set(state => ({
+        brandIdentity: res.brandIdentity,
+        ventureState: state.ventureState
+          ? { ...state.ventureState, branding: res.brandIdentity }
+          : state.ventureState,
+        brandingLoading: false
+      }));
+    } catch (e: any) {
+      console.error('generateBranding failed', e);
+      set({ brandingLoading: false });
+      const creditsMatch = e.message?.match(/(\d+)\s*credits/);
+      if (creditsMatch) {
+        get().showCreditsGate(parseInt(creditsMatch[1], 10), 'branding');
+        return;
+      }
+      useErrorStore.getState().addError({
+        title: 'Branding Engine Failed',
+        message: e?.message || 'Could not generate branding.',
+        retryAction: () => get().generateBranding(projectId)
+      });
+      throw e;
+    }
+  },
 
   user: null,
   isAuthModalOpen: false,
@@ -203,11 +229,14 @@ export const useStore = create<StoreState>((set, get) => ({
       const stateData = await authClient.get<VentureState>(`/projects/${projectId}/state`);
       const proj = get().projects.find(p => p.id === projectId);
       
+      const existingRoadmap = (stateData as any)?.roadmap || null;
       set({
         currentProject: proj || null,
         ventureState: stateData,
         selectedOpportunity: stateData?.selectedOpportunity || null,
         opportunities: (stateData as any)?.opportunities || [],
+        brandIdentity: (stateData as any)?.branding || null,
+        currentOutputs: existingRoadmap ? { roadmap: existingRoadmap } : null,
         activeTab: 'dashboard',
         loading: false
       });
