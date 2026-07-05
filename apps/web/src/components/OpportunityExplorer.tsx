@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useStore } from '../store/useStore';
+import { useI18n } from '../lib/i18n/I18nContext';
 import { 
   Button, Card, CardContent, CardHeader, CardTitle, 
   EmptyState, AIThinkingPanel, PageHeader 

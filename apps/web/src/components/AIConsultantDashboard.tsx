@@ -11,7 +11,6 @@ import ReactMarkdown from 'react-markdown';
 import { Button, Card, CardContent } from './design-system';
 
 export default function AIConsultantDashboard() {
-  const { t } = useI18n();
   const { chatMessages, sendChatMessage, clearChat, chatLoading, currentProject, conversations, setActiveConversation, loadConversations, activeConversationId } = useStore();
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -105,55 +104,6 @@ export default function AIConsultantDashboard() {
                 ))}
               </div>
             </div>
-            
-            <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-slate-800">{t('consultant.greeting')}</h2>
-              <p className="text-slate-500 max-w-lg">
-                {t('consultant.subtitle')}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 w-full gap-3 mt-8">
-              <button 
-                onClick={() => setInput('Review my business plan and suggest improvements.')}
-                className="p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-md transition-all text-left flex items-start gap-4 group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <FileText className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-slate-800">{t('consultant.reviewPlan')}</h3>
-                  <p className="text-sm text-slate-500">{t('consultant.reviewPlanDesc')}</p>
-                </div>
-              </button>
-
-              <button 
-                onClick={() => setInput('What are the best marketing channels for my business?')}
-                className="p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-md transition-all text-left flex items-start gap-4 group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Megaphone className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-slate-800">{t('consultant.marketingStrategy')}</h3>
-                  <p className="text-sm text-slate-500">{t('consultant.marketingStrategyDesc')}</p>
-                </div>
-              </button>
-
-              <button 
-                onClick={() => setInput('Draft a cold outreach email to a potential investor.')}
-                className="p-4 bg-white border border-slate-200 rounded-2xl hover:border-indigo-300 hover:shadow-md transition-all text-left flex items-start gap-4 group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Send className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-slate-800">{t('consultant.draftEmail')}</h3>
-                  <p className="text-sm text-slate-500">{t('consultant.draftEmailDesc')}</p>
-                </div>
-              </button>
-            </div>
-          </div>
           ) : (
             chatMessages.map((msg) => {
               if (!msg) return null;

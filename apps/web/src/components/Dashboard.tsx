@@ -25,6 +25,7 @@ export default function Dashboard() {
     analyzeFounder, 
     selectProject,
     resetToDashboard,
+    discoverOpportunities,
     user
   } = useStore();
 

@@ -457,6 +457,7 @@ export interface ExecutionRoadmap {
   progress: number;
   totalEstimatedBudget: number;
   totalDurationWeeks: number;
+  currency?: string;
 }
 
 export interface AIEvaluation {
@@ -520,6 +521,7 @@ export interface VentureState {
     generatedByModel: string;
   };
   financialForecast?: any; // To be implemented in future modules
+  pricingStrategy?: any;
   branding?: BrandIdentity;
   marketing?: MarketingCampaign;
   pitchDeck?: PitchDeck;

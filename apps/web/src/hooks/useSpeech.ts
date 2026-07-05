@@ -66,6 +66,7 @@ export function useSpeech(options?: {
   rate?: number;
   pitch?: number;
   volume?: number;
+  lang?: string;
 }): UseSpeechReturn {
   const { volume = 1 } = options ?? {};
   const [status, setStatus] = useState<SpeechStatus>('idle');

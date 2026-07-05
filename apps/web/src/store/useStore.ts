@@ -75,7 +75,7 @@ interface StoreState {
   generateRoadmap: (projectId: string) => Promise<void>;
   updateTaskStatus: (projectId: string, taskId: string, status: string) => Promise<void>;
 
-  generateBusinessPlan: (projectId: string) => Promise<void>;
+  generateBusinessPlan: (projectId: string, locale?: string) => Promise<void>;
   uploadDocument: (projectId: string, fileData: { fileName: string, fileType: string, storageUrl: string, fileSize: number }) => Promise<void>;
 
   sendChatMessage: (message: string) => Promise<void>;
@@ -366,7 +366,7 @@ export const useStore = create<StoreState>((set, get) => ({
     }
   },
 
-  generateBusinessPlan: async (projectId) => {
+  generateBusinessPlan: async (projectId, locale = 'en') => {
     set({ loading: true, loadingMessage: 'Generating Lean Canvas & Business Plan...' });
     try {
       const res = await authClient.post<{ businessPlan: BusinessPlan }>('/business-plan/generate', { projectId, locale });

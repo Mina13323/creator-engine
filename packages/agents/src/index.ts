@@ -212,6 +212,7 @@ export async function runBusinessPlanAgent(
   }
 
   console.info('[BusinessPlanAgent] n8n unavailable — calling Fireworks LLM directly...');
+  const languageInstruction = locale === 'ar' ? 'Output your response in Arabic.' : 'Output your response in English.';
   const systemPrompt = `You are a strategic Business Plan Generator. Generate a comprehensive business plan based on the selected opportunity and founder profile.
 ${languageInstruction}
 Output ONLY a JSON object.
@@ -432,44 +433,13 @@ ${ragContext ? '\nContext:\n' + ragContext : ''}`;
       throw new Error('All LLM endpoints returned empty response');
     }
   } catch (err: any) {
-    if (runDoc) {
-      try {
-        const completedAt = new Date();
-        const inputStr = JSON.stringify(inputData);
-        const promptTokens = Math.max(50, Math.ceil(inputStr.length / 4.1));
-        runDoc.status = 'failed';
-        runDoc.completedAt = completedAt;
-        runDoc.durationMs = completedAt.getTime() - startedAt.getTime();
-        runDoc.error = err.message;
-        runDoc.promptTokens = promptTokens;
-        runDoc.totalTokens = promptTokens;
-        await runDoc.save();
-      } catch (saveErr) {
-        console.warn('[FinancialAgent] Failed to update failed AgentRun record:', saveErr);
-      }
-    }
+    console.error('[FinancialAgent] LLM call failed:', err);
     return null;
   }
 
   const baseData = parseLLMJson<any>(rawJson);
   if (!baseData) {
     console.error('[FinancialAgent] Failed to parse LLM response. Raw response:', rawJson);
-    if (runDoc) {
-      try {
-        const completedAt = new Date();
-        const inputStr = JSON.stringify(inputData);
-        const promptTokens = Math.max(50, Math.ceil(inputStr.length / 4.1));
-        runDoc.status = 'failed';
-        runDoc.completedAt = completedAt;
-        runDoc.durationMs = completedAt.getTime() - startedAt.getTime();
-        runDoc.error = 'Failed to parse LLM response as JSON';
-        runDoc.promptTokens = promptTokens;
-        runDoc.totalTokens = promptTokens;
-        await runDoc.save();
-      } catch (saveErr) {
-        console.warn('[FinancialAgent] Failed to update parse-failure AgentRun record:', saveErr);
-      }
-    }
     return null;
   }
 

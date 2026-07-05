@@ -10,6 +10,7 @@ import {
   Calculator, Zap, DollarSign, TrendingUp, AlertCircle, Building, Server, ArrowRight 
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import { useI18n } from '../lib/i18n/I18nContext';
 import { authClient } from '../lib/authClient';
 
 export default function FinancialEngine() {

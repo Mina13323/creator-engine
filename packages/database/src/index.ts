@@ -548,6 +548,7 @@ const VentureStateSchema = new Schema<VentureState & Document>(
     selectedOpportunity: { type: Schema.Types.Mixed },
     latestBusinessPlan: { type: Schema.Types.Mixed },
     financialForecast: { type: Schema.Types.Mixed },
+    pricingStrategy: { type: Schema.Types.Mixed },
     branding: { type: Schema.Types.Mixed },
     marketing: { type: Schema.Types.Mixed },
     pitchDeck: { type: Schema.Types.Mixed },

@@ -211,7 +211,6 @@ export default function AuthModal() {
                   theme="outline"
                   shape="rectangular"
                   width="100%"
-                  locale={locale === 'ar' ? 'ar' : 'en'}
                 />
               </GoogleOAuthProvider>
             </div>

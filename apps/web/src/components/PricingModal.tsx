@@ -1,6 +1,7 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
+import { useI18n } from '../lib/i18n/I18nContext';
 import { useState, useEffect } from 'react';
 import { Check, X, Sparkles } from 'lucide-react';
 import { authClient } from '../lib/authClient';
