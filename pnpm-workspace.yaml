@@ -8,7 +8,7 @@ packages:
   - 'packages/types'
 
 allowBuilds:
-  '@sentry-internal/node-cpu-profiler': set this to true or false
+  '@sentry-internal/node-cpu-profiler': true
   '@sentry/cli': true
   '@sentry/node-cpu-profiler': true
   electron: true
@@ -16,6 +16,3 @@ allowBuilds:
   msw: true
   sharp: true
   unrs-resolver: true
-
-onlyBuiltDependencies:
-  - sharp
