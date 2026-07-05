@@ -135,18 +135,18 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/AuthModal.tsx": {
-    "mtime": 1783173766.7465284,
-    "ast_hash": "58d8ea4ad959175b72f6d2f0556bfb8c",
+    "mtime": 1783288476.237784,
+    "ast_hash": "c3fd86193feeef4e744314b140b9fde9",
     "semantic_hash": ""
   },
   "apps/web/src/components/BrandingPanel.tsx": {
-    "mtime": 1783287513.0019987,
-    "ast_hash": "263a6a4270f777c5be82f90148dd74c3",
+    "mtime": 1783288360.4841206,
+    "ast_hash": "aaffe14ec113ecad73fcbb7ea3c6c99a",
     "semantic_hash": ""
   },
   "apps/web/src/components/BusinessPlanDashboard.tsx": {
-    "mtime": 1783287513.0030138,
-    "ast_hash": "7edaab0605e35f90b6afc366dcc04c5b",
+    "mtime": 1783288508.6876843,
+    "ast_hash": "ac4ed432bb49699b2306ab880f2b9b6c",
     "semantic_hash": ""
   },
   "apps/web/src/components/CofounderChat.tsx": {
@@ -155,13 +155,13 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/Dashboard.tsx": {
-    "mtime": 1783287513.004521,
-    "ast_hash": "92c4a08505cd80a70a914afa27f16030",
+    "mtime": 1783288400.3357074,
+    "ast_hash": "b0af36dffad16a26f3f199d997469354",
     "semantic_hash": ""
   },
   "apps/web/src/components/FinancialEngine.tsx": {
-    "mtime": 1783287513.006541,
-    "ast_hash": "1f22480267e7ba1c626dab9932b22bd3",
+    "mtime": 1783288449.8188164,
+    "ast_hash": "299e840d6cc81558e51a76abe7935e00",
     "semantic_hash": ""
   },
   "apps/web/src/components/LandingPage.tsx": {
@@ -170,8 +170,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/MarketingStudio.tsx": {
-    "mtime": 1783287513.0085328,
-    "ast_hash": "ad380c6e6ab98b602b0288776e4d214b",
+    "mtime": 1783288455.7836397,
+    "ast_hash": "4e56de6d98d8356608d01fe60b1e871b",
     "semantic_hash": ""
   },
   "apps/web/src/components/Onboarding.tsx": {
@@ -180,8 +180,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/OpportunityExplorer.tsx": {
-    "mtime": 1783287513.0105326,
-    "ast_hash": "52498c641163d829d41ed6bee2f10114",
+    "mtime": 1783288462.275807,
+    "ast_hash": "7ed97fa3a5b4d8980a159c17e9ebcdaf",
     "semantic_hash": ""
   },
   "apps/web/src/components/RoadmapPanel.tsx": {
@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/store/useStore.ts": {
-    "mtime": 1783287513.0266006,
-    "ast_hash": "3b530f00e462f5abcfceba63a7ae49f5",
+    "mtime": 1783288497.75927,
+    "ast_hash": "3195b4ace7e31bad5f7f1994b97b7c68",
     "semantic_hash": ""
   },
   "apps/web/tailwind.config.ts": {
@@ -265,8 +265,8 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1783206041.4777465,
-    "ast_hash": "49586c54bce08854c03eef98aa4cd0f3",
+    "mtime": 1783288031.644944,
+    "ast_hash": "a3da14e74118918bfab8b34d5e09349f",
     "semantic_hash": ""
   },
   "packages/agents/package.json": {
@@ -275,8 +275,8 @@
     "semantic_hash": ""
   },
   "packages/agents/src/index.ts": {
-    "mtime": 1783287513.0944552,
-    "ast_hash": "669999dc4b5a66c49a287ed472313fad",
+    "mtime": 1783288333.6594982,
+    "ast_hash": "239ad37f371088a579b5aa0c642cc239",
     "semantic_hash": ""
   },
   "packages/agents/tsconfig.json": {
@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "packages/database/src/index.ts": {
-    "mtime": 1783287513.1200557,
-    "ast_hash": "4d360f19c54eef5381aa956c10cb594c",
+    "mtime": 1783288392.3490622,
+    "ast_hash": "e9bedf5aa838797dcc84797c926e6fdc",
     "semantic_hash": ""
   },
   "packages/database/tsconfig.json": {
@@ -355,8 +355,8 @@
     "semantic_hash": ""
   },
   "packages/types/src/index.ts": {
-    "mtime": 1783287513.126593,
-    "ast_hash": "36d71e6ce7ce9796339fb101872d262e",
+    "mtime": 1783288386.1943824,
+    "ast_hash": "42934119a521ab17d954cdc746a001f3",
     "semantic_hash": ""
   },
   "packages/types/tsconfig.json": {
@@ -495,8 +495,8 @@
     "semantic_hash": "9267b287800a1a6b8dc794ad920b8ce3"
   },
   "pnpm-workspace.yaml": {
-    "mtime": 1783287513.1356153,
-    "ast_hash": "3f25fa76286a9ea6587bb15a664cb910",
+    "mtime": 1783288059.0110707,
+    "ast_hash": "96b2f710b0a157e0567c926fd345c133",
     "semantic_hash": ""
   },
   "apps/api/test_opportunity_discovery_v1.js": {
@@ -685,8 +685,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/AIConsultantDashboard.tsx": {
-    "mtime": 1783287512.9974878,
-    "ast_hash": "d37a03683e5af9fdc9bfe8a7cc843db2",
+    "mtime": 1783288244.2501657,
+    "ast_hash": "2c52229ccb81d4b49e22c594eb363266",
     "semantic_hash": ""
   },
   "apps/web/src/components/AccountDetails.tsx": {
@@ -1020,8 +1020,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/PricingModal.tsx": {
-    "mtime": 1783287513.0115297,
-    "ast_hash": "fb3d7a79d414219f59b6e81f528fa9ea",
+    "mtime": 1783288468.743727,
+    "ast_hash": "77466919c186fa574b9849201e821256",
     "semantic_hash": ""
   },
   "n8n-workflows/Financial Engine (Fixed).json": {
@@ -1415,8 +1415,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/hooks/useSpeech.ts": {
-    "mtime": 1783173766.7855392,
-    "ast_hash": "ac6f807b21a6d8f2707359c3bc64c3d4",
+    "mtime": 1783288536.8097963,
+    "ast_hash": "56b15ce2405aa5fbe08bb41e4d713bf5",
     "semantic_hash": ""
   },
   "apps/web/src/lib/i18n/I18nContext.tsx": {
