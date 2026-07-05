@@ -386,7 +386,7 @@ app.get('/api/account', authMiddleware, async (req: Request, res: Response): Pro
 });
 
 // Admin Routes
-app.use('/api/sysadmin', adminRouter);
+app.use('/api/portal', adminRouter);
 app.use('/api/payments', paymentsRouter);
 app.use('/api/marketing-studio', aiRateLimiter, marketingStudioRouter);
 app.use('/api/upload', uploadRouter);

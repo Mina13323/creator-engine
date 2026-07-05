@@ -57,6 +57,13 @@ async function request<T>(
     }
   }
 
+  const contentType = res.headers.get('content-type');
+  if (contentType && contentType.includes('text/html')) {
+    const text = await res.text();
+    console.error(`Received HTML instead of JSON for ${path}. HTML preview:`, text.substring(0, 100));
+    throw new Error(`API returned HTML instead of JSON. The route ${path} might not exist or the proxy is misconfigured.`);
+  }
+
   const data = await res.json();
 
   if (!res.ok) {
