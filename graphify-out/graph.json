@@ -1240,7 +1240,7 @@
       "label": "router",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L27",
+      "source_location": "L28",
       "id": "routes_admin_router",
       "community": 142,
       "norm_label": "router"
@@ -1249,7 +1249,7 @@
       "label": "_getLockdown()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L581",
+      "source_location": "L595",
       "id": "routes_admin_getlockdown",
       "community": 142,
       "norm_label": "_getlockdown()"
@@ -1258,7 +1258,7 @@
       "label": "_setLockdown()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L582",
+      "source_location": "L596",
       "id": "routes_admin_setlockdown",
       "community": 142,
       "norm_label": "_setlockdown()"
@@ -1267,7 +1267,7 @@
       "label": "registerLockdownHandlers()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L583",
+      "source_location": "L597",
       "id": "routes_admin_registerlockdownhandlers",
       "community": 142,
       "norm_label": "registerlockdownhandlers()"
@@ -1276,7 +1276,7 @@
       "label": "_setMaintenance()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L590",
+      "source_location": "L604",
       "id": "routes_admin_setmaintenance",
       "community": 142,
       "norm_label": "_setmaintenance()"
@@ -1285,7 +1285,7 @@
       "label": "registerMaintenanceHandlers()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L591",
+      "source_location": "L605",
       "id": "routes_admin_registermaintenancehandlers",
       "community": 142,
       "norm_label": "registermaintenancehandlers()"
@@ -45571,5 +45571,5 @@
       "source_file": ".claude/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "59716220d8beed9b45b3fef3f353b36e933b0e95"
+  "built_at_commit": "1cd85878aa9168fd9a3241209b3c44126ce9908e"
 }

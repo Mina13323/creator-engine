@@ -1483,7 +1483,7 @@
       "label": "generateFinancialSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L82",
+      "source_location": "L83",
       "id": "src_schemas_generatefinancialschema",
       "community": 96,
       "norm_label": "generatefinancialschema"
@@ -1492,7 +1492,7 @@
       "label": "generateBrandingSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L91",
+      "source_location": "L92",
       "id": "src_schemas_generatebrandingschema",
       "community": 96,
       "norm_label": "generatebrandingschema"
@@ -1501,7 +1501,7 @@
       "label": "generateMarketingSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L97",
+      "source_location": "L98",
       "id": "src_schemas_generatemarketingschema",
       "community": 96,
       "norm_label": "generatemarketingschema"
@@ -1510,7 +1510,7 @@
       "label": "generatePitchSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L103",
+      "source_location": "L104",
       "id": "src_schemas_generatepitchschema",
       "community": 96,
       "norm_label": "generatepitchschema"
@@ -1519,7 +1519,7 @@
       "label": "startupCostSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L109",
+      "source_location": "L110",
       "id": "src_schemas_startupcostschema",
       "community": 96,
       "norm_label": "startupcostschema"
@@ -1528,7 +1528,7 @@
       "label": "monthlyCostSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L115",
+      "source_location": "L116",
       "id": "src_schemas_monthlycostschema",
       "community": 96,
       "norm_label": "monthlycostschema"
@@ -1537,7 +1537,7 @@
       "label": "revenueProjectionSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L119",
+      "source_location": "L120",
       "id": "src_schemas_revenueprojectionschema",
       "community": 96,
       "norm_label": "revenueprojectionschema"
@@ -1546,7 +1546,7 @@
       "label": "financialAgentResponseSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L125",
+      "source_location": "L126",
       "id": "src_schemas_financialagentresponseschema",
       "community": 96,
       "norm_label": "financialagentresponseschema"
@@ -1555,7 +1555,7 @@
       "label": "brandingAgentResponseSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L147",
+      "source_location": "L148",
       "id": "src_schemas_brandingagentresponseschema",
       "community": 96,
       "norm_label": "brandingagentresponseschema"
@@ -1564,7 +1564,7 @@
       "label": "marketingAgentResponseSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L168",
+      "source_location": "L169",
       "id": "src_schemas_marketingagentresponseschema",
       "community": 96,
       "norm_label": "marketingagentresponseschema"
@@ -1573,7 +1573,7 @@
       "label": "pitchAgentResponseSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L191",
+      "source_location": "L192",
       "id": "src_schemas_pitchagentresponseschema",
       "community": 96,
       "norm_label": "pitchagentresponseschema"
@@ -1582,7 +1582,7 @@
       "label": "uploadDocumentSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L213",
+      "source_location": "L214",
       "id": "src_schemas_uploaddocumentschema",
       "community": 96,
       "norm_label": "uploaddocumentschema"
@@ -1591,7 +1591,7 @@
       "label": "aiChatSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L227",
+      "source_location": "L228",
       "id": "src_schemas_aichatschema",
       "community": 96,
       "norm_label": "aichatschema"
@@ -1600,7 +1600,7 @@
       "label": "generateImageSchema",
       "file_type": "code",
       "source_file": "apps/api/src/schemas.ts",
-      "source_location": "L236",
+      "source_location": "L237",
       "id": "src_schemas_generateimageschema",
       "community": 96,
       "norm_label": "generateimageschema"
@@ -28561,9 +28561,9 @@
       "source_file": "apps/web/src/components/PricingModal.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "components_pricingmodal",
-      "target": "i18n_i18ncontext",
-      "confidence_score": 1.0
+      "target": "i18n_i18ncontext"
     },
     {
       "relation": "imports",
@@ -28572,9 +28572,9 @@
       "source_file": "apps/web/src/components/PricingModal.tsx",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "components_pricingmodal",
-      "target": "i18n_i18ncontext_usei18n",
-      "confidence_score": 1.0
+      "target": "i18n_i18ncontext_usei18n"
     },
     {
       "relation": "imports_from",
@@ -45571,5 +45571,5 @@
       "source_file": ".claude/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "42b80637534cae9464214adf9394adf4cee08fb7"
+  "built_at_commit": "59716220d8beed9b45b3fef3f353b36e933b0e95"
 }
