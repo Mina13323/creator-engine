@@ -90,11 +90,12 @@ export default function AppPage() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const success = urlParams.get('success');
-    const merchantOrderId = urlParams.get('merchant_order_id');
+    const merchantOrderId = urlParams.get('merchant_order_id') || localStorage.getItem('pending_payment_intent');
 
     if (success && merchantOrderId && isAuthenticated) {
       // Clear URL params
       window.history.replaceState({}, document.title, window.location.pathname);
+      localStorage.removeItem('pending_payment_intent');
       
       if (success === 'true') {
         const verifyPayment = async () => {
@@ -103,7 +104,13 @@ export default function AppPage() {
             toast.success('Payment successful! Credits added to your wallet.');
             useStore.getState().loadCredits();
           } catch (error: any) {
-            toast.error(error?.message || 'Payment verification failed');
+            // In production, verify-redirect returns 404 because webhook handles it
+            if (error?.message?.includes('404') || error?.message?.includes('Not found')) {
+              toast.success('Payment received! Credits will update shortly.');
+              setTimeout(() => useStore.getState().loadCredits(), 3000);
+            } else {
+              toast.error(error?.message || 'Payment verification failed');
+            }
           }
         };
         verifyPayment();

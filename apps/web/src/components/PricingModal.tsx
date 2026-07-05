@@ -43,6 +43,9 @@ export default function PricingModal() {
         amountEGP: amount
       });
       if (data.checkoutUrl) {
+        if (data.paymentIntentId) {
+          localStorage.setItem('pending_payment_intent', data.paymentIntentId);
+        }
         window.location.href = data.checkoutUrl;
       }
     } catch (e) {
