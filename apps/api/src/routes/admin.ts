@@ -21,7 +21,8 @@ import {
   KnowledgeDocumentModel,
   AdminSettingsModel,
   AdminSettings,
-  PaymentTransactionModel
+  PaymentTransactionModel,
+  CreditTransactionModel
 } from '@creator/database';
 import { authMiddleware, adminMiddleware } from '../middleware';
 
@@ -501,6 +502,75 @@ router.post('/settings', async (req: Request, res: Response): Promise<any> => {
     }
 
     return res.json({ success: true, settings });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/admin/reports/generate — compiles system stats from the last 7 days and returns JSON report
+router.get('/reports/generate', async (req: Request, res: Response): Promise<any> => {
+  try {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+    // 1. User Signups
+    const totalUsers = await UserModel.countDocuments();
+    const recentSignups = await UserModel.countDocuments({ createdAt: { $gte: oneWeekAgo } });
+    const users = await UserModel.find({ createdAt: { $gte: oneWeekAgo } })
+      .select('name email role createdAt')
+      .lean();
+
+    // 2. Agent Runs / Token Consumption
+    const recentAgentRuns = await AgentRunModel.find({ createdAt: { $gte: oneWeekAgo } }).lean();
+    const totalRuns = recentAgentRuns.length;
+    
+    let totalPromptTokens = 0;
+    let totalCompletionTokens = 0;
+    const modelBreakdown: Record<string, number> = {};
+    const statusBreakdown: Record<string, number> = {};
+
+    recentAgentRuns.forEach(run => {
+      totalPromptTokens += (run as any).tokensPrompt || 0;
+      totalCompletionTokens += (run as any).tokensCompletion || 0;
+      
+      const model = (run as any).model || 'unknown';
+      modelBreakdown[model] = (modelBreakdown[model] || 0) + 1;
+
+      const status = (run as any).status || 'unknown';
+      statusBreakdown[status] = (statusBreakdown[status] || 0) + 1;
+    });
+
+    // 3. Credit Transactions
+    const recentTransactions = await CreditTransactionModel.find({ 
+      createdAt: { $gte: oneWeekAgo },
+      type: 'usage'
+    }).lean();
+
+    let totalCreditsConsumed = 0;
+    const featureBreakdown: Record<string, number> = {};
+
+    recentTransactions.forEach(tx => {
+      // In the DB usage transactions have negative amounts (e.g. -75)
+      const amount = Math.abs((tx as any).amount || 0);
+      totalCreditsConsumed += amount;
+      const feat = (tx as any).feature || 'unknown';
+      featureBreakdown[feat] = (featureBreakdown[feat] || 0) + amount;
+    });
+
+    return res.json({
+      success: true,
+      generatedAt: new Date(),
+      totalUsers,
+      recentSignups,
+      users,
+      totalRuns,
+      totalPromptTokens,
+      totalCompletionTokens,
+      modelBreakdown,
+      statusBreakdown,
+      totalCreditsConsumed,
+      featureBreakdown
+    });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
