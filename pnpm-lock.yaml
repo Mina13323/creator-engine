@@ -48,6 +48,9 @@ importers:
       react-dom:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
+      ts-node:
+        specifier: ^10.9.2
+        version: 10.9.2(@types/node@22.19.19)(typescript@5.9.3)
       turbo:
         specifier: ^2.3.3
         version: 2.9.14
@@ -159,6 +162,9 @@ importers:
       '@base-ui/react':
         specifier: ^1.5.0
         version: 1.5.0(@types/react@19.0.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@creator/agents':
+        specifier: workspace:*
+        version: link:../../packages/agents
       '@creator/rag-core':
         specifier: workspace:*
         version: link:../../packages/rag-core

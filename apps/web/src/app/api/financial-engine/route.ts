@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { connectDB, FinancialForecast, PricingStrategy } from '@creator/database';
+import { runFinancialAgent } from '@creator/agents';
 
 export async function POST(req: Request) {
   try {
@@ -11,51 +12,25 @@ export async function POST(req: Request) {
 
     let resultData;
 
-    // In a real environment, this calls the n8n webhook which processes the RAG & Gemini nodes
+    // Call the native agent directly in-code (processes vector search and prompts the LLM natively)
     try {
-      const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL || 'https://anger-favorably-unburned.ngrok-free.dev/webhook/financial-engine';
-
-      console.log('[FinancialEngine] Calling webhook:', n8nWebhookUrl);
-      let n8nResponse = await fetch(n8nWebhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true',
-          'User-Agent': 'CreatorEngine/1.0'
-        },
-        body: JSON.stringify({ projectId, businessIdea, businessModel }),
-        signal: AbortSignal.timeout(30000),
-      });
-
-      if (!n8nResponse.ok) {
-        // If it returned 404, n8n might not be active and is waiting for a test execution via /webhook-test/
-        if (n8nResponse.status === 404) {
-          const testWebhookUrl = n8nWebhookUrl.replace('/webhook/', '/webhook-test/');
-          console.log('[FinancialEngine] Webhook returned 404. Retrying with test webhook:', testWebhookUrl);
-          n8nResponse = await fetch(testWebhookUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'ngrok-skip-browser-warning': 'true',
-              'User-Agent': 'CreatorEngine/1.0'
-            },
-            body: JSON.stringify({ projectId, businessIdea, businessModel }),
-            signal: AbortSignal.timeout(30000),
-          });
-        }
+      console.log('[FinancialEngine] Running native financial agent for:', businessIdea);
+      const agentResult = await runFinancialAgent(
+        projectId || 'demo-project',
+        businessIdea,
+        businessModel || 'SaaS'
+      );
+      
+      if (!agentResult) {
+        throw new Error('Native financial agent returned null');
       }
 
-      if (!n8nResponse.ok) {
-        const errBody = await n8nResponse.text().catch(() => '');
-        throw new Error(`Webhook returned status ${n8nResponse.status}: ${errBody.slice(0, 300)}`);
-      }
-
-      resultData = await n8nResponse.json();
-    } catch (n8nError) {
-      console.warn('n8n Webhook connection failed or timed out. Falling back to mock RAG engine for demonstration.', n8nError);
+      resultData = agentResult;
+    } catch (agentError) {
+      console.warn('Native financial agent failed or timed out. Falling back to mock RAG engine for demonstration.', agentError);
       
       // Fallback response matching the exact JSON schema requested
-      // This ensures the frontend doesn't break if n8n isn't running locally yet.
+      // This ensures the frontend doesn't break if LLM/DB is completely offline.
       resultData = {
         financial: {
           totalStartupCost: 35000,
@@ -121,7 +96,7 @@ export async function POST(req: Request) {
             startupCosts: financialInput.startupCosts,
             monthlyCosts: financialInput.monthlyCosts,
             revenueProjections: financialInput.revenueProjections,
-            breakEvenMonth: financialInput.breakEvenMonth,
+            breakEvenMonth: typeof financialInput.breakEvenMonth === 'number' ? financialInput.breakEvenMonth : null,
             currency: financialInput.currency || 'EGP',
             assumptionsApplied: financialInput.assumptionsApplied
           };
@@ -141,12 +116,26 @@ export async function POST(req: Request) {
         }
 
         if (pricingInput) {
+          const sanitizedTiers = (pricingInput.priceTiers || []).map((tier: any) => {
+            let cycle = 'monthly';
+            const bc = String(tier.billingCycle || '').toLowerCase().trim();
+            if (bc.includes('ann') || bc.includes('yr') || bc === 'annual') {
+              cycle = 'annual';
+            } else if (bc.includes('one') || bc.includes('once') || bc === 'one-time') {
+              cycle = 'one-time';
+            }
+            return {
+              ...tier,
+              billingCycle: cycle
+            };
+          });
+
           const updateData = {
             projectId,
             businessModel: businessModel || pricingInput.businessModel || 'SaaS',
             recommendedStrategyType: pricingInput.recommendedStrategyType,
             currency: pricingInput.currency || 'EGP',
-            priceTiers: pricingInput.priceTiers,
+            priceTiers: sanitizedTiers,
             marketPositioningRationale: pricingInput.marketPositioningRationale
           };
 

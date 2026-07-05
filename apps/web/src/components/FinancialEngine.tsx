@@ -18,6 +18,7 @@ export default function FinancialEngine() {
   const [businessModel, setBusinessModel] = useState('SaaS');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any>(null);
+  const [loadingExisting, setLoadingExisting] = useState(false);
 
   const prevOpportunityId = React.useRef<string | undefined>(opportunity?.id || (opportunity as any)?._id);
 
@@ -32,6 +33,86 @@ export default function FinancialEngine() {
       prevOpportunityId.current = currentId;
     }
   }, [opportunity]);
+
+  React.useEffect(() => {
+    const loadFinancials = async () => {
+      const projectId = currentProject?.id || (currentProject as any)?._id;
+      if (!projectId) {
+        setResults(null);
+        return;
+      }
+
+      // 1. Try local storage first (instant browser-level caching)
+      const cached = localStorage.getItem(`financials_${projectId}`);
+      if (cached) {
+        try {
+          const parsed = JSON.parse(cached);
+          if (parsed && parsed.financial && parsed.pricing) {
+            setResults(parsed);
+            if (parsed.pricing.businessModel) {
+              setBusinessModel(parsed.pricing.businessModel);
+            }
+            return;
+          }
+        } catch (e) {
+          console.warn('Failed to parse cached financials, clearing...', e);
+          localStorage.removeItem(`financials_${projectId}`);
+        }
+      }
+
+      if (projectId === 'demo-project') {
+        setResults(null);
+        return;
+      }
+      
+      // 2. Fall back to database fetch
+      setLoadingExisting(true);
+      try {
+        const response = await fetch(`/api/financials/${projectId}`);
+        if (response.ok) {
+          const resJson = await response.json();
+          if (resJson.success && resJson.data?.forecast && resJson.data?.pricing) {
+            const forecast = resJson.data.forecast;
+            const pricing = resJson.data.pricing;
+            const dataToSet = {
+              financial: {
+                totalStartupCost: forecast.totalStartupCost,
+                monthlyBurn: forecast.totalMonthlyCost || forecast.monthlyBurn,
+                startupCosts: forecast.startupCosts,
+                monthlyCosts: forecast.monthlyCosts,
+                revenueProjections: forecast.revenueProjections,
+                breakEvenMonth: forecast.breakEvenMonth || "12+",
+                assumptionsApplied: forecast.assumptionsApplied
+              },
+              pricing: {
+                recommendedStrategyType: pricing.recommendedStrategyType,
+                priceTiers: pricing.priceTiers,
+                marketPositioningRationale: pricing.marketPositioningRationale
+              }
+            };
+            setResults(dataToSet);
+            // Save to localStorage for instant subsequent loads
+            localStorage.setItem(`financials_${projectId}`, JSON.stringify(dataToSet));
+            
+            if (pricing.businessModel) {
+              setBusinessModel(pricing.businessModel);
+            }
+          } else {
+            setResults(null);
+          }
+        } else {
+          setResults(null);
+        }
+      } catch (error) {
+        console.error('Failed to fetch existing financials:', error);
+        setResults(null);
+      } finally {
+        setLoadingExisting(false);
+      }
+    };
+
+    loadFinancials();
+  }, [currentProject]);
 
   const handleGenerate = async () => {
     if (!businessIdea) return;
@@ -55,6 +136,11 @@ export default function FinancialEngine() {
 
       const data = await response.json();
       setResults(data);
+      // Cache generated financials in browser local storage
+      const projectId = currentProject?.id || (currentProject as any)?._id;
+      if (projectId) {
+        localStorage.setItem(`financials_${projectId}`, JSON.stringify(data));
+      }
     } catch (error) {
       console.error('Failed to generate financials', error);
     } finally {
@@ -143,12 +229,24 @@ export default function FinancialEngine() {
         </motion.div>
 
         {/* Results Section */}
-        {results && (
+        {loadingExisting && (
+          <div className="flex flex-col items-center justify-center py-12 gap-4">
+            <div className="w-8 h-8 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin" />
+            <p className="text-slate-500 font-medium">{t('financial.crunching') || 'Loading stored financial forecast...'}</p>
+          </div>
+        )}
+
+        {!loadingExisting && results && (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="space-y-8"
           >
+            <div className="pb-4 border-b border-slate-200">
+              <h2 className="text-xl font-bold text-slate-800">
+                {t('financial.forecastProjections') || 'Projections & Strategy'}
+              </h2>
+            </div>
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {[

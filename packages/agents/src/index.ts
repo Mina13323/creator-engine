@@ -10,6 +10,7 @@ import {
 } from '@creator/types';
 import { queryRAG } from '@creator/rag-core';
 import { AGENT_PROMPTS } from '@creator/prompts';
+import { AgentRunModel } from '@creator/database';
 export * from './aiClient';
 import { callLLMWithFallback, callFireworksChat, parseLLMJson } from './aiClient';
 
@@ -326,68 +327,59 @@ export async function runFinancialAgent(
   businessModel: string,
   contextStr: string = ''
 ): Promise<any | null> {
-  // Direct ngrok URL for financial engine (override via FINANCIAL_ENGINE_URL env)
-  const financialUrl = process.env.FINANCIAL_ENGINE_URL || 'https://anger-favorably-unburned.ngrok-free.dev/webhook/financial-engine';
-  let result: any = null;
+  console.log(`[FinancialAgent] Running native agent for project ${projectId}...`);
+
+  const startedAt = new Date();
+  const inputData = { businessIdea, businessModel };
+  
+  // Initialize run tracking log (telemetry auditing for admin dashboard)
+  let runDoc: any = null;
   try {
-    console.log('[FinancialAgent] Calling direct URL:', financialUrl);
-    let res = await fetch(financialUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': 'true',
-        'User-Agent': 'CreatorEngine/1.0'
-      },
-      body: JSON.stringify({ projectId, businessIdea, businessModel, contextStr }),
-      signal: AbortSignal.timeout(30000),
+    runDoc = new AgentRunModel({
+      id: `run_${Date.now()}_fin`,
+      userId: 'system', // Default user id context for background runs
+      projectId,
+      workflow: 'financial-engine',
+      status: 'pending',
+      aiModel: 'deepseek-v4-flash',
+      provider: 'fireworks',
+      startedAt,
+      input: inputData
     });
-
-    if (!res.ok && res.status === 404) {
-      const testUrl = financialUrl.replace('/webhook/', '/webhook-test/');
-      console.log('[FinancialAgent] Received 404. Retrying with test URL:', testUrl);
-      res = await fetch(testUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true',
-          'User-Agent': 'CreatorEngine/1.0'
-        },
-        body: JSON.stringify({ projectId, businessIdea, businessModel, contextStr }),
-        signal: AbortSignal.timeout(30000),
-      });
-    }
-
-    if (res.ok) {
-      const json = await res.json();
-      result = json?.success ? json : { success: true, data: json };
-    } else {
-      throw new Error(`Status ${res.status}`);
-    }
-  } catch (e) {
-    console.warn('[FinancialAgent] Direct URL failed, falling back to shared n8n:', e);
-    result = await callN8n<any>('financial-engine', { projectId, businessIdea, businessModel, contextStr });
+    await runDoc.save();
+  } catch (dbErr) {
+    console.warn('[FinancialAgent] Failed to create AgentRun record:', dbErr);
   }
 
-  if (result && result.success) {
-    return result.data;
+  // 1. Retrieve Egyptian market/pricing context via MongoDB vector search (RAG)
+  let ragContext = contextStr;
+  try {
+    const searchPrompt = `${businessIdea} ${businessModel} Egyptian market pricing costs`;
+    console.log('[FinancialAgent] Fetching RAG documents for query:', searchPrompt);
+    const ragDocs = await queryRAG(searchPrompt, 3);
+    const formattedDocs = ragDocs.map((doc: any) => `[${doc.title}]\n${doc.content}`).join('\n\n');
+    
+    if (formattedDocs) {
+      ragContext = ragContext 
+        ? `${ragContext}\n\nLocal Market Context:\n${formattedDocs}`
+        : formattedDocs;
+    }
+  } catch (err) {
+    console.warn('[FinancialAgent] RAG query failed, proceeding with fallback content:', err);
   }
 
-  console.log('[FinancialAgent] n8n unavailable — calling Fireworks LLM directly...');
+  // 2. Query the LLM to get the base financial structures
   const systemPrompt = `You are a startup financial modeler for the Egyptian market (values in EGP). Generate a realistic financial projection based on the business idea and model.
-Output ONLY a JSON object matching this exact schema:
+Your response MUST be a valid JSON object matching this schema:
 {
-  "financial": {
-    "totalStartupCost": Number,
-    "monthlyBurn": Number,
-    "breakEvenMonth": Number,
-    "startupCosts": [
-      { "category": "String", "description": "String", "amount": Number }
-    ],
-    "monthlyCosts": [
-      { "category": "String", "description": "String", "amount": Number }
-    ],
-    "assumptionsApplied": ["String"]
-  },
+  "startupCosts": [
+    { "category": "String", "description": "String", "amount": Number }
+  ],
+  "monthlyFixedCosts": [
+    { "category": "String", "description": "String", "amount": Number }
+  ],
+  "initialMonthlyRevenue": Number,
+  "assumptionsApplied": ["String"],
   "pricing": {
     "recommendedStrategyType": "String",
     "marketPositioningRationale": "String",
@@ -395,25 +387,152 @@ Output ONLY a JSON object matching this exact schema:
       {
         "tierName": "String",
         "amount": Number,
-        "billingCycle": "String (e.g. mo, yr)",
+        "billingCycle": "String (must be 'monthly', 'annual', or 'one-time')",
         "targetSegment": "String",
         "features": ["String"]
       }
     ]
   }
 }
-${contextStr ? '\nProject Context:\n' + contextStr : ''}`;
-  const userPrompt = `Idea: ${businessIdea}\nModel: ${businessModel}\nGenerate financial forecast.`;
+Output ONLY the JSON object. Do not wrap in markdown formatting blocks or include conversational text.`;
 
-  const rawJson = await callFireworksChat(systemPrompt, userPrompt, {
-    model: 'accounts/fireworks/models/deepseek-v4-flash',
-    response_format: { type: 'json_object' }
+  const userPrompt = `Business Idea: ${businessIdea}
+Business Model: ${businessModel}
+${ragContext ? '\nContext:\n' + ragContext : ''}`;
+
+  let rawJson: string | null = null;
+  try {
+    console.log('[FinancialAgent] Calling LLM...');
+    rawJson = await callFireworksChat(systemPrompt, userPrompt, {
+      model: 'accounts/fireworks/models/deepseek-v4-flash',
+      response_format: { type: 'json_object' }
+    });
+
+    if (!rawJson) {
+      console.warn('[FinancialAgent] Primary Fireworks model (deepseek-v4-flash) failed. Trying fallback...');
+      rawJson = await callLLMWithFallback(systemPrompt, userPrompt, {
+        response_format: { type: 'json_object' }
+      });
+    }
+
+    if (!rawJson) {
+      throw new Error('All LLM endpoints returned empty response');
+    }
+  } catch (err: any) {
+    if (runDoc) {
+      try {
+        const completedAt = new Date();
+        const inputStr = JSON.stringify(inputData);
+        const promptTokens = Math.max(50, Math.ceil(inputStr.length / 4.1));
+        runDoc.status = 'failed';
+        runDoc.completedAt = completedAt;
+        runDoc.durationMs = completedAt.getTime() - startedAt.getTime();
+        runDoc.error = err.message;
+        runDoc.promptTokens = promptTokens;
+        runDoc.totalTokens = promptTokens;
+        await runDoc.save();
+      } catch (saveErr) {
+        console.warn('[FinancialAgent] Failed to update failed AgentRun record:', saveErr);
+      }
+    }
+    return null;
+  }
+
+  const baseData = parseLLMJson<any>(rawJson);
+  if (!baseData) {
+    console.error('[FinancialAgent] Failed to parse LLM response. Raw response:', rawJson);
+    if (runDoc) {
+      try {
+        const completedAt = new Date();
+        const inputStr = JSON.stringify(inputData);
+        const promptTokens = Math.max(50, Math.ceil(inputStr.length / 4.1));
+        runDoc.status = 'failed';
+        runDoc.completedAt = completedAt;
+        runDoc.durationMs = completedAt.getTime() - startedAt.getTime();
+        runDoc.error = 'Failed to parse LLM response as JSON';
+        runDoc.promptTokens = promptTokens;
+        runDoc.totalTokens = promptTokens;
+        await runDoc.save();
+      } catch (saveErr) {
+        console.warn('[FinancialAgent] Failed to update parse-failure AgentRun record:', saveErr);
+      }
+    }
+    return null;
+  }
+
+  // 3. Deterministic Mathematical Calculations (mirroring the n8n JS node)
+  const M_O_M_GROWTH_RATE = 1.15;
+
+  let totalStartupCost = 0;
+  (baseData.startupCosts || []).forEach((item: any) => {
+    totalStartupCost += (item.amount || 0);
   });
 
-  const parsed = parseLLMJson<any>(rawJson);
-  if (parsed) return parsed;
+  let monthlyBurn = 0;
+  (baseData.monthlyFixedCosts || []).forEach((item: any) => {
+    monthlyBurn += (item.amount || 0);
+  });
 
-  return null;
+  // Generate 12 Month Projections
+  const revenueProjections = [];
+  let cumulativeRevenue = 0;
+  let breakEvenMonth: number | string | null = null;
+  let currentRevenue = baseData.initialMonthlyRevenue || 2000;
+
+  for (let m = 1; m <= 12; m++) {
+    cumulativeRevenue += currentRevenue;
+
+    if (!breakEvenMonth && cumulativeRevenue >= (totalStartupCost + (monthlyBurn * m))) {
+      breakEvenMonth = m;
+    }
+
+    revenueProjections.push({
+      month: m,
+      projected_revenue: Math.round(currentRevenue),
+      cumulative_revenue: Math.round(cumulativeRevenue)
+    });
+
+    currentRevenue = currentRevenue * M_O_M_GROWTH_RATE;
+  }
+
+  // 4. Construct Final Payload
+  const finalOutput = {
+    financial: {
+      totalStartupCost: Math.round(totalStartupCost),
+      monthlyBurn: Math.round(monthlyBurn),
+      startupCosts: baseData.startupCosts || [],
+      monthlyCosts: baseData.monthlyFixedCosts || [],
+      revenueProjections: revenueProjections,
+      breakEvenMonth: breakEvenMonth || "12+",
+      assumptionsApplied: baseData.assumptionsApplied || []
+    },
+    pricing: baseData.pricing || {}
+  };
+
+  // Update success status and calculate token usage
+  if (runDoc) {
+    try {
+      const completedAt = new Date();
+      const inputStr = JSON.stringify(inputData);
+      const outputStr = JSON.stringify(finalOutput);
+      const promptTokens = Math.max(50, Math.ceil(inputStr.length / 4.1));
+      const completionTokens = Math.max(50, Math.ceil(outputStr.length / 4.1));
+      
+      runDoc.status = 'success';
+      runDoc.completedAt = completedAt;
+      runDoc.durationMs = completedAt.getTime() - startedAt.getTime();
+      runDoc.output = finalOutput;
+      runDoc.promptTokens = promptTokens;
+      runDoc.completionTokens = completionTokens;
+      runDoc.totalTokens = promptTokens + completionTokens;
+      await runDoc.save();
+    } catch (saveErr) {
+      console.warn('[FinancialAgent] Failed to update success AgentRun record:', saveErr);
+    }
+  }
+
+  console.log('[FinancialAgent] Successfully calculated projections. Break-even month:', finalOutput.financial.breakEvenMonth);
+  return finalOutput;
 }
 
 // ==========================================

@@ -7,7 +7,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ proj
     await connectDB(process.env.MONGODB_URI || '');
     const { projectId } = await params;
 
-    if (!projectId || !mongoose.Types.ObjectId.isValid(projectId)) {
+    if (!projectId || typeof projectId !== 'string' || projectId.trim() === '') {
       return NextResponse.json({ error: "Invalid operational key provided." }, { status: 400 });
     }
 
