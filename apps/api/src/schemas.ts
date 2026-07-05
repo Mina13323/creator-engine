@@ -75,7 +75,8 @@ export const selectOpportunitySchema = z.object({
 
 export const generateBusinessPlanSchema = z.object({
   body: z.object({
-    projectId: z.string().min(1, 'projectId is required')
+    projectId: z.string().min(1, 'projectId is required'),
+    locale: z.string().optional()
   })
 });
 

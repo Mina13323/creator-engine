@@ -749,7 +749,7 @@ app.post('/api/opportunities/select', authMiddleware, validateRequest(selectOppo
 app.post('/api/business-plan/generate', authMiddleware, aiRateLimiter, validateRequest(generateBusinessPlanSchema), requireCredits(CREDIT_COSTS.BUSINESS_PLAN), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
-    const { projectId } = req.body;
+    const { projectId, locale } = req.body;
     if (!dbConnected) return res.status(503).json({ error: 'DB required' });
     
     const selected = await SelectedOpportunityModel.findOne({ projectId, userId });

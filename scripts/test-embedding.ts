@@ -1,6 +1,6 @@
 // scripts/test-embedding.ts
 
-import { embedText } from '../packages/rag-core/src';
+import { embedText } from '../packages/rag-core/src/index';
 
 async function main() {
   const embedding = await embedText(
