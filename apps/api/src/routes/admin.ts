@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Router, Request, Response } from 'express';
 import { 
   UserModel, 
@@ -261,8 +262,21 @@ router.get('/projects', async (req: Request, res: Response): Promise<any> => {
     const planIds = Array.from(new Set(subscriptions.map(s => s.planId).filter(Boolean)));
     
     // Fetch plans
-    const plans = await SubscriptionPlanModel.find({ _id: { $in: planIds } }).lean();
-    const planMap = new Map(plans.map(p => [(p as any)._id.toString(), p]));
+    const validPlanObjectIds = planIds.filter(id => mongoose.Types.ObjectId.isValid(id));
+    const plans = await SubscriptionPlanModel.find({
+      $or: [
+        { slug: { $in: planIds } },
+        { _id: { $in: validPlanObjectIds } }
+      ]
+    }).lean();
+    
+    const planMap = new Map();
+    plans.forEach(p => {
+      planMap.set((p as any)._id.toString(), p);
+      if ((p as any).slug) {
+        planMap.set((p as any).slug, p);
+      }
+    });
     
     const populatedProjects = projects.map((project) => {
       const user = userMap.get(project.userId) as any;
