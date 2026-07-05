@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { authClient } from '@/lib/authClient';
+import { adminClient } from '@/lib/adminClient';
 
 export interface ModerationStats {
   activeUsers: number;
@@ -82,10 +83,10 @@ export function useModerationDashboard() {
   const fetchDashboardData = useCallback(async () => {
     try {
       const [statsData, trafficData, feedData, extended] = await Promise.all([
-        authClient.get<ModerationStats>('/admin/stats'),
-        authClient.get<TrafficData[]>(`/admin/traffic?offset=${offset}`),
-        authClient.get<any[]>('/admin/feed'),
-        authClient.get<DashboardExtendedData>('/admin/dashboard-extended'),
+        adminClient.get<ModerationStats>('/stats'),
+        adminClient.get<TrafficData[]>(`/traffic?offset=${offset}`),
+        adminClient.get<any[]>('/feed'),
+        adminClient.get<DashboardExtendedData>('/dashboard-extended'),
       ]);
 
       setStats(statsData);
@@ -116,11 +117,11 @@ export function useModerationDashboard() {
         // Find the user ID from the feed event
         const event = feed.find(e => e.id === id);
         if (event) {
-          await authClient.post(`/admin/users/${event.user}/ban`, { ban: true });
+          await adminClient.post(`/users/${event.user}/ban`, { ban: true });
         }
       } else if (action === 'Approve') {
         // Unflag the project
-        await authClient.post(`/admin/projects/${id}/flag`, { flag: false });
+        await adminClient.post(`/projects/${id}/flag`, { flag: false });
       }
       // Re-fetch data immediately
       await fetchDashboardData();
