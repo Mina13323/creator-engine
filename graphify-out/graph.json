@@ -4122,7 +4122,7 @@
       "source_file": "apps/web/src/components/AIConsultantDashboard.tsx",
       "source_location": "L13",
       "id": "components_aiconsultantdashboard_aiconsultantdashboard",
-      "community": 100,
+      "community": 140,
       "norm_label": "aiconsultantdashboard()"
     },
     {
@@ -4266,7 +4266,7 @@
       "source_file": "apps/web/src/components/BusinessPlanDashboard.tsx",
       "source_location": "L19",
       "id": "components_businessplandashboard_businessplandashboard",
-      "community": 100,
+      "community": 140,
       "norm_label": "businessplandashboard()"
     },
     {
@@ -4284,7 +4284,7 @@
       "source_file": "apps/web/src/components/CofounderChat.tsx",
       "source_location": "L10",
       "id": "components_cofounderchat_cofounderchat",
-      "community": 146,
+      "community": 14,
       "norm_label": "cofounderchat()"
     },
     {
@@ -4563,7 +4563,7 @@
       "source_file": "apps/web/src/components/LandingPage.tsx",
       "source_location": "L206",
       "id": "components_landingpage_landingpage",
-      "community": 146,
+      "community": 14,
       "norm_label": "landingpage()"
     },
     {
@@ -4698,7 +4698,7 @@
       "source_file": "apps/web/src/components/Onboarding.tsx",
       "source_location": "L15",
       "id": "components_onboarding_onboarding",
-      "community": 140,
+      "community": 5,
       "norm_label": "onboarding()"
     },
     {
@@ -5823,7 +5823,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L3",
       "id": "lib_api_apiclient",
-      "community": 158,
+      "community": 207,
       "norm_label": "apiclient"
     },
     {
@@ -5832,7 +5832,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L4",
       "id": "lib_api_apiclient_generateimage",
-      "community": 158,
+      "community": 207,
       "norm_label": ".generateimage()"
     },
     {
@@ -5841,7 +5841,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L28",
       "id": "lib_api_apiclient_uploadfile",
-      "community": 158,
+      "community": 207,
       "norm_label": ".uploadfile()"
     },
     {
@@ -5850,7 +5850,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L79",
       "id": "lib_api_apiclient_generatemarketingstudioad",
-      "community": 158,
+      "community": 207,
       "norm_label": ".generatemarketingstudioad()"
     },
     {
@@ -5985,7 +5985,7 @@
       "source_file": "apps/web/src/lib/authClient.ts",
       "source_location": "L173",
       "id": "lib_authclient_authclient",
-      "community": 184,
+      "community": 140,
       "norm_label": "authclient"
     },
     {
@@ -8433,7 +8433,7 @@
       "source_file": "package.json",
       "source_location": "L1",
       "id": "package",
-      "community": 209,
+      "community": 6,
       "norm_label": "package.json"
     },
     {
@@ -8442,7 +8442,7 @@
       "source_file": "package.json",
       "source_location": "L2",
       "id": "package_name",
-      "community": 209,
+      "community": 6,
       "norm_label": "name"
     },
     {
@@ -8451,7 +8451,7 @@
       "source_file": "package.json",
       "source_location": "L3",
       "id": "package_version",
-      "community": 209,
+      "community": 6,
       "norm_label": "version"
     },
     {
@@ -8460,7 +8460,7 @@
       "source_file": "package.json",
       "source_location": "L4",
       "id": "package_private",
-      "community": 209,
+      "community": 6,
       "norm_label": "private"
     },
     {
@@ -8469,7 +8469,7 @@
       "source_file": "package.json",
       "source_location": "L5",
       "id": "package_description",
-      "community": 209,
+      "community": 6,
       "norm_label": "description"
     },
     {
@@ -8478,7 +8478,7 @@
       "source_file": "package.json",
       "source_location": "L6",
       "id": "package_scripts",
-      "community": 214,
+      "community": 6,
       "norm_label": "scripts"
     },
     {
@@ -8487,7 +8487,7 @@
       "source_file": "package.json",
       "source_location": "L7",
       "id": "package_scripts_dev",
-      "community": 214,
+      "community": 6,
       "norm_label": "dev"
     },
     {
@@ -8496,7 +8496,7 @@
       "source_file": "package.json",
       "source_location": "L8",
       "id": "package_scripts_build",
-      "community": 214,
+      "community": 6,
       "norm_label": "build"
     },
     {
@@ -8505,7 +8505,7 @@
       "source_file": "package.json",
       "source_location": "L9",
       "id": "package_scripts_lint",
-      "community": 214,
+      "community": 6,
       "norm_label": "lint"
     },
     {
@@ -8514,7 +8514,7 @@
       "source_file": "package.json",
       "source_location": "L10",
       "id": "package_scripts_format",
-      "community": 214,
+      "community": 6,
       "norm_label": "format"
     },
     {
@@ -8523,7 +8523,7 @@
       "source_file": "package.json",
       "source_location": "L12",
       "id": "package_devdependencies",
-      "community": 210,
+      "community": 6,
       "norm_label": "devdependencies"
     },
     {
@@ -8532,7 +8532,7 @@
       "source_file": "package.json",
       "source_location": "L13",
       "id": "package_devdependencies_types_node",
-      "community": 210,
+      "community": 6,
       "norm_label": "@types/node"
     },
     {
@@ -8541,7 +8541,7 @@
       "source_file": "package.json",
       "source_location": "L14",
       "id": "package_devdependencies_types_react",
-      "community": 210,
+      "community": 6,
       "norm_label": "@types/react"
     },
     {
@@ -8550,7 +8550,7 @@
       "source_file": "package.json",
       "source_location": "L15",
       "id": "package_devdependencies_types_react_dom",
-      "community": 210,
+      "community": 6,
       "norm_label": "@types/react-dom"
     },
     {
@@ -8559,7 +8559,7 @@
       "source_file": "package.json",
       "source_location": "L16",
       "id": "package_devdependencies_next",
-      "community": 210,
+      "community": 6,
       "norm_label": "next"
     },
     {
@@ -8568,7 +8568,7 @@
       "source_file": "package.json",
       "source_location": "L17",
       "id": "package_devdependencies_prettier",
-      "community": 210,
+      "community": 6,
       "norm_label": "prettier"
     },
     {
@@ -8577,7 +8577,7 @@
       "source_file": "package.json",
       "source_location": "L18",
       "id": "package_devdependencies_react",
-      "community": 210,
+      "community": 6,
       "norm_label": "react"
     },
     {
@@ -8586,7 +8586,7 @@
       "source_file": "package.json",
       "source_location": "L19",
       "id": "package_devdependencies_react_dom",
-      "community": 210,
+      "community": 6,
       "norm_label": "react-dom"
     },
     {
@@ -8595,7 +8595,7 @@
       "source_file": "package.json",
       "source_location": "L20",
       "id": "package_devdependencies_ts_node",
-      "community": 210,
+      "community": 6,
       "norm_label": "ts-node"
     },
     {
@@ -8613,7 +8613,7 @@
       "source_file": "package.json",
       "source_location": "L22",
       "id": "package_devdependencies_typescript",
-      "community": 210,
+      "community": 6,
       "norm_label": "typescript"
     },
     {
@@ -8622,7 +8622,7 @@
       "source_file": "package.json",
       "source_location": "L24",
       "id": "package_engines",
-      "community": 209,
+      "community": 6,
       "norm_label": "engines"
     },
     {
@@ -8631,7 +8631,7 @@
       "source_file": "package.json",
       "source_location": "L25",
       "id": "package_engines_node",
-      "community": 209,
+      "community": 6,
       "norm_label": "node"
     },
     {
@@ -8640,7 +8640,7 @@
       "source_file": "package.json",
       "source_location": "L26",
       "id": "package_engines_pnpm",
-      "community": 209,
+      "community": 6,
       "norm_label": "pnpm"
     },
     {
@@ -8649,7 +8649,7 @@
       "source_file": "package.json",
       "source_location": "L28",
       "id": "package_packagemanager",
-      "community": 209,
+      "community": 6,
       "norm_label": "packagemanager"
     },
     {
@@ -8658,7 +8658,7 @@
       "source_file": "package.json",
       "source_location": "L29",
       "id": "package_dependencies",
-      "community": 213,
+      "community": 6,
       "norm_label": "dependencies"
     },
     {
@@ -8667,7 +8667,7 @@
       "source_file": "package.json",
       "source_location": "L30",
       "id": "package_dependencies_langchain_openai",
-      "community": 213,
+      "community": 6,
       "norm_label": "@langchain/openai"
     },
     {
@@ -8676,7 +8676,7 @@
       "source_file": "package.json",
       "source_location": "L31",
       "id": "package_dependencies_pinecone_database_pinecone",
-      "community": 213,
+      "community": 6,
       "norm_label": "@pinecone-database/pinecone"
     },
     {
@@ -8685,7 +8685,7 @@
       "source_file": "package.json",
       "source_location": "L32",
       "id": "package_dependencies_dotenv",
-      "community": 213,
+      "community": 6,
       "norm_label": "dotenv"
     },
     {
@@ -8694,7 +8694,7 @@
       "source_file": "package.json",
       "source_location": "L33",
       "id": "package_dependencies_mongodb",
-      "community": 213,
+      "community": 6,
       "norm_label": "mongodb"
     },
     {
@@ -8703,7 +8703,7 @@
       "source_file": "package.json",
       "source_location": "L34",
       "id": "package_dependencies_mongoose",
-      "community": 213,
+      "community": 6,
       "norm_label": "mongoose"
     },
     {
@@ -8712,7 +8712,7 @@
       "source_file": "package.json",
       "source_location": "L35",
       "id": "package_dependencies_zod",
-      "community": 213,
+      "community": 6,
       "norm_label": "zod"
     },
     {
@@ -12586,6 +12586,60 @@
       "norm_label": "runtest()"
     },
     {
+      "label": "test-report.js",
+      "file_type": "code",
+      "source_file": "scripts/test-report.js",
+      "source_location": "L1",
+      "id": "scripts_test_report",
+      "community": 146,
+      "norm_label": "test-report.js"
+    },
+    {
+      "label": "mongoose",
+      "file_type": "code",
+      "source_file": "scripts/test-report.js",
+      "source_location": "L1",
+      "id": "scripts_test_report_mongoose",
+      "community": 146,
+      "norm_label": "mongoose"
+    },
+    {
+      "label": "jwt",
+      "file_type": "code",
+      "source_file": "scripts/test-report.js",
+      "source_location": "L2",
+      "id": "scripts_test_report_jwt",
+      "community": 146,
+      "norm_label": "jwt"
+    },
+    {
+      "label": "path",
+      "file_type": "code",
+      "source_file": "scripts/test-report.js",
+      "source_location": "L3",
+      "id": "scripts_test_report_path",
+      "community": 146,
+      "norm_label": "path"
+    },
+    {
+      "label": "dotenv",
+      "file_type": "code",
+      "source_file": "scripts/test-report.js",
+      "source_location": "L4",
+      "id": "scripts_test_report_dotenv",
+      "community": 146,
+      "norm_label": "dotenv"
+    },
+    {
+      "label": "testReport()",
+      "file_type": "code",
+      "source_file": "scripts/test-report.js",
+      "source_location": "L12",
+      "id": "scripts_test_report_testreport",
+      "community": 146,
+      "norm_label": "testreport()"
+    },
+    {
       "label": "test_stdin.py",
       "file_type": "code",
       "source_file": "scripts/test_stdin.py",
@@ -15290,7 +15344,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L37",
-      "community": 209,
+      "community": 6,
       "norm_label": "pnpm",
       "id": "package_pnpm"
     },
@@ -15299,7 +15353,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L38",
-      "community": 209,
+      "community": 6,
       "norm_label": "onlybuiltdependencies",
       "id": "package_pnpm_onlybuiltdependencies"
     },
@@ -15830,7 +15884,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L12",
-      "community": 211,
+      "community": 78,
       "norm_label": "devdependencies",
       "id": "creator_engine_package_devdependencies"
     },
@@ -15839,7 +15893,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L13",
-      "community": 211,
+      "community": 78,
       "norm_label": "@types/node",
       "id": "creator_engine_package_devdependencies_types_node"
     },
@@ -15848,7 +15902,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L14",
-      "community": 211,
+      "community": 78,
       "norm_label": "@types/react",
       "id": "creator_engine_package_devdependencies_types_react"
     },
@@ -15857,7 +15911,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L15",
-      "community": 211,
+      "community": 78,
       "norm_label": "@types/react-dom",
       "id": "creator_engine_package_devdependencies_types_react_dom"
     },
@@ -15866,7 +15920,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L16",
-      "community": 211,
+      "community": 78,
       "norm_label": "next",
       "id": "creator_engine_package_devdependencies_next"
     },
@@ -15875,7 +15929,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L17",
-      "community": 211,
+      "community": 78,
       "norm_label": "prettier",
       "id": "creator_engine_package_devdependencies_prettier"
     },
@@ -15884,7 +15938,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L18",
-      "community": 211,
+      "community": 78,
       "norm_label": "react",
       "id": "creator_engine_package_devdependencies_react"
     },
@@ -15893,7 +15947,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L19",
-      "community": 211,
+      "community": 78,
       "norm_label": "react-dom",
       "id": "creator_engine_package_devdependencies_react_dom"
     },
@@ -15911,7 +15965,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L21",
-      "community": 211,
+      "community": 78,
       "norm_label": "typescript",
       "id": "creator_engine_package_devdependencies_typescript"
     },
@@ -15956,7 +16010,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L28",
-      "community": 212,
+      "community": 78,
       "norm_label": "dependencies",
       "id": "creator_engine_package_dependencies"
     },
@@ -15965,7 +16019,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L29",
-      "community": 212,
+      "community": 78,
       "norm_label": "@langchain/openai",
       "id": "creator_engine_package_dependencies_langchain_openai"
     },
@@ -15974,7 +16028,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L30",
-      "community": 212,
+      "community": 78,
       "norm_label": "@pinecone-database/pinecone",
       "id": "creator_engine_package_dependencies_pinecone_database_pinecone"
     },
@@ -15983,7 +16037,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L31",
-      "community": 212,
+      "community": 78,
       "norm_label": "dotenv",
       "id": "creator_engine_package_dependencies_dotenv"
     },
@@ -15992,7 +16046,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L32",
-      "community": 212,
+      "community": 78,
       "norm_label": "mongodb",
       "id": "creator_engine_package_dependencies_mongodb"
     },
@@ -16001,7 +16055,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L33",
-      "community": 212,
+      "community": 78,
       "norm_label": "mongoose",
       "id": "creator_engine_package_dependencies_mongoose"
     },
@@ -16010,7 +16064,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L34",
-      "community": 212,
+      "community": 78,
       "norm_label": "zod",
       "id": "creator_engine_package_dependencies_zod"
     },
@@ -17269,7 +17323,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 146,
+      "community": 14,
       "norm_label": "rag architecture",
       "id": "components_landingpage_concept_rag_architecture"
     },
@@ -17282,7 +17336,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 146,
+      "community": 14,
       "norm_label": "multi-agent system",
       "id": "components_landingpage_concept_multi_agent_system"
     },
@@ -41267,6 +41321,56 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "scripts/test-report.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "scripts_test_report",
+      "target": "scripts_test_report_dotenv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test-report.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "scripts_test_report",
+      "target": "scripts_test_report_jwt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test-report.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scripts_test_report",
+      "target": "scripts_test_report_mongoose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test-report.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "scripts_test_report",
+      "target": "scripts_test_report_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test-report.js",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "scripts_test_report",
+      "target": "scripts_test_report_testreport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "scripts/topup.ts",
       "source_location": "L7",
       "weight": 1.0,
@@ -45571,5 +45675,5 @@
       "source_file": ".claude/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "a40b636e92fa9482dbbd5ebade4550aeb530abee"
+  "built_at_commit": "138bb39498ef2153e7fc31f6bbe24bc7fb983945"
 }

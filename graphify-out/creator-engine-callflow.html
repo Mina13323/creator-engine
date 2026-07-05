@@ -60,7 +60,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 <div class="container">
 
 <h1>creator-engine — Complete Call Flow &amp; Architecture Documentation</h1>
-<p class="subtitle">Generated from graphify knowledge graph: 1948 nodes, 2686 edges, 215 communities. Commit: a40b636</p>
+<p class="subtitle">Generated from graphify knowledge graph: 1954 nodes, 2691 edges, 208 communities. Commit: 138bb39</p>
 
 <div class="nav">
     <a href="#overview">Architecture Overview</a>
@@ -74,9 +74,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
     <a href="#tests-fixtures">Tests &amp; Fixtures</a>
     <a href="#community-5">Community 5</a>
     <a href="#index-packages-database-module">Index Packages Database Module</a>
-    <a href="#community-100">Community 100</a>
-    <a href="#index-packages-types-module">Index Packages Types Module</a>
     <a href="#community-140">Community 140</a>
+    <a href="#index-packages-types-module">Index Packages Types Module</a>
+    <a href="#community-100">Community 100</a>
     <a href="#components-marketingstudio-apiclient-module">Components Marketingstudio Apiclient Module</a>
     <a href="#other">Other</a>
 </div>
@@ -92,7 +92,7 @@ flowchart LR
     class BUILD_GRAPH_321CBB04 module;
     ANALYSIS_CLUSTERING_C79796DA("Analysis &amp; Clustering<br/><small>25 nodes</small>")
     class ANALYSIS_CLUSTERING_C79796DA module;
-    OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>9 nodes</small>")
+    OUTPUTS_DOCS_ED82387C("Outputs &amp; Docs<br/><small>15 nodes</small>")
     class OUTPUTS_DOCS_ED82387C module;
     CLI_SKILLS_9964CBB8("CLI &amp; Skill Installers<br/><small>86 nodes</small>")
     class CLI_SKILLS_9964CBB8 module;
@@ -104,27 +104,27 @@ flowchart LR
     class SECURITY_GLOBAL_5B9C6A04 module;
     TESTS_FIXTURES_B84B1DCC("Tests &amp; Fixtures<br/><small>153 nodes</small>")
     class TESTS_FIXTURES_B84B1DCC module;
-    COMMUNITY_5_2966028D("Community 5<br/><small>56 nodes</small>")
+    COMMUNITY_5_2966028D("Community 5<br/><small>57 nodes</small>")
     class COMMUNITY_5_2966028D module;
     INDEX_PACKAGES_DATABASE_MODULE_344FEEB0("Index Packages Database Module<br/><small>51 nodes</small>")
     class INDEX_PACKAGES_DATABASE_MODULE_344FEEB0 module;
-    COMMUNITY_100_7A9FA66B("Community 100<br/><small>41 nodes</small>")
-    class COMMUNITY_100_7A9FA66B module;
+    COMMUNITY_140_F4377E00("Community 140<br/><small>41 nodes</small>")
+    class COMMUNITY_140_F4377E00 module;
     INDEX_PACKAGES_TYPES_MODULE_DFB864CD("Index Packages Types Module<br/><small>40 nodes</small>")
     class INDEX_PACKAGES_TYPES_MODULE_DFB864CD module;
-    COMMUNITY_140_F4377E00("Community 140<br/><small>39 nodes</small>")
-    class COMMUNITY_140_F4377E00 module;
+    COMMUNITY_100_7A9FA66B("Community 100<br/><small>39 nodes</small>")
+    class COMMUNITY_100_7A9FA66B module;
     COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25("Components Marketingstudio Apiclient Module<br/><small>38 nodes</small>")
     class COMPONENTS_MARKETINGSTUDIO_APICLIENT_MODULE_30E43F25 module;
-    OTHER_D0941E68("Other<br/><small>343 nodes</small>")
+    OTHER_D0941E68("Other<br/><small>342 nodes</small>")
     class OTHER_D0941E68 module;
-    OTHER_D0941E68 -->|imports x38| COMMUNITY_140_F4377E00
+    OTHER_D0941E68 -->|imports x44| COMMUNITY_140_F4377E00
     COMMUNITY_100_7A9FA66B -->|imports x23| OTHER_D0941E68
-    COMMUNITY_140_F4377E00 -->|imports x22| OTHER_D0941E68
-    COMMUNITY_100_7A9FA66B -->|imports x20| COMMUNITY_140_F4377E00
-    COMMUNITY_5_2966028D -->|imports x19| OTHER_D0941E68
     OTHER_D0941E68 -->|imports x19| COMMUNITY_5_2966028D
+    COMMUNITY_5_2966028D -->|imports x18| OTHER_D0941E68
+    COMMUNITY_100_7A9FA66B -->|imports x18| COMMUNITY_140_F4377E00
     OTHER_D0941E68 -->|imports x18| COMMUNITY_100_7A9FA66B
+    COMMUNITY_140_F4377E00 -->|imports x17| OTHER_D0941E68
     INDEX_PACKAGES_DATABASE_MODULE_344FEEB0 -->|imports x16| INDEX_PACKAGES_TYPES_MODULE_DFB864CD
     SERVE_API_35EC8E86 -->|imports x11| OTHER_D0941E68
     SERVE_API_35EC8E86 -->|imports x8| TESTS_FIXTURES_B84B1DCC
@@ -146,7 +146,7 @@ flowchart LR
     <h4>Architecture Layers</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>Layer</th><th>Nodes</th><th>Communities</th></tr>
-      <tr><td>Graph Build</td><td>770</td><td><code>2, 3, 133, 36, 21, 93, 23, 8, 29, 94, 95, 7, 19, 28, 121, 15, 18, 24, 32, 78, 22, 27, 92, 134, 25, 26, 6, 97, 209, 30, 31, 33, 34, 35, 210, 37, 38, 211, 212, 213, 40, 41, 45, 42, 43, 44, 46, 214, 47, 50, 85, 149, 62, 167</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>25</td><td><code>151, 152, 153, 82</code></td></tr><tr><td>Outputs &amp; Docs</td><td>9</td><td><code>77</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>86</td><td><code>12, 11, 81, 84, 88, 90, 135, 55, 56, 89, 64, 68</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>20</td><td><code>80, 83, 86, 52, 119, 123</code></td></tr><tr><td>Serving API</td><td>259</td><td><code>141, 96, 132, 48, 99, 207, 114, 142, 148, 101, 105, 107, 108, 109, 158, 161, 186, 115, 116, 170, 172, 194, 196, 65</code></td></tr><tr><td>Security &amp; Global Graph</td><td>18</td><td><code>98, 103, 118</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>153</td><td><code>129, 9, 16, 17, 106, 150, 155, 156, 164, 185, 187, 191, 125, 127, 137</code></td></tr><tr><td>Community 5</td><td>56</td><td><code>5</code></td></tr><tr><td>Index Packages Database Module</td><td>51</td><td><code>1</code></td></tr><tr><td>Community 100</td><td>41</td><td><code>100</code></td></tr><tr><td>Index Packages Types Module</td><td>40</td><td><code>13</code></td></tr><tr><td>Community 140</td><td>39</td><td><code>140</code></td></tr><tr><td>Components Marketingstudio Apiclient Module</td><td>38</td><td><code>10</code></td></tr><tr><td>Other</td><td>343</td><td><code>20, 184, 0, 183, 14, 144, 49, 154, 208, 143, 102, 104, 39, 4, 145, 147, 79, 110, 112, 146, 157, 159, 111, 113, 120, 160, 162, 163, 51, 53, 54, 72, 87, 117, 130, 165, 166, 188, 189, 190, 57, 58, 59, 60, 61, 63, 71, 91, 122, 124, 126, 128, 131, 136, 138, 139, 168, 169, 171, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 192, 193, 195, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 66, 67, 69, 70, 73, 74, 75, 76</code></td></tr>
+      <tr><td>Graph Build</td><td>770</td><td><code>2, 6, 3, 78, 133, 36, 21, 93, 23, 8, 29, 94, 95, 7, 19, 28, 121, 15, 18, 24, 32, 22, 27, 92, 134, 25, 26, 97, 30, 31, 33, 34, 35, 37, 38, 40, 41, 45, 42, 43, 44, 46, 47, 50, 85, 149, 62, 167</code></td></tr><tr><td>Analysis &amp; Clustering</td><td>25</td><td><code>151, 152, 153, 82</code></td></tr><tr><td>Outputs &amp; Docs</td><td>15</td><td><code>77, 146</code></td></tr><tr><td>CLI &amp; Skill Installers</td><td>86</td><td><code>12, 11, 81, 84, 88, 90, 135, 55, 56, 89, 64, 68</code></td></tr><tr><td>Ingestion &amp; Updates</td><td>20</td><td><code>80, 83, 86, 52, 119, 123</code></td></tr><tr><td>Serving API</td><td>259</td><td><code>141, 96, 132, 48, 99, 207, 114, 142, 148, 101, 105, 107, 108, 109, 161, 186, 115, 116, 170, 172, 194, 196, 65</code></td></tr><tr><td>Security &amp; Global Graph</td><td>18</td><td><code>98, 103, 118</code></td></tr><tr><td>Tests &amp; Fixtures</td><td>153</td><td><code>129, 9, 16, 17, 106, 150, 155, 156, 164, 185, 187, 191, 125, 127, 137</code></td></tr><tr><td>Community 5</td><td>57</td><td><code>5</code></td></tr><tr><td>Index Packages Database Module</td><td>51</td><td><code>1</code></td></tr><tr><td>Community 140</td><td>41</td><td><code>140</code></td></tr><tr><td>Index Packages Types Module</td><td>40</td><td><code>13</code></td></tr><tr><td>Community 100</td><td>39</td><td><code>100</code></td></tr><tr><td>Components Marketingstudio Apiclient Module</td><td>38</td><td><code>10</code></td></tr><tr><td>Other</td><td>342</td><td><code>20, 184, 0, 183, 14, 144, 49, 154, 208, 143, 102, 104, 39, 4, 145, 147, 79, 110, 112, 157, 159, 111, 113, 120, 160, 162, 163, 51, 53, 54, 72, 87, 117, 130, 165, 166, 188, 189, 190, 57, 58, 59, 60, 61, 63, 71, 91, 122, 124, 126, 128, 131, 136, 138, 139, 168, 169, 171, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 192, 193, 195, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 66, 67, 69, 70, 73, 74, 75, 76</code></td></tr>
     </table>
   </div>
   <div class="card">
@@ -158,7 +158,7 @@ flowchart LR
   <div class="card">
     <h4>Graph Report Highlights</h4>
     <ul>
-      <li>1948 nodes · 2686 edges · 215 communities (167 shown, 48 thin omitted)</li>
+      <li>1954 nodes · 2691 edges · 208 communities (161 shown, 47 thin omitted)</li>
       <li>Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 47 edges (avg confidence: 0.81)</li>
       <li>Token cost: 0 input · 0 output</li>
       <li>1. `useStore` - 56 edges</li>
@@ -816,21 +816,36 @@ flowchart LR
 
 <!-- ====== 4. Outputs & Docs ====== -->
 <h2 id="outputs-docs">4. Outputs &amp; Docs</h2>
-<p>Outputs &amp; Docs groups implementation around exportsmd, graphify, claude, skills, mostly in graphify/references/exports.md. This section covers 9 nodes and 8 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Outputs &amp; Docs groups implementation around exportsmd, graphify, claude, skills, mostly in graphify/references/exports.md, scripts/test-report.js. This section covers 15 nodes and 13 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Outputs &amp; Docs (9 nodes, 8 edges)
-    references_exports_graphify_reference_extra_expo_ee448005("graphify reference: extra exports and b...<br/><small>graphify/references/exports.md</small>")
-    c_users_mina_wael_desktop_ceo_claude_skills_grap_4117d5ee("exports.md")
-    references_exports_f50c662b("exports.md")
-    references_exports_step_6b_wiki_only_if_wiki_fla_f09198df("Step 6b - Wiki (only if --wiki flag)<br/><small>graphify/references/exports.md</small>")
-    references_exports_step_7_neo4j_export_only_if_n_4506a260("Step 7 - Neo4j export (only if --neo4j...<br/><small>graphify/references/exports.md</small>")
-    references_exports_step_7b_svg_export_only_if_sv_f5c26580("Step 7b - SVG export (only if --svg flag)<br/><small>graphify/references/exports.md</small>")
-    references_exports_step_7c_graphml_export_only_i_4cc5e08c("Step 7c - GraphML export (only if --gra...<br/><small>graphify/references/exports.md</small>")
-    references_exports_step_7d_mcp_server_only_if_mc_bc22e883("Step 7d - MCP server (only if --mcp flag)<br/><small>graphify/references/exports.md</small>")
-    references_exports_step_8_token_reduction_benchm_d4b739be("Step 8 - Token reduction benchmark (onl...<br/><small>graphify/references/exports.md</small>")
+    %% Section: Outputs &amp; Docs (15 nodes, 13 edges)
+    subgraph outputs_docs_graphify_references_exports_md_145be2aa["graphify/references/exports.md"]
+        references_exports_graphify_reference_extra_expo_ee448005("graphify reference: extra exports and b...<br/><small>graphify/references/exports.md</small>")
+        c_users_mina_wael_desktop_ceo_claude_skills_grap_4117d5ee("exports.md")
+        references_exports_step_6b_wiki_only_if_wiki_fla_f09198df("Step 6b - Wiki (only if --wiki flag)<br/><small>graphify/references/exports.md</small>")
+        references_exports_step_7_neo4j_export_only_if_n_4506a260("Step 7 - Neo4j export (only if --neo4j...<br/><small>graphify/references/exports.md</small>")
+        references_exports_step_7b_svg_export_only_if_sv_f5c26580("Step 7b - SVG export (only if --svg flag)<br/><small>graphify/references/exports.md</small>")
+        references_exports_step_7c_graphml_export_only_i_4cc5e08c("Step 7c - GraphML export (only if --gra...<br/><small>graphify/references/exports.md</small>")
+        references_exports_step_7d_mcp_server_only_if_mc_bc22e883("Step 7d - MCP server (only if --mcp flag)<br/><small>graphify/references/exports.md</small>")
+        references_exports_step_8_token_reduction_benchm_d4b739be("Step 8 - Token reduction benchmark (onl...<br/><small>graphify/references/exports.md</small>")
+        references_exports_f50c662b("exports.md")
+    end
+    subgraph outputs_docs_scripts_test_report_js_d20d019c["scripts/test-report.js"]
+        scripts_test_report_66fb745d("test-report.js")
+        scripts_test_report_dotenv_44174a04("dotenv<br/><small>scripts/test-report.js</small>")
+        scripts_test_report_jwt_369c170d("jwt<br/><small>scripts/test-report.js</small>")
+        scripts_test_report_mongoose_946b7176("mongoose<br/><small>scripts/test-report.js</small>")
+        scripts_test_report_path_b3b7b391("path<br/><small>scripts/test-report.js</small>")
+        scripts_test_report_testreport_0c8a63f7("testReport()<br/><small>scripts/test-report.js</small>")
+    end
+    scripts_test_report_66fb745d -->|contains| scripts_test_report_dotenv_44174a04
+    scripts_test_report_66fb745d -->|contains| scripts_test_report_jwt_369c170d
+    scripts_test_report_66fb745d -->|contains| scripts_test_report_mongoose_946b7176
+    scripts_test_report_66fb745d -->|contains| scripts_test_report_path_b3b7b391
+    scripts_test_report_66fb745d -->|contains| scripts_test_report_testreport_0c8a63f7
     c_users_mina_wael_desktop_ceo_claude_skills_grap_4117d5ee -->|contains| references_exports_graphify_reference_extra_expo_ee448005
     references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_f50c662b
     references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_6b_wiki_only_if_wiki_fla_f09198df
@@ -841,13 +856,19 @@ flowchart LR
     references_exports_graphify_reference_extra_expo_ee448005 -->|contains| references_exports_step_8_token_reduction_benchm_d4b739be
     class references_exports_graphify_reference_extra_expo_ee448005 concept;
     class c_users_mina_wael_desktop_ceo_claude_skills_grap_4117d5ee concept;
-    class references_exports_f50c662b concept;
     class references_exports_step_6b_wiki_only_if_wiki_fla_f09198df concept;
     class references_exports_step_7_neo4j_export_only_if_n_4506a260 concept;
     class references_exports_step_7b_svg_export_only_if_sv_f5c26580 concept;
     class references_exports_step_7c_graphml_export_only_i_4cc5e08c concept;
     class references_exports_step_7d_mcp_server_only_if_mc_bc22e883 concept;
     class references_exports_step_8_token_reduction_benchm_d4b739be concept;
+    class references_exports_f50c662b concept;
+    class scripts_test_report_66fb745d test;
+    class scripts_test_report_dotenv_44174a04 test;
+    class scripts_test_report_jwt_369c170d test;
+    class scripts_test_report_mongoose_946b7176 test;
+    class scripts_test_report_path_b3b7b391 test;
+    class scripts_test_report_testreport_0c8a63f7 test;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -941,6 +962,54 @@ flowchart LR
   <td>No direct outbound edge</td>
   <td>Documentation node describing exports.md.</td>
 </tr>
+<tr>
+  <td>10</td>
+  <td><code>test-report.js</code><br><small style="color:var(--muted)">scripts/test-report.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>mongoose</code><br><small style="color:var(--muted)">scripts/test-report.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>mongoose node in scripts/test-report.js.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>jwt</code><br><small style="color:var(--muted)">scripts/test-report.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>jwt node in scripts/test-report.js.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>path</code><br><small style="color:var(--muted)">scripts/test-report.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>path node in scripts/test-report.js.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>dotenv</code><br><small style="color:var(--muted)">scripts/test-report.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>dotenv node in scripts/test-report.js.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>testReport()</code><br><small style="color:var(--muted)">scripts/test-report.js</small></td>
+  <td><span class="tag tag-func">Test</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Verifies imports, entry points, or version behavior.</td>
+</tr>
 </table>
 
 <div class="grid">
@@ -949,11 +1018,12 @@ flowchart LR
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
       <tr><td><code>graphify/references/exports.md</code></td><td>9 nodes</td></tr>
+<tr><td><code>scripts/test-report.js</code></td><td>6 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x8. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x13. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -1728,7 +1798,7 @@ flowchart LR
   <td><code>connectDB()</code><br><small style="color:var(--muted)">database/src/index.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
   <td><code>GET()</code><br><small style="color:var(--muted)">financials/[projectId]/route.ts</small><br><code>index.ts</code><br><small style="color:var(--muted)">api/src/index.ts</small><br><code>POST()</code><br><small style="color:var(--muted)">api/financial-engine/route.ts</small><br>+1 more</td>
-  <td><code>main()</code><br><small style="color:var(--muted)">scripts/audit-db.ts</small><br><code>main()</code><br><small style="color:var(--muted)">scripts/production-e2e.ts</small><br><code>populate_embeddings.ts</code><br><small style="color:var(--muted)">scripts/populate_embeddings.ts</small><br>+3 more</td>
+  <td><code>main()</code><br><small style="color:var(--muted)">scripts/production-e2e.ts</small><br><code>main()</code><br><small style="color:var(--muted)">scripts/audit-db.ts</small><br><code>populate_embeddings.ts</code><br><small style="color:var(--muted)">scripts/populate_embeddings.ts</small><br>+3 more</td>
   <td>connectDB() node in database/src/index.ts.</td>
 </tr>
 <tr>
@@ -2538,12 +2608,12 @@ flowchart LR
 
 <!-- ====== 10. Community 5 ====== -->
 <h2 id="community-5">10. Community 5</h2>
-<p>Community 5 groups implementation around apps, web, components, admin, mostly in components/ui/select.tsx, components/ui/card.tsx, admin/moderation/page.tsx. This section covers 56 nodes and 127 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Community 5 groups implementation around apps, web, components, admin, mostly in components/ui/select.tsx, components/ui/card.tsx, admin/moderation/page.tsx. This section covers 57 nodes and 128 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 5 (56 nodes, 127 edges)
+    %% Section: Community 5 (57 nodes, 128 edges)
     subgraph community_5_components_ui_card_tsx_c7b574f5["components/ui/card.tsx"]
         ui_card_card_7890a788("Card()<br/><small>components/ui/card.tsx</small>")
         ui_card_cardheader_cb718f02("CardHeader()<br/><small>components/ui/card.tsx</small>")
@@ -2592,7 +2662,7 @@ flowchart LR
     admin_kpicardsrow_873e7f9c -->|imports| ui_card_card_7890a788
     admin_kpicardsrow_873e7f9c -->|imports| ui_card_cardheader_cb718f02
     admin_kpicardsrow_873e7f9c -->|imports| ui_card_cardtitle_f8dc8a4e
-    %% Omitted for readability: 38 nodes, 6 edges
+    %% Omitted for readability: 39 nodes, 6 edges
     class ui_card_card_7890a788 ui;
     class ui_card_cardheader_cb718f02 ui;
     class ui_card_cardtitle_f8dc8a4e ui;
@@ -2706,6 +2776,14 @@ flowchart LR
 </tr>
 <tr>
   <td>10</td>
+  <td><code>Onboarding()</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Onboarding() node in src/components/Onboarding.tsx.</td>
+</tr>
+<tr>
+  <td>11</td>
   <td><code>DashboardObservability.tsx</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2713,7 +2791,7 @@ flowchart LR
   <td>Module file in components/admin/DashboardObservability.tsx.</td>
 </tr>
 <tr>
-  <td>11</td>
+  <td>12</td>
   <td><code>DashboardObservabilityProps</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2721,7 +2799,7 @@ flowchart LR
   <td>DashboardObservabilityProps node in components/admin/DashboardObservability.tsx.</td>
 </tr>
 <tr>
-  <td>12</td>
+  <td>13</td>
   <td><code>DashboardObservability()</code><br><small style="color:var(--muted)">components/admin/DashboardObservability.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2729,7 +2807,7 @@ flowchart LR
   <td>DashboardObservability() node in components/admin/DashboardObservability.tsx.</td>
 </tr>
 <tr>
-  <td>13</td>
+  <td>14</td>
   <td><code>KPICardsRow.tsx</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2737,7 +2815,7 @@ flowchart LR
   <td>Module file in components/admin/KPICardsRow.tsx.</td>
 </tr>
 <tr>
-  <td>14</td>
+  <td>15</td>
   <td><code>KPICardsRow()</code><br><small style="color:var(--muted)">components/admin/KPICardsRow.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2745,7 +2823,7 @@ flowchart LR
   <td>KPICardsRow() node in components/admin/KPICardsRow.tsx.</td>
 </tr>
 <tr>
-  <td>15</td>
+  <td>16</td>
   <td><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2753,7 +2831,7 @@ flowchart LR
   <td>Module file in components/admin/ModerationFeed.tsx.</td>
 </tr>
 <tr>
-  <td>16</td>
+  <td>17</td>
   <td><code>ModerationFeed()</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/moderation/page.tsx</small><br><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2761,7 +2839,7 @@ flowchart LR
   <td>ModerationFeed() node in components/admin/ModerationFeed.tsx.</td>
 </tr>
 <tr>
-  <td>17</td>
+  <td>18</td>
   <td><code>RevenueAnalytics.tsx</code><br><small style="color:var(--muted)">components/admin/RevenueAnalytics.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2769,7 +2847,7 @@ flowchart LR
   <td>Module file in components/admin/RevenueAnalytics.tsx.</td>
 </tr>
 <tr>
-  <td>18</td>
+  <td>19</td>
   <td><code>RevenueAnalyticsProps</code><br><small style="color:var(--muted)">components/admin/RevenueAnalytics.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2777,7 +2855,7 @@ flowchart LR
   <td>Orchestrates analysis and returns structured documentation data.</td>
 </tr>
 <tr>
-  <td>19</td>
+  <td>20</td>
   <td><code>RevenueAnalytics()</code><br><small style="color:var(--muted)">components/admin/RevenueAnalytics.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2785,7 +2863,7 @@ flowchart LR
   <td>Orchestrates analysis and returns structured documentation data.</td>
 </tr>
 <tr>
-  <td>20</td>
+  <td>21</td>
   <td><code>TrafficChart.tsx</code><br><small style="color:var(--muted)">components/admin/TrafficChart.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2793,7 +2871,7 @@ flowchart LR
   <td>Module file in components/admin/TrafficChart.tsx.</td>
 </tr>
 <tr>
-  <td>21</td>
+  <td>22</td>
   <td><code>CustomTooltip()</code><br><small style="color:var(--muted)">components/admin/TrafficChart.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2801,7 +2879,7 @@ flowchart LR
   <td>CustomTooltip() node in components/admin/TrafficChart.tsx.</td>
 </tr>
 <tr>
-  <td>22</td>
+  <td>23</td>
   <td><code>TrafficChart()</code><br><small style="color:var(--muted)">components/admin/TrafficChart.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2809,7 +2887,7 @@ flowchart LR
   <td>TrafficChart() node in components/admin/TrafficChart.tsx.</td>
 </tr>
 <tr>
-  <td>23</td>
+  <td>24</td>
   <td><code>VentureFunnel.tsx</code><br><small style="color:var(--muted)">components/admin/VentureFunnel.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2817,7 +2895,7 @@ flowchart LR
   <td>Module file in components/admin/VentureFunnel.tsx.</td>
 </tr>
 <tr>
-  <td>24</td>
+  <td>25</td>
   <td><code>VentureFunnelProps</code><br><small style="color:var(--muted)">components/admin/VentureFunnel.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2825,7 +2903,7 @@ flowchart LR
   <td>VentureFunnelProps node in components/admin/VentureFunnel.tsx.</td>
 </tr>
 <tr>
-  <td>25</td>
+  <td>26</td>
   <td><code>VentureFunnel()</code><br><small style="color:var(--muted)">components/admin/VentureFunnel.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>page.tsx</code><br><small style="color:var(--muted)">admin/dashboard/page.tsx</small></td>
@@ -2833,7 +2911,7 @@ flowchart LR
   <td>VentureFunnel() node in components/admin/VentureFunnel.tsx.</td>
 </tr>
 <tr>
-  <td>26</td>
+  <td>27</td>
   <td><code>Skeleton.tsx</code><br><small style="color:var(--muted)">components/ui/Skeleton.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2841,7 +2919,7 @@ flowchart LR
   <td>Module file in components/ui/Skeleton.tsx.</td>
 </tr>
 <tr>
-  <td>27</td>
+  <td>28</td>
   <td><code>Skeleton()</code><br><small style="color:var(--muted)">components/ui/Skeleton.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
@@ -2849,7 +2927,7 @@ flowchart LR
   <td>Skeleton() node in components/ui/Skeleton.tsx.</td>
 </tr>
 <tr>
-  <td>28</td>
+  <td>29</td>
   <td><code>badge.tsx</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
@@ -2857,20 +2935,12 @@ flowchart LR
   <td>Module file in components/ui/badge.tsx.</td>
 </tr>
 <tr>
-  <td>29</td>
+  <td>30</td>
   <td><code>badgeVariants</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td><code>Badge()</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small></td>
   <td>badgeVariants node in components/ui/badge.tsx.</td>
-</tr>
-<tr>
-  <td>30</td>
-  <td><code>Badge()</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>badgeVariants</code><br><small style="color:var(--muted)">components/ui/badge.tsx</small><br><code>ModerationFeed.tsx</code><br><small style="color:var(--muted)">components/admin/ModerationFeed.tsx</small></td>
-  <td><code>cn()</code><br><small style="color:var(--muted)">src/lib/utils.ts</small></td>
-  <td>Badge() node in components/ui/badge.tsx.</td>
 </tr>
 </table>
 
@@ -2891,7 +2961,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: imports x47, contains x37, calls x22, imports x21. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: imports x47, contains x38, calls x22, imports x21. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3220,79 +3290,83 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 12. Community 100 ====== -->
-<h2 id="community-100">12. Community 100</h2>
-<p>Community 100 groups implementation around apps, web, motion, presetsts, mostly in src/lib/motion-presets.ts, src/hooks/useSpeech.ts, src/components/BusinessPlanDashboard.tsx. This section covers 41 nodes and 70 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 12. Community 140 ====== -->
+<h2 id="community-140">12. Community 140</h2>
+<p>Community 140 groups implementation around apps, web, components, accountdetailstsx, mostly in src/components/AccountDetails.tsx, src/components/InsufficientCreditsModal.tsx, src/app/page.tsx. This section covers 41 nodes and 94 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 100 (41 nodes, 70 edges)
-    subgraph community_100_src_lib_motion_presets_ts_bc45bbf8["src/lib/motion-presets.ts"]
-        lib_motion_presets_12c6a103("motion-presets.ts")
-        lib_motion_presets_fadein_18917a23("fadeIn<br/><small>src/lib/motion-presets.ts</small>")
-        lib_motion_presets_fadeinup_375182a2("fadeInUp<br/><small>src/lib/motion-presets.ts</small>")
-        lib_motion_presets_staggercontainer_5f593739("staggerContainer<br/><small>src/lib/motion-presets.ts</small>")
-        lib_motion_presets_chartreveal_94cfe9ff("chartReveal<br/><small>src/lib/motion-presets.ts</small>")
-        lib_motion_presets_hoverglow_946dd928("hoverGlow<br/><small>src/lib/motion-presets.ts</small>")
-        lib_motion_presets_hoverlift_ab1d7e79("hoverLift<br/><small>src/lib/motion-presets.ts</small>")
-        lib_motion_presets_scalein_f6b6dc77("scaleIn<br/><small>src/lib/motion-presets.ts</small>")
-        lib_motion_presets_slideinleft_26e2a5bd("slideInLeft<br/><small>src/lib/motion-presets.ts</small>")
-        lib_motion_presets_slideinright_338990c0("slideInRight<br/><small>src/lib/motion-presets.ts</small>")
+    %% Section: Community 140 (41 nodes, 94 edges)
+    subgraph community_140_src_app_page_tsx_71a75fd6["src/app/page.tsx"]
+        app_page_c77e992c("page.tsx")
+        app_page_apppage_d3039541("AppPage()<br/><small>src/app/page.tsx</small>")
     end
-    subgraph community_100_components_ui_SpeakButton_tsx_9b828498["components/ui/SpeakButton.tsx"]
-        ui_speakbutton_9c8e0a5e("SpeakButton.tsx")
-        ui_speakbutton_speakbutton_c304cf52("SpeakButton()<br/><small>components/ui/SpeakButton.tsx</small>")
+    subgraph community_140_src_components_AIStudioPanel_tsx_31140b75["src/components/AIStudioPanel.tsx"]
+        components_aistudiopanel_ca1c3788("AIStudioPanel.tsx")
+        components_aistudiopanel_aistudiopanel_2638f903("AIStudioPanel()<br/><small>src/components/AIStudioPanel.tsx</small>")
     end
-    components_aiconsultantdashboard_583e58d1("AIConsultantDashboard.tsx")
-    components_businessplandashboard_b3b6d800("BusinessPlanDashboard.tsx")
-    components_cofounderchat_8bc41c1b("CofounderChat.tsx")
-    components_marketingdashboard_4c409713("MarketingDashboard.tsx")
-    components_pitchdashboard_97dfc1b8("PitchDashboard.tsx")
-    hooks_usespeech_usespeech_f983c1c0("useSpeech()<br/><small>src/hooks/useSpeech.ts</small>")
-    ui_speakbutton_speakbutton_c304cf52 -->|calls| hooks_usespeech_usespeech_f983c1c0
-    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_12c6a103
-    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_fadein_18917a23
-    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_fadeinup_375182a2
-    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_staggercontainer_5f593739
-    components_aiconsultantdashboard_583e58d1 -->|imports| ui_speakbutton_9c8e0a5e
-    components_aiconsultantdashboard_583e58d1 -->|imports| ui_speakbutton_speakbutton_c304cf52
-    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_12c6a103
-    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_chartreveal_94cfe9ff
-    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_fadein_18917a23
-    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_fadeinup_375182a2
-    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_hoverglow_946dd928
-    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_hoverlift_ab1d7e79
-    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_scalein_f6b6dc77
-    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_slideinleft_26e2a5bd
-    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_slideinright_338990c0
-    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_staggercontainer_5f593739
-    components_cofounderchat_8bc41c1b -->|imports| lib_motion_presets_12c6a103
-    components_cofounderchat_8bc41c1b -->|imports| lib_motion_presets_fadeinup_375182a2
-    components_cofounderchat_8bc41c1b -->|imports| lib_motion_presets_staggercontainer_5f593739
-    components_cofounderchat_8bc41c1b -->|imports| ui_speakbutton_9c8e0a5e
-    components_cofounderchat_8bc41c1b -->|imports| ui_speakbutton_speakbutton_c304cf52
-    components_marketingdashboard_4c409713 -->|imports| lib_motion_presets_12c6a103
-    components_marketingdashboard_4c409713 -->|imports| lib_motion_presets_fadein_18917a23
-    %% Omitted for readability: 23 nodes, 7 edges
-    class lib_motion_presets_12c6a103 module;
-    class lib_motion_presets_fadein_18917a23 function;
-    class lib_motion_presets_fadeinup_375182a2 function;
-    class lib_motion_presets_staggercontainer_5f593739 function;
-    class lib_motion_presets_chartreveal_94cfe9ff function;
-    class lib_motion_presets_hoverglow_946dd928 function;
-    class lib_motion_presets_hoverlift_ab1d7e79 function;
-    class lib_motion_presets_scalein_f6b6dc77 function;
-    class lib_motion_presets_slideinleft_26e2a5bd function;
-    class lib_motion_presets_slideinright_338990c0 function;
-    class ui_speakbutton_9c8e0a5e ui;
-    class ui_speakbutton_speakbutton_c304cf52 ui;
-    class components_aiconsultantdashboard_583e58d1 ui;
-    class components_businessplandashboard_b3b6d800 ui;
-    class components_cofounderchat_8bc41c1b ui;
-    class components_marketingdashboard_4c409713 ui;
-    class components_pitchdashboard_97dfc1b8 ui;
-    class hooks_usespeech_usespeech_f983c1c0 ui;
+    subgraph community_140_src_components_AccountDetails_tsx_9fda774b["src/components/AccountDetails.tsx"]
+        components_accountdetails_2cdf79b5("AccountDetails.tsx")
+        components_accountdetails_accountdetails_b3fe6e83("AccountDetails()<br/><small>src/components/AccountDetails.tsx</small>")
+    end
+    subgraph community_140_src_components_AuthModal_tsx_525fb906["src/components/AuthModal.tsx"]
+        components_authmodal_ec98d0bf("AuthModal.tsx")
+        components_authmodal_authmodal_da08808a("AuthModal()<br/><small>src/components/AuthModal.tsx</small>")
+    end
+    i18n_i18ncontext_usei18n_c34e80c9("useI18n()<br/><small>lib/i18n/I18nContext.tsx</small>")
+    components_aiconsultantdashboard_aiconsultantdas_eb8b2ef0("AIConsultantDashboard()<br/><small>src/components/AIConsultantDashboard.tsx</small>")
+    components_brandingpanel_brandingpanel_17363f1d("BrandingPanel()<br/><small>src/components/BrandingPanel.tsx</small>")
+    components_businessplandashboard_businessplandas_8ea21c29("BusinessPlanDashboard()<br/><small>src/components/BusinessPlanDashboard.tsx</small>")
+    components_competitordashboard_competitordashboa_ce2c8161("CompetitorDashboard()<br/><small>src/components/CompetitorDashboard.tsx</small>")
+    components_creditindicator_creditindicator_50730c76("CreditIndicator()<br/><small>src/components/CreditIndicator.tsx</small>")
+    components_dashboard_dashboard_12e4ba72("Dashboard()<br/><small>src/components/Dashboard.tsx</small>")
+    components_newprojectmodal_5c6e6cc9("NewProjectModal.tsx")
+    components_pricingmodal_350a0e8f("PricingModal.tsx")
+    store_usestore_usestore_09821344("useStore<br/><small>src/store/useStore.ts</small>")
+    app_page_apppage_d3039541 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
+    app_page_apppage_d3039541 -->|calls| store_usestore_usestore_09821344
+    components_aiconsultantdashboard_aiconsultantdas_eb8b2ef0 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
+    components_aiconsultantdashboard_aiconsultantdas_eb8b2ef0 -->|calls| store_usestore_usestore_09821344
+    components_aistudiopanel_aistudiopanel_2638f903 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
+    components_aistudiopanel_aistudiopanel_2638f903 -->|calls| store_usestore_usestore_09821344
+    components_accountdetails_accountdetails_b3fe6e83 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
+    components_accountdetails_accountdetails_b3fe6e83 -->|calls| store_usestore_usestore_09821344
+    components_authmodal_authmodal_da08808a -->|calls| i18n_i18ncontext_usei18n_c34e80c9
+    components_authmodal_authmodal_da08808a -->|calls| store_usestore_usestore_09821344
+    components_brandingpanel_brandingpanel_17363f1d -->|calls| i18n_i18ncontext_usei18n_c34e80c9
+    components_brandingpanel_brandingpanel_17363f1d -->|calls| store_usestore_usestore_09821344
+    components_businessplandashboard_businessplandas_8ea21c29 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
+    components_businessplandashboard_businessplandas_8ea21c29 -->|calls| store_usestore_usestore_09821344
+    components_competitordashboard_competitordashboa_ce2c8161 -->|calls| store_usestore_usestore_09821344
+    components_creditindicator_creditindicator_50730c76 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
+    components_creditindicator_creditindicator_50730c76 -->|calls| store_usestore_usestore_09821344
+    components_dashboard_dashboard_12e4ba72 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
+    components_dashboard_dashboard_12e4ba72 -->|calls| store_usestore_usestore_09821344
+    app_page_c77e992c -->|imports| components_accountdetails_2cdf79b5
+    app_page_c77e992c -->|imports| components_aistudiopanel_ca1c3788
+    app_page_c77e992c -->|imports| components_authmodal_ec98d0bf
+    app_page_c77e992c -->|imports| components_pricingmodal_350a0e8f
+    app_page_c77e992c -->|imports| i18n_i18ncontext_usei18n_c34e80c9
+    %% Omitted for readability: 23 nodes, 10 edges
+    class app_page_c77e992c ui;
+    class app_page_apppage_d3039541 ui;
+    class components_aistudiopanel_ca1c3788 ui;
+    class components_aistudiopanel_aistudiopanel_2638f903 ui;
+    class components_accountdetails_2cdf79b5 ui;
+    class components_accountdetails_accountdetails_b3fe6e83 ui;
+    class components_authmodal_ec98d0bf ui;
+    class components_authmodal_authmodal_da08808a ui;
+    class i18n_i18ncontext_usei18n_c34e80c9 ui;
+    class components_aiconsultantdashboard_aiconsultantdas_eb8b2ef0 ui;
+    class components_brandingpanel_brandingpanel_17363f1d ui;
+    class components_businessplandashboard_businessplandas_8ea21c29 ui;
+    class components_competitordashboard_competitordashboa_ce2c8161 ui;
+    class components_creditindicator_creditindicator_50730c76 ui;
+    class components_dashboard_dashboard_12e4ba72 ui;
+    class components_newprojectmodal_5c6e6cc9 ui;
+    class components_pricingmodal_350a0e8f ui;
+    class store_usestore_usestore_09821344 ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -3316,243 +3390,243 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+3 more</td>
-  <td>Module file in src/components/AIConsultantDashboard.tsx.</td>
+  <td><code>AccountDetails.tsx</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small><br><code>AIStudioPanel.tsx</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small><br><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br>+7 more</td>
+  <td>Module file in src/app/page.tsx.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>AIConsultantDashboard()</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small></td>
+  <td><code>PROTECTED_TABS</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>AIConsultantDashboard() node in src/components/AIConsultantDashboard.tsx.</td>
+  <td>PROTECTED_TABS node in src/app/page.tsx.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
+  <td><code>AppPage()</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>chartReveal</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+9 more</td>
-  <td>Module file in src/components/BusinessPlanDashboard.tsx.</td>
-</tr>
-<tr>
-  <td>4</td>
-  <td><code>BusinessPlanDashboard()</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>BusinessPlanDashboard() node in src/components/BusinessPlanDashboard.tsx.</td>
-</tr>
-<tr>
-  <td>5</td>
-  <td><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>SpeakButton()</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small><br>+2 more</td>
-  <td>Module file in src/components/CofounderChat.tsx.</td>
-</tr>
-<tr>
-  <td>6</td>
-  <td><code>MarketingDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+3 more</td>
-  <td>Module file in src/components/MarketingDashboard.tsx.</td>
-</tr>
-<tr>
-  <td>7</td>
-  <td><code>MarketingDashboard()</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>MarketingDashboard() node in src/components/MarketingDashboard.tsx.</td>
-</tr>
-<tr>
-  <td>8</td>
-  <td><code>PitchDashboard.tsx</code><br><small style="color:var(--muted)">src/components/PitchDashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+3 more</td>
-  <td>Module file in src/components/PitchDashboard.tsx.</td>
-</tr>
-<tr>
-  <td>9</td>
-  <td><code>PitchDashboard()</code><br><small style="color:var(--muted)">src/components/PitchDashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>PitchDashboard() node in src/components/PitchDashboard.tsx.</td>
-</tr>
-<tr>
-  <td>10</td>
-  <td><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>MarketingDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small><br><code>PitchDashboard.tsx</code><br><small style="color:var(--muted)">src/components/PitchDashboard.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>Module file in components/ui/AILoadingOverlay.tsx.</td>
-</tr>
-<tr>
-  <td>11</td>
-  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>MarketingDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small><br><code>PitchDashboard.tsx</code><br><small style="color:var(--muted)">src/components/PitchDashboard.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>AILoadingOverlay() node in components/ui/AILoadingOverlay.tsx.</td>
-</tr>
-<tr>
-  <td>12</td>
-  <td><code>SpeakButton.tsx</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small></td>
-  <td><code>useSpeech()</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small><br><code>useSpeech.ts</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
-  <td>Module file in components/ui/SpeakButton.tsx.</td>
-</tr>
-<tr>
-  <td>13</td>
-  <td><code>SpeakButtonProps</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>SpeakButtonProps node in components/ui/SpeakButton.tsx.</td>
-</tr>
-<tr>
-  <td>14</td>
-  <td><code>SpeakButton()</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small></td>
-  <td><code>useSpeech()</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
-  <td>SpeakButton() node in components/ui/SpeakButton.tsx.</td>
-</tr>
-<tr>
-  <td>15</td>
-  <td><code>useSpeech.ts</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>SpeakButton.tsx</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>Module file in src/hooks/useSpeech.ts.</td>
-</tr>
-<tr>
-  <td>16</td>
-  <td><code>SpeechStatus</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>SpeechStatus node in src/hooks/useSpeech.ts.</td>
-</tr>
-<tr>
-  <td>17</td>
-  <td><code>UseSpeechReturn</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
-  <td><span class="tag tag-class">Class</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>UseSpeechReturn node in src/hooks/useSpeech.ts.</td>
-</tr>
-<tr>
-  <td>18</td>
-  <td><code>globalAudio</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>globalAudio node in src/hooks/useSpeech.ts.</td>
-</tr>
-<tr>
-  <td>19</td>
-  <td><code>stripMarkdown()</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>Exports documentation data to a target format.</td>
-</tr>
-<tr>
-  <td>20</td>
-  <td><code>useSpeech()</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>SpeakButton()</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small><br><code>SpeakButton.tsx</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small></td>
-  <td>No direct outbound edge</td>
-  <td>useSpeech() node in src/hooks/useSpeech.ts.</td>
-</tr>
-<tr>
-  <td>21</td>
-  <td><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
-  <td><span class="tag tag-class">Module</span></td>
-  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small><br>+2 more</td>
-  <td>No direct outbound edge</td>
-  <td>Module file in src/lib/motion-presets.ts.</td>
-</tr>
-<tr>
-  <td>22</td>
-  <td><code>pageTransition</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
   <td>Organizes documentation pages, navigation, or content lookup.</td>
 </tr>
 <tr>
-  <td>23</td>
-  <td><code>cardReveal</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
+  <td>4</td>
+  <td><code>AIConsultantDashboard()</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>AIConsultantDashboard() node in src/components/AIConsultantDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><code>AIStudioPanel.tsx</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br>+1 more</td>
+  <td>Module file in src/components/AIStudioPanel.tsx.</td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><code>StudioTab</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>cardReveal node in src/lib/motion-presets.ts.</td>
+  <td>StudioTab node in src/components/AIStudioPanel.tsx.</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><code>AIStudioPanel()</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>AIStudioPanel() node in src/components/AIStudioPanel.tsx.</td>
+</tr>
+<tr>
+  <td>8</td>
+  <td><code>AccountDetails.tsx</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br>+1 more</td>
+  <td>Module file in src/components/AccountDetails.tsx.</td>
+</tr>
+<tr>
+  <td>9</td>
+  <td><code>AccountProfile</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>AccountProfile node in src/components/AccountDetails.tsx.</td>
+</tr>
+<tr>
+  <td>10</td>
+  <td><code>InfoRow()</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>InfoRow() node in src/components/AccountDetails.tsx.</td>
+</tr>
+<tr>
+  <td>11</td>
+  <td><code>AccountDetails()</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>AccountDetails() node in src/components/AccountDetails.tsx.</td>
+</tr>
+<tr>
+  <td>12</td>
+  <td><code>AuthModal.tsx</code><br><small style="color:var(--muted)">src/components/AuthModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br>+1 more</td>
+  <td>Module file in src/components/AuthModal.tsx.</td>
+</tr>
+<tr>
+  <td>13</td>
+  <td><code>AuthModal()</code><br><small style="color:var(--muted)">src/components/AuthModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>AuthModal() node in src/components/AuthModal.tsx.</td>
+</tr>
+<tr>
+  <td>14</td>
+  <td><code>BrandingPanel()</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>BrandingPanel() node in src/components/BrandingPanel.tsx.</td>
+</tr>
+<tr>
+  <td>15</td>
+  <td><code>BusinessPlanDashboard()</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>BusinessPlanDashboard() node in src/components/BusinessPlanDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>16</td>
+  <td><code>CompetitorDashboard.tsx</code><br><small style="color:var(--muted)">src/components/CompetitorDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/CompetitorDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>17</td>
+  <td><code>CompetitorDashboard()</code><br><small style="color:var(--muted)">src/components/CompetitorDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>CompetitorDashboard() node in src/components/CompetitorDashboard.tsx.</td>
+</tr>
+<tr>
+  <td>18</td>
+  <td><code>CreditIndicator.tsx</code><br><small style="color:var(--muted)">src/components/CreditIndicator.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/CreditIndicator.tsx.</td>
+</tr>
+<tr>
+  <td>19</td>
+  <td><code>CreditIndicator()</code><br><small style="color:var(--muted)">src/components/CreditIndicator.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>CreditIndicator() node in src/components/CreditIndicator.tsx.</td>
+</tr>
+<tr>
+  <td>20</td>
+  <td><code>Dashboard()</code><br><small style="color:var(--muted)">src/components/Dashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Dashboard() node in src/components/Dashboard.tsx.</td>
+</tr>
+<tr>
+  <td>21</td>
+  <td><code>FinancialEngine()</code><br><small style="color:var(--muted)">src/components/FinancialEngine.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>FinancialEngine() node in src/components/FinancialEngine.tsx.</td>
+</tr>
+<tr>
+  <td>22</td>
+  <td><code>InsufficientCreditsModal.tsx</code><br><small style="color:var(--muted)">src/components/InsufficientCreditsModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/InsufficientCreditsModal.tsx.</td>
+</tr>
+<tr>
+  <td>23</td>
+  <td><code>FEATURE_COSTS</code><br><small style="color:var(--muted)">src/components/InsufficientCreditsModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>FEATURE_COSTS node in src/components/InsufficientCreditsModal.tsx.</td>
 </tr>
 <tr>
   <td>24</td>
-  <td><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small><br>+2 more</td>
+  <td><code>InsufficientCreditsModalProps</code><br><small style="color:var(--muted)">src/components/InsufficientCreditsModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>fadeInUp node in src/lib/motion-presets.ts.</td>
+  <td>InsufficientCreditsModalProps node in src/components/InsufficientCreditsModal.tsx.</td>
 </tr>
 <tr>
   <td>25</td>
-  <td><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>MarketingDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small><br>+1 more</td>
-  <td>No direct outbound edge</td>
-  <td>fadeIn node in src/lib/motion-presets.ts.</td>
+  <td><code>InsufficientCreditsModal()</code><br><small style="color:var(--muted)">src/components/InsufficientCreditsModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>InsufficientCreditsModal() node in src/components/InsufficientCreditsModal.tsx.</td>
 </tr>
 <tr>
   <td>26</td>
-  <td><code>slideFromLeft</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
+  <td><code>MarketResearchDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketResearchDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>slideFromLeft node in src/lib/motion-presets.ts.</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/MarketResearchDashboard.tsx.</td>
 </tr>
 <tr>
   <td>27</td>
-  <td><code>slideFromRight</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
+  <td><code>MarketResearchDashboard()</code><br><small style="color:var(--muted)">src/components/MarketResearchDashboard.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>slideFromRight node in src/lib/motion-presets.ts.</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>MarketResearchDashboard() node in src/components/MarketResearchDashboard.tsx.</td>
 </tr>
 <tr>
   <td>28</td>
-  <td><code>modalTransition</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
+  <td><code>NewProjectModal.tsx</code><br><small style="color:var(--muted)">src/components/NewProjectModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>modalTransition node in src/lib/motion-presets.ts.</td>
+  <td><code>ProjectSwitcher.tsx</code><br><small style="color:var(--muted)">src/components/ProjectSwitcher.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>Module file in src/components/NewProjectModal.tsx.</td>
 </tr>
 <tr>
   <td>29</td>
-  <td><code>staggerContainer</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
-  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small><br>+2 more</td>
-  <td>No direct outbound edge</td>
-  <td>staggerContainer node in src/lib/motion-presets.ts.</td>
+  <td><code>NewProjectModal()</code><br><small style="color:var(--muted)">src/components/NewProjectModal.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
+  <td>External entry / no inbound edge</td>
+  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>NewProjectModal() node in src/components/NewProjectModal.tsx.</td>
 </tr>
 <tr>
   <td>30</td>
-  <td><code>staggerItem</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
-  <td><span class="tag tag-func">Function</span></td>
+  <td><code>OpportunityExplorer()</code><br><small style="color:var(--muted)">src/components/OpportunityExplorer.tsx</small></td>
+  <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>staggerItem node in src/lib/motion-presets.ts.</td>
+  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
+  <td>OpportunityExplorer() node in src/components/OpportunityExplorer.tsx.</td>
 </tr>
 </table>
 
@@ -3561,19 +3635,19 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/lib/motion-presets.ts</code></td><td>19 nodes</td></tr>
-<tr><td><code>src/hooks/useSpeech.ts</code></td><td>6 nodes</td></tr>
-<tr><td><code>src/components/BusinessPlanDashboard.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>components/ui/AILoadingOverlay.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>components/ui/SpeakButton.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>src/components/AIConsultantDashboard.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>src/components/MarketingDashboard.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>src/components/PitchDashboard.tsx</code></td><td>2 nodes</td></tr>
+      <tr><td><code>src/components/AccountDetails.tsx</code></td><td>4 nodes</td></tr>
+<tr><td><code>src/components/InsufficientCreditsModal.tsx</code></td><td>4 nodes</td></tr>
+<tr><td><code>src/app/page.tsx</code></td><td>3 nodes</td></tr>
+<tr><td><code>src/components/AIStudioPanel.tsx</code></td><td>3 nodes</td></tr>
+<tr><td><code>src/store/useStore.ts</code></td><td>3 nodes</td></tr>
+<tr><td><code>src/components/AuthModal.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/CompetitorDashboard.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/CreditIndicator.tsx</code></td><td>2 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x32, imports x26, imports x11, calls x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: calls x30, imports x24, contains x20, imports x20. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -3918,83 +3992,79 @@ flowchart LR
 </div>
 <hr>
 
-<!-- ====== 14. Community 140 ====== -->
-<h2 id="community-140">14. Community 140</h2>
-<p>Community 140 groups implementation around apps, web, components, accountdetailstsx, mostly in src/components/AccountDetails.tsx, src/components/InsufficientCreditsModal.tsx, src/app/page.tsx. This section covers 39 nodes and 85 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<!-- ====== 14. Community 100 ====== -->
+<h2 id="community-100">14. Community 100</h2>
+<p>Community 100 groups implementation around apps, web, motion, presetsts, mostly in src/lib/motion-presets.ts, src/hooks/useSpeech.ts, components/ui/AILoadingOverlay.tsx. This section covers 39 nodes and 68 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Community 140 (39 nodes, 85 edges)
-    subgraph community_140_src_app_page_tsx_71a75fd6["src/app/page.tsx"]
-        app_page_c77e992c("page.tsx")
-        app_page_apppage_d3039541("AppPage()<br/><small>src/app/page.tsx</small>")
+    %% Section: Community 100 (39 nodes, 68 edges)
+    subgraph community_100_src_lib_motion_presets_ts_bc45bbf8["src/lib/motion-presets.ts"]
+        lib_motion_presets_12c6a103("motion-presets.ts")
+        lib_motion_presets_fadein_18917a23("fadeIn<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_fadeinup_375182a2("fadeInUp<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_staggercontainer_5f593739("staggerContainer<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_chartreveal_94cfe9ff("chartReveal<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_hoverglow_946dd928("hoverGlow<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_hoverlift_ab1d7e79("hoverLift<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_scalein_f6b6dc77("scaleIn<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_slideinleft_26e2a5bd("slideInLeft<br/><small>src/lib/motion-presets.ts</small>")
+        lib_motion_presets_slideinright_338990c0("slideInRight<br/><small>src/lib/motion-presets.ts</small>")
     end
-    subgraph community_140_src_components_AIStudioPanel_tsx_31140b75["src/components/AIStudioPanel.tsx"]
-        components_aistudiopanel_ca1c3788("AIStudioPanel.tsx")
-        components_aistudiopanel_aistudiopanel_2638f903("AIStudioPanel()<br/><small>src/components/AIStudioPanel.tsx</small>")
+    subgraph community_100_components_ui_SpeakButton_tsx_9b828498["components/ui/SpeakButton.tsx"]
+        ui_speakbutton_9c8e0a5e("SpeakButton.tsx")
+        ui_speakbutton_speakbutton_c304cf52("SpeakButton()<br/><small>components/ui/SpeakButton.tsx</small>")
     end
-    subgraph community_140_src_components_AccountDetails_tsx_9fda774b["src/components/AccountDetails.tsx"]
-        components_accountdetails_2cdf79b5("AccountDetails.tsx")
-        components_accountdetails_accountdetails_b3fe6e83("AccountDetails()<br/><small>src/components/AccountDetails.tsx</small>")
-    end
-    subgraph community_140_src_components_AuthModal_tsx_525fb906["src/components/AuthModal.tsx"]
-        components_authmodal_ec98d0bf("AuthModal.tsx")
-        components_authmodal_authmodal_da08808a("AuthModal()<br/><small>src/components/AuthModal.tsx</small>")
-    end
-    i18n_i18ncontext_usei18n_c34e80c9("useI18n()<br/><small>lib/i18n/I18nContext.tsx</small>")
-    components_brandingpanel_brandingpanel_17363f1d("BrandingPanel()<br/><small>src/components/BrandingPanel.tsx</small>")
-    components_competitordashboard_competitordashboa_ce2c8161("CompetitorDashboard()<br/><small>src/components/CompetitorDashboard.tsx</small>")
-    components_creditindicator_creditindicator_50730c76("CreditIndicator()<br/><small>src/components/CreditIndicator.tsx</small>")
-    components_dashboard_dashboard_12e4ba72("Dashboard()<br/><small>src/components/Dashboard.tsx</small>")
-    components_financialengine_financialengine_e4a650eb("FinancialEngine()<br/><small>src/components/FinancialEngine.tsx</small>")
-    components_insufficientcreditsmodal_insufficient_96e41f80("InsufficientCreditsModal()<br/><small>src/components/InsufficientCreditsModal.tsx</small>")
-    components_newprojectmodal_5c6e6cc9("NewProjectModal.tsx")
-    components_projectsettingsmodal_09df7dc9("ProjectSettingsModal.tsx")
-    store_usestore_usestore_09821344("useStore<br/><small>src/store/useStore.ts</small>")
-    app_page_apppage_d3039541 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
-    app_page_apppage_d3039541 -->|calls| store_usestore_usestore_09821344
-    components_aistudiopanel_aistudiopanel_2638f903 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
-    components_aistudiopanel_aistudiopanel_2638f903 -->|calls| store_usestore_usestore_09821344
-    components_accountdetails_accountdetails_b3fe6e83 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
-    components_accountdetails_accountdetails_b3fe6e83 -->|calls| store_usestore_usestore_09821344
-    components_authmodal_authmodal_da08808a -->|calls| i18n_i18ncontext_usei18n_c34e80c9
-    components_authmodal_authmodal_da08808a -->|calls| store_usestore_usestore_09821344
-    components_brandingpanel_brandingpanel_17363f1d -->|calls| i18n_i18ncontext_usei18n_c34e80c9
-    components_brandingpanel_brandingpanel_17363f1d -->|calls| store_usestore_usestore_09821344
-    components_competitordashboard_competitordashboa_ce2c8161 -->|calls| store_usestore_usestore_09821344
-    components_creditindicator_creditindicator_50730c76 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
-    components_creditindicator_creditindicator_50730c76 -->|calls| store_usestore_usestore_09821344
-    components_dashboard_dashboard_12e4ba72 -->|calls| i18n_i18ncontext_usei18n_c34e80c9
-    components_dashboard_dashboard_12e4ba72 -->|calls| store_usestore_usestore_09821344
-    components_financialengine_financialengine_e4a650eb -->|calls| i18n_i18ncontext_usei18n_c34e80c9
-    components_financialengine_financialengine_e4a650eb -->|calls| store_usestore_usestore_09821344
-    components_insufficientcreditsmodal_insufficient_96e41f80 -->|calls| store_usestore_usestore_09821344
-    app_page_c77e992c -->|imports| components_accountdetails_2cdf79b5
-    app_page_c77e992c -->|imports| components_aistudiopanel_ca1c3788
-    app_page_c77e992c -->|imports| components_authmodal_ec98d0bf
-    app_page_c77e992c -->|imports| i18n_i18ncontext_usei18n_c34e80c9
-    app_page_c77e992c -->|imports| store_usestore_usestore_09821344
-    components_aistudiopanel_ca1c3788 -->|imports| i18n_i18ncontext_usei18n_c34e80c9
+    components_aiconsultantdashboard_583e58d1("AIConsultantDashboard.tsx")
+    components_businessplandashboard_b3b6d800("BusinessPlanDashboard.tsx")
+    components_cofounderchat_8bc41c1b("CofounderChat.tsx")
+    components_marketingdashboard_4c409713("MarketingDashboard.tsx")
+    components_pitchdashboard_97dfc1b8("PitchDashboard.tsx")
+    hooks_usespeech_usespeech_f983c1c0("useSpeech()<br/><small>src/hooks/useSpeech.ts</small>")
+    ui_speakbutton_speakbutton_c304cf52 -->|calls| hooks_usespeech_usespeech_f983c1c0
+    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_12c6a103
+    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_fadein_18917a23
+    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_fadeinup_375182a2
+    components_aiconsultantdashboard_583e58d1 -->|imports| lib_motion_presets_staggercontainer_5f593739
+    components_aiconsultantdashboard_583e58d1 -->|imports| ui_speakbutton_9c8e0a5e
+    components_aiconsultantdashboard_583e58d1 -->|imports| ui_speakbutton_speakbutton_c304cf52
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_12c6a103
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_chartreveal_94cfe9ff
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_fadein_18917a23
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_fadeinup_375182a2
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_hoverglow_946dd928
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_hoverlift_ab1d7e79
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_scalein_f6b6dc77
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_slideinleft_26e2a5bd
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_slideinright_338990c0
+    components_businessplandashboard_b3b6d800 -->|imports| lib_motion_presets_staggercontainer_5f593739
+    components_cofounderchat_8bc41c1b -->|imports| lib_motion_presets_12c6a103
+    components_cofounderchat_8bc41c1b -->|imports| lib_motion_presets_fadeinup_375182a2
+    components_cofounderchat_8bc41c1b -->|imports| lib_motion_presets_staggercontainer_5f593739
+    components_cofounderchat_8bc41c1b -->|imports| ui_speakbutton_9c8e0a5e
+    components_cofounderchat_8bc41c1b -->|imports| ui_speakbutton_speakbutton_c304cf52
+    components_marketingdashboard_4c409713 -->|imports| lib_motion_presets_12c6a103
+    components_marketingdashboard_4c409713 -->|imports| lib_motion_presets_fadein_18917a23
     %% Omitted for readability: 21 nodes, 7 edges
-    class app_page_c77e992c ui;
-    class app_page_apppage_d3039541 ui;
-    class components_aistudiopanel_ca1c3788 ui;
-    class components_aistudiopanel_aistudiopanel_2638f903 ui;
-    class components_accountdetails_2cdf79b5 ui;
-    class components_accountdetails_accountdetails_b3fe6e83 ui;
-    class components_authmodal_ec98d0bf ui;
-    class components_authmodal_authmodal_da08808a ui;
-    class i18n_i18ncontext_usei18n_c34e80c9 ui;
-    class components_brandingpanel_brandingpanel_17363f1d ui;
-    class components_competitordashboard_competitordashboa_ce2c8161 ui;
-    class components_creditindicator_creditindicator_50730c76 ui;
-    class components_dashboard_dashboard_12e4ba72 ui;
-    class components_financialengine_financialengine_e4a650eb ui;
-    class components_insufficientcreditsmodal_insufficient_96e41f80 ui;
-    class components_newprojectmodal_5c6e6cc9 ui;
-    class components_projectsettingsmodal_09df7dc9 ui;
-    class store_usestore_usestore_09821344 ui;
+    class lib_motion_presets_12c6a103 module;
+    class lib_motion_presets_fadein_18917a23 function;
+    class lib_motion_presets_fadeinup_375182a2 function;
+    class lib_motion_presets_staggercontainer_5f593739 function;
+    class lib_motion_presets_chartreveal_94cfe9ff function;
+    class lib_motion_presets_hoverglow_946dd928 function;
+    class lib_motion_presets_hoverlift_ab1d7e79 function;
+    class lib_motion_presets_scalein_f6b6dc77 function;
+    class lib_motion_presets_slideinleft_26e2a5bd function;
+    class lib_motion_presets_slideinright_338990c0 function;
+    class ui_speakbutton_9c8e0a5e ui;
+    class ui_speakbutton_speakbutton_c304cf52 ui;
+    class components_aiconsultantdashboard_583e58d1 ui;
+    class components_businessplandashboard_b3b6d800 ui;
+    class components_cofounderchat_8bc41c1b ui;
+    class components_marketingdashboard_4c409713 ui;
+    class components_pitchdashboard_97dfc1b8 ui;
+    class hooks_usespeech_usespeech_f983c1c0 ui;
     classDef entry fill:#422006,stroke:#fbbf24,color:#fde68a,stroke-width:1px;
     classDef api fill:#450a0a,stroke:#f87171,color:#fee2e2,stroke-width:1px;
     classDef async fill:#2e1065,stroke:#a78bfa,color:#ede9fe,stroke-width:1px;
@@ -4018,243 +4088,243 @@ flowchart LR
 </tr>
 <tr>
   <td>1</td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>AccountDetails.tsx</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small><br><code>AIStudioPanel.tsx</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small><br><code>AuthModal.tsx</code><br><small style="color:var(--muted)">src/components/AuthModal.tsx</small><br>+6 more</td>
-  <td>Module file in src/app/page.tsx.</td>
+  <td><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+3 more</td>
+  <td>Module file in src/components/AIConsultantDashboard.tsx.</td>
 </tr>
 <tr>
   <td>2</td>
-  <td><code>PROTECTED_TABS</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td>No direct outbound edge</td>
-  <td>PROTECTED_TABS node in src/app/page.tsx.</td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>chartReveal</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+9 more</td>
+  <td>Module file in src/components/BusinessPlanDashboard.tsx.</td>
 </tr>
 <tr>
   <td>3</td>
-  <td><code>AppPage()</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
+  <td><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Organizes documentation pages, navigation, or content lookup.</td>
+  <td><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br><code>SpeakButton()</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small><br>+2 more</td>
+  <td>Module file in src/components/CofounderChat.tsx.</td>
 </tr>
 <tr>
   <td>4</td>
-  <td><code>AIStudioPanel.tsx</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><code>MarketingDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/AIStudioPanel.tsx.</td>
+  <td>External entry / no inbound edge</td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+3 more</td>
+  <td>Module file in src/components/MarketingDashboard.tsx.</td>
 </tr>
 <tr>
   <td>5</td>
-  <td><code>StudioTab</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><code>MarketingDashboard()</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>StudioTab node in src/components/AIStudioPanel.tsx.</td>
+  <td>MarketingDashboard() node in src/components/MarketingDashboard.tsx.</td>
 </tr>
 <tr>
   <td>6</td>
-  <td><code>AIStudioPanel()</code><br><small style="color:var(--muted)">src/components/AIStudioPanel.tsx</small></td>
+  <td><code>PitchDashboard.tsx</code><br><small style="color:var(--muted)">src/components/PitchDashboard.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>AIStudioPanel() node in src/components/AIStudioPanel.tsx.</td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small><br><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small><br>+3 more</td>
+  <td>Module file in src/components/PitchDashboard.tsx.</td>
 </tr>
 <tr>
   <td>7</td>
-  <td><code>AccountDetails.tsx</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><code>PitchDashboard()</code><br><small style="color:var(--muted)">src/components/PitchDashboard.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/AccountDetails.tsx.</td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>PitchDashboard() node in src/components/PitchDashboard.tsx.</td>
 </tr>
 <tr>
   <td>8</td>
-  <td><code>AccountProfile</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><code>AILoadingOverlay.tsx</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>MarketingDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small><br><code>PitchDashboard.tsx</code><br><small style="color:var(--muted)">src/components/PitchDashboard.tsx</small></td>
   <td>No direct outbound edge</td>
-  <td>AccountProfile node in src/components/AccountDetails.tsx.</td>
+  <td>Module file in components/ui/AILoadingOverlay.tsx.</td>
 </tr>
 <tr>
   <td>9</td>
-  <td><code>InfoRow()</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><code>AILoadingOverlay()</code><br><small style="color:var(--muted)">components/ui/AILoadingOverlay.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>MarketingDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small><br><code>PitchDashboard.tsx</code><br><small style="color:var(--muted)">src/components/PitchDashboard.tsx</small></td>
   <td>No direct outbound edge</td>
-  <td>InfoRow() node in src/components/AccountDetails.tsx.</td>
+  <td>AILoadingOverlay() node in components/ui/AILoadingOverlay.tsx.</td>
 </tr>
 <tr>
   <td>10</td>
-  <td><code>AccountDetails()</code><br><small style="color:var(--muted)">src/components/AccountDetails.tsx</small></td>
+  <td><code>SpeakButton.tsx</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>AccountDetails() node in src/components/AccountDetails.tsx.</td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small></td>
+  <td><code>useSpeech()</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small><br><code>useSpeech.ts</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
+  <td>Module file in components/ui/SpeakButton.tsx.</td>
 </tr>
 <tr>
   <td>11</td>
-  <td><code>AuthModal.tsx</code><br><small style="color:var(--muted)">src/components/AuthModal.tsx</small></td>
+  <td><code>SpeakButtonProps</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/AuthModal.tsx.</td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>SpeakButtonProps node in components/ui/SpeakButton.tsx.</td>
 </tr>
 <tr>
   <td>12</td>
-  <td><code>AuthModal()</code><br><small style="color:var(--muted)">src/components/AuthModal.tsx</small></td>
+  <td><code>SpeakButton()</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>AuthModal() node in src/components/AuthModal.tsx.</td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small></td>
+  <td><code>useSpeech()</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
+  <td>SpeakButton() node in components/ui/SpeakButton.tsx.</td>
 </tr>
 <tr>
   <td>13</td>
-  <td><code>BrandingPanel()</code><br><small style="color:var(--muted)">src/components/BrandingPanel.tsx</small></td>
+  <td><code>useSpeech.ts</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>BrandingPanel() node in src/components/BrandingPanel.tsx.</td>
+  <td><code>SpeakButton.tsx</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/hooks/useSpeech.ts.</td>
 </tr>
 <tr>
   <td>14</td>
-  <td><code>CompetitorDashboard.tsx</code><br><small style="color:var(--muted)">src/components/CompetitorDashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>SpeechStatus</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/CompetitorDashboard.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>SpeechStatus node in src/hooks/useSpeech.ts.</td>
 </tr>
 <tr>
   <td>15</td>
-  <td><code>CompetitorDashboard()</code><br><small style="color:var(--muted)">src/components/CompetitorDashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>UseSpeechReturn</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
+  <td><span class="tag tag-class">Class</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>CompetitorDashboard() node in src/components/CompetitorDashboard.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>UseSpeechReturn node in src/hooks/useSpeech.ts.</td>
 </tr>
 <tr>
   <td>16</td>
-  <td><code>CreditIndicator.tsx</code><br><small style="color:var(--muted)">src/components/CreditIndicator.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/CreditIndicator.tsx.</td>
+  <td><code>globalAudio</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>globalAudio node in src/hooks/useSpeech.ts.</td>
 </tr>
 <tr>
   <td>17</td>
-  <td><code>CreditIndicator()</code><br><small style="color:var(--muted)">src/components/CreditIndicator.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>stripMarkdown()</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>CreditIndicator() node in src/components/CreditIndicator.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>Exports documentation data to a target format.</td>
 </tr>
 <tr>
   <td>18</td>
-  <td><code>Dashboard()</code><br><small style="color:var(--muted)">src/components/Dashboard.tsx</small></td>
+  <td><code>useSpeech()</code><br><small style="color:var(--muted)">src/hooks/useSpeech.ts</small></td>
   <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Dashboard() node in src/components/Dashboard.tsx.</td>
+  <td><code>SpeakButton()</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small><br><code>SpeakButton.tsx</code><br><small style="color:var(--muted)">components/ui/SpeakButton.tsx</small></td>
+  <td>No direct outbound edge</td>
+  <td>useSpeech() node in src/hooks/useSpeech.ts.</td>
 </tr>
 <tr>
   <td>19</td>
-  <td><code>FinancialEngine()</code><br><small style="color:var(--muted)">src/components/FinancialEngine.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>FinancialEngine() node in src/components/FinancialEngine.tsx.</td>
+  <td><code>motion-presets.ts</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-class">Module</span></td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small><br>+2 more</td>
+  <td>No direct outbound edge</td>
+  <td>Module file in src/lib/motion-presets.ts.</td>
 </tr>
 <tr>
   <td>20</td>
-  <td><code>InsufficientCreditsModal.tsx</code><br><small style="color:var(--muted)">src/components/InsufficientCreditsModal.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/InsufficientCreditsModal.tsx.</td>
+  <td><code>pageTransition</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>Organizes documentation pages, navigation, or content lookup.</td>
 </tr>
 <tr>
   <td>21</td>
-  <td><code>FEATURE_COSTS</code><br><small style="color:var(--muted)">src/components/InsufficientCreditsModal.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>cardReveal</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
   <td>No direct outbound edge</td>
-  <td>FEATURE_COSTS node in src/components/InsufficientCreditsModal.tsx.</td>
+  <td>cardReveal node in src/lib/motion-presets.ts.</td>
 </tr>
 <tr>
   <td>22</td>
-  <td><code>InsufficientCreditsModalProps</code><br><small style="color:var(--muted)">src/components/InsufficientCreditsModal.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
+  <td><code>fadeInUp</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small><br>+2 more</td>
   <td>No direct outbound edge</td>
-  <td>InsufficientCreditsModalProps node in src/components/InsufficientCreditsModal.tsx.</td>
+  <td>fadeInUp node in src/lib/motion-presets.ts.</td>
 </tr>
 <tr>
   <td>23</td>
-  <td><code>InsufficientCreditsModal()</code><br><small style="color:var(--muted)">src/components/InsufficientCreditsModal.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>InsufficientCreditsModal() node in src/components/InsufficientCreditsModal.tsx.</td>
+  <td><code>fadeIn</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>MarketingDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketingDashboard.tsx</small><br>+1 more</td>
+  <td>No direct outbound edge</td>
+  <td>fadeIn node in src/lib/motion-presets.ts.</td>
 </tr>
 <tr>
   <td>24</td>
-  <td><code>MarketResearchDashboard.tsx</code><br><small style="color:var(--muted)">src/components/MarketResearchDashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>slideFromLeft</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/MarketResearchDashboard.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>slideFromLeft node in src/lib/motion-presets.ts.</td>
 </tr>
 <tr>
   <td>25</td>
-  <td><code>MarketResearchDashboard()</code><br><small style="color:var(--muted)">src/components/MarketResearchDashboard.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>slideFromRight</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>MarketResearchDashboard() node in src/components/MarketResearchDashboard.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>slideFromRight node in src/lib/motion-presets.ts.</td>
 </tr>
 <tr>
   <td>26</td>
-  <td><code>NewProjectModal.tsx</code><br><small style="color:var(--muted)">src/components/NewProjectModal.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>modalTransition</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>ProjectSwitcher.tsx</code><br><small style="color:var(--muted)">src/components/ProjectSwitcher.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/NewProjectModal.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>modalTransition node in src/lib/motion-presets.ts.</td>
 </tr>
 <tr>
   <td>27</td>
-  <td><code>NewProjectModal()</code><br><small style="color:var(--muted)">src/components/NewProjectModal.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>NewProjectModal() node in src/components/NewProjectModal.tsx.</td>
+  <td><code>staggerContainer</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td><code>AIConsultantDashboard.tsx</code><br><small style="color:var(--muted)">src/components/AIConsultantDashboard.tsx</small><br><code>BusinessPlanDashboard.tsx</code><br><small style="color:var(--muted)">src/components/BusinessPlanDashboard.tsx</small><br><code>CofounderChat.tsx</code><br><small style="color:var(--muted)">src/components/CofounderChat.tsx</small><br>+2 more</td>
+  <td>No direct outbound edge</td>
+  <td>staggerContainer node in src/lib/motion-presets.ts.</td>
 </tr>
 <tr>
   <td>28</td>
-  <td><code>Onboarding()</code><br><small style="color:var(--muted)">src/components/Onboarding.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>staggerItem</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Onboarding() node in src/components/Onboarding.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>staggerItem node in src/lib/motion-presets.ts.</td>
 </tr>
 <tr>
   <td>29</td>
-  <td><code>OpportunityExplorer()</code><br><small style="color:var(--muted)">src/components/OpportunityExplorer.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
+  <td><code>floatingAnimation</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>OpportunityExplorer() node in src/components/OpportunityExplorer.tsx.</td>
+  <td>No direct outbound edge</td>
+  <td>floatingAnimation node in src/lib/motion-presets.ts.</td>
 </tr>
 <tr>
   <td>30</td>
-  <td><code>PricingModal.tsx</code><br><small style="color:var(--muted)">src/components/PricingModal.tsx</small></td>
-  <td><span class="tag tag-hook">UI</span></td>
-  <td><code>page.tsx</code><br><small style="color:var(--muted)">src/app/page.tsx</small></td>
-  <td><code>useI18n()</code><br><small style="color:var(--muted)">lib/i18n/I18nContext.tsx</small><br><code>useStore</code><br><small style="color:var(--muted)">src/store/useStore.ts</small><br><code>useStore.ts</code><br><small style="color:var(--muted)">src/store/useStore.ts</small></td>
-  <td>Module file in src/components/PricingModal.tsx.</td>
+  <td><code>pulseAnimation</code><br><small style="color:var(--muted)">src/lib/motion-presets.ts</small></td>
+  <td><span class="tag tag-func">Function</span></td>
+  <td>External entry / no inbound edge</td>
+  <td>No direct outbound edge</td>
+  <td>pulseAnimation node in src/lib/motion-presets.ts.</td>
 </tr>
 </table>
 
@@ -4263,19 +4333,19 @@ flowchart LR
     <h4>Key Files</h4>
     <table style="width:100%;font-size:0.85rem;">
       <tr><th>File</th><th>Coverage</th></tr>
-      <tr><td><code>src/components/AccountDetails.tsx</code></td><td>4 nodes</td></tr>
-<tr><td><code>src/components/InsufficientCreditsModal.tsx</code></td><td>4 nodes</td></tr>
-<tr><td><code>src/app/page.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>src/components/AIStudioPanel.tsx</code></td><td>3 nodes</td></tr>
-<tr><td><code>src/store/useStore.ts</code></td><td>3 nodes</td></tr>
-<tr><td><code>src/components/AuthModal.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>src/components/CompetitorDashboard.tsx</code></td><td>2 nodes</td></tr>
-<tr><td><code>src/components/CreditIndicator.tsx</code></td><td>2 nodes</td></tr>
+      <tr><td><code>src/lib/motion-presets.ts</code></td><td>19 nodes</td></tr>
+<tr><td><code>src/hooks/useSpeech.ts</code></td><td>6 nodes</td></tr>
+<tr><td><code>components/ui/AILoadingOverlay.tsx</code></td><td>3 nodes</td></tr>
+<tr><td><code>components/ui/SpeakButton.tsx</code></td><td>3 nodes</td></tr>
+<tr><td><code>src/components/BusinessPlanDashboard.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/MarketingDashboard.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/PitchDashboard.tsx</code></td><td>2 nodes</td></tr>
+<tr><td><code>src/components/AIConsultantDashboard.tsx</code></td><td>1 nodes</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: calls x27, contains x20, imports x20, imports x18. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x30, imports x26, imports x11, calls x1. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -4564,7 +4634,7 @@ flowchart LR
   <td>24</td>
   <td><code>uploadUrlToStorage()</code><br><small style="color:var(--muted)">src/media/storageProvider.ts</small></td>
   <td><span class="tag tag-func">Function</span></td>
-  <td><code>falVideoProvider.ts</code><br><small style="color:var(--muted)">media/providers/falVideoProvider.ts</small><br><code>generateVideo()</code><br><small style="color:var(--muted)">media/providers/replicateVideoProvider.ts</small><br><code>generateVideo()</code><br><small style="color:var(--muted)">media/providers/huggingFaceSpaceProvider.ts</small><br>+4 more</td>
+  <td><code>falVideoProvider.ts</code><br><small style="color:var(--muted)">media/providers/falVideoProvider.ts</small><br><code>generateVideo()</code><br><small style="color:var(--muted)">media/providers/falVideoProvider.ts</small><br><code>generateVideo()</code><br><small style="color:var(--muted)">media/providers/huggingFaceSpaceProvider.ts</small><br>+4 more</td>
   <td>No direct outbound edge</td>
   <td>Supports retrieval-augmented Q&amp;A or streaming chat.</td>
 </tr>
@@ -4642,12 +4712,12 @@ flowchart LR
 
 <!-- ====== 16. Other ====== -->
 <h2 id="other">16. Other</h2>
-<p>Other groups implementation around apps, web, components, patch, mostly in ADMIN_DASHBOARD_GUIDE.md, presentation-content.md, src/components/LandingPage.tsx. This section covers 343 nodes and 367 internal edges; the diagram shows only representative relationships to stay readable.</p>
+<p>Other groups implementation around apps, web, components, patch, mostly in ADMIN_DASHBOARD_GUIDE.md, presentation-content.md, src/components/LandingPage.tsx. This section covers 342 nodes and 360 internal edges; the diagram shows only representative relationships to stay readable.</p>
 
 <div class="mermaid">
 %%{init: {"theme": "dark", "themeVariables": {"fontSize": "15.0px", "fontFamily": "Segoe UI, system-ui, sans-serif", "primaryColor": "#1e293b", "primaryTextColor": "#e2e8f0", "primaryBorderColor": "#38bdf8", "secondaryColor": "#0f172a", "tertiaryColor": "#334155", "lineColor": "#64748b", "textColor": "#e2e8f0"}, "flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 48, "rankSpacing": 64, "padding": 14, "diagramPadding": 10, "useMaxWidth": true}}}%%
 flowchart LR
-    %% Section: Other (343 nodes, 367 edges)
+    %% Section: Other (342 nodes, 360 edges)
     subgraph other_src_lib_authClient_ts_e00c7dd5["src/lib/authClient.ts"]
         lib_authclient_request_5f16eccf("request()<br/><small>src/lib/authClient.ts</small>")
         lib_authclient_checkemail_43989275("checkEmail()<br/><small>src/lib/authClient.ts</small>")
@@ -4684,7 +4754,7 @@ flowchart LR
     components_brandingpanel_ac72d46d -->|imports| ui_button_button_e9ca2d52
     components_dashboard_8d4ab098 -->|imports| ui_button_button_e9ca2d52
     components_opportunityexplorer_d659e6a2 -->|imports| ui_button_button_e9ca2d52
-    %% Omitted for readability: 325 nodes, 0 edges
+    %% Omitted for readability: 324 nodes, 0 edges
     class lib_authclient_request_5f16eccf function;
     class lib_authclient_checkemail_43989275 function;
     class lib_authclient_del_f86eab19 function;
@@ -4745,7 +4815,7 @@ flowchart LR
   <td><code>FinancialEngine.tsx</code><br><small style="color:var(--muted)">src/components/FinancialEngine.tsx</small></td>
   <td><span class="tag tag-hook">UI</span></td>
   <td>External entry / no inbound edge</td>
-  <td><code>AIThinkingPanel()</code><br><small style="color:var(--muted)">components/design-system/AIThinkingPanel.tsx</small><br><code>authClient</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br><code>authClient.ts</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br>+9 more</td>
+  <td><code>AIThinkingPanel()</code><br><small style="color:var(--muted)">components/design-system/AIThinkingPanel.tsx</small><br><code>authClient.ts</code><br><small style="color:var(--muted)">src/lib/authClient.ts</small><br><code>Button</code><br><small style="color:var(--muted)">components/design-system/Button.tsx</small><br>+8 more</td>
   <td>Module file in src/components/FinancialEngine.tsx.</td>
 </tr>
 <tr>
@@ -4974,7 +5044,7 @@ flowchart LR
       <tr><td><code>ADMIN_DASHBOARD_GUIDE.md</code></td><td>23 nodes</td></tr>
 <tr><td><code>presentation-content.md</code></td><td>18 nodes</td></tr>
 <tr><td><code>src/components/LandingPage.tsx</code></td><td>16 nodes</td></tr>
-<tr><td><code>src/lib/authClient.ts</code></td><td>14 nodes</td></tr>
+<tr><td><code>src/lib/authClient.ts</code></td><td>13 nodes</td></tr>
 <tr><td><code>fix-ts.js</code></td><td>9 nodes</td></tr>
 <tr><td><code>admin/plans/page.tsx</code></td><td>8 nodes</td></tr>
 <tr><td><code>lib/i18n/I18nContext.tsx</code></td><td>8 nodes</td></tr>
@@ -4983,7 +5053,7 @@ flowchart LR
   </div>
   <div class="card">
     <h4>Design Notes</h4>
-    <p>This section comes from graphify community clustering. Relationship summary: contains x223, imports x73, imports x45, calls x15. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
+    <p>This section comes from graphify community clustering. Relationship summary: contains x222, imports x67, imports x45, calls x15. The diagram prioritizes high-confidence calls or usage relationships; the table keeps the broader node inventory.</p>
   </div>
 </div>
 <hr>
@@ -5029,17 +5099,17 @@ flowchart LR
   <div class="card">
     <h4>Graph</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>Nodes</td><td>1948</td></tr>
-      <tr><td>Edges</td><td>2686</td></tr>
+      <tr><td>Nodes</td><td>1954</td></tr>
+      <tr><td>Edges</td><td>2691</td></tr>
       <tr><td>Hyperedges</td><td>3</td></tr>
-      <tr><td>Communities</td><td>215</td></tr>
+      <tr><td>Communities</td><td>208</td></tr>
       <tr><td>Documented Sections</td><td>15</td></tr>
     </table>
   </div>
   <div class="card">
     <h4>Edge Confidence</h4>
     <table style="width:100%;font-size:0.85rem;">
-      <tr><td>EXTRACTED</td><td>2639</td></tr>
+      <tr><td>EXTRACTED</td><td>2644</td></tr>
       <tr><td>INFERRED</td><td>47</td></tr>
       <tr><td>AMBIGUOUS</td><td>0</td></tr>
     </table>
@@ -5048,7 +5118,7 @@ flowchart LR
 
 <div style="text-align:center; padding:40px 0; color: var(--muted); font-size:0.9rem;">
   <p>creator-engine — Architecture Documentation</p>
-  <p>Generated: 2026-07-05 22:46 UTC · graphify callflow-html</p>
+  <p>Generated: 2026-07-05 22:48 UTC · graphify callflow-html</p>
 </div>
 
 </div><!-- .container -->
