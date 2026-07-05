@@ -1,16 +1,16 @@
-# Graph Report - creator-engine  (2026-07-06)
+# Graph Report - CEO  (2026-07-05)
 
 ## Corpus Check
-- 280 files · ~235,503 words
+- 257 files · ~224,163 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1948 nodes · 2684 edges · 207 communities (159 shown, 48 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 47 edges (avg confidence: 0.81)
+- 1811 nodes · 2505 edges · 185 communities (146 shown, 39 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 39 edges (avg confidence: 0.81)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `499cef6c`
+- Built from commit: `3de17ce5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -155,36 +155,32 @@
 - [[_COMMUNITY_Community 164|Community 164]]
 - [[_COMMUNITY_Community 183|Community 183]]
 - [[_COMMUNITY_Community 184|Community 184]]
-- [[_COMMUNITY_Community 185|Community 185]]
-- [[_COMMUNITY_Community 186|Community 186]]
-- [[_COMMUNITY_Community 187|Community 187]]
-- [[_COMMUNITY_Community 189|Community 189]]
-- [[_COMMUNITY_Community 190|Community 190]]
-- [[_COMMUNITY_Community 191|Community 191]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `useStore` - 56 edges
+1. `useStore` - 53 edges
 2. `/graphify` - 31 edges
-3. `useI18n()` - 30 edges
-4. `cn()` - 29 edges
-5. `compilerOptions` - 19 edges
-6. `callLLMWithFallback()` - 19 edges
-7. `Button()` - 18 edges
+3. `cn()` - 29 edges
+4. `compilerOptions` - 19 edges
+5. `Button()` - 18 edges
+6. `callLLMWithFallback()` - 18 edges
+7. `compilerOptions` - 15 edges
 8. `compilerOptions` - 15 edges
-9. `compilerOptions` - 15 edges
-10. `Card()` - 14 edges
+9. `Card()` - 14 edges
+10. `compilerOptions` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `evaluateAndSave()` --calls--> `buildEgyptContextString()`  [INFERRED]
   apps/api/src/index.ts → packages/agents/src/egyptContext.ts
 - `evaluateAndSave()` --calls--> `runEvaluatorAgent()`  [INFERRED]
   apps/api/src/index.ts → packages/agents/src/evaluatorAgent.ts
-- `POST()` --calls--> `runFinancialAgent()`  [INFERRED]
-  apps/web/src/app/api/financial-engine/route.ts → packages/agents/src/index.ts
 - `GET()` --calls--> `connectDB()`  [INFERRED]
   apps/web/src/app/api/financials/[projectId]/route.ts → packages/database/src/index.ts
+- `POST()` --calls--> `callFireworksImage()`  [INFERRED]
+  apps/web/src/app/api/generate-image/route.ts → packages/agents/src/aiClient.ts
 - `POST()` --calls--> `generateFinancialPrediction()`  [INFERRED]
   apps/web/src/app/api/predictFinances/route.ts → packages/rag-core/src/ragService.ts
+- `main()` --calls--> `connectDB()`  [INFERRED]
+  scripts/production-e2e.ts → packages/database/src/index.ts
 
 ## Import Cycles
 - 1-file cycle: `apps/api/src/index.ts -> apps/api/src/index.ts`
@@ -198,11 +194,11 @@
 - **Financial Engine Pipeline** — n8n_workflows_financial_agents_guide_webhook, n8n_workflows_financial_agents_guide_vector_search, n8n_workflows_financial_agents_guide_openai, n8n_workflows_financial_agents_guide_code_node [EXTRACTED 0.95]
 - **Graphify Core Pipeline** — graphify_skill_detect, graphify_skill_extract, graphify_skill_cluster, graphify_skill_analyze, graphify_skill_report [EXTRACTED 1.00]
 
-## Communities (207 total, 48 thin omitted)
+## Communities (185 total, 39 thin omitted)
 
 ### Community 0 - "Components Authclient Select Module"
-Cohesion: 0.09
-Nodes (22): 1. System Architecture & Authentication Flow, 2. Dashboard Navigation & Global Layout, 3. Page-by-Page Feature Breakdown, 4. Backend Mechanics & Operational Gates, Creator Engine - Admin Dashboard & Moderation Portal Guide, Emergency Lockdown System, Features:, Features: (+14 more)
+Cohesion: 0.08
+Nodes (28): AdminSidebar(), CommandPalette(), CommandPaletteProps, AdminLayout(), AppPage(), PROTECTED_TABS, AccountDetails(), AccountProfile (+20 more)
 
 ### Community 1 - "Index Packages Database Module"
 Cohesion: 0.04
@@ -210,7 +206,7 @@ Nodes (50): KnowledgeDocument, AdminSettings, AdminSettingsSchema, AgentRunSchem
 
 ### Community 2 - "Package Dependencies Devdependencies Module"
 Cohesion: 0.05
-Nodes (44): dependencies, @base-ui/react, class-variance-authority, clsx, @creator/agents, @creator/rag-core, @creator/types, framer-motion (+36 more)
+Nodes (43): dependencies, @base-ui/react, class-variance-authority, clsx, @creator/rag-core, @creator/types, framer-motion, lucide-react (+35 more)
 
 ### Community 3 - "Package Dependencies Devdependencies Module"
 Cohesion: 0.05
@@ -221,12 +217,12 @@ Cohesion: 0.33
 Nodes (4): Code B: Deterministic Financial Forecasting (Code Node), n8n Financial Engine Workflow Specification, Prompt A: OpenAI System Prompt, Workflow Architecture (Nodes)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.13
-Nodes (29): DashboardObservability(), DashboardObservabilityProps, KPICardsRow(), RevenueAnalytics(), RevenueAnalyticsProps, VentureFunnel(), VentureFunnelProps, TrafficChart (+21 more)
+Cohesion: 0.08
+Nodes (43): DashboardObservability(), DashboardObservabilityProps, KPICardsRow(), ModerationFeed(), RevenueAnalytics(), RevenueAnalyticsProps, TrafficChart(), VentureFunnel() (+35 more)
 
 ### Community 6 - "Package Dependencies Scripts Module"
-Cohesion: 0.04
-Nodes (44): ts-node, dependencies, dotenv, @langchain/openai, mongodb, mongoose, @pinecone-database/pinecone, zod (+36 more)
+Cohesion: 0.15
+Nodes (12): turbo, turbo, dependsOn, outputs, cache, persistent, dependsOn, $schema (+4 more)
 
 ### Community 7 - "Components Aliases Tailwind Module"
 Cohesion: 0.09
@@ -257,8 +253,8 @@ Cohesion: 0.05
 Nodes (39): AgentRun, AIEvaluation, AuthResponse, AuthUser, BillingPlan, BrandIdentity, BusinessIdea, BusinessModel (+31 more)
 
 ### Community 14 - "Landingpage Components Concept Module"
-Cohesion: 0.09
-Nodes (12): formationItems, LandingPageProps, logoMarks, reveal, stagger, ar, en, dictionaries (+4 more)
+Cohesion: 0.14
+Nodes (6): faqItems, formationItems, LandingPageProps, logoMarks, reveal, stagger
 
 ### Community 15 - "Tsconfig Compileroptions Allowjs Module"
 Cohesion: 0.12
@@ -281,8 +277,8 @@ Cohesion: 0.13
 Nodes (19): dependencies, cloudinary, @creator/database, @creator/prompts, @creator/rag-core, @creator/types, @google/generative-ai, @gradio/client (+11 more)
 
 ### Community 20 - "Index Apps Authmiddleware Module"
-Cohesion: 0.09
-Nodes (24): ASSETS, getPlayableVideoUrl(), MarketingStudio(), OPTIONS, AgentCard(), AgentCardProps, AIStage, AIThinkingPanel() (+16 more)
+Cohesion: 0.15
+Nodes (18): AgentCard(), AgentCardProps, AIStage, AIThinkingPanel(), AIThinkingPanelProps, Button, ButtonProps, Card (+10 more)
 
 ### Community 21 - "Workflows Opportunity Ranking Module"
 Cohesion: 0.09
@@ -313,7 +309,7 @@ Cohesion: 0.17
 Nodes (13): compilerOptions, esModuleInterop, forceConsistentCasingInFileNames, module, moduleResolution, outDir, rootDir, skipLibCheck (+5 more)
 
 ### Community 28 - "Community 28"
-Cohesion: 0.13
+Cohesion: 0.12
 Nodes (16): main, main, connections, AI Agent, Code in JavaScript1, Embeddings OpenAI1, MongoDB Atlas Vector Store1, OpenAI Chat Model (+8 more)
 
 ### Community 29 - "Workflows Founder Analysis Module"
@@ -405,8 +401,8 @@ Cohesion: 0.22
 Nodes (7): graphify reference: extra exports and benchmark, Step 6b - Wiki (only if --wiki flag), Step 7 - Neo4j export (only if --neo4j or --neo4j-push flag), Step 7b - SVG export (only if --svg flag), Step 7c - GraphML export (only if --graphml flag), Step 7d - MCP server (only if --mcp flag), Step 8 - Token reduction benchmark (only if total_words > 5000)
 
 ### Community 78 - "Community 78"
-Cohesion: 0.06
-Nodes (31): dependencies, dotenv, @langchain/openai, mongodb, mongoose, @pinecone-database/pinecone, zod, description (+23 more)
+Cohesion: 0.18
+Nodes (10): description, engines, node, pnpm, name, packageManager, pnpm, onlyBuiltDependencies (+2 more)
 
 ### Community 79 - "Community 79"
 Cohesion: 0.40
@@ -430,7 +426,7 @@ Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphif
 
 ### Community 92 - "Community 92"
 Cohesion: 0.13
-Nodes (14): createdAt, worktreeId, sessions, ses_0f58b6744ffe90nXao4EuycvSa, tabOrder, local, worktreeOrder, worktrees (+6 more)
+Nodes (5): ASSETS, getPlayableVideoUrl(), MarketingStudio(), OPTIONS, api
 
 ### Community 93 - "Community 93"
 Cohesion: 0.09
@@ -461,8 +457,8 @@ Cohesion: 0.11
 Nodes (21): router, router, router, allowedMimeTypes, router, upload, CREDIT_COSTS, getUserCredits() (+13 more)
 
 ### Community 100 - "Community 100"
-Cohesion: 0.13
-Nodes (25): BusinessPlanDashboard(), COLORS, cardReveal, chartReveal, fadeIn, fadeInUp, floatingAnimation, hoverGlow (+17 more)
+Cohesion: 0.12
+Nodes (26): BusinessPlanDashboard(), COLORS, EmptyState(), cardReveal, chartReveal, fadeIn, fadeInUp, floatingAnimation (+18 more)
 
 ### Community 101 - "Community 101"
 Cohesion: 0.29
@@ -509,8 +505,8 @@ Cohesion: 0.12
 Nodes (16): compilerOptions, allowJs, esModuleInterop, forceConsistentCasingInFileNames, incremental, isolatedModules, jsx, lib (+8 more)
 
 ### Community 129 - "Community 129"
-Cohesion: 0.06
-Nodes (51): POST(), generateAdImage(), ImageResult, generateMarketingVideo(), testAgents(), main(), testCases, main() (+43 more)
+Cohesion: 0.09
+Nodes (41): POST(), generateAdImage(), ImageResult, generateMarketingVideo(), testAgents(), main(), testCases, main() (+33 more)
 
 ### Community 132 - "Community 132"
 Cohesion: 0.07
@@ -525,16 +521,16 @@ Cohesion: 0.15
 Nodes (12): computedHash, skillPath, source, sourceType, computedHash, skillPath, source, sourceType (+4 more)
 
 ### Community 140 - "Community 140"
-Cohesion: 0.08
-Nodes (33): AdminSidebar(), CommandPalette(), CommandPaletteProps, AdminLayout(), AppPage(), PROTECTED_TABS, AccountDetails(), AccountProfile (+25 more)
+Cohesion: 0.18
+Nodes (10): description, engines, node, pnpm, name, packageManager, pnpm, onlyBuiltDependencies (+2 more)
 
 ### Community 141 - "Community 141"
 Cohesion: 0.08
 Nodes (27): POST(), KnowledgeDocument, POST(), PredictPayloadSchema, GET(), AuditIssue, ensureIndexes(), ensureNoOrphans() (+19 more)
 
 ### Community 142 - "Community 142"
-Cohesion: 0.25
-Nodes (3): registerLockdownHandlers(), registerMaintenanceHandlers(), router
+Cohesion: 0.22
+Nodes (9): devDependencies, next, prettier, react, react-dom, @types/node, @types/react, @types/react-dom (+1 more)
 
 ### Community 143 - "Community 143"
 Cohesion: 0.22
@@ -545,20 +541,24 @@ Cohesion: 0.29
 Nodes (12): checkEmail(), del(), get(), getMe(), googleLogin(), login(), logout(), patch() (+4 more)
 
 ### Community 145 - "Community 145"
-Cohesion: 0.40
-Nodes (3): CreditPackSchema, mongoose, SubscriptionPlanSchema
+Cohesion: 0.22
+Nodes (9): devDependencies, next, prettier, react, react-dom, @types/node, @types/react, @types/react-dom (+1 more)
 
 ### Community 146 - "Community 146"
-Cohesion: 0.18
-Nodes (10): CofounderChat(), Multi-Agent System, RAG Architecture, LandingPage(), globalAudio, SpeechStatus, useSpeech(), UseSpeechReturn (+2 more)
-
-### Community 147 - "Community 147"
-Cohesion: 0.40
-Nodes (3): CreditPackSchema, mongoose, SubscriptionPlanSchema
+Cohesion: 0.25
+Nodes (3): registerLockdownHandlers(), registerMaintenanceHandlers(), router
 
 ### Community 148 - "Community 148"
 Cohesion: 0.43
 Nodes (7): assertCreditTransaction(), cookieFrom(), Json, main(), request(), uniqueEmail(), addCredits()
+
+### Community 149 - "Community 149"
+Cohesion: 0.29
+Nodes (7): dependencies, dotenv, @langchain/openai, mongodb, mongoose, @pinecone-database/pinecone, zod
+
+### Community 150 - "Community 150"
+Cohesion: 0.29
+Nodes (7): dependencies, dotenv, @langchain/openai, mongodb, mongoose, @pinecone-database/pinecone, zod
 
 ### Community 151 - "Community 151"
 Cohesion: 0.29
@@ -573,8 +573,16 @@ Cohesion: 0.33
 Nodes (5): agents, content, filePath, fs, path
 
 ### Community 154 - "Community 154"
-Cohesion: 0.22
-Nodes (8): ExecutionDashboard(), ExecutionDashboardProps, ExecutionPhase, ExecutionTask, EmptyRoadmap(), formatEGP(), PRIORITY_STYLES, RoadmapPanel()
+Cohesion: 0.33
+Nodes (5): ExecutionDashboard(), ExecutionDashboardProps, ExecutionPhase, ExecutionTask, RoadmapPanel()
+
+### Community 155 - "Community 155"
+Cohesion: 0.40
+Nodes (5): scripts, build, dev, format, lint
+
+### Community 156 - "Community 156"
+Cohesion: 0.40
+Nodes (5): scripts, build, dev, format, lint
 
 ### Community 157 - "Community 157"
 Cohesion: 0.50
@@ -589,28 +597,28 @@ Cohesion: 0.11
 Nodes (17): 1. Functional Requirements, 1. Project Description, 1. Technology Stack, 2. Monorepo Directory Layout, 2. Non-Functional Requirements, 2. Problem to be Solved, 3. The Solution, 3. Users & Roles (+9 more)
 
 ### Community 184 - "Community 184"
-Cohesion: 0.08
-Nodes (22): ModerationFeed(), TrafficChart(), AdminDashboardPage(), DashboardExtendedData, FlaggedCategory, ModerationEvent, ModerationStats, TrafficData (+14 more)
+Cohesion: 0.15
+Nodes (10): adminClient, authClient, PlanScheme, SCHEME_CYCLE, SCHEMES, SLUG_SCHEME, SubscriptionPlan, CreatorInfo (+2 more)
 
 ## Knowledge Gaps
-- **916 isolated node(s):** `PreToolUse`, `branch`, `path`, `parentBranch`, `createdAt` (+911 more)
+- **864 isolated node(s):** `PreToolUse`, `name`, `nodes`, `pinData`, `main` (+859 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **48 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **39 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `connectDB()` connect `Community 141` to `Community 96`, `Index Packages Database Module`, `Community 148`?**
-  _High betweenness centrality (0.007) - this node is a cross-community bridge._
-- **Why does `runFinancialAgent()` connect `Community 129` to `Community 141`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
+- **Why does `useStore` connect `Components Authclient Select Module` to `Community 100`, `Community 5`, `Index Apps Authmiddleware Module`, `Community 184`, `Community 154`, `Community 92`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **What connects `PreToolUse`, `branch`, `path` to the rest of the system?**
-  _917 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Why does `Button()` connect `Community 100` to `Components Authclient Select Module`, `Index Apps Authmiddleware Module`, `Community 5`, `Community 184`?**
+  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+- **What connects `PreToolUse`, `name`, `nodes` to the rest of the system?**
+  _865 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Components Authclient Select Module` be split into smaller, more focused modules?**
-  _Cohesion score 0.08695652173913043 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08383838383838384 - nodes in this community are weakly interconnected._
 - **Should `Index Packages Database Module` be split into smaller, more focused modules?**
   _Cohesion score 0.04 - nodes in this community are weakly interconnected._
 - **Should `Package Dependencies Devdependencies Module` be split into smaller, more focused modules?**
-  _Cohesion score 0.05180388529139685 - nodes in this community are weakly interconnected._
-- **Should `Package Dependencies Devdependencies Module` be split into smaller, more focused modules?**
-  _Cohesion score 0.053156146179401995 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05314009661835749 - nodes in this community are weakly interconnected._
