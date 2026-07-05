@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Loader2, Trash2, AlertTriangle } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
+export const dynamic = 'force-dynamic';
+
 export default function UsersPage() {
   const [users, setUsers] = useState<AuthUser[]>([]);
   const [loading, setLoading] = useState(true);

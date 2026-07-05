@@ -20,6 +20,8 @@ import {
 import { adminClient } from '@/lib/adminClient';
 import toast, { Toaster } from 'react-hot-toast';
 
+export const dynamic = 'force-dynamic';
+
 export default function SettingsPage() {
   const { user } = useStore();
   const [loading, setLoading] = useState(true);

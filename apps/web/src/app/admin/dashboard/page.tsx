@@ -18,6 +18,8 @@ import { VentureFunnel } from '@/components/admin/VentureFunnel';
 import { RevenueAnalytics } from '@/components/admin/RevenueAnalytics';
 import { DashboardObservability } from '@/components/admin/DashboardObservability';
 
+export const dynamic = 'force-dynamic';
+
 const TrafficChart = dynamic(
   () => import('@/components/admin/TrafficChart').then((mod) => mod.TrafficChart),
   { ssr: false }

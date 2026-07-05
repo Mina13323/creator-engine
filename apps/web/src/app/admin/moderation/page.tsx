@@ -18,6 +18,8 @@ import {
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
+export const dynamic = 'force-dynamic';
+
 interface AgentRun {
   id: string;
   userId: string;
