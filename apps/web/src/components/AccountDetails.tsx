@@ -66,6 +66,8 @@ export default function AccountDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const [imgError, setImgError] = useState(false);
+
   useEffect(() => {
     authClient
       .get<AccountProfile>('/account')
@@ -129,11 +131,12 @@ export default function AccountDetails() {
         <>
           {/* Avatar + Name hero */}
           <div className="bg-gradient-to-br from-indigo-50 via-white to-emerald-50 border border-slate-200 rounded-2xl p-6 flex items-center gap-5 shadow-sm">
-            {profile.avatar ? (
+            {profile.avatar && !imgError ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={profile.avatar}
                 alt={profile.name || profile.email}
+                onError={() => setImgError(true)}
                 className="w-16 h-16 rounded-full object-cover ring-2 ring-indigo-200"
               />
             ) : (

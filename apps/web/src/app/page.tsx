@@ -61,6 +61,7 @@ export default function AppPage() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
+  const [avatarError, setAvatarError] = useState(false);
 
   const effectivelyOnboarded = isOnboarded || isAuthenticated;
 
@@ -162,7 +163,7 @@ export default function AppPage() {
   const userDisplayName = user?.name || user?.email || 'Guest';
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] text-slate-900 flex font-sans overflow-hidden">
+    <div className="h-screen bg-[#FDFDFD] text-slate-900 flex font-sans overflow-hidden">
       
       <Toaster />
       {/* Mobile Header */}
@@ -201,7 +202,7 @@ export default function AppPage() {
       <motion.aside 
         initial={{ x: -300 }}
         animate={{ x: mobileMenuOpen || typeof window !== 'undefined' && window.innerWidth >= 768 ? 0 : -300 }}
-        className={`fixed md:static top-0 left-0 bottom-0 w-[260px] bg-white border-r border-slate-200 z-40 flex flex-col pt-16 md:pt-0 transition-transform duration-300 md:translate-x-0 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed md:static top-0 left-0 bottom-0 w-[260px] h-screen md:h-full bg-white border-r border-slate-200 z-40 flex flex-col pt-16 md:pt-0 transition-transform duration-300 md:translate-x-0 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="p-6 pb-2">
           {/* Logo */}
@@ -289,9 +290,14 @@ export default function AppPage() {
           {/* User account section */}
           <div className="flex items-center justify-between px-3 py-2 mt-2 cursor-pointer hover:bg-slate-50 rounded-lg group">
             <div className="flex items-center gap-3">
-              {user?.avatar ? (
+              {user?.avatar && !avatarError ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={user.avatar} alt={userDisplayName} className="w-6 h-6 rounded-full object-cover" />
+                <img 
+                  src={user.avatar} 
+                  alt={userDisplayName} 
+                  onError={() => setAvatarError(true)}
+                  className="w-6 h-6 rounded-full object-cover" 
+                />
               ) : (
                 <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold">
                   {userInitial}

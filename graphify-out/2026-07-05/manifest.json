@@ -125,8 +125,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/app/page.tsx": {
-    "mtime": 1783255584.0243046,
-    "ast_hash": "d3556fdb4348420e3d104e237eea2e6d",
+    "mtime": 1783207591.0696106,
+    "ast_hash": "4fac6c0a4366ca8981ad14d1c8554cfc",
     "semantic_hash": ""
   },
   "apps/web/src/components/AIStudioPanel.tsx": {
@@ -690,8 +690,8 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/AccountDetails.tsx": {
-    "mtime": 1783255177.0077882,
-    "ast_hash": "d31969d7d9adfdbabfc79a18e8a906af",
+    "mtime": 1782180562.8185604,
+    "ast_hash": "9c6bd60985e1fb9d68bc304f71f4353e",
     "semantic_hash": ""
   },
   "apps/web/src/components/CompetitorDashboard.tsx": {
@@ -1387,11 +1387,6 @@
   "scripts/topup.ts": {
     "mtime": 1783208721.5724235,
     "ast_hash": "95ea5ac080b7658faae7d30dfd3567da",
-    "semantic_hash": ""
-  },
-  "presentation-content.md": {
-    "mtime": 1783253321.4068823,
-    "ast_hash": "e8af87f2a1768a191d6f38bd4dc8f171",
     "semantic_hash": ""
   }
 }

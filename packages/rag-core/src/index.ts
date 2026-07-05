@@ -30,7 +30,8 @@ export async function embedText(text: string): Promise<number[]> {
       },
       body: JSON.stringify({
         input: text,
-        model: 'accounts/fireworks/models/qwen3-embedding-8b'
+        model: 'accounts/fireworks/models/qwen3-embedding-8b',
+        dimensions: 1536
       })
     });
     

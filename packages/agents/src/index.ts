@@ -300,7 +300,8 @@ ${contextStr ? '\nProject Context:\n' + contextStr : ''}`;
 
   const rawJson = await callFireworksChat(systemPrompt, userPrompt, {
     model: 'accounts/fireworks/models/deepseek-v4-flash',
-    response_format: { type: 'json_object' }
+    response_format: { type: 'json_object' },
+    max_tokens: 8192
   });
 
   const parsed = parseLLMJson<any>(rawJson);
