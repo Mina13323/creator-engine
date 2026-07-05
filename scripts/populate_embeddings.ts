@@ -5,7 +5,7 @@ dotenv.config();
 
 async function run() {
   await connectDB(process.env.DATABASE_URL as string);
-  console.log('Connected to DB');
+  console.info('Connected to DB');
 
   const docs = await KnowledgeDocumentModel.find({ 
     $or: [
@@ -14,11 +14,11 @@ async function run() {
     ]
   });
 
-  console.log(`Found ${docs.length} documents needing embeddings.`);
+  console.info(`Found ${docs.length} documents needing embeddings.`);
 
   for (let i = 0; i < docs.length; i++) {
     const doc = docs[i];
-    console.log(`Processing ${i + 1}/${docs.length}: ${doc.docId || doc.documentId}`);
+    console.info(`Processing ${i + 1}/${docs.length}: ${doc.docId || doc.documentId}`);
     try {
       const embedding = await embedText(doc.content);
       doc.embedding = embedding;
@@ -28,7 +28,7 @@ async function run() {
     }
   }
 
-  console.log('Finished populating embeddings.');
+  console.info('Finished populating embeddings.');
   process.exit(0);
 }
 

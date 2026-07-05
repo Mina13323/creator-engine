@@ -19,6 +19,7 @@ import CreditIndicator from '../components/CreditIndicator';
 import PricingModal from '../components/PricingModal';
 import FinancialEngine from '../components/FinancialEngine';
 import AccountDetails from '../components/AccountDetails';
+import { authClient } from '../lib/authClient';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { 
@@ -93,14 +94,12 @@ export default function AppPage() {
       
       if (success === 'true') {
         const verifyPayment = async () => {
-          const res = await fetch('http://localhost:5000/api/payments/paymob/verify-redirect', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${useStore.getState().user?.token}` },
-            body: JSON.stringify({ merchant_order_id: merchantOrderId, success })
-          });
-          if (res.ok) {
+          try {
+            await authClient.post('/payments/paymob/verify-redirect', { merchant_order_id: merchantOrderId, success });
             toast.success('Payment successful! Credits added to your wallet.');
             useStore.getState().loadCredits();
+          } catch (error: any) {
+            toast.error(error?.message || 'Payment verification failed');
           }
         };
         verifyPayment();

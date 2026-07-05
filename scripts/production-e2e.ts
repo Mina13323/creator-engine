@@ -25,8 +25,12 @@ import {
 import { financialAgentResponseSchema, brandingAgentResponseSchema, marketingAgentResponseSchema, pitchAgentResponseSchema } from '../apps/api/src/schemas';
 import { addCredits } from '../apps/api/src/services/creditEngine';
 
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:5000';
+const API_BASE_URL = process.env.API_BASE_URL;
 const DATABASE_URL = process.env.DATABASE_URL;
+
+if (!API_BASE_URL) {
+  throw new Error('API_BASE_URL is required');
+}
 
 if (!DATABASE_URL) {
   throw new Error('DATABASE_URL is required');
@@ -201,7 +205,7 @@ async function main() {
   summary.rag = 'PASS';
 
   assert(await AgentRunModel.findOne({ userId, projectId, workflow: 'document-processing', status: 'success' }), 'Document processing agent run missing');
-  console.log(JSON.stringify(summary, null, 2));
+  process.stdout.write(`${JSON.stringify(summary, null, 2)}\n`);
 }
 
 main().catch((error) => {

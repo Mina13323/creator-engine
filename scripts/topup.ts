@@ -7,14 +7,14 @@ dotenv.config();
 async function run() {
   try {
     await mongoose.connect(process.env.DATABASE_URL as string);
-    console.log('Connected to DB');
+    console.info('Connected to DB');
     
     const result = await CreditWalletModel.updateMany(
       {}, 
       { $inc: { availableCredits: 5000, totalPurchasedCredits: 5000 } }
     );
     
-    console.log(`Successfully topped up credits for ${result.modifiedCount} wallets!`);
+    console.info(`Successfully topped up credits for ${result.modifiedCount} wallets!`);
   } catch(e) {
     console.error(e);
   } finally {

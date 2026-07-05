@@ -432,13 +432,53 @@ export interface RoadmapMilestone {
   estimatedCost: number;
 }
 
+export interface ExecutionTask {
+  id: string;
+  title: string;
+  description: string;
+  priority: 'low' | 'medium' | 'high';
+  status: 'todo' | 'doing' | 'done';
+  dueDate?: Date;
+  aiGenerated: boolean;
+}
+
+export interface ExecutionPhase {
+  id: string;
+  name: string;
+  tasks: ExecutionTask[];
+}
+
 export interface ExecutionRoadmap {
   id: string;
   userId: string;
   projectId: string;
-  milestones: RoadmapMilestone[];
+  milestones: RoadmapMilestone[]; // Keep for legacy
+  phases: ExecutionPhase[];
+  progress: number;
   totalEstimatedBudget: number;
   totalDurationWeeks: number;
+}
+
+export interface AIEvaluation {
+  id: string;
+  userId: string;
+  projectId: string;
+  targetType: "founder_profile" | "opportunity" | "business_plan" | "financial_plan" | "branding" | "marketing" | "pitch";
+  targetId: string;
+  overallScore: number;
+  scores: {
+    marketFit: number;
+    egyptMarketFit: number;
+    feasibility: number;
+    financialReality: number;
+    executionClarity: number;
+    founderAlignment: number;
+  };
+  strengths: string[];
+  weaknesses: string[];
+  recommendations: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ChatMessage {

@@ -20,6 +20,7 @@ import {
   FounderProfileModel, 
   VentureStateModel, 
   AgentRunModel, 
+  AIEvaluationModel,
   UploadedDocumentModel,
   FinancialForecast,
   buildContextString,
@@ -29,11 +30,12 @@ import adminRouter, { registerLockdownHandlers, registerMaintenanceHandlers } fr
 import paymentsRouter from './routes/payments';
 import marketingStudioRouter from './routes/marketingStudio';
 import uploadRouter from './routes/upload';
+import executionRouter from './routes/execution';
 import { requireCredits, requireSubscription } from './middleware';
 import { deductCredits, CREDIT_COSTS, getUserCredits, provisionUserMonetization } from './services/creditEngine';
 import { authMiddleware, adminMiddleware } from './middleware';
 import { LoginRequest, SignupRequest, AuthResponse, AuthUser, FounderProfile, SelectedOpportunity, BusinessPlan } from '@creator/types';
-import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent, runFinancialAgent, runBrandingAgent, runMarketingAgent, runPitchAgent } from '@creator/agents';
+import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent, runFinancialAgent, runBrandingAgent, runMarketingAgent, runPitchAgent, runEvaluatorAgent } from '@creator/agents';
 import { processAndIngestDocument } from '@creator/rag-core';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -388,6 +390,7 @@ app.use('/api/admin', adminRouter);
 app.use('/api/payments', paymentsRouter);
 app.use('/api/marketing-studio', aiRateLimiter, marketingStudioRouter);
 app.use('/api/upload', uploadRouter);
+app.use('/api/execution', executionRouter);
 
 // ==========================================
 // BUSINESS PLAN ENGINE ROUTES
@@ -404,6 +407,46 @@ async function updateVentureState(projectId: string, userId: string, update: Par
     },
     { upsert: true, new: true }
   );
+}
+
+
+// AI Evaluation Helper
+async function evaluateAndSave(
+  userId: string,
+  projectId: string,
+  targetType: 'founder_profile' | 'opportunity' | 'business_plan' | 'financial_plan' | 'branding' | 'marketing' | 'pitch',
+  targetId: string,
+  input: unknown,
+  generatedOutput: unknown
+) {
+  if (!dbConnected) return null;
+  try {
+    const context = await getProjectContext(projectId, userId);
+    const { buildEgyptContextString } = await import('@creator/agents');
+    const egyptCtx = await buildEgyptContextString(JSON.stringify(input));
+    
+    const evaluation = await runEvaluatorAgent({
+      ventureContext: context,
+      egyptMarketContext: egyptCtx,
+      generatedOutput,
+      targetType
+    });
+    
+    if (evaluation) {
+      evaluation.id = `eval_${Date.now()}`;
+      evaluation.userId = userId;
+      evaluation.projectId = projectId;
+      evaluation.targetType = targetType;
+      evaluation.targetId = targetId;
+      
+      const evalDoc = new AIEvaluationModel(evaluation);
+      await evalDoc.save();
+      return evalDoc.toObject();
+    }
+  } catch(e) {
+    console.error('Evaluation failed:', e);
+  }
+  return null;
 }
 
 // Helper to track Agent Runs
@@ -538,6 +581,7 @@ app.post('/api/founder/analyze', authMiddleware, aiRateLimiter, validateRequest(
     const { projectId, data } = req.body;
     
     if (!projectId || !data) return res.status(400).json({ error: 'Missing projectId or data' });
+    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
 
     // Sanitize data inputs with default fallbacks
     const sanitizedData = {
@@ -553,7 +597,6 @@ app.post('/api/founder/analyze', authMiddleware, aiRateLimiter, validateRequest(
     // Call Agent with tracking
     const analysis = await trackAgentRun(userId, projectId, 'founder-analysis', sanitizedData, () => runFounderAgent(projectId, sanitizedData));
     
-    await deductCredits(userId, CREDIT_COSTS.FOUNDER_ANALYSIS, 'Founder Analysis');
     const founderProfile = new FounderProfileModel({
       id: `fp_${Date.now()}`,
       userId,
@@ -562,12 +605,12 @@ app.post('/api/founder/analyze', authMiddleware, aiRateLimiter, validateRequest(
       ...(analysis || {})
     });
     
-    if (dbConnected) {
-      await founderProfile.save();
-      await updateVentureState(projectId, userId, { founderProfile: founderProfile.toObject() });
-    }
+    await founderProfile.save();
+    await updateVentureState(projectId, userId, { founderProfile: founderProfile.toObject() });
+    await deductCredits(userId, CREDIT_COSTS.FOUNDER_ANALYSIS, 'Founder Analysis');
 
-    return res.status(201).json({ founderProfile });
+    const evaluation = await evaluateAndSave(userId, projectId, 'founder_profile', founderProfile.id, sanitizedData, founderProfile.toObject());
+    return res.status(201).json({ founderProfile, evaluation });
   } catch (err: any) {
     console.error('Founder analysis error:', err);
     return res.status(500).json({ error: err.message });
@@ -580,6 +623,7 @@ app.post('/api/opportunities/discover', authMiddleware, aiRateLimiter, validateR
     const userId = (req as any).user.id;
     const { projectId } = req.body;
     if (!projectId) return res.status(400).json({ error: 'Missing projectId' });
+    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
 
     const founderProfile = await FounderProfileModel.findOne({ projectId, userId });
     if (!founderProfile) return res.status(404).json({ error: 'Founder profile not found' });
@@ -595,7 +639,6 @@ app.post('/api/opportunities/discover', authMiddleware, aiRateLimiter, validateR
     );
     
     // Express owns formatting and persistence
-    await deductCredits(userId, CREDIT_COSTS.OPPORTUNITY_DISCOVERY, 'Opportunity Discovery');
     const formattedOpportunities = (rawOpportunities || []).map((opp: any, idx: number) => {
       const startupCostStr = typeof opp.startupCost === 'number'
         ? `$${opp.startupCost.toLocaleString()}`
@@ -622,16 +665,16 @@ app.post('/api/opportunities/discover', authMiddleware, aiRateLimiter, validateR
       };
     });
 
-    if (dbConnected) {
-      // Clear previous opportunities for the project to prevent duplicates on regeneration
-      await BusinessOpportunityModel.deleteMany({ projectId, userId });
-      
-      if (formattedOpportunities.length > 0) {
-        await BusinessOpportunityModel.insertMany(formattedOpportunities);
-      }
+    // Clear previous opportunities for the project to prevent duplicates on regeneration
+    await BusinessOpportunityModel.deleteMany({ projectId, userId });
+    
+    if (formattedOpportunities.length > 0) {
+      await BusinessOpportunityModel.insertMany(formattedOpportunities);
     }
+    await deductCredits(userId, CREDIT_COSTS.OPPORTUNITY_DISCOVERY, 'Opportunity Discovery');
 
-    return res.json({ opportunities: formattedOpportunities });
+    const evaluation = await evaluateAndSave(userId, projectId, 'opportunity', formattedOpportunities[0]?.id, founderProfile.toObject(), formattedOpportunities);
+    return res.json({ opportunities: formattedOpportunities, evaluation });
   } catch (err: any) {
     console.error('Opportunity discovery error:', err);
     return res.status(500).json({ error: err.message });
@@ -705,6 +748,7 @@ app.post('/api/business-plan/generate', authMiddleware, aiRateLimiter, validateR
   try {
     const userId = (req as any).user.id;
     const { projectId } = req.body;
+    if (!dbConnected) return res.status(503).json({ error: 'DB required' });
     
     const selected = await SelectedOpportunityModel.findOne({ projectId, userId });
     if (!selected) return res.status(400).json({ error: 'No opportunity selected for this project' });
@@ -723,13 +767,11 @@ app.post('/api/business-plan/generate', authMiddleware, aiRateLimiter, validateR
     );
 
     let version = 1;
-    if (dbConnected) {
-      const existingLatest = await BusinessPlanModel.findOne({ projectId, userId, isLatest: true });
-      if (existingLatest) {
-        version = (existingLatest.version || 1) + 1;
-        existingLatest.isLatest = false;
-        await existingLatest.save();
-      }
+    const existingLatest = await BusinessPlanModel.findOne({ projectId, userId, isLatest: true });
+    if (existingLatest) {
+      version = (existingLatest.version || 1) + 1;
+      existingLatest.isLatest = false;
+      await existingLatest.save();
     }
 
     const plan = new BusinessPlanModel({
@@ -743,19 +785,18 @@ app.post('/api/business-plan/generate', authMiddleware, aiRateLimiter, validateR
       isLatest: true
     });
 
-    if (dbConnected) {
-      await plan.save();
-      await updateVentureState(projectId, userId, {
-        latestBusinessPlan: {
-          id: plan.id,
-          version: plan.version,
-          generatedAt: plan.generatedAt || new Date(),
-          generatedByModel: plan.generatedByModel || 'deepseek-v4-flash'
-        }
-      });
-      // Ensure we unset the old full businessPlan if it exists to avoid DB duplication
-      await VentureStateModel.updateOne({ projectId, userId }, { $unset: { businessPlan: "" } });
-    }
+    await plan.save();
+    await updateVentureState(projectId, userId, {
+      latestBusinessPlan: {
+        id: plan.id,
+        version: plan.version,
+        generatedAt: plan.generatedAt || new Date(),
+        generatedByModel: plan.generatedByModel || 'deepseek-v4-flash'
+      }
+    });
+    // Ensure we unset the old full businessPlan if it exists to avoid DB duplication
+    await VentureStateModel.updateOne({ projectId, userId }, { $unset: { businessPlan: "" } });
+    await deductCredits(userId, CREDIT_COSTS.BUSINESS_PLAN, 'Business Plan');
 
     return res.json({ businessPlan: plan });
   } catch (err: any) {
@@ -928,7 +969,6 @@ app.post('/api/ai/chat', authMiddleware, aiRateLimiter, validateRequest(aiChatSc
     const aiResponse = await runCofounderAgent(message, state?.toObject() || context.project, `${buildContextString(context)}\nConversation:\n${JSON.stringify(chatHistory)}`);
     if (!aiResponse) return res.status(502).json({ error: 'AI consultant failed to produce a response' });
     chatHistory.push(aiResponse);
-    await deductCredits(userId, CREDIT_COSTS.AI_CHAT_MESSAGE, 'AI Chat Message');
 
     if (dbConnected) {
       await ConversationModel.findOneAndUpdate(
@@ -940,6 +980,7 @@ app.post('/api/ai/chat', authMiddleware, aiRateLimiter, validateRequest(aiChatSc
         { upsert: true, new: true }
       );
     }
+    await deductCredits(userId, CREDIT_COSTS.AI_CHAT_MESSAGE, 'AI Chat Message');
 
     return res.json({ userMessage, aiResponse, history: chatHistory });
   } catch (error) {
@@ -990,13 +1031,13 @@ async function generateFinancialHandler(req: Request, res: Response): Promise<an
     }
 
     const parsedFinancial = financialAgentResponseSchema.parse(rawFinancial);
-    await deductCredits(userId, CREDIT_COSTS.FINANCIAL_ENGINE, 'Financial Engine');
 
     const startupCosts = parsedFinancial.financial.startupCosts;
     const monthlyCosts = parsedFinancial.financial.monthlyCosts;
     const forecast = await FinancialForecast.findOneAndUpdate(
-      { projectId },
+      { projectId, userId },
       {
+        userId,
         projectId,
         startupCosts,
         totalStartupCost: startupCosts.reduce((sum, item) => sum + item.amount, 0),
@@ -1011,6 +1052,7 @@ async function generateFinancialHandler(req: Request, res: Response): Promise<an
     );
 
     await updateVentureState(projectId, userId, { financialForecast: forecast.toObject() });
+    await deductCredits(userId, CREDIT_COSTS.FINANCIAL_ENGINE, 'Financial Engine');
     return res.status(201).json({ financialForecast: forecast, pricing: parsedFinancial.pricing || null });
   } catch (err: any) {
     if (err.statusCode) return res.status(err.statusCode).json({ error: err.message });
@@ -1048,7 +1090,6 @@ async function generateBrandingHandler(req: Request, res: Response): Promise<any
     }
 
     const parsedBranding = brandingAgentResponseSchema.parse(rawBranding);
-    await deductCredits(userId, CREDIT_COSTS.BRANDING, 'Branding');
 
     const latest = await BrandIdentityModel.findOne({ projectId, userId, isLatest: true });
     const version = latest ? (latest.version || 1) + 1 : 1;
@@ -1066,8 +1107,10 @@ async function generateBrandingHandler(req: Request, res: Response): Promise<any
     });
     await brandIdentity.save();
     await updateVentureState(projectId, userId, { branding: brandIdentity.toObject() });
+    await deductCredits(userId, CREDIT_COSTS.BRANDING, 'Branding');
 
-    return res.status(201).json({ brandIdentity });
+    const evaluation = await evaluateAndSave(userId, projectId, 'branding', brandIdentity.id, businessPlan, brandIdentity.toObject());
+    return res.status(201).json({ brandIdentity, evaluation });
   } catch (err: any) {
     if (err.statusCode) return res.status(err.statusCode).json({ error: err.message });
     if (err.message === 'INSUFFICIENT_CREDITS') return res.status(402).json({ error: 'INSUFFICIENT_CREDITS' });
@@ -1104,7 +1147,6 @@ async function generateMarketingHandler(req: Request, res: Response): Promise<an
     }
 
     const parsedMarketing = marketingAgentResponseSchema.parse(rawMarketing);
-    await deductCredits(userId, CREDIT_COSTS.MARKETING, 'Marketing');
 
     const latest = await MarketingCampaignModel.findOne({ projectId, userId, isLatest: true });
     const version = latest ? (latest.version || 1) + 1 : 1;
@@ -1122,8 +1164,10 @@ async function generateMarketingHandler(req: Request, res: Response): Promise<an
     });
     await marketingCampaign.save();
     await updateVentureState(projectId, userId, { marketing: marketingCampaign.toObject() });
+    await deductCredits(userId, CREDIT_COSTS.MARKETING, 'Marketing');
 
-    return res.status(201).json({ marketingCampaign });
+    const evaluation = await evaluateAndSave(userId, projectId, 'marketing', marketingCampaign.id, businessPlan, marketingCampaign.toObject());
+    return res.status(201).json({ marketingCampaign, evaluation });
   } catch (err: any) {
     if (err.statusCode) return res.status(err.statusCode).json({ error: err.message });
     if (err.message === 'INSUFFICIENT_CREDITS') return res.status(402).json({ error: 'INSUFFICIENT_CREDITS' });
@@ -1160,7 +1204,6 @@ async function generatePitchHandler(req: Request, res: Response): Promise<any> {
     }
 
     const parsedPitch = pitchAgentResponseSchema.parse(rawPitch);
-    await deductCredits(userId, CREDIT_COSTS.PITCH_DECK, 'Pitch Deck');
 
     const latest = await PitchDeckModel.findOne({ projectId, userId, isLatest: true });
     const version = latest ? (latest.version || 1) + 1 : 1;
@@ -1178,8 +1221,10 @@ async function generatePitchHandler(req: Request, res: Response): Promise<any> {
     });
     await pitchDeck.save();
     await updateVentureState(projectId, userId, { pitchDeck: pitchDeck.toObject() });
+    await deductCredits(userId, CREDIT_COSTS.PITCH_DECK, 'Pitch Deck');
 
-    return res.status(201).json({ pitchDeck });
+    const evaluation = await evaluateAndSave(userId, projectId, 'pitch', pitchDeck.id, businessPlan, pitchDeck.toObject());
+    return res.status(201).json({ pitchDeck, evaluation });
   } catch (err: any) {
     if (err.statusCode) return res.status(err.statusCode).json({ error: err.message });
     if (err.message === 'INSUFFICIENT_CREDITS') return res.status(402).json({ error: 'INSUFFICIENT_CREDITS' });

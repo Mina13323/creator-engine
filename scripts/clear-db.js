@@ -12,11 +12,11 @@ async function main() {
   const collections = await db.listCollections().toArray();
 
   for (const collection of collections) {
-    console.log(`Clearing ${collection.name}...`);
+    console.info(`Clearing ${collection.name}...`);
     await db.collection(collection.name).deleteMany({});
   }
 
-  console.log('Database cleared successfully.');
+  console.info('Database cleared successfully.');
   await client.close();
 }
 

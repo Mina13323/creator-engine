@@ -1,3 +1,4 @@
+export * from './egyptContext';
 import {
   FounderProfile,
   BusinessOpportunity,
@@ -86,6 +87,7 @@ export async function runFounderAgent(
   onboardingData: any,
   contextStr: string = ''
 ): Promise<Partial<FounderProfile> | null> {
+  contextStr = (await import('./egyptContext').then(m => m.buildEgyptContextString(JSON.stringify(onboardingData)))) + (contextStr ? '\n\n' + contextStr : '');
   const result = await callN8n<Partial<FounderProfile>>('founder-analysis-flow', {
     projectId,
     data: onboardingData,
@@ -128,6 +130,7 @@ export async function runOpportunityAgent(
   founderProfile: FounderProfile,
   contextStr: string = ''
 ): Promise<BusinessOpportunity[] | null> {
+  contextStr = (await import('./egyptContext').then(m => m.buildEgyptContextString(JSON.stringify(founderProfile)))) + (contextStr ? '\n\n' + contextStr : '');
   const result = await callN8n<BusinessOpportunity[]>('opportunity-discovery-flow', {
     projectId,
     founderProfile,
@@ -193,6 +196,7 @@ export async function runBusinessPlanAgent(
   founderProfile: any,
   contextStr: string = ''
 ): Promise<Partial<BusinessPlan> | null> {
+  contextStr = (await import('./egyptContext').then(m => m.buildEgyptContextString(JSON.stringify(selectedOpportunity)))) + (contextStr ? '\n\n' + contextStr : '');
   const result = await callN8n<Partial<BusinessPlan>>('business-plan-flow', {
     projectId,
     opportunity: selectedOpportunity,
@@ -409,6 +413,7 @@ export async function runCofounderAgent(
   contextStr: string = ''
 ): Promise<any> {
   const projectId = projectContext?.id || projectContext?.projectId;
+  contextStr = (await import('./egyptContext').then(m => m.buildEgyptContextString(JSON.stringify(projectContext)))) + (contextStr ? '\n\n' + contextStr : '');
   const n8nResult = await callN8n<any>('cofounder-chat-flow', {
     message,
     projectContext,
@@ -471,6 +476,7 @@ export async function runBrandingAgent(
 ): Promise<Partial<BrandIdentity> | null> {
 
   // ── 1. Try n8n workflow first ───────────────────────────────────────────
+  contextStr = (await import('./egyptContext').then(m => m.buildEgyptContextString(JSON.stringify(businessPlan)))) + (contextStr ? '\n\n' + contextStr : '');
   const n8nResult = await callN8n<any>('branding-flow', {
     projectId,
     opportunity: selectedOpportunity,
@@ -526,6 +532,7 @@ export async function runMarketingAgent(
 ): Promise<Partial<MarketingCampaign> | null> {
 
   // ── 1. Try n8n workflow first (includes Tavily search) ─────────────────
+  contextStr = (await import('./egyptContext').then(m => m.buildEgyptContextString(JSON.stringify(businessPlan)))) + (contextStr ? '\n\n' + contextStr : '');
   const n8nResult = await callN8n<any>('marketing-flow', {
     projectId,
     brandIdentity,
@@ -585,6 +592,7 @@ export async function runPitchAgent(
 ): Promise<Partial<PitchDeck> | null> {
 
   // ── 1. Try n8n workflow first ───────────────────────────────────────────
+  contextStr = (await import('./egyptContext').then(m => m.buildEgyptContextString(JSON.stringify(businessPlan)))) + (contextStr ? '\n\n' + contextStr : '');
   const n8nResult = await callN8n<any>('pitch-flow', {
     projectId,
     businessPlan,
@@ -634,3 +642,6 @@ export async function runPitchAgent(
 
 export * from './marketingStudioAgent';
 export * from './media/storageProvider';
+export * from './evaluatorAgent';
+export * from './executionAgent';
+export * from './nextActionAgent';

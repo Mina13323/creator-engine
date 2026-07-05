@@ -4,6 +4,7 @@ import React from 'react';
 import { useStore } from '../store/useStore';
 import { Compass, Calendar, DollarSign, CheckSquare, Clock } from 'lucide-react';
 import { Card } from './ui/card';
+import { ExecutionDashboard } from './ExecutionDashboard';
 import { motion } from 'framer-motion';
 import { staggerContainer, fadeInUp, fadeIn } from '../lib/motion-presets';
 
@@ -11,7 +12,30 @@ export default function RoadmapPanel() {
   const { currentOutputs } = useStore();
 
   if (!currentOutputs || !currentOutputs.roadmap) {
-    return <div className="text-slate-400 text-sm p-6 md:p-10 max-w-[1200px] mx-auto">No execution roadmap loaded.</div>;
+    
+    return (
+      <div className="flex flex-col items-center justify-center p-12 max-w-lg mx-auto text-center mt-20 border border-slate-200 rounded-3xl bg-white shadow-sm">
+        <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-6">
+          <Compass className="w-8 h-8" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-800 mb-2">No Roadmap Generated</h2>
+        <p className="text-slate-500 text-sm mb-8 leading-relaxed">
+          Your startup execution roadmap has not been created yet. Generate a prioritized 90-day execution plan tailored specifically to your chosen business model and the Egyptian market.
+        </p>
+        <button 
+          onClick={() => {
+            const state = useStore.getState();
+            if (state.currentProject) {
+              state.generateRoadmap(state.currentProject.id);
+            }
+          }}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-xl transition-all shadow-md active:scale-95"
+        >
+          Generate Execution Roadmap
+        </button>
+      </div>
+    );
+
   }
 
   const { roadmap } = currentOutputs;

@@ -67,6 +67,9 @@ interface StoreState {
   analyzeFounder: (projectId: string, data: OnboardingData) => Promise<void>;
   discoverOpportunities: (projectId: string) => Promise<void>;
   selectOpportunity: (projectId: string, opportunityId: string) => Promise<void>;
+  generateRoadmap: (projectId: string) => Promise<void>;
+  updateTaskStatus: (projectId: string, taskId: string, status: string) => Promise<void>;
+
   generateBusinessPlan: (projectId: string) => Promise<void>;
   uploadDocument: (projectId: string, fileData: { fileName: string, fileType: string, storageUrl: string, fileSize: number }) => Promise<void>;
 
@@ -123,12 +126,13 @@ export const useStore = create<StoreState>((set, get) => ({
   setShowPricingModal: (show) => set({ showPricingModal: show }),
   loadCredits: async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/user/credits', { headers: { Authorization: `Bearer ${get().user?.token}` } });
-      const data = await res.json();
+      const data = await authClient.get<any>('/user/credits');
       if (data.wallet) {
         set({ credits: data.wallet.availableCredits, isDemo: !!data.isDemo });
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn('Failed to load credits', e);
+    }
   },
 
   setAuthModalOpen: (isOpen: boolean) => set({ isAuthModalOpen: isOpen }),
@@ -282,6 +286,36 @@ export const useStore = create<StoreState>((set, get) => ({
     } catch (e: any) {
       console.error('selectOpportunity failed', e);
       set({ isSelecting: false, selectionError: e.message || 'Failed to select opportunity' });
+      throw e;
+    }
+  },
+
+  generateRoadmap: async (projectId) => {
+    set({ loading: true, loadingMessage: 'Generating execution roadmap...' });
+    try {
+      const res = await authClient.post<{ roadmap: any }>('/execution/generate', { projectId });
+      set(state => ({
+        currentOutputs: { ...(state.currentOutputs || {}), roadmap: res.roadmap },
+        ventureState: state.ventureState ? { ...state.ventureState, roadmap: res.roadmap } : state.ventureState,
+        activeTab: 'roadmap',
+        loading: false
+      }));
+    } catch (e) {
+      console.error('generateRoadmap failed', e);
+      set({ loading: false });
+      throw e;
+    }
+  },
+
+  updateTaskStatus: async (projectId, taskId, status) => {
+    try {
+      const res = await authClient.patch<{ roadmap: any }>(`/execution/task/${taskId}`, { projectId, status });
+      set(state => ({
+        currentOutputs: { ...(state.currentOutputs || {}), roadmap: res.roadmap },
+        ventureState: state.ventureState ? { ...state.ventureState, roadmap: res.roadmap } : state.ventureState
+      }));
+    } catch (e) {
+      console.error('updateTaskStatus failed', e);
       throw e;
     }
   },

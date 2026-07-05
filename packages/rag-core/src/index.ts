@@ -125,3 +125,4 @@ export async function getKnowledgeCategories(): Promise<string[]> {
 
 export * from './ragService';
 export * from './ingestion';
+export * from './marketIntelligence';

@@ -459,17 +459,64 @@ const RoadmapMilestoneSchema = new Schema({
   estimatedCost: { type: Number, required: true }
 });
 
+const ExecutionTaskSchema = new Schema({
+  id: { type: String, required: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
+  status: { type: String, enum: ['todo', 'doing', 'done'], default: 'todo' },
+  dueDate: { type: Date },
+  aiGenerated: { type: Boolean, default: true }
+});
+
+const ExecutionPhaseSchema = new Schema({
+  id: { type: String, required: true },
+  name: { type: String, required: true },
+  tasks: [ExecutionTaskSchema]
+});
+
 const ExecutionRoadmapSchema = new Schema<ExecutionRoadmap & Document>(
   {
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     milestones: [RoadmapMilestoneSchema],
+    phases: [ExecutionPhaseSchema],
+    progress: { type: Number, default: 0 },
     totalEstimatedBudget: { type: Number, required: true },
     totalDurationWeeks: { type: Number, required: true }
   },
   { timestamps: true }
 );
+
+// 7.5 AI Evaluation Model
+const AIEvaluationSchema = new Schema(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    targetType: { 
+      type: String, 
+      enum: ["founder_profile", "opportunity", "business_plan", "financial_plan", "branding", "marketing", "pitch"], 
+      required: true 
+    },
+    targetId: { type: String, required: true, index: true },
+    overallScore: { type: Number, required: true },
+    scores: {
+      marketFit: { type: Number, required: true },
+      egyptMarketFit: { type: Number, required: true },
+      feasibility: { type: Number, required: true },
+      financialReality: { type: Number, required: true },
+      executionClarity: { type: Number, required: true },
+      founderAlignment: { type: Number, required: true }
+    },
+    strengths: [{ type: String }],
+    weaknesses: [{ type: String }],
+    recommendations: [{ type: String }]
+  },
+  { timestamps: true, collection: 'ai_evaluations' }
+);
+AIEvaluationSchema.index({ projectId: 1, targetType: 1 });
 
 // 8. Cofounder Conversation Model
 const ChatMessageSchema = new Schema({
@@ -590,6 +637,7 @@ export const BrandIdentityModel = mongoose.models.BrandIdentity || mongoose.mode
 export const MarketingCampaignModel = mongoose.models.MarketingCampaign || mongoose.model<MarketingCampaign & Document>('MarketingCampaign', MarketingCampaignSchema);
 export const PitchDeckModel = mongoose.models.PitchDeck || mongoose.model<PitchDeck & Document>('PitchDeck', PitchDeckSchema);
 export const ExecutionRoadmapModel = mongoose.models.ExecutionRoadmap || mongoose.model<ExecutionRoadmap & Document>('ExecutionRoadmap', ExecutionRoadmapSchema);
+export const AIEvaluationModel = mongoose.models.AIEvaluation || mongoose.model('AIEvaluation', AIEvaluationSchema);
 export const ConversationModel = mongoose.models.Conversation || mongoose.model<Conversation & Document>('Conversation', ConversationSchema);
 export const VentureStateModel = mongoose.models.VentureState || mongoose.model<VentureState & Document>('VentureState', VentureStateSchema);
 export const AgentRunModel = mongoose.models.AgentRun || mongoose.model<AgentRun & Document>('AgentRun', AgentRunSchema);
@@ -602,10 +650,15 @@ export interface KnowledgeDocument {
   projectId?: string;
   documentId?: string;
   docId?: string;
+  type?: string;
+  country?: string;
+  industry?: string;
   title?: string;
   content: string;
   category: string;
   source: string;
+  confidence?: number;
+  lastUpdated?: Date;
   embedding?: number[];
 }
 
@@ -614,17 +667,25 @@ const KnowledgeDocumentSchema = new Schema<KnowledgeDocument & Document>({
   projectId: { type: String },
   documentId: { type: String },
   docId: { type: String },
+  type: { type: String },
+  country: { type: String },
+  industry: { type: String },
   title: { type: String },
   content: { type: String, required: true },
   category: { type: String, required: true },
   source: { type: String, required: true },
+  confidence: { type: Number },
+  lastUpdated: { type: Date },
   embedding: { type: [Number] }
 }, { timestamps: true, collection: 'knowledge_vectors' });
 
 KnowledgeDocumentSchema.index({ projectId: 1, userId: 1, createdAt: -1 });
 KnowledgeDocumentSchema.index({ documentId: 1 });
 KnowledgeDocumentSchema.index({ category: 1 });
+KnowledgeDocumentSchema.index({ type: 1, country: 1 });
+KnowledgeDocumentSchema.index({ industry: 1 });
 export const KnowledgeDocumentModel = mongoose.models.KnowledgeDocument || mongoose.model<KnowledgeDocument & Document>('KnowledgeDocument', KnowledgeDocumentSchema);
+
 
 // --- Financial Plan Interfaces ---
 export interface IStartupCost {
@@ -647,6 +708,7 @@ export interface IRevenueProjection {
 }
 
 export interface IFinancialForecast extends Document {
+  userId: string;
   projectId: string;
   startupCosts: IStartupCost[];
   totalStartupCost: number;
@@ -699,6 +761,7 @@ export const RevenueProjectionSchema = new Schema<IRevenueProjection>({
 }, { _id: false });
 
 export const FinancialForecastSchema = new Schema<IFinancialForecast>({
+  userId: { type: String, required: true, index: true },
   projectId: { type: String, required: true, index: true },
   startupCosts: [StartupCostSchema],
   totalStartupCost: { type: Number, required: true, default: 0 },
@@ -709,6 +772,7 @@ export const FinancialForecastSchema = new Schema<IFinancialForecast>({
   currency: { type: String, enum: ['EGP', 'USD'], default: 'EGP' },
   assumptionsApplied: [{ type: String }]
 }, { timestamps: true });
+FinancialForecastSchema.index({ userId: 1, projectId: 1 }, { unique: true });
 
 export const PriceTierSchema = new Schema<IPriceTier>({
   tierName: { type: String, required: true },

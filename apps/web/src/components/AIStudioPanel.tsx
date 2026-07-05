@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { useStore } from '../store/useStore';
+import { authClient } from '../lib/authClient';
 import { ImagePlus, Video, FileAudio, FolderHeart, Sparkles, Download, Layers } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeInUp, fadeIn, staggerContainer } from '../lib/motion-presets';
@@ -20,28 +21,31 @@ export default function AIStudioPanel() {
     if (!file || !currentProject) return;
 
     setUploading(true);
-    const formData = new FormData();
-    formData.append('file', file);
-
-    const rawApiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const cleanApiUrl = rawApiUrl ? rawApiUrl.replace(/^['"]|['"]$/g, '') : undefined;
-    const API_BASE = cleanApiUrl ? `${cleanApiUrl}/api` : 'http://localhost:5000/api';
+    const storageUrl = URL.createObjectURL(file);
 
     try {
-      const response = await fetch(`${API_BASE}/projects/${currentProject.id}/documents/upload`, {
-        method: 'POST',
-        body: formData,
-        credentials: 'include'
+      const fileBase64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = String(reader.result || '');
+          resolve(result.includes(',') ? result.split(',')[1] : result);
+        };
+        reader.onerror = () => reject(reader.error || new Error('Failed to read file'));
+        reader.readAsDataURL(file);
       });
-      if (response.ok) {
-        alert('File uploaded and chunking/embedding started!');
-      } else {
-        alert('Failed to upload file');
-      }
+      await authClient.post(`/projects/${currentProject.id}/documents/upload`, {
+        fileName: file.name,
+        fileType: file.type || 'application/octet-stream',
+        fileSize: file.size,
+        storageUrl,
+        fileBase64,
+      });
+      alert('File uploaded and chunking/embedding started!');
     } catch (err) {
       console.error(err);
       alert('Upload error');
     } finally {
+      URL.revokeObjectURL(storageUrl);
       setUploading(false);
     }
   };

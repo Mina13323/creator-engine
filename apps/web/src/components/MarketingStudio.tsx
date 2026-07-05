@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { api } from "../lib/api";
+import { API_BASE } from "../lib/authClient";
 import { useStore } from "../store/useStore";
 import { 
   Button, Card, CardContent, CardHeader, CardTitle, 
@@ -35,6 +36,28 @@ const ASSETS = {
     { id: 6, name: "TV Spot", url: "https://d3adwkbyhxyrtq.cloudfront.net/web-app/tv-spot-mini.mp4" }
   ]
 };
+
+function getPlayableVideoUrl(result: any): string | null {
+  const url = result?.video?.url || result?.url || '';
+  if (typeof url !== 'string' || !url.trim()) return null;
+  if (url.startsWith('blob:') || url.startsWith('data:video/')) return url;
+  try {
+    const parsed = new URL(url, window.location.href);
+    const pathname = parsed.pathname.toLowerCase();
+    return /\.(mp4|webm|ogg|mov|m4v)$/.test(pathname) ? url : null;
+  } catch {
+    return null;
+  }
+}
+
+function previewVideo(video: HTMLVideoElement) {
+  const playPromise = video.play();
+  if (playPromise) {
+    playPromise.catch(() => {
+      video.pause();
+    });
+  }
+}
 
 const OPTIONS = {
   ratio: ["9:16", "3:4", "4:3", "16:9", "1:1"],
@@ -118,6 +141,7 @@ export default function MarketingStudio() {
     llm: { provider: 'gemini', status: true },
     video: { provider: 'replicate', status: true }
   });
+  const playableResultUrl = getPlayableVideoUrl(genResult);
 
   // ── Persistence ───────────────────────────────────────────────────────────
 
@@ -135,7 +159,7 @@ export default function MarketingStudio() {
       }
     } catch (err) { console.warn("Load failed", err); }
 
-    fetch('/api/ai/providers/status')
+    fetch(`${API_BASE}/ai/providers/status`)
       .then(res => res.json())
       .then(data => setProvidersStatus(data))
       .catch(console.error);
@@ -279,7 +303,7 @@ export default function MarketingStudio() {
             stages={STAGES as any}
           />
         </div>
-      ) : (genResult && genResult.status !== 'failed' && (genResult.video?.url || genResult.url)) ? (
+      ) : (genResult && genResult.status !== 'failed' && playableResultUrl) ? (
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -297,10 +321,11 @@ export default function MarketingStudio() {
             <Card className="overflow-hidden">
               <div className="bg-black relative aspect-[9/16] max-h-[600px] flex items-center justify-center group">
                  <video 
-                  src={genResult.video?.url || genResult.url} 
+                  src={playableResultUrl} 
                   controls 
                   autoPlay 
                   className="w-full h-full object-contain" 
+                  onError={() => setGenResult({ status: 'failed', error: 'Generated media is not a playable browser video.' })}
                 />
               </div>
               <CardContent className="p-4 bg-gray-50 flex items-center justify-between border-t border-[rgba(60,64,67,0.12)]">
@@ -309,7 +334,7 @@ export default function MarketingStudio() {
                     {genResult.video?.generationType === 'COMPOSER_VIDEO' ? 'Composer Video' : 'AI Generated Video'}
                   </div>
                 </div>
-                <Button onClick={() => downloadFile(genResult.video?.url || genResult.url, `marketing-ad-${Date.now()}.mp4`)}>
+                <Button onClick={() => downloadFile(playableResultUrl, `marketing-ad-${Date.now()}.mp4`)}>
                   <Download className="w-4 h-4 mr-2" />
                   Download MP4
                 </Button>
@@ -408,13 +433,13 @@ export default function MarketingStudio() {
                     Recent Generations
                   </h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    {history.slice(0, 3).map(entry => (
+                    {history.slice(0, 3).filter(entry => getPlayableVideoUrl(entry)).map(entry => (
                        <div key={entry.id} className="relative group rounded-xl overflow-hidden border border-[rgba(60,64,67,0.12)] bg-gray-50 shadow-sm hover:shadow-md transition-all">
                          <video 
-                          src={entry.url} 
+                          src={getPlayableVideoUrl(entry) || undefined} 
                           className="w-full aspect-[9/16] object-cover cursor-pointer" 
                           onClick={() => setFullscreenUrl(entry.url)}
-                          muted loop onMouseOver={e => (e.target as HTMLVideoElement).play()} onMouseOut={e => { (e.target as HTMLVideoElement).pause(); (e.target as HTMLVideoElement).currentTime = 0; }}
+                          muted loop onMouseOver={e => previewVideo(e.currentTarget)} onMouseOut={e => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
                          />
                          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                            <button onClick={(e) => { e.stopPropagation(); downloadFile(entry.url, `ad-${entry.id}.mp4`); }} className="p-1.5 bg-white/90 rounded text-gray-700 hover:text-[#1A73E8] shadow-sm">
@@ -505,7 +530,7 @@ export default function MarketingStudio() {
           <button className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors">
             <X className="w-6 h-6" />
           </button>
-          <video src={fullscreenUrl} controls autoPlay className="max-w-[90vw] max-h-[90vh] rounded-lg shadow-2xl" onClick={e => e.stopPropagation()} />
+          <video src={fullscreenUrl} controls autoPlay className="max-w-[90vw] max-h-[90vh] rounded-lg shadow-2xl" onClick={e => e.stopPropagation()} onError={() => setFullscreenUrl(null)} />
         </div>
       )}
 

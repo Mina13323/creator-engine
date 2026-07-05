@@ -2,23 +2,38 @@
 
 import { useState, useEffect } from 'react';
 import { ShieldAlert, AlertTriangle, X } from 'lucide-react';
+import { API_BASE } from '../lib/authClient';
 
 export function SystemStatusBanner() {
   const [status, setStatus] = useState<{ lockdown: boolean; maintenance: boolean } | null>(null);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
+    let mounted = true;
+
     const fetchStatus = async () => {
       if (document.hidden) return; // Skip network calls when tab is backgrounded
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 3000);
+
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-        const res = await fetch(`${apiUrl}/api/system/status`);
+        const res = await fetch(`${API_BASE}/system/status`, {
+          signal: controller.signal,
+          cache: 'no-store'
+        });
+
+        if (!mounted) return;
+
         if (res.ok) {
           const data = await res.json();
           setStatus(data);
+        } else {
+          setStatus(null);
         }
-      } catch (err) {
-        console.error('Failed to fetch system status:', err);
+      } catch {
+        if (mounted) setStatus(null);
+      } finally {
+        window.clearTimeout(timeout);
       }
     };
 
@@ -34,6 +49,7 @@ export function SystemStatusBanner() {
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
+      mounted = false;
       clearInterval(interval);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };

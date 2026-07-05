@@ -3,9 +3,7 @@ import { AuthResponse, LoginRequest, SignupRequest, AuthUser } from '@creator/ty
 const rawApiUrl = process.env.NEXT_PUBLIC_API_URL;
 const cleanApiUrl = rawApiUrl ? rawApiUrl.replace(/^['"]|['"]$/g, '') : undefined;
 
-const API_BASE = (typeof window !== 'undefined' && cleanApiUrl)
-  ? `${cleanApiUrl}/api`
-  : 'http://localhost:5000/api';
+export const API_BASE = cleanApiUrl ? `${cleanApiUrl}/api` : '/api';
 
 
 // Local storage logic removed in favor of HttpOnly cookies
@@ -152,6 +150,13 @@ async function put<T>(path: string, body: any): Promise<T> {
   });
 }
 
+async function patch<T>(path: string, body: any): Promise<T> {
+  return request<T>(path, {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+  });
+}
+
 async function del<T>(path: string): Promise<T> {
   return request<T>(path, {
     method: 'DELETE',
@@ -168,5 +173,6 @@ export const authClient = {
   get,
   post,
   put,
+  patch,
   delete: del,
 };

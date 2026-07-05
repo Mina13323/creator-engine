@@ -128,7 +128,7 @@ async function main() {
     issues
   };
 
-  console.log(JSON.stringify(result, null, 2));
+  process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
   assert.strictEqual(issues.length, 0, 'Database audit failed');
 }
 

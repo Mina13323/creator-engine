@@ -10,6 +10,7 @@ import {
   Calculator, Zap, DollarSign, TrendingUp, AlertCircle, Building, Server, ArrowRight 
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import { authClient } from '../lib/authClient';
 
 export default function FinancialEngine() {
   const currentProject = useStore(state => state.currentProject);
@@ -40,24 +41,16 @@ export default function FinancialEngine() {
     if (!businessIdea || !currentProject?.id) return;
     setLoading(true);
     try {
-      const response = await fetch('/api/financial-engine', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          projectId: currentProject.id,
-          businessIdea,
-          businessModel,
-        }),
+      const data = await authClient.post<any>('/financial/generate', {
+        projectId: currentProject.id,
+        businessIdea,
+        businessModel,
       });
 
-      if (!response.ok) {
-        throw new Error(`Server returned status ${response.status}`);
-      }
-
-      const data = await response.json();
-      setResults(data);
+      setResults({
+        financial: data.financialForecast,
+        pricing: data.pricing || {},
+      });
     } catch (error) {
       console.error('Failed to generate financials', error);
     } finally {

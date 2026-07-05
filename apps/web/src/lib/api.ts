@@ -1,3 +1,5 @@
+import { API_BASE } from './authClient';
+
 export class ApiClient {
   async generateImage(params: {
     prompt: string;
@@ -66,7 +68,7 @@ export class ApiClient {
         reject(new Error('Network error occurred during upload'));
       };
       
-      xhr.open('POST', 'http://localhost:5000/api/upload');
+    xhr.open('POST', `${API_BASE}/upload`);
       if (token) {
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       }
@@ -97,7 +99,7 @@ export class ApiClient {
       if (!token) token = localStorage.getItem('token') || '';
     }
 
-    const response = await fetch('http://localhost:5000/api/marketing-studio/generate', {
+    const response = await fetch(`${API_BASE}/marketing-studio/generate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
