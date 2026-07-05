@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { authClient } from '@/lib/authClient';
+import { adminClient } from '@/lib/adminClient';
 import { AuthUser } from '@creator/types';
 import { Button } from '@/components/ui/button';
 import { Loader2, Trash2, AlertTriangle } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
+
+export const dynamic = 'force-dynamic';
 
 export default function UsersPage() {
   const [users, setUsers] = useState<AuthUser[]>([]);
@@ -15,7 +17,7 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const data = await authClient.get<AuthUser[]>('/admin/users');
+      const data = await adminClient.get<AuthUser[]>('/users');
       setUsers(data);
     } catch (e) {
       console.error(e);
@@ -28,7 +30,7 @@ export default function UsersPage() {
 
   const toggleBan = async (userId: string, currentBanStatus: boolean) => {
     try {
-      await authClient.post(`/admin/users/${userId}/ban`, { ban: !currentBanStatus });
+      await adminClient.post(`/users/${userId}/ban`, { ban: !currentBanStatus });
       fetchUsers();
     } catch (e) {
       console.error(e);
@@ -41,7 +43,7 @@ export default function UsersPage() {
     const confirmed = window.confirm(`Are you sure you want to ${actionText}?`);
     if (!confirmed) { fetchUsers(); return; }
     try {
-      await authClient.post(`/admin/users/${userId}/role`, { role: newRole });
+      await adminClient.post(`/users/${userId}/role`, { role: newRole });
       fetchUsers();
     } catch (e) {
       console.error(e);
@@ -53,7 +55,7 @@ export default function UsersPage() {
     if (!deletingUser) return;
     setIsDeleting(true);
     try {
-      await authClient.delete(`/admin/users/${deletingUser.id}`);
+      await adminClient.delete(`/users/${deletingUser.id}`);
       toast.success(`User "${deletingUser.name || deletingUser.email}" deleted.`, {
         style: { background: '#0f172a', color: '#f1f5f9', border: '1px solid #1e293b' }
       });

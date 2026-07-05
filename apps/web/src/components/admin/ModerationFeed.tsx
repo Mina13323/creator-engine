@@ -80,7 +80,7 @@ export function ModerationFeed({
               <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${
                 event.status === 'Pending'
                   ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                  : event.status === 'Failed' || event.status === 'Banned'
+                  : (event.status as any) === 'Failed' || (event.status as any) === 'Banned'
                   ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
                   : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
               }`}>

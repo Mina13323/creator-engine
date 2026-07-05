@@ -359,29 +359,29 @@ const starterDocuments = [
 ];
 
 async function seed() {
-  console.log('Connecting to MongoDB at:', MONGO_URI.replace(/:([^@]+)@/, ':****@'));
+  console.info('Connecting to MongoDB at:', MONGO_URI.replace(/:([^@]+)@/, ':****@'));
   try {
     await mongoose.connect(MONGO_URI);
-    console.log('Connected to database.');
+    console.info('Connected to database.');
 
     // Clear existing global documents
-    console.log('Clearing old system knowledge base docs...');
+    console.info('Clearing old system knowledge base docs...');
     await KnowledgeDocumentModel.deleteMany({ userId: 'system', projectId: 'global' });
 
     // Insert starter docs
-    console.log(`Inserting ${starterDocuments.length} starter documents...`);
+    console.info(`Inserting ${starterDocuments.length} starter documents...`);
     const docsToInsert = starterDocuments.map(doc => ({
       ...doc,
       docId: doc.documentId
     }));
     const inserted = await KnowledgeDocumentModel.insertMany(docsToInsert);
-    console.log(`Successfully seeded ${inserted.length} knowledge base documents!`);
+    console.info(`Successfully seeded ${inserted.length} knowledge base documents!`);
 
   } catch (error) {
     console.error('Seeding failed:', error);
   } finally {
     await mongoose.disconnect();
-    console.log('Disconnected from database.');
+    console.info('Disconnected from database.');
   }
 }
 

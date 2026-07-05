@@ -9,10 +9,10 @@ require('dotenv').config({ path: envPath });
 
 async function createAdmin() {
   const url = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/creator-engine';
-  console.log('Connecting to MongoDB at:', url);
+  console.info('Connecting to MongoDB at:', url);
   try {
     await mongoose.connect(url);
-    console.log('Connected to MongoDB');
+    console.info('Connected to MongoDB');
 
     const email = 'admin@example.com';
     const password = 'Password123';
@@ -37,14 +37,14 @@ async function createAdmin() {
 
     if (existing) {
       await usersCollection.updateOne({ email }, { $set: userDoc });
-      console.log('Existing user updated to admin:', email);
+      console.info('Existing user updated to admin:', email);
     } else {
       userDoc.createdAt = new Date();
       await usersCollection.insertOne(userDoc);
-      console.log('New admin user created:', email);
+      console.info('New admin user created:', email);
     }
 
-    console.log('Password set to:', password);
+    console.info('Password set to:', password);
     process.exit(0);
   } catch (error) {
     console.error('Error creating admin user:', error);

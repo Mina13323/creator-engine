@@ -20,6 +20,8 @@ import {
 import { adminClient } from '@/lib/adminClient';
 import toast, { Toaster } from 'react-hot-toast';
 
+export const dynamic = 'force-dynamic';
+
 export default function SettingsPage() {
   const { user } = useStore();
   const [loading, setLoading] = useState(true);
@@ -284,7 +286,7 @@ export default function SettingsPage() {
                   Maintenance Window Mode
                   {maintenance && <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-ping" />}
                 </label>
-                <p className="text-[10px] text-slate-400 leading-relaxed">Renders a "Scheduled System Maintenance" banner, disabling database creation queries.</p>
+                <p className="text-[10px] text-slate-400 leading-relaxed">Renders a &quot;Scheduled System Maintenance&quot; banner, disabling database creation queries.</p>
               </div>
               <button 
                 onClick={() => setMaintenance(!maintenance)}

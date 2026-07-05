@@ -10,6 +10,8 @@ import {
 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
+export const dynamic = 'force-dynamic';
+
 interface SubscriptionPlan {
   _id: string;
   name: string;
@@ -489,7 +491,7 @@ export default function AdminPlansPage() {
               </div>
               <h3 className="text-xl font-bold text-slate-100 mb-2">Delete Plan?</h3>
               <p className="text-sm text-slate-400 mb-6">
-                Permanently delete <span className="font-semibold text-slate-200">"{deletingPlan.name}"</span>? This cannot be undone.
+                Permanently delete <span className="font-semibold text-slate-200">&quot;{deletingPlan.name}&quot;</span>? This cannot be undone.
               </p>
               <div className="flex gap-3">
                 <button onClick={() => setDeletingPlan(null)} disabled={isProcessing} className="flex-1 py-2.5 rounded-xl font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 transition-colors text-sm">

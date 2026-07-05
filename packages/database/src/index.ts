@@ -31,7 +31,7 @@ export async function connectDB(url: string) {
   if (mongoose.connection.readyState >= 1) return;
   try {
     await mongoose.connect(cleanUrl);
-    console.log('MongoDB connected successfully');
+    console.info('MongoDB connected successfully');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
     throw error;
@@ -39,7 +39,8 @@ export async function connectDB(url: string) {
 }
 
 // 0. User Model
-interface UserDocument extends User {
+interface UserDocument extends Omit<User, 'id'> {
+  id: string;
   password?: string;
   googleId?: string;
   avatar?: string;
@@ -50,7 +51,6 @@ interface UserDocument extends User {
 
 const UserSchema = new Schema<UserDocument & Document>(
   {
-    // @ts-ignore - id is added for easier querying along with _id
     id: { type: String, required: true, index: true },
     email: { type: String, required: true, unique: true },
     name: { type: String },
@@ -65,6 +65,7 @@ const UserSchema = new Schema<UserDocument & Document>(
 );
 
 UserSchema.index({ createdAt: -1 });
+UserSchema.index({ id: 1, email: 1 });
 
 // 0.5 Founder Profile Model
 const FounderProfileSchema = new Schema<FounderProfile & Document>(
@@ -112,6 +113,7 @@ const ProjectSchema = new Schema<Project & Document>(
 
 ProjectSchema.index({ userId: 1, status: 1 });
 ProjectSchema.index({ createdAt: -1 });
+ProjectSchema.index({ id: 1, userId: 1 });
 
 // 2. Business Idea Model (Legacy, kept per spec)
 const BusinessIdeaSchema = new Schema<BusinessIdea & Document>(
@@ -457,17 +459,64 @@ const RoadmapMilestoneSchema = new Schema({
   estimatedCost: { type: Number, required: true }
 });
 
+const ExecutionTaskSchema = new Schema({
+  id: { type: String, required: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
+  status: { type: String, enum: ['todo', 'doing', 'done'], default: 'todo' },
+  dueDate: { type: Date },
+  aiGenerated: { type: Boolean, default: true }
+});
+
+const ExecutionPhaseSchema = new Schema({
+  id: { type: String, required: true },
+  name: { type: String, required: true },
+  tasks: [ExecutionTaskSchema]
+});
+
 const ExecutionRoadmapSchema = new Schema<ExecutionRoadmap & Document>(
   {
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
     projectId: { type: String, required: true, index: true },
     milestones: [RoadmapMilestoneSchema],
+    phases: [ExecutionPhaseSchema],
+    progress: { type: Number, default: 0 },
     totalEstimatedBudget: { type: Number, required: true },
     totalDurationWeeks: { type: Number, required: true }
   },
   { timestamps: true }
 );
+
+// 7.5 AI Evaluation Model
+const AIEvaluationSchema = new Schema(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    targetType: { 
+      type: String, 
+      enum: ["founder_profile", "opportunity", "business_plan", "financial_plan", "branding", "marketing", "pitch"], 
+      required: true 
+    },
+    targetId: { type: String, required: true, index: true },
+    overallScore: { type: Number, required: true },
+    scores: {
+      marketFit: { type: Number, required: true },
+      egyptMarketFit: { type: Number, required: true },
+      feasibility: { type: Number, required: true },
+      financialReality: { type: Number, required: true },
+      executionClarity: { type: Number, required: true },
+      founderAlignment: { type: Number, required: true }
+    },
+    strengths: [{ type: String }],
+    weaknesses: [{ type: String }],
+    recommendations: [{ type: String }]
+  },
+  { timestamps: true, collection: 'ai_evaluations' }
+);
+AIEvaluationSchema.index({ projectId: 1, targetType: 1 });
 
 // 8. Cofounder Conversation Model
 const ChatMessageSchema = new Schema({
@@ -507,9 +556,11 @@ const VentureStateSchema = new Schema<VentureState & Document>(
   },
   { timestamps: true, collection: 'venture_states' }
 );
+VentureStateSchema.index({ projectId: 1, userId: 1 }, { unique: true });
+VentureStateSchema.index({ lastUpdated: -1 });
 
 // 10. Agent Run Model
-const AgentRunSchema = new Schema<AgentRun & Document>(
+const AgentRunSchema = new Schema(
   {
     id: { type: String, required: true, index: true },
     userId: { type: String, required: true, index: true },
@@ -532,6 +583,7 @@ const AgentRunSchema = new Schema<AgentRun & Document>(
 );
 
 AgentRunSchema.index({ createdAt: -1 });
+AgentRunSchema.index({ projectId: 1, userId: 1, createdAt: -1 });
 
 // 11. Uploaded Document Model
 const UploadedDocumentSchema = new Schema<UploadedDocument & Document>(
@@ -548,6 +600,8 @@ const UploadedDocumentSchema = new Schema<UploadedDocument & Document>(
   },
   { timestamps: true }
 );
+UploadedDocumentSchema.index({ projectId: 1, userId: 1, createdAt: -1 });
+UploadedDocumentSchema.index({ processingStatus: 1, createdAt: -1 });
 
 // 12. Opportunity Comparison Model
 const OpportunityComparisonSchema = new Schema<OpportunityComparison & Document>(
@@ -583,6 +637,7 @@ export const BrandIdentityModel = mongoose.models.BrandIdentity || mongoose.mode
 export const MarketingCampaignModel = mongoose.models.MarketingCampaign || mongoose.model<MarketingCampaign & Document>('MarketingCampaign', MarketingCampaignSchema);
 export const PitchDeckModel = mongoose.models.PitchDeck || mongoose.model<PitchDeck & Document>('PitchDeck', PitchDeckSchema);
 export const ExecutionRoadmapModel = mongoose.models.ExecutionRoadmap || mongoose.model<ExecutionRoadmap & Document>('ExecutionRoadmap', ExecutionRoadmapSchema);
+export const AIEvaluationModel = mongoose.models.AIEvaluation || mongoose.model('AIEvaluation', AIEvaluationSchema);
 export const ConversationModel = mongoose.models.Conversation || mongoose.model<Conversation & Document>('Conversation', ConversationSchema);
 export const VentureStateModel = mongoose.models.VentureState || mongoose.model<VentureState & Document>('VentureState', VentureStateSchema);
 export const AgentRunModel = mongoose.models.AgentRun || mongoose.model<AgentRun & Document>('AgentRun', AgentRunSchema);
@@ -595,9 +650,15 @@ export interface KnowledgeDocument {
   projectId?: string;
   documentId?: string;
   docId?: string;
+  type?: string;
+  country?: string;
+  industry?: string;
+  title?: string;
   content: string;
   category: string;
   source: string;
+  confidence?: number;
+  lastUpdated?: Date;
   embedding?: number[];
 }
 
@@ -606,13 +667,25 @@ const KnowledgeDocumentSchema = new Schema<KnowledgeDocument & Document>({
   projectId: { type: String },
   documentId: { type: String },
   docId: { type: String },
+  type: { type: String },
+  country: { type: String },
+  industry: { type: String },
+  title: { type: String },
   content: { type: String, required: true },
   category: { type: String, required: true },
   source: { type: String, required: true },
+  confidence: { type: Number },
+  lastUpdated: { type: Date },
   embedding: { type: [Number] }
 }, { timestamps: true, collection: 'knowledge_vectors' });
 
+KnowledgeDocumentSchema.index({ projectId: 1, userId: 1, createdAt: -1 });
+KnowledgeDocumentSchema.index({ documentId: 1 });
+KnowledgeDocumentSchema.index({ category: 1 });
+KnowledgeDocumentSchema.index({ type: 1, country: 1 });
+KnowledgeDocumentSchema.index({ industry: 1 });
 export const KnowledgeDocumentModel = mongoose.models.KnowledgeDocument || mongoose.model<KnowledgeDocument & Document>('KnowledgeDocument', KnowledgeDocumentSchema);
+
 
 // --- Financial Plan Interfaces ---
 export interface IStartupCost {
@@ -635,6 +708,7 @@ export interface IRevenueProjection {
 }
 
 export interface IFinancialForecast extends Document {
+  userId: string;
   projectId: string;
   startupCosts: IStartupCost[];
   totalStartupCost: number;
@@ -687,6 +761,7 @@ export const RevenueProjectionSchema = new Schema<IRevenueProjection>({
 }, { _id: false });
 
 export const FinancialForecastSchema = new Schema<IFinancialForecast>({
+  userId: { type: String, required: true, index: true },
   projectId: { type: String, required: true, index: true },
   startupCosts: [StartupCostSchema],
   totalStartupCost: { type: Number, required: true, default: 0 },
@@ -697,6 +772,7 @@ export const FinancialForecastSchema = new Schema<IFinancialForecast>({
   currency: { type: String, enum: ['EGP', 'USD'], default: 'EGP' },
   assumptionsApplied: [{ type: String }]
 }, { timestamps: true });
+FinancialForecastSchema.index({ userId: 1, projectId: 1 }, { unique: true });
 
 export const PriceTierSchema = new Schema<IPriceTier>({
   tierName: { type: String, required: true },
@@ -752,6 +828,7 @@ const UserSubscriptionSchema = new Schema<UserSubscription & Document>(
 );
 
 UserSubscriptionSchema.index({ userId: 1, status: 1 });
+UserSubscriptionSchema.index({ expiresAt: 1 });
 
 const CreditWalletSchema = new Schema<CreditWallet & Document>(
   {
@@ -773,6 +850,7 @@ const CreditTransactionSchema = new Schema<CreditTransaction & Document>(
   },
   { timestamps: true, collection: 'credit_transactions' }
 );
+CreditTransactionSchema.index({ userId: 1, createdAt: -1 });
 
 const PaymentTransactionSchema = new Schema<PaymentTransaction & Document>(
   {
@@ -788,6 +866,8 @@ const PaymentTransactionSchema = new Schema<PaymentTransaction & Document>(
 );
 
 PaymentTransactionSchema.index({ createdAt: -1 });
+PaymentTransactionSchema.index({ paymentIntentId: 1 }, { unique: true });
+PaymentTransactionSchema.index({ userId: 1, status: 1, createdAt: -1 });
 
 const CreditPackSchema = new Schema<any & Document>(
   {
@@ -806,6 +886,40 @@ export const CreditWalletModel = mongoose.models.CreditWallet || mongoose.model<
 export const CreditTransactionModel = mongoose.models.CreditTransaction || mongoose.model<CreditTransaction & Document>('CreditTransaction', CreditTransactionSchema);
 export const PaymentTransactionModel = mongoose.models.PaymentTransaction || mongoose.model<PaymentTransaction & Document>('PaymentTransaction', PaymentTransactionSchema);
 export const CreditPackModel = mongoose.models.CreditPack || mongoose.model<any & Document>('CreditPack', CreditPackSchema);
+
+const MarketingStudioGenerationSchema = new Schema(
+  {
+    id: { type: String, required: true, index: true },
+    userId: { type: String, required: true, index: true },
+    projectId: { type: String, required: true, index: true },
+    prompt: { type: String, required: true },
+    businessContextSnapshot: { type: Object },
+    script: { type: Object },
+    scenes: [{ type: Object }],
+    images: [
+      {
+        url: { type: String, required: true },
+        provider: { type: String, required: true }
+      }
+    ],
+    video: {
+      url: { type: String },
+      provider: { type: String },
+      duration: { type: Number }
+    },
+    voice: {
+      url: { type: String }
+    },
+    status: {
+      type: String,
+      enum: ['pending', 'processing', 'completed', 'failed', 'PARTIAL_SUCCESS', 'SCRIPT_READY', 'SCRIPT_IMAGE_READY', 'SCRIPT_IMAGE_AUDIO_READY'],
+      default: 'pending'
+    }
+  },
+  { timestamps: true, collection: 'marketing_studio_generations' }
+);
+
+export const MarketingStudioGenerationModel = mongoose.models.MarketingStudioGeneration || mongoose.model('MarketingStudioGeneration', MarketingStudioGenerationSchema);
 
 export interface AdminSettings {
   key: string;
@@ -837,39 +951,5 @@ const AdminSettingsSchema = new Schema<AdminSettings & Document>(
 );
 
 export const AdminSettingsModel = mongoose.models.AdminSettings || mongoose.model<AdminSettings & Document>('AdminSettings', AdminSettingsSchema);
-
-const MarketingStudioGenerationSchema = new Schema(
-  {
-    id: { type: String, required: true, index: true },
-    userId: { type: String, required: true, index: true },
-    projectId: { type: String, required: true, index: true },
-    prompt: { type: String, required: true },
-    businessContextSnapshot: { type: Object },
-    script: { type: Object },
-    scenes: [{ type: Object }],
-    images: [
-      {
-        url: { type: String, required: true },
-        provider: { type: String, required: true }
-      }
-    ],
-    video: {
-      url: { type: String },
-      provider: { type: String },
-      duration: { type: Number }
-    },
-    voice: {
-      url: { type: String }
-    },
-    status: {
-      type: String,
-      enum: ['pending', 'processing', 'completed', 'failed', 'PARTIAL_SUCCESS'],
-      default: 'pending'
-    }
-  },
-  { timestamps: true, collection: 'marketing_studio_generations' }
-);
-
-export const MarketingStudioGenerationModel = mongoose.models.MarketingStudioGeneration || mongoose.model('MarketingStudioGeneration', MarketingStudioGenerationSchema);
 
 export * from './services/projectContext';

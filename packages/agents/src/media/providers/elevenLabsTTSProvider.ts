@@ -8,7 +8,7 @@ export class ElevenLabsTTSProvider implements TTSProvider {
       throw new Error('TTS_API_KEY is not configured for ElevenLabs.');
     }
 
-    const url = process.env.TTS_ENDPOINT || 'https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM';
+    const url = process.env.TTS_ENDPOINT || 'https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL';
     
     const response = await fetch(url, {
       method: 'POST',

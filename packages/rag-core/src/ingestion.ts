@@ -45,6 +45,7 @@ export async function processAndIngestDocument(
         projectId,
         documentId,
         docId: `${documentId}_chunk_${i}`,
+        title: `${fileName} chunk ${i + 1}`,
         content: chunk,
         category: 'user-uploaded',
         source: fileName,
@@ -63,6 +64,7 @@ export async function processAndIngestDocument(
       { id: documentId },
       { processingStatus: 'failed' }
     );
+    throw error;
   }
 }
 

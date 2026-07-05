@@ -17,8 +17,10 @@ import AIConsultantDashboard from '../components/AIConsultantDashboard';
 import AuthModal from '../components/AuthModal';
 import CreditIndicator from '../components/CreditIndicator';
 import PricingModal from '../components/PricingModal';
+import InsufficientCreditsModal from '../components/InsufficientCreditsModal';
 import FinancialEngine from '../components/FinancialEngine';
 import AccountDetails from '../components/AccountDetails';
+import { authClient } from '../lib/authClient';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useI18n } from '../lib/i18n/I18nContext';
 
@@ -58,11 +60,14 @@ export default function AppPage() {
     startNewVenture,
     user,
     isAuthenticated,
-    logout
+    logout,
+    creditsGate,
+    closeCreditsGate
   } = useStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
+  const [avatarError, setAvatarError] = useState(false);
 
   const effectivelyOnboarded = isOnboarded || isAuthenticated;
 
@@ -93,22 +98,27 @@ export default function AppPage() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const success = urlParams.get('success');
-    const merchantOrderId = urlParams.get('merchant_order_id');
+    const merchantOrderId = urlParams.get('merchant_order_id') || localStorage.getItem('pending_payment_intent');
 
     if (success && merchantOrderId && isAuthenticated) {
       // Clear URL params
       window.history.replaceState({}, document.title, window.location.pathname);
+      localStorage.removeItem('pending_payment_intent');
       
       if (success === 'true') {
         const verifyPayment = async () => {
-          const res = await fetch('http://localhost:5000/api/payments/paymob/verify-redirect', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${useStore.getState().user?.token}` },
-            body: JSON.stringify({ merchant_order_id: merchantOrderId, success })
-          });
-          if (res.ok) {
+          try {
+            await authClient.post('/payments/paymob/verify-redirect', { merchant_order_id: merchantOrderId, success });
             toast.success('Payment successful! Credits added to your wallet.');
             useStore.getState().loadCredits();
+          } catch (error: any) {
+            // In production, verify-redirect returns 404 because webhook handles it
+            if (error?.message?.includes('404') || error?.message?.includes('Not found')) {
+              toast.success('Payment received! Credits will update shortly.');
+              setTimeout(() => useStore.getState().loadCredits(), 3000);
+            } else {
+              toast.error(error?.message || 'Payment verification failed');
+            }
           }
         };
         verifyPayment();
@@ -172,15 +182,15 @@ export default function AppPage() {
   const userDisplayName = user?.name || user?.email || 'Guest';
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] text-slate-900 flex font-sans overflow-hidden">
+    <div className="h-screen bg-[#FDFDFD] text-slate-900 flex font-sans overflow-hidden">
       
       <Toaster />
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 z-50 flex items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 flex gap-1">
-            <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
-            <div className="w-1/2 h-full bg-emerald-500 rounded-sm -skew-x-12"></div>
+            <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm skew-x-12"></div>
+            <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm -skew-x-12"></div>
           </div>
           <span className="font-bold text-lg text-slate-900 tracking-tight">Creator Engine</span>
         </div>
@@ -221,14 +231,14 @@ export default function AppPage() {
       <motion.aside 
         initial={{ x: -300 }}
         animate={{ x: mobileMenuOpen || typeof window !== 'undefined' && window.innerWidth >= 768 ? 0 : -300 }}
-        className={`fixed md:static top-0 left-0 bottom-0 w-[260px] bg-white border-r border-slate-200 z-40 flex flex-col pt-16 md:pt-0 transition-transform duration-300 md:translate-x-0 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        className={`fixed md:static top-0 left-0 bottom-0 w-[260px] h-screen md:h-full bg-white border-r border-slate-200 z-40 flex flex-col pt-16 md:pt-0 transition-transform duration-300 md:translate-x-0 ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="p-6 pb-2">
           {/* Logo */}
           <div className="hidden md:flex items-center gap-2 mb-8">
             <div className="w-5 h-5 flex gap-1">
-              <div className="w-1/2 h-full bg-emerald-500 rounded-sm skew-x-12"></div>
-              <div className="w-1/2 h-full bg-emerald-500 rounded-sm -skew-x-12"></div>
+              <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm skew-x-12"></div>
+              <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm -skew-x-12"></div>
             </div>
             <span className="font-bold text-xl text-slate-900 tracking-tight">Creator Engine</span>
           </div>
@@ -287,22 +297,22 @@ export default function AppPage() {
                 {isActive && (
                   <motion.div
                     layoutId="sidebar-active-pill"
-                    className="absolute inset-0 bg-emerald-500/10 border border-emerald-500/20 rounded-xl -z-10 shadow-[0_0_12px_rgba(16,185,129,0.15)]"
+                    className="absolute inset-0 bg-[#E8F0FE] rounded-full -z-10"
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   />
                 )}
-                <Icon className={`w-4 h-4 relative z-10 transition-colors ${isActive ? 'text-emerald-600' : 'text-slate-400 group-hover:text-slate-600'}`} />
-                <span className="relative z-10">{item.label}</span>
+                <Icon className={`w-4 h-4 relative z-10 transition-colors ${isActive ? 'text-[#1A73E8]' : 'text-slate-500 group-hover:text-slate-700'}`} />
+                <span className={`relative z-10 ${isActive ? 'text-[#1A73E8] font-bold' : 'text-slate-700 font-medium'}`}>{item.label}</span>
               </button>
             );
           })}
           {user?.role === 'admin' && (
             <Link
               href="/admin/dashboard"
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 mt-2 transition-all"
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-full text-sm font-semibold text-[#1A73E8] bg-blue-50 hover:bg-blue-100 mt-2 transition-all"
             >
-              <ShieldAlert className="w-4.5 h-4.5 text-emerald-600" />
-              {t('sidebar.adminDashboard')}
+              <ShieldAlert className="w-4 h-4 text-[#1A73E8]" />
+              Admin Dashboard
             </Link>
           )}
         </nav>
@@ -321,9 +331,14 @@ export default function AppPage() {
           {/* User account section */}
           <div className="flex items-center justify-between px-3 py-2 mt-2 cursor-pointer hover:bg-slate-50 rounded-lg group">
             <div className="flex items-center gap-3">
-              {user?.avatar ? (
+              {user?.avatar && !avatarError ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={user.avatar} alt={userDisplayName} className="w-6 h-6 rounded-full object-cover" />
+                <img 
+                  src={user.avatar} 
+                  alt={userDisplayName} 
+                  onError={() => setAvatarError(true)}
+                  className="w-6 h-6 rounded-full object-cover" 
+                />
               ) : (
                 <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold">
                   {userInitial}
@@ -417,6 +432,12 @@ export default function AppPage() {
     </main>
     <AuthModal />
     <PricingModal />
+    <InsufficientCreditsModal
+      open={!!creditsGate?.open}
+      onClose={closeCreditsGate}
+      requiredCredits={creditsGate?.required ?? 0}
+      featureKey={creditsGate?.featureKey}
+    />
   </div>
   );
 }

@@ -11,14 +11,16 @@ import { authClient } from '@/lib/authClient';
 import { ChevronLeft, ChevronRight, Wrench, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import toast, { Toaster } from 'react-hot-toast';
 
 import { VentureFunnel } from '@/components/admin/VentureFunnel';
 import { RevenueAnalytics } from '@/components/admin/RevenueAnalytics';
 import { DashboardObservability } from '@/components/admin/DashboardObservability';
 
-const TrafficChart = dynamic(
+export const dynamic = 'force-dynamic';
+
+const TrafficChart = nextDynamic(
   () => import('@/components/admin/TrafficChart').then((mod) => mod.TrafficChart),
   { ssr: false }
 );

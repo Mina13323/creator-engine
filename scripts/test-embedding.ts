@@ -7,7 +7,7 @@ async function main() {
     'Creator Engine embedding test'
   );
 
-  console.log('Embedding Length:', embedding.length);
+  console.info('Embedding Length:', embedding.length);
 }
 
 main().catch(console.error);

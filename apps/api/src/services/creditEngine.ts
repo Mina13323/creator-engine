@@ -9,6 +9,7 @@ export const CREDIT_COSTS = {
   BRANDING: 25,
   MARKETING: 25,
   PITCH_DECK: 40,
+  ROADMAP_GENERATION: 20,
   AI_CHAT_MESSAGE: 1,
   RAG_QUERY: 2,
   IMAGE_GENERATION: 10,
@@ -17,19 +18,6 @@ export const CREDIT_COSTS = {
 import mongoose from 'mongoose';
 
 export async function getUserCredits(userId: string) {
-  if (process.env.DEMO_MODE === 'true') {
-    return { availableCredits: 999999, totalUsedCredits: 0, totalPurchasedCredits: 999999 };
-  }
-
-  try {
-    const user = await UserModel.findOne({ id: userId });
-    if (user && user.role === 'admin') {
-      return { availableCredits: 999999, totalUsedCredits: 0, totalPurchasedCredits: 999999 };
-    }
-  } catch (err) {
-    console.error('Error checking user role in getUserCredits:', err);
-  }
-  
   let wallet = await CreditWalletModel.findOne({ userId });
   if (!wallet) {
     wallet = new CreditWalletModel({
@@ -44,8 +32,6 @@ export async function getUserCredits(userId: string) {
 }
 
 export async function addCredits(userId: string, amount: number, type: 'subscription' | 'topup' | 'refund', referenceId: string = '') {
-  if (process.env.DEMO_MODE === 'true') return true;
-
   const wallet = await CreditWalletModel.findOneAndUpdate(
     { userId },
     { 
@@ -70,25 +56,20 @@ export async function addCredits(userId: string, amount: number, type: 'subscrip
 }
 
 export async function deductCredits(userId: string, amount: number, feature: string) {
-  if (process.env.DEMO_MODE === 'true') return true;
+  const wallet = await CreditWalletModel.findOneAndUpdate(
+    { userId, availableCredits: { $gte: amount } },
+    {
+      $inc: {
+        availableCredits: -amount,
+        totalUsedCredits: amount
+      }
+    },
+    { new: true }
+  );
 
-  try {
-    const user = await UserModel.findOne({ id: userId });
-    if (user && user.role === 'admin') {
-      return true;
-    }
-  } catch (err) {
-    console.error('Error checking user role in deductCredits:', err);
-  }
-
-  const wallet = await CreditWalletModel.findOne({ userId });
-  if (!wallet || wallet.availableCredits < amount) {
+  if (!wallet) {
     throw new Error('INSUFFICIENT_CREDITS');
   }
-
-  wallet.availableCredits -= amount;
-  wallet.totalUsedCredits += amount;
-  await wallet.save();
 
   const tx = new CreditTransactionModel({
     userId,
@@ -103,17 +84,6 @@ export async function deductCredits(userId: string, amount: number, feature: str
 }
 
 export async function hasEnoughCredits(userId: string, amount: number) {
-  if (process.env.DEMO_MODE === 'true') return true;
-
-  try {
-    const user = await UserModel.findOne({ id: userId });
-    if (user && user.role === 'admin') {
-      return true;
-    }
-  } catch (err) {
-    console.error('Error checking user role in hasEnoughCredits:', err);
-  }
-
   const wallet = await getUserCredits(userId);
   return wallet && wallet.availableCredits >= amount;
 }
@@ -136,7 +106,19 @@ export async function provisionUserMonetization(userId: string) {
   // 2. Provision Free Subscription
   let sub = await UserSubscriptionModel.findOne({ userId, status: 'active' });
   if (!sub) {
-    const freePlan = await SubscriptionPlanModel.findOne({ slug: 'free' });
+    const freePlan = await SubscriptionPlanModel.findOneAndUpdate(
+      { slug: 'free' },
+      {
+        name: 'Free',
+        slug: 'free',
+        monthlyPriceEGP: 0,
+        monthlyCredits: 100,
+        maxProjects: 1,
+        features: ['Core venture building workflow'],
+        isActive: true
+      },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
     if (freePlan) {
       const now = new Date();
       const expiresAt = new Date();

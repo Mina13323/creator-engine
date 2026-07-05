@@ -9,13 +9,13 @@ dotenv.config();
 async function runTest() {
   await connectDB(process.env.DATABASE_URL as string);
 
-  console.log('1. Creating a sample PDF buffer...');
+  console.info('1. Creating a sample PDF buffer...');
   // We don't have a real PDF, so we'll simulate a Text file disguised as PDF parser logic, 
   // or we can just use a raw TXT file to avoid relying on pdf-parse succeeding on corrupted buffers.
   const sampleContent = "Creator Engine RAG Test Document. The secret launch date for the project is November 12th, 2026. The primary marketing strategy relies on influencer partnerships.";
   const buffer = Buffer.from(sampleContent, 'utf-8');
 
-  console.log('2. Ingesting Document...');
+  console.info('2. Ingesting Document...');
   const docId = `test_doc_${Date.now()}`;
   
   // Fake an uploaded document record first
@@ -39,21 +39,21 @@ async function runTest() {
     docId
   );
 
-  console.log('3. Verifying chunks in DB...');
+  console.info('3. Verifying chunks in DB...');
   const chunks = await KnowledgeDocumentModel.find({ documentId: docId });
-  console.log(`Found ${chunks.length} chunks.`);
+  console.info(`Found ${chunks.length} chunks.`);
   if (chunks.length > 0) {
-    console.log('Sample chunk embedding length:', chunks[0].embedding?.length);
+    console.info('Sample chunk embedding length:', chunks[0].embedding?.length);
   }
 
-  console.log('4. Querying AI Cofounder RAG engine...');
+  console.info('4. Querying AI Cofounder RAG engine...');
   const results = await queryRAG('What is the secret launch date?');
   
-  console.log('\n--- RAG RETRIEVAL RESULTS ---');
-  console.log(results);
-  console.log('-----------------------------');
+  console.info('\n--- RAG RETRIEVAL RESULTS ---');
+  console.info(results);
+  console.info('-----------------------------');
 
-  console.log('Test completed successfully!');
+  console.info('Test completed successfully!');
   process.exit(0);
 }
 

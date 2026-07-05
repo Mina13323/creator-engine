@@ -1,17 +1,17 @@
 import { TTSProvider, TTSProviderOutput } from './types';
-import { KokoroTTSProvider } from './providers/kokoroTTSProvider';
+import { SpeechT5TTSProvider } from './providers/speechT5TTSProvider';
 import { ElevenLabsTTSProvider } from './providers/elevenLabsTTSProvider';
 
 export class TTSProviderFactory {
   static getProvider(): TTSProvider {
-    const providerName = process.env.TTS_PROVIDER || 'kokoro';
+    const providerName = process.env.TTS_PROVIDER || 'speecht5';
 
     if (providerName === 'elevenlabs') {
       return new ElevenLabsTTSProvider();
     }
-    
-    // Default fallback to kokoro
-    return new KokoroTTSProvider();
+
+    // Default fallback to speecht5
+    return new SpeechT5TTSProvider();
   }
 }
 

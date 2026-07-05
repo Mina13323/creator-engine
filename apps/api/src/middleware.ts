@@ -1,27 +1,23 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { UserModel } from '@creator/database';
-import dotenv from 'dotenv';
-
-dotenv.config();
-dotenv.config({ path: require('path').resolve(__dirname, '../../../.env') });
+import { env } from './env';
 
 function verifyToken(token: string): { id: string; email: string } {
-  const secret = process.env.JWT_SECRET || 'secret_key_for_jwt_fallback_only';
-  return jwt.verify(token, secret) as { id: string; email: string };
+  return jwt.verify(token, env.JWT_SECRET) as { id: string; email: string };
 }
 
 export const authMiddleware = async (req: Request, res: Response, next: any) => {
   try {
     const authHeader = req.headers.authorization;
     const token = req.cookies.token || (authHeader?.startsWith('Bearer ') ? authHeader.split(' ')[1] : null);
-    if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
+    if (!token) return res.status(401).json({ success: false, error: { code: 'UNAUTHORIZED', message: 'Unauthorized: No token provided' } });
 
     const decoded = verifyToken(token);
     (req as any).user = { id: decoded.id, email: decoded.email };
     next();
   } catch (error) {
-    return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    return res.status(401).json({ success: false, error: { code: 'UNAUTHORIZED', message: 'Unauthorized: Invalid token' } });
   }
 };
 
@@ -66,8 +62,6 @@ export const requireCredits = (cost: number) => {
 export const requireSubscription = (minPlanSlug: string) => {
   return async (req: Request, res: Response, next: any) => {
     try {
-      if (process.env.DEMO_MODE === 'true') return next();
-      
       const userId = (req as any).user?.id;
       if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 

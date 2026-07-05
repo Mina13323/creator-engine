@@ -3,11 +3,21 @@ import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@creator/types"],
-  eslint: {
-    ignoreDuringBuilds: true,
+  serverExternalPackages: ["@creator/database", "@creator/rag-core"],
+  webpack(config) {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      aws4: false
+    };
+    return config;
   },
-  typescript: {
-    ignoreBuildErrors: true,
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000') + '/api/:path*',
+      },
+    ];
   }
 };
 

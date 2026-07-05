@@ -1,10 +1,12 @@
+import { API_BASE } from './authClient';
+
 export class ApiClient {
   async generateImage(params: {
     prompt: string;
     aspect_ratio?: string;
     model?: string;
   }) {
-    console.log('[API] generateImage requested:', params);
+    console.info('[API] generateImage requested:', params);
 
     const response = await fetch('/api/generate-image', {
       method: 'POST',
@@ -24,7 +26,7 @@ export class ApiClient {
   }
 
   async uploadFile(file: File, onProgress?: (pct: number) => void): Promise<string> {
-    console.log('[API] Real uploadFile requested:', file.name);
+    console.info('[API] Real uploadFile requested:', file.name);
     
     const formData = new FormData();
     formData.append('file', file);
@@ -66,7 +68,7 @@ export class ApiClient {
         reject(new Error('Network error occurred during upload'));
       };
       
-      xhr.open('POST', 'http://localhost:5000/api/upload');
+    xhr.open('POST', `${API_BASE}/upload`);
       if (token) {
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       }
@@ -82,7 +84,7 @@ export class ApiClient {
     images_list?: string[];
     video_files?: string[];
   }) {
-    console.log('[API] generateMarketingStudioAd requested:', params);
+    console.info('[API] generateMarketingStudioAd requested:', params);
     
     // We get the token manually to avoid circular dependencies
     let token = '';
@@ -97,7 +99,7 @@ export class ApiClient {
       if (!token) token = localStorage.getItem('token') || '';
     }
 
-    const response = await fetch('http://localhost:5000/api/marketing-studio/generate', {
+    const response = await fetch(`${API_BASE}/marketing-studio/generate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -107,8 +109,20 @@ export class ApiClient {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error?.error || 'Marketing Studio Generation failed');
+      let errorMessage = 'Marketing Studio Generation failed';
+      try {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          errorMessage = errorData?.error || errorMessage;
+        } else {
+          const text = await response.text();
+          errorMessage = text || errorMessage;
+        }
+      } catch (e) {
+        console.warn('Failed to parse error response:', e);
+      }
+      throw new Error(errorMessage);
     }
 
     return response.json();

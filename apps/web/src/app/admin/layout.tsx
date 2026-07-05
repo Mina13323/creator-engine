@@ -61,7 +61,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-[#090D16] text-slate-100 font-sans flex flex-col">
       <AdminSidebar />
       <div className="pl-64 flex flex-col min-h-screen">
-        <header className="h-16 border-b border-slate-800/60 bg-[#0a0f1d]/50 backdrop-blur flex items-center justify-between px-8 z-30">
+        <header className="sticky top-0 h-16 border-b border-slate-800/60 bg-[#0a0f1d]/80 backdrop-blur flex items-center justify-between px-8 z-30">
           <div className="text-slate-400 text-xs tracking-wider flex items-center gap-2">
             <span>ADMIN PORTAL</span>
             <span className="text-slate-700">/</span>

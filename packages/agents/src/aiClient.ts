@@ -237,11 +237,11 @@ export async function callGemini(systemPrompt: string, userPrompt: string, optio
 }
 
 export async function callLLMWithFallback(systemPrompt: string, userPrompt: string, options: AIClientOptions = {}): Promise<string | null> {
-  console.log('[AIClient] Attempting primary LLM (Gemini)...');
+  console.info('[AIClient] Attempting primary LLM (Gemini)...');
   const geminiRes = await callGemini(systemPrompt, userPrompt, options);
   if (geminiRes) return geminiRes;
 
-  console.log('[AIClient] Falling back to secondary LLM (Fireworks)...');
+  console.info('[AIClient] Falling back to secondary LLM (Fireworks)...');
   const fwRes = await callFireworksChat(systemPrompt, userPrompt, options);
   if (fwRes) return fwRes;
 
@@ -249,21 +249,21 @@ export async function callLLMWithFallback(systemPrompt: string, userPrompt: stri
   return null;
 }
 
-export async function callFireworksImage(prompt: string, aspectRatio: string = "16:9", options: AIClientOptions = {}): Promise<Buffer | null> {
-  const fireworksKey = process.env.FIREWORKS_API_KEY_CHAT || process.env.FIREWORKS_API_KEY;
-  if (!fireworksKey || fireworksKey.includes('your-')) {
-    console.warn('[AIClient] Fireworks API key not configured.');
+export async function callHuggingFaceImage(prompt: string, aspectRatio: string = "16:9", options: AIClientOptions = {}): Promise<Buffer | null> {
+  const hfToken = process.env.HF_TOKEN;
+  if (!hfToken || hfToken.includes('your-')) {
+    console.warn('[AIClient] HF token not configured.');
     return null;
   }
 
   const {
-    model = 'accounts/fireworks/models/flux-1-schnell',
-    timeoutMs = 30000, // Image generation takes longer
+    model = 'black-forest-labs/FLUX.1-schnell',
+    timeoutMs = 30000,
     retries = 1,
     retryDelayMs = 2000
   } = options;
 
-  const url = `https://api.fireworks.ai/inference/v1/image_generation/${model}`;
+  const url = `https://router.huggingface.co/hf-inference/models/${model}`;
 
   try {
     const response = await fetchWithRetry(
@@ -272,24 +272,23 @@ export async function callFireworksImage(prompt: string, aspectRatio: string = "
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${fireworksKey}`,
+          'Authorization': `Bearer ${hfToken}`,
           'Accept': 'image/jpeg'
         },
         body: JSON.stringify({
-          prompt,
-          aspect_ratio: aspectRatio
+          inputs: prompt
         })
       },
       retries,
       retryDelayMs,
       timeoutMs,
-      'Fireworks-Image'
+      'HuggingFace-Image'
     );
 
     const arrayBuffer = await response.arrayBuffer();
     return Buffer.from(arrayBuffer);
   } catch (error) {
-    console.error('[AIClient] Fireworks Image failed completely:', error);
+    console.error('[AIClient] HuggingFace Image failed completely:', error);
     throw error;
   }
 }

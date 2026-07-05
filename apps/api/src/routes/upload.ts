@@ -4,7 +4,28 @@ import { authMiddleware } from '../middleware';
 import { uploadBufferToStorage } from '@creator/agents';
 
 const router = Router();
-const upload = multer({ storage: multer.memoryStorage() });
+const allowedMimeTypes = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'video/mp4',
+  'video/webm',
+  'application/pdf',
+  'text/plain',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+]);
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 25 * 1024 * 1024, files: 1 },
+  fileFilter(_req, file, callback) {
+    if (!allowedMimeTypes.has(file.mimetype)) {
+      return callback(new Error(`Unsupported file type: ${file.mimetype}`));
+    }
+    callback(null, true);
+  }
+});
 
 router.post('/', authMiddleware, upload.single('file'), async (req: Request, res: Response): Promise<any> => {
   try {

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { useState, useEffect } from 'react';
 import { Check, X, Sparkles } from 'lucide-react';
-import { useI18n } from '../lib/i18n/I18nContext';
+import { authClient } from '../lib/authClient';
 
 export default function PricingModal() {
   const { t } = useI18n();
@@ -22,11 +22,10 @@ export default function PricingModal() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [resPlans, resPacks] = await Promise.all([
-        fetch('http://localhost:5000/api/payments/plans'),
-        fetch('http://localhost:5000/api/payments/packs')
+      const [dataPlans, dataPacks] = await Promise.all([
+        authClient.get<any>('/payments/plans'),
+        authClient.get<any>('/payments/packs')
       ]);
-      const [dataPlans, dataPacks] = await Promise.all([resPlans.json(), resPacks.json()]);
       setPlans(dataPlans.plans || []);
       setPacks(dataPacks.packs || []);
     } catch (e) {
@@ -38,21 +37,16 @@ export default function PricingModal() {
 
   const handlePurchase = async (type: string, id: string, amount: number) => {
     try {
-      const res = await fetch('http://localhost:5000/api/payments/paymob/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user?.token}`
-        },
-        body: JSON.stringify({
-          type,
-          planId: type === 'subscription' ? id : undefined,
-          packId: type === 'credit_pack' ? id : undefined,
-          amountEGP: amount
-        })
+      const data = await authClient.post<any>('/payments/paymob/create', {
+        type,
+        planId: type === 'subscription' ? id : undefined,
+        packId: type === 'credit_pack' ? id : undefined,
+        amountEGP: amount
       });
-      const data = await res.json();
       if (data.checkoutUrl) {
+        if (data.paymentIntentId) {
+          localStorage.setItem('pending_payment_intent', data.paymentIntentId);
+        }
         window.location.href = data.checkoutUrl;
       }
     } catch (e) {
@@ -61,7 +55,29 @@ export default function PricingModal() {
     }
   };
 
+  const checkPendingPayment = async () => {
+    const pendingId = localStorage.getItem('pending_payment_intent');
+    if (!pendingId) {
+      alert('No pending payment found.');
+      return;
+    }
+    setLoading(true);
+    try {
+      await authClient.post('/payments/paymob/verify-redirect', { merchant_order_id: pendingId, success: 'true' });
+      localStorage.removeItem('pending_payment_intent');
+      alert('Payment verified! Credits added.');
+      useStore.getState().loadCredits();
+      setShowPricingModal(false);
+    } catch (e: any) {
+      alert(e.message || 'Payment verification failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!showPricingModal) return null;
+
+  const hasPendingPayment = typeof window !== 'undefined' && !!localStorage.getItem('pending_payment_intent');
 
   return (
     <AnimatePresence>
@@ -106,6 +122,17 @@ export default function PricingModal() {
               {t('pricing.creditPacks')}
             </button>
           </div>
+
+          {hasPendingPayment && (
+            <div className="flex justify-center mb-6">
+              <button 
+                onClick={checkPendingPayment}
+                className="px-6 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition-colors animate-pulse"
+              >
+                Verify Previous Pending Payment
+              </button>
+            </div>
+          )}
 
           {loading ? (
             <div className="flex justify-center items-center py-20">

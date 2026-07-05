@@ -41,7 +41,7 @@ interface StoreState {
   generateImage: any;
   brandIdentity: any;
   brandingLoading: boolean;
-  generateBranding: any;
+  generateBranding: (projectId: string) => Promise<void>;
 
   // Auth State
   user: AuthUser | null;
@@ -52,6 +52,11 @@ interface StoreState {
   loadCredits: () => Promise<void>;
   showPricingModal: boolean;
   setShowPricingModal: (show: boolean) => void;
+
+  // Credits gate
+  creditsGate: { open: boolean; required: number; featureKey?: string } | null;
+  showCreditsGate: (required: number, featureKey?: string) => void;
+  closeCreditsGate: () => void;
 
   // Actions
   setAuthModalOpen: (isOpen: boolean) => void;
@@ -67,7 +72,10 @@ interface StoreState {
   analyzeFounder: (projectId: string, data: OnboardingData) => Promise<void>;
   discoverOpportunities: (projectId: string) => Promise<void>;
   selectOpportunity: (projectId: string, opportunityId: string) => Promise<void>;
-  generateBusinessPlan: (projectId: string, locale?: string) => Promise<void>;
+  generateRoadmap: (projectId: string) => Promise<void>;
+  updateTaskStatus: (projectId: string, taskId: string, status: string) => Promise<void>;
+
+  generateBusinessPlan: (projectId: string) => Promise<void>;
   uploadDocument: (projectId: string, fileData: { fileName: string, fileType: string, storageUrl: string, fileSize: number }) => Promise<void>;
 
   sendChatMessage: (message: string) => Promise<void>;
@@ -111,7 +119,33 @@ export const useStore = create<StoreState>((set, get) => ({
   generateImage: async () => {},
   brandIdentity: null,
   brandingLoading: false,
-  generateBranding: async () => {},
+  generateBranding: async (projectId: string) => {
+    set({ brandingLoading: true });
+    try {
+      const res = await authClient.post<{ brandIdentity: any }>('/branding/generate', { projectId });
+      set(state => ({
+        brandIdentity: res.brandIdentity,
+        ventureState: state.ventureState
+          ? { ...state.ventureState, branding: res.brandIdentity }
+          : state.ventureState,
+        brandingLoading: false
+      }));
+    } catch (e: any) {
+      console.error('generateBranding failed', e);
+      set({ brandingLoading: false });
+      const creditsMatch = e.message?.match(/(\d+)\s*credits/);
+      if (creditsMatch) {
+        get().showCreditsGate(parseInt(creditsMatch[1], 10), 'branding');
+        return;
+      }
+      useErrorStore.getState().addError({
+        title: 'Branding Engine Failed',
+        message: e?.message || 'Could not generate branding.',
+        retryAction: () => get().generateBranding(projectId)
+      });
+      throw e;
+    }
+  },
 
   user: null,
   isAuthModalOpen: false,
@@ -121,19 +155,25 @@ export const useStore = create<StoreState>((set, get) => ({
   isDemo: false,
   showPricingModal: false,
   setShowPricingModal: (show) => set({ showPricingModal: show }),
+
+  creditsGate: null,
+  showCreditsGate: (required, featureKey) => set({ creditsGate: { open: true, required, featureKey } }),
+  closeCreditsGate: () => set({ creditsGate: null }),
   loadCredits: async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/user/credits', { headers: { Authorization: `Bearer ${get().user?.token}` } });
-      const data = await res.json();
+      const data = await authClient.get<any>('/user/credits');
       if (data.wallet) {
         set({ credits: data.wallet.availableCredits, isDemo: !!data.isDemo });
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn('Failed to load credits', e);
+    }
   },
 
   setAuthModalOpen: (isOpen: boolean) => set({ isAuthModalOpen: isOpen }),
   setAuth: (user) => {
     set({ user, isAuthenticated: !!user });
+    if (user) get().loadCredits();
   },
   logout: () => {
     authClient.logout(); 
@@ -159,6 +199,7 @@ export const useStore = create<StoreState>((set, get) => ({
     try {
       const { user } = await authClient.getMe();
       set({ user, isAuthenticated: true });
+      get().loadCredits();
     } catch (e: any) {
       if (e.message && (e.message.includes('404') || e.message.includes('User not found') || e.message.includes('Unauthorized') || e.message.includes('Session expired'))) {
         set({ user: null, isAuthenticated: false });
@@ -188,10 +229,14 @@ export const useStore = create<StoreState>((set, get) => ({
       const stateData = await authClient.get<VentureState>(`/projects/${projectId}/state`);
       const proj = get().projects.find(p => p.id === projectId);
       
+      const existingRoadmap = (stateData as any)?.roadmap || null;
       set({
         currentProject: proj || null,
         ventureState: stateData,
         selectedOpportunity: stateData?.selectedOpportunity || null,
+        opportunities: (stateData as any)?.opportunities || [],
+        brandIdentity: (stateData as any)?.branding || null,
+        currentOutputs: existingRoadmap ? { roadmap: existingRoadmap } : null,
         activeTab: 'dashboard',
         loading: false
       });
@@ -260,9 +305,14 @@ export const useStore = create<StoreState>((set, get) => ({
     try {
       const res = await authClient.post<{ opportunities: BusinessOpportunity[] }>('/opportunities/discover', { projectId });
       set({ opportunities: res.opportunities, activeTab: 'opportunities', loading: false });
-    } catch (e) {
-      console.error('discoverOpportunities failed', e);
+    } catch (e: any) {
       set({ loading: false });
+      const creditsMatch = e.message?.match(/(\d+)\s*credits/);
+      if (creditsMatch) {
+        get().showCreditsGate(parseInt(creditsMatch[1], 10), 'opportunity-discovery');
+        return;
+      }
+      console.error('discoverOpportunities failed', e);
       throw e;
     }
   },
@@ -286,7 +336,37 @@ export const useStore = create<StoreState>((set, get) => ({
     }
   },
 
-  generateBusinessPlan: async (projectId, locale = 'en') => {
+  generateRoadmap: async (projectId) => {
+    set({ loading: true, loadingMessage: 'Generating execution roadmap...' });
+    try {
+      const res = await authClient.post<{ roadmap: any }>('/execution/generate', { projectId });
+      set(state => ({
+        currentOutputs: { ...(state.currentOutputs || {}), roadmap: res.roadmap },
+        ventureState: state.ventureState ? { ...state.ventureState, roadmap: res.roadmap } : state.ventureState,
+        activeTab: 'roadmap',
+        loading: false
+      }));
+    } catch (e) {
+      console.error('generateRoadmap failed', e);
+      set({ loading: false });
+      throw e;
+    }
+  },
+
+  updateTaskStatus: async (projectId, taskId, status) => {
+    try {
+      const res = await authClient.patch<{ roadmap: any }>(`/execution/task/${taskId}`, { projectId, status });
+      set(state => ({
+        currentOutputs: { ...(state.currentOutputs || {}), roadmap: res.roadmap },
+        ventureState: state.ventureState ? { ...state.ventureState, roadmap: res.roadmap } : state.ventureState
+      }));
+    } catch (e) {
+      console.error('updateTaskStatus failed', e);
+      throw e;
+    }
+  },
+
+  generateBusinessPlan: async (projectId) => {
     set({ loading: true, loadingMessage: 'Generating Lean Canvas & Business Plan...' });
     try {
       const res = await authClient.post<{ businessPlan: BusinessPlan }>('/business-plan/generate', { projectId, locale });
