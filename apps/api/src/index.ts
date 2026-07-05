@@ -75,7 +75,7 @@ const googleClient = new OAuth2Client(env.GOOGLE_CLIENT_ID);
 
 const app = express();
 app.use(helmet());
-app.use(generalRateLimiter);
+
 const allowedOrigins = env.FRONTEND_URL.split(',').map((origin) => origin.trim()).filter(Boolean);
 app.use(cors({
   origin(origin, callback) {
@@ -84,6 +84,8 @@ app.use(cors({
   },
   credentials: true
 }));
+
+app.use(generalRateLimiter);
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
@@ -400,7 +402,7 @@ app.use('/api/execution', executionRouter);
 async function updateVentureState(projectId: string, userId: string, update: Partial<any>) {
   if (!dbConnected) return;
   await VentureStateModel.findOneAndUpdate(
-    { projectId, userId },
+    { projectId },
     {
       $set: { ...update, lastUpdated: new Date() },
       $setOnInsert: { id: `vs_${Date.now()}`, projectId, userId }
@@ -721,7 +723,7 @@ app.post('/api/opportunities/select', authMiddleware, validateRequest(selectOppo
 
         if (dbConnected) {
           const newSelected = await SelectedOpportunityModel.findOneAndUpdate(
-            { projectId, userId },
+            { projectId },
             { $set: selectedPayload },
             { upsert: true, new: true }
           );
@@ -978,7 +980,7 @@ app.post('/api/ai/chat', authMiddleware, aiRateLimiter, validateRequest(aiChatSc
 
     if (dbConnected) {
       await ConversationModel.findOneAndUpdate(
-        { projectId, userId },
+        { projectId },
         {
           $setOnInsert: { id: `conv_${Date.now()}`, projectId, userId },
           $push: { messages: { $each: [userMessage, aiResponse] } }
@@ -1041,7 +1043,7 @@ async function generateFinancialHandler(req: Request, res: Response): Promise<an
     const startupCosts = parsedFinancial.financial.startupCosts;
     const monthlyCosts = parsedFinancial.financial.monthlyCosts;
     const forecast = await FinancialForecast.findOneAndUpdate(
-      { projectId, userId },
+      { projectId },
       {
         userId,
         projectId,

@@ -37,6 +37,15 @@ export default function FinancialEngine() {
     }
   }, [opportunity]);
 
+  React.useEffect(() => {
+    if (ventureState?.financialForecast) {
+      setResults({
+        financial: ventureState.financialForecast,
+        pricing: ventureState.pricingStrategy || {}
+      });
+    }
+  }, [ventureState?.financialForecast, ventureState?.pricingStrategy]);
+
   const handleGenerate = async () => {
     if (!businessIdea || !currentProject?.id) return;
     setLoading(true);

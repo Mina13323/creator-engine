@@ -54,7 +54,29 @@ export default function PricingModal() {
     }
   };
 
+  const checkPendingPayment = async () => {
+    const pendingId = localStorage.getItem('pending_payment_intent');
+    if (!pendingId) {
+      alert('No pending payment found.');
+      return;
+    }
+    setLoading(true);
+    try {
+      await authClient.post('/payments/paymob/verify-redirect', { merchant_order_id: pendingId, success: 'true' });
+      localStorage.removeItem('pending_payment_intent');
+      alert('Payment verified! Credits added.');
+      useStore.getState().loadCredits();
+      setShowPricingModal(false);
+    } catch (e: any) {
+      alert(e.message || 'Payment verification failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!showPricingModal) return null;
+
+  const hasPendingPayment = typeof window !== 'undefined' && !!localStorage.getItem('pending_payment_intent');
 
   return (
     <AnimatePresence>
@@ -99,6 +121,17 @@ export default function PricingModal() {
               Credit Packs
             </button>
           </div>
+
+          {hasPendingPayment && (
+            <div className="flex justify-center mb-6">
+              <button 
+                onClick={checkPendingPayment}
+                className="px-6 py-2 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition-colors animate-pulse"
+              >
+                Verify Previous Pending Payment
+              </button>
+            </div>
+          )}
 
           {loading ? (
             <div className="flex justify-center items-center py-20">

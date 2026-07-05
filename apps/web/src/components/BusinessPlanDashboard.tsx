@@ -13,12 +13,13 @@ import {
   ChevronDown, ChevronUp
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BusinessPlan } from '@creator/types';
 
 export default function BusinessPlanDashboard() {
   const { currentProject, ventureState, generateBusinessPlan, loading } = useStore();
   const [expandedSection, setExpandedSection] = useState<string | null>('executive');
 
-  const businessPlan = ventureState?.businessPlan as any;
+  const businessPlan = ventureState?.businessPlan as BusinessPlan | undefined;
   const selectedOpportunity = ventureState?.selectedOpportunity;
 
   if (loading) {
@@ -27,9 +28,9 @@ export default function BusinessPlanDashboard() {
         <AIThinkingPanel 
           title="Building Business Strategy..."
           stages={[
-            { id: '1', label: 'Formulating Lean Canvas', status: 'completed' },
+            { id: '1', label: 'Formulating Problem & Solution', status: 'completed' },
             { id: '2', label: 'Structuring Revenue Model', status: 'active' },
-            { id: '3', label: 'Drafting Go-to-Market Roadmap', status: 'pending' },
+            { id: '3', label: 'Drafting Go-to-Market Strategy', status: 'pending' },
           ]}
         />
       </div>
@@ -42,7 +43,7 @@ export default function BusinessPlanDashboard() {
         <EmptyState
           icon={FileText}
           title="No Business Plan Yet"
-          description="Creator Engine can build your first strategy document and Lean Canvas automatically."
+          description="Creator Engine can build your first strategy document and business model automatically."
           actionLabel="Build Business Strategy"
           onAction={() => currentProject && generateBusinessPlan(currentProject.id)}
           isLoading={loading}
@@ -113,85 +114,84 @@ export default function BusinessPlanDashboard() {
         <ExpandableSection id="executive" title="Executive Summary" icon={Compass}>
           <div className="space-y-6 pt-4">
             <div>
-              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Elevator Pitch</h4>
-              <p className="text-gray-800 leading-relaxed text-lg">{bp.executiveSummary?.elevatorPitch}</p>
+              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Value Proposition</h4>
+              <p className="text-gray-800 leading-relaxed text-lg">{bp.executiveSummary?.valueProposition}</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Mission</h4>
-                <p className="text-gray-700">{bp.executiveSummary?.missionStatement}</p>
+                <p className="text-gray-700">{bp.executiveSummary?.mission}</p>
               </div>
               <div>
                 <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Vision</h4>
-                <p className="text-gray-700">{bp.executiveSummary?.visionStatement}</p>
+                <p className="text-gray-700">{bp.executiveSummary?.vision}</p>
               </div>
+            </div>
+            <div>
+              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Summary</h4>
+              <p className="text-gray-700">{bp.executiveSummary?.executiveSummary}</p>
             </div>
           </div>
         </ExpandableSection>
 
-        <ExpandableSection id="lean-canvas" title="Lean Canvas" icon={Zap}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
+        <ExpandableSection id="problem-solution" title="Problem & Solution" icon={Zap}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
             <div className="space-y-6 border-r border-gray-100 pr-4">
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">Problem</h4>
-                <ul className="list-disc pl-4 text-sm text-gray-700 space-y-1">
-                  {bp.leanCanvas?.problem?.map((p: string, i: number) => <li key={i}>{p}</li>)}
-                </ul>
+                <p className="text-sm text-gray-700">{bp.problemAndSolution?.problem}</p>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Existing Alternatives</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">Target Pain Points</h4>
                 <ul className="list-disc pl-4 text-sm text-gray-700 space-y-1">
-                  {bp.leanCanvas?.existingAlternatives?.map((p: string, i: number) => <li key={i}>{p}</li>)}
+                  {bp.problemAndSolution?.targetPainPoints?.map((p: string, i: number) => <li key={i}>{p}</li>)}
                 </ul>
-              </div>
-            </div>
-            <div className="space-y-6 border-r border-gray-100 pr-4">
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Solution</h4>
-                <ul className="list-disc pl-4 text-sm text-gray-700 space-y-1">
-                  {bp.leanCanvas?.solution?.map((p: string, i: number) => <li key={i}>{p}</li>)}
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Unique Value Proposition</h4>
-                <p className="text-sm text-gray-700">{bp.leanCanvas?.uniqueValueProposition}</p>
               </div>
             </div>
             <div className="space-y-6">
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Customer Segments</h4>
+                <h4 className="font-semibold text-gray-900 mb-2">Solution</h4>
+                <p className="text-sm text-gray-700">{bp.problemAndSolution?.solution}</p>
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-2">Unique Advantages</h4>
                 <ul className="list-disc pl-4 text-sm text-gray-700 space-y-1">
-                  {bp.leanCanvas?.customerSegments?.map((p: string, i: number) => <li key={i}>{p}</li>)}
+                  {bp.problemAndSolution?.uniqueAdvantages?.map((p: string, i: number) => <li key={i}>{p}</li>)}
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">Unfair Advantage</h4>
-                <p className="text-sm text-gray-700">{bp.leanCanvas?.unfairAdvantage}</p>
+                <p className="text-sm text-gray-700">{bp.problemAndSolution?.unfairAdvantage}</p>
               </div>
             </div>
           </div>
         </ExpandableSection>
 
-        <ExpandableSection id="market-strategy" title="Market Strategy" icon={Target}>
+        <ExpandableSection id="market-research" title="Market Research" icon={Target}>
            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
             <div>
-              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Target Audience</h4>
+              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Market Overview</h4>
               <div className="bg-[#F8FAFD] rounded-xl p-4">
-                <p className="text-gray-800 font-medium mb-1">{bp.targetMarket?.primaryAudience?.persona}</p>
-                <p className="text-sm text-gray-600 mb-3">{bp.targetMarket?.primaryAudience?.demographics}</p>
-                <h5 className="text-xs font-semibold text-gray-500 mt-2 mb-1">Pain Points</h5>
+                <p className="text-gray-800 font-medium mb-1">Market Size: {bp.marketResearch?.marketSize}</p>
+                <p className="text-sm text-gray-600 mb-3">Growth Rate: {bp.marketResearch?.industryGrowthRate}</p>
+                <h5 className="text-xs font-semibold text-gray-500 mt-2 mb-1">Trends</h5>
                 <ul className="list-disc pl-4 text-xs text-gray-600">
-                  {bp.targetMarket?.primaryAudience?.painPoints?.map((p: string, i: number) => <li key={i}>{p}</li>)}
+                  {bp.marketResearch?.trends?.map((p: string, i: number) => <li key={i}>{p}</li>)}
                 </ul>
               </div>
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Go to Market</h4>
+              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Target Segments</h4>
+              <ul className="list-disc pl-4 text-sm text-gray-700 mb-4 space-y-1">
+                {bp.marketResearch?.targetSegments?.map((s: string, i: number) => <li key={i}>{s}</li>)}
+              </ul>
+              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4 mt-6">Competitors</h4>
               <div className="space-y-3">
-                {bp.goToMarketStrategy?.acquisitionChannels?.map((channel: any, i: number) => (
-                  <div key={i} className="flex justify-between items-center border-b border-gray-100 pb-2">
-                    <span className="text-sm text-gray-700">{channel.channel}</span>
-                    <span className="text-xs font-medium bg-blue-50 text-[#1A73E8] px-2 py-1 rounded">ROI: {channel.expectedROI}</span>
+                {bp.marketResearch?.competitors?.map((comp: any, i: number) => (
+                  <div key={i} className="flex flex-col border-b border-gray-100 pb-2">
+                    <span className="text-sm font-semibold text-gray-900">{comp.name}</span>
+                    <span className="text-xs text-gray-600">Strengths: {comp.strengths}</span>
+                    <span className="text-xs text-gray-600">Weaknesses: {comp.weaknesses}</span>
                   </div>
                 ))}
               </div>
@@ -199,56 +199,75 @@ export default function BusinessPlanDashboard() {
            </div>
         </ExpandableSection>
 
-        <ExpandableSection id="revenue" title="Revenue Model" icon={DollarSign}>
+        <ExpandableSection id="revenue" title="Business Model" icon={DollarSign}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
             <div>
               <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Pricing Strategy</h4>
-              <p className="text-gray-800 text-sm mb-4">{bp.revenueModel?.pricingStrategy}</p>
-              <div className="space-y-3">
-                {bp.revenueModel?.revenueStreams?.map((stream: any, i: number) => (
-                  <div key={i} className="p-3 bg-gray-50 rounded-lg">
-                    <p className="font-medium text-gray-900 text-sm">{stream.name}</p>
-                    <p className="text-xs text-gray-500 mt-1">{stream.description}</p>
-                    <p className="text-xs font-semibold text-[#34A853] mt-2">{stream.pricePoint}</p>
-                  </div>
+              <p className="text-gray-800 text-sm mb-4">{bp.businessModel?.pricingStrategy}</p>
+              
+              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-6">Revenue Streams</h4>
+              <ul className="list-disc pl-4 text-sm text-gray-700 mb-4 space-y-1">
+                {bp.businessModel?.revenueStreams?.map((stream: string, i: number) => (
+                  <li key={i}>{stream}</li>
                 ))}
-              </div>
+              </ul>
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Cost Structure</h4>
-              <ul className="space-y-2">
-                {bp.leanCanvas?.costStructure?.map((cost: string, i: number) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#EA4335]"></div>
-                    {cost}
-                  </li>
+              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Acquisition & Sales Model</h4>
+              <p className="text-sm text-gray-700 mb-2"><span className="font-medium">Acquisition:</span> {bp.businessModel?.acquisitionModel}</p>
+              <p className="text-sm text-gray-700 mb-4"><span className="font-medium">Sales:</span> {bp.businessModel?.salesModel}</p>
+
+              <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-4">Distribution Channels</h4>
+              <ul className="list-disc pl-4 text-sm text-gray-700 space-y-1">
+                {bp.businessModel?.distributionChannels?.map((ch: string, i: number) => (
+                  <li key={i}>{ch}</li>
                 ))}
               </ul>
             </div>
           </div>
         </ExpandableSection>
 
-        <ExpandableSection id="roadmap" title="Product Roadmap" icon={Activity}>
+        <ExpandableSection id="sales-marketing" title="Sales & Marketing" icon={Megaphone}>
           <div className="pt-4 space-y-6">
-             {['Phase 1 (Months 1-3)', 'Phase 2 (Months 4-6)', 'Phase 3 (Months 7-12)'].map((phaseTitle, index) => {
-               const milestones = index === 0 ? bp.roadmap?.phase1_0to3Months : index === 1 ? bp.roadmap?.phase2_3to6Months : bp.roadmap?.phase3_6to12Months;
-               
-               if (!milestones) return null;
-
-               return (
-                 <div key={index} className="relative pl-6 border-l-2 border-blue-100">
-                   <div className="absolute w-3 h-3 bg-[#1A73E8] rounded-full -left-[7px] top-1.5"></div>
-                   <h4 className="text-base font-semibold text-gray-900 mb-3">{phaseTitle}</h4>
-                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                     {milestones.map((ms: string, i: number) => (
-                       <div key={i} className="p-3 bg-gray-50 rounded-lg text-sm text-gray-700 border border-gray-100">
-                         {ms}
-                       </div>
-                     ))}
-                   </div>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+               <div>
+                 <h4 className="font-semibold text-gray-900 mb-2">Acquisition Channels</h4>
+                 <ul className="list-disc pl-4 text-sm text-gray-700 space-y-1">
+                   {bp.salesAndMarketing?.acquisitionChannels?.map((ch: string, i: number) => <li key={i}>{ch}</li>)}
+                 </ul>
+                 <h4 className="font-semibold text-gray-900 mb-2 mt-4">Growth Strategy</h4>
+                 <p className="text-sm text-gray-700">{bp.salesAndMarketing?.growthStrategy}</p>
+               </div>
+               <div>
+                 <h4 className="font-semibold text-gray-900 mb-2">Marketing Funnel</h4>
+                 <div className="space-y-2">
+                   <p className="text-xs text-gray-600"><span className="font-semibold text-gray-800">Awareness:</span> {bp.salesAndMarketing?.marketingFunnel?.awareness}</p>
+                   <p className="text-xs text-gray-600"><span className="font-semibold text-gray-800">Interest:</span> {bp.salesAndMarketing?.marketingFunnel?.interest}</p>
+                   <p className="text-xs text-gray-600"><span className="font-semibold text-gray-800">Consideration:</span> {bp.salesAndMarketing?.marketingFunnel?.consideration}</p>
+                   <p className="text-xs text-gray-600"><span className="font-semibold text-gray-800">Purchase:</span> {bp.salesAndMarketing?.marketingFunnel?.purchase}</p>
                  </div>
-               );
-             })}
+               </div>
+             </div>
+          </div>
+        </ExpandableSection>
+        
+        <ExpandableSection id="financial-insights" title="Financial Insights" icon={TrendingUp}>
+          <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+             <div>
+               <h4 className="font-semibold text-gray-900 mb-2">Projections</h4>
+               <p className="text-sm text-gray-700 mb-1"><span className="font-medium text-gray-900">Revenue:</span> {bp.financialInsights?.revenueProjection}</p>
+               <p className="text-sm text-gray-700 mb-1"><span className="font-medium text-gray-900">Growth:</span> {bp.financialInsights?.monthlyGrowth}</p>
+               <p className="text-sm text-gray-700 mb-1"><span className="font-medium text-gray-900">Break-Even:</span> {bp.financialInsights?.breakEvenPoint}</p>
+               <p className="text-sm text-gray-700 mb-1"><span className="font-medium text-gray-900">Profitability:</span> {bp.financialInsights?.profitabilityTimeline}</p>
+             </div>
+             <div>
+               <h4 className="font-semibold text-gray-900 mb-2">Unit Economics & Risks</h4>
+               <p className="text-sm text-gray-700 mb-4">{bp.financialInsights?.unitEconomics}</p>
+               <h4 className="font-semibold text-gray-900 mb-2">Key Risks</h4>
+               <ul className="list-disc pl-4 text-sm text-gray-700 space-y-1">
+                 {bp.financialInsights?.keyRisks?.map((risk: string, i: number) => <li key={i}>{risk}</li>)}
+               </ul>
+             </div>
           </div>
         </ExpandableSection>
 

@@ -36,9 +36,8 @@ export function SystemStatusBanner() {
         window.clearTimeout(timeout);
       }
     };
-
     fetchStatus();
-    const interval = setInterval(fetchStatus, 6000); // Check every 6s
+    const interval = setInterval(fetchStatus, 60000); // Check every 60s
 
     // Pull instantly when returning to the tab
     const handleVisibilityChange = () => {

@@ -96,7 +96,7 @@ export default function ModerationPage() {
   useEffect(() => {
     fetchData();
     // Poll data every 15 seconds for real-time tracking
-    const interval = setInterval(fetchData, 15000);
+    const interval = setInterval(fetchData, 60000);
     return () => clearInterval(interval);
   }, [fetchData]);
 
