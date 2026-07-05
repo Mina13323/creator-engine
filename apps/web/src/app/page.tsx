@@ -17,6 +17,7 @@ import AIConsultantDashboard from '../components/AIConsultantDashboard';
 import AuthModal from '../components/AuthModal';
 import CreditIndicator from '../components/CreditIndicator';
 import PricingModal from '../components/PricingModal';
+import InsufficientCreditsModal from '../components/InsufficientCreditsModal';
 import FinancialEngine from '../components/FinancialEngine';
 import AccountDetails from '../components/AccountDetails';
 import { authClient } from '../lib/authClient';
@@ -56,7 +57,9 @@ export default function AppPage() {
     startNewVenture,
     user,
     isAuthenticated,
-    logout
+    logout,
+    creditsGate,
+    closeCreditsGate
   } = useStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -381,6 +384,12 @@ export default function AppPage() {
     </main>
     <AuthModal />
     <PricingModal />
+    <InsufficientCreditsModal
+      open={!!creditsGate?.open}
+      onClose={closeCreditsGate}
+      requiredCredits={creditsGate?.required ?? 0}
+      featureKey={creditsGate?.featureKey}
+    />
   </div>
   );
 }

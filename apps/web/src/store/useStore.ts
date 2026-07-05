@@ -53,6 +53,11 @@ interface StoreState {
   showPricingModal: boolean;
   setShowPricingModal: (show: boolean) => void;
 
+  // Credits gate
+  creditsGate: { open: boolean; required: number; featureKey?: string } | null;
+  showCreditsGate: (required: number, featureKey?: string) => void;
+  closeCreditsGate: () => void;
+
   // Actions
   setAuthModalOpen: (isOpen: boolean) => void;
   setAuth: (user: AuthUser | null) => void;
@@ -124,6 +129,10 @@ export const useStore = create<StoreState>((set, get) => ({
   isDemo: false,
   showPricingModal: false,
   setShowPricingModal: (show) => set({ showPricingModal: show }),
+
+  creditsGate: null,
+  showCreditsGate: (required, featureKey) => set({ creditsGate: { open: true, required, featureKey } }),
+  closeCreditsGate: () => set({ creditsGate: null }),
   loadCredits: async () => {
     try {
       const data = await authClient.get<any>('/user/credits');
@@ -138,6 +147,7 @@ export const useStore = create<StoreState>((set, get) => ({
   setAuthModalOpen: (isOpen: boolean) => set({ isAuthModalOpen: isOpen }),
   setAuth: (user) => {
     set({ user, isAuthenticated: !!user });
+    if (user) get().loadCredits();
   },
   logout: () => {
     authClient.logout(); 
@@ -163,6 +173,7 @@ export const useStore = create<StoreState>((set, get) => ({
     try {
       const { user } = await authClient.getMe();
       set({ user, isAuthenticated: true });
+      get().loadCredits();
     } catch (e: any) {
       if (e.message && (e.message.includes('404') || e.message.includes('User not found') || e.message.includes('Unauthorized') || e.message.includes('Session expired'))) {
         set({ user: null, isAuthenticated: false });
@@ -264,9 +275,14 @@ export const useStore = create<StoreState>((set, get) => ({
     try {
       const res = await authClient.post<{ opportunities: BusinessOpportunity[] }>('/opportunities/discover', { projectId });
       set({ opportunities: res.opportunities, activeTab: 'opportunities', loading: false });
-    } catch (e) {
-      console.error('discoverOpportunities failed', e);
+    } catch (e: any) {
       set({ loading: false });
+      const creditsMatch = e.message?.match(/(\d+)\s*credits/);
+      if (creditsMatch) {
+        get().showCreditsGate(parseInt(creditsMatch[1], 10), 'opportunity-discovery');
+        return;
+      }
+      console.error('discoverOpportunities failed', e);
       throw e;
     }
   },
