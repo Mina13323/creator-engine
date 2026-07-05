@@ -1508,5 +1508,10 @@
     "mtime": 1783168958.3088746,
     "ast_hash": "d68271f27549f0ba68aa99e49f6318e5",
     "semantic_hash": ""
+  },
+  "scripts/test-report.js": {
+    "mtime": 1783291694.7334316,
+    "ast_hash": "531095837316d609822a31895de0a729",
+    "semantic_hash": ""
   }
 }
