@@ -305,13 +305,13 @@ ${contextStr ? '\nProject Context:\n' + contextStr : ''}`;
   });
 
   const parsed = parseLLMJson<any>(rawJson);
-  if (parsed) {
+  if (parsed && parsed.executiveSummary && Object.keys(parsed.executiveSummary).length > 0) {
     parsed.generatedByModel = 'deepseek-v4-flash';
     parsed.generatedAt = new Date();
     return parsed as Partial<BusinessPlan>;
   }
 
-  return null;
+  throw new Error('LLM generated an invalid or empty business plan JSON. Please try again.');
 }
 
 // ==========================================

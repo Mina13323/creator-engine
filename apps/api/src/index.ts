@@ -837,6 +837,12 @@ app.get('/api/projects/:projectId/state', authMiddleware, async (req: Request, r
         stateObj.businessPlan = plan.toObject();
       }
     }
+    
+    // Attach discovered opportunities to state
+    const ops = await BusinessOpportunityModel.find({ projectId, userId }).lean();
+    if (ops && ops.length > 0) {
+      stateObj.opportunities = ops;
+    }
 
     return res.json(stateObj);
   } catch (err: any) {

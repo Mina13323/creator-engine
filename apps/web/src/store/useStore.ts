@@ -207,6 +207,7 @@ export const useStore = create<StoreState>((set, get) => ({
         currentProject: proj || null,
         ventureState: stateData,
         selectedOpportunity: stateData?.selectedOpportunity || null,
+        opportunities: (stateData as any)?.opportunities || [],
         activeTab: 'dashboard',
         loading: false
       });
