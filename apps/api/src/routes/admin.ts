@@ -513,12 +513,14 @@ router.get('/reports/generate', async (req: Request, res: Response): Promise<any
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-    // 1. User Signups
+    // 1. User Signups & Admins
     const totalUsers = await UserModel.countDocuments();
     const recentSignups = await UserModel.countDocuments({ createdAt: { $gte: oneWeekAgo } });
     const users = await UserModel.find({ createdAt: { $gte: oneWeekAgo } })
       .select('name email role createdAt')
       .lean();
+    const admins = await UserModel.find({ role: 'admin' }).select('email').lean();
+    const adminEmails = admins.map((a: any) => a.email).filter(Boolean).join(', ');
 
     // 2. Agent Runs / Token Consumption
     const recentAgentRuns = await AgentRunModel.find({ createdAt: { $gte: oneWeekAgo } }).lean();
@@ -560,6 +562,7 @@ router.get('/reports/generate', async (req: Request, res: Response): Promise<any
     return res.json({
       success: true,
       generatedAt: new Date(),
+      adminEmails,
       totalUsers,
       recentSignups,
       users,
