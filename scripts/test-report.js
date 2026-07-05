@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const jwt = require('./apps/api/node_modules/jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const path = require('path');
 const dotenv = require('dotenv');
 
