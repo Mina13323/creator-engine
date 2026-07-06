@@ -274,7 +274,7 @@ export default function LandingPage({ onGetStarted, onLogin, isAuthenticated }: 
       </header>
 
       <main>
-        <section ref={heroRef} className="relative mx-auto grid min-h-[760px] max-w-[1520px] items-center gap-14 overflow-hidden px-6 pb-16 pt-10 md:px-12 lg:grid-cols-[1fr_0.95fr] lg:px-20">
+        <section ref={heroRef} className="relative mx-auto grid min-h-[720px] max-w-[1520px] items-center gap-14 overflow-visible px-6 pb-24 pt-10 md:px-12 lg:grid-cols-[1fr_0.95fr] lg:px-20">
           <div className="pointer-events-none absolute left-1/2 top-14 h-72 w-72 -translate-x-1/2 rounded-full bg-[#dff7ed] opacity-40 blur-3xl" />
           <motion.div className="relative max-w-[720px]" style={{ y: heroTextY, opacity: heroFade }}>
             <motion.p
@@ -348,7 +348,7 @@ export default function LandingPage({ onGetStarted, onLogin, isAuthenticated }: 
               </div>
               <p className="text-sm text-slate-600">{t('hero.ragBaseDesc')}</p>
             </motion.div>
-            <motion.div className="absolute bottom-[-18px] left-8 w-72 rounded-xl bg-white/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.12)] backdrop-blur rtl:right-8 rtl:left-auto" style={{ y: heroCardsY }}>
+            <motion.div className="absolute bottom-4 left-8 w-72 rounded-xl bg-white/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.12)] backdrop-blur rtl:right-8 rtl:left-auto" style={{ y: heroCardsY }}>
               <p className="text-lg font-medium">{t('hero.businessValidated')}</p>
               <div className="mt-4 flex items-center gap-5">
                 <Donut />
@@ -499,7 +499,7 @@ export default function LandingPage({ onGetStarted, onLogin, isAuthenticated }: 
             <h2 className="mt-8 max-w-[850px] text-4xl font-semibold leading-tight tracking-[-0.035em]">
               {t('problem.title')}
             </h2>
-            <div className="mt-12 pt-12 border-t border-white/10 grid max-w-[900px] gap-8 md:grid-cols-3">
+            <div className="mt-12 pt-12 border-t border-white/10 grid max-w-[1100px] gap-x-10 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
               {[
                 [t('team.minaW'), t('problem.teamRole')],
                 [t('team.omar'), t('problem.teamRole')],
