@@ -48,10 +48,17 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export function TrafficChart({ data, view }: { data: TrafficData[]; view: 'USERS' | 'PROJECTS' }) {
   const [mounted, setMounted] = useState(false);
+  const [selectedDayIndex, setSelectedDayIndex] = useState<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (data && data.length > 0 && selectedDayIndex === null) {
+      setSelectedDayIndex(data.length - 1);
+    }
+  }, [data, selectedDayIndex]);
 
   if (!mounted) {
     return <div className="h-[300px] w-full mt-4 bg-slate-900/10 animate-pulse rounded-xl" />;
@@ -65,43 +72,127 @@ export function TrafficChart({ data, view }: { data: TrafficData[]; view: 'USERS
     );
   }
 
+  const selectedDay = selectedDayIndex !== null && data[selectedDayIndex] ? data[selectedDayIndex] : null;
+
   return (
-    <div className="h-[300px] w-full mt-4">
-      <AreaChart width={undefined} height={undefined} data={data} margin={{ top: 15, right: 10, left: -25, bottom: 5 }} style={{ width: '100%', height: '100%' }}>
-        <defs>
-          <linearGradient id="colorLogins" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#6366f1" stopOpacity={0.25}/>
-            <stop offset="95%" stopColor="#6366f1" stopOpacity={0.01}/>
-          </linearGradient>
-          <linearGradient id="colorActions" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#10b981" stopOpacity={0.25}/>
-            <stop offset="95%" stopColor="#10b981" stopOpacity={0.01}/>
-          </linearGradient>
-          <linearGradient id="colorSignups" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#a855f7" stopOpacity={0.25}/>
-            <stop offset="95%" stopColor="#a855f7" stopOpacity={0.01}/>
-          </linearGradient>
-          <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.25}/>
-            <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.01}/>
-          </linearGradient>
-        </defs>
-        <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="rgba(30, 41, 59, 0.4)" />
-        <XAxis dataKey="time" stroke="#475569" fontSize={9} tickLine={false} axisLine={false} style={{ fontFamily: 'monospace' }} />
-        <YAxis stroke="#475569" fontSize={9} tickLine={false} axisLine={false} style={{ fontFamily: 'monospace' }} />
-        <Tooltip content={<CustomTooltip />} />
-        <Legend iconType="circle" wrapperStyle={{ fontSize: '11px', color: '#64748b', paddingTop: '10px' }} />
-        
-        {view === 'USERS' ? (
-          <>
-            <Area type="monotone" dataKey="signups" name="User Signups" stroke="#a855f7" strokeWidth={2} fillOpacity={1} fill="url(#colorSignups)" />
-            <Area type="monotone" dataKey="logins" name="User Logins" stroke="#6366f1" strokeWidth={2} fillOpacity={1} fill="url(#colorLogins)" />
-            <Area type="monotone" dataKey="actions" name="User Actions" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorActions)" />
-          </>
-        ) : (
-          <Area type="monotone" dataKey="projectsCount" name="Projects Created" stroke="#06b6d4" strokeWidth={2} fillOpacity={1} fill="url(#colorProjects)" />
-        )}
-      </AreaChart>
+    <div className="w-full space-y-6">
+      <div className="h-[300px] w-full mt-4">
+        <AreaChart 
+          width={undefined} 
+          height={undefined} 
+          data={data} 
+          margin={{ top: 15, right: 10, left: -25, bottom: 5 }} 
+          style={{ width: '100%', height: '100%' }}
+          onClick={(state) => {
+            if (state && state.activeTooltipIndex !== undefined) {
+              setSelectedDayIndex(Number(state.activeTooltipIndex));
+            }
+          }}
+        >
+          <defs>
+            <linearGradient id="colorLogins" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#6366f1" stopOpacity={0.25}/>
+              <stop offset="95%" stopColor="#6366f1" stopOpacity={0.01}/>
+            </linearGradient>
+            <linearGradient id="colorActions" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#10b981" stopOpacity={0.25}/>
+              <stop offset="95%" stopColor="#10b981" stopOpacity={0.01}/>
+            </linearGradient>
+            <linearGradient id="colorSignups" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#a855f7" stopOpacity={0.25}/>
+              <stop offset="95%" stopColor="#a855f7" stopOpacity={0.01}/>
+            </linearGradient>
+            <linearGradient id="colorProjects" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.25}/>
+              <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.01}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="rgba(30, 41, 59, 0.4)" />
+          <XAxis dataKey="time" stroke="#475569" fontSize={9} tickLine={false} axisLine={false} style={{ fontFamily: 'monospace' }} />
+          <YAxis stroke="#475569" fontSize={9} tickLine={false} axisLine={false} style={{ fontFamily: 'monospace' }} />
+          <Tooltip content={<CustomTooltip />} />
+          <Legend iconType="circle" wrapperStyle={{ fontSize: '11px', color: '#64748b', paddingTop: '10px' }} />
+          
+          {view === 'USERS' ? (
+            <>
+              <Area type="monotone" dataKey="signups" name="User Signups" stroke="#a855f7" strokeWidth={2} fillOpacity={1} fill="url(#colorSignups)" />
+              <Area type="monotone" dataKey="logins" name="User Logins" stroke="#6366f1" strokeWidth={2} fillOpacity={1} fill="url(#colorLogins)" />
+              <Area type="monotone" dataKey="actions" name="User Actions" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorActions)" />
+            </>
+          ) : (
+            <Area type="monotone" dataKey="projectsCount" name="Projects Created" stroke="#06b6d4" strokeWidth={2} fillOpacity={1} fill="url(#colorProjects)" />
+          )}
+        </AreaChart>
+      </div>
+
+      {selectedDay && (
+        <div className="pt-5 border-t border-slate-800/60 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="text-xs font-black uppercase tracking-widest text-slate-400 font-mono flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#008465] animate-pulse shrink-0" />
+              Detailed Report: {selectedDay.time}
+            </h4>
+            <span className="text-[10px] text-slate-500 font-mono">Click on the chart to select a day</span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Column 1: Signups */}
+            <div className="p-4 bg-slate-950/30 border border-slate-850 rounded-xl flex flex-col justify-between min-h-[140px]">
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-purple-400 font-mono">New Signups</span>
+                  <span className="text-xs font-mono font-bold text-slate-350">{selectedDay.signups}</span>
+                </div>
+                <div className="mt-3 max-h-[80px] overflow-y-auto pr-1 text-xs text-slate-400 space-y-1 font-mono">
+                  {selectedDay.signupNames && selectedDay.signupNames.length > 0 ? (
+                    selectedDay.signupNames.map((name, idx) => (
+                      <div key={idx} className="truncate select-text">• {name}</div>
+                    ))
+                  ) : (
+                    <div className="text-slate-600 text-[10px] italic">No user registrations</div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Column 2: Projects */}
+            <div className="p-4 bg-slate-950/30 border border-slate-850 rounded-xl flex flex-col justify-between min-h-[140px]">
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-cyan-400 font-mono">Created Projects</span>
+                  <span className="text-xs font-mono font-bold text-slate-350">{selectedDay.projectsCount ?? 0}</span>
+                </div>
+                <div className="mt-3 max-h-[80px] overflow-y-auto pr-1 text-xs text-slate-400 space-y-1 font-mono">
+                  {selectedDay.projectNames && selectedDay.projectNames.length > 0 ? (
+                    selectedDay.projectNames.map((name, idx) => (
+                      <div key={idx} className="truncate select-text">• {name}</div>
+                    ))
+                  ) : (
+                    <div className="text-slate-600 text-[10px] italic">No projects created</div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Column 3: Metrics */}
+            <div className="p-4 bg-slate-950/30 border border-slate-850 rounded-xl flex flex-col justify-between min-h-[140px]">
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400 font-mono">Activity Volume</span>
+                <div className="mt-3 space-y-2 text-xs font-mono text-slate-400">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-500">Sign Ins:</span>
+                    <span className="font-bold text-slate-300">{selectedDay.logins}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-500">AI runs:</span>
+                    <span className="font-bold text-emerald-400">{selectedDay.actions}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
