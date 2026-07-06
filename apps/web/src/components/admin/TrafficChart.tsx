@@ -7,6 +7,7 @@ import { TrafficData } from '@/hooks/useModerationDashboard';
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const projectNames = payload[0]?.payload?.projectNames;
+    const signupNames = payload[0]?.payload?.signupNames;
     return (
       <div className="bg-[#0f172a] border border-slate-800 p-4 rounded-xl shadow-2xl space-y-1.5 animate-in fade-in duration-200 min-w-[200px]">
         <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono">{label}</p>
@@ -24,6 +25,16 @@ const CustomTooltip = ({ active, payload, label }: any) => {
             <p className="text-[9px] font-bold text-slate-500 uppercase tracking-wider font-mono">Created Projects:</p>
             <div className="max-h-[100px] overflow-y-auto pr-1 text-xs text-slate-350 font-mono space-y-0.5 scrollbar-thin scrollbar-thumb-slate-800">
               {projectNames.map((name: string, idx: number) => (
+                <div key={idx} className="truncate select-text">• {name}</div>
+              ))}
+            </div>
+          </div>
+        )}
+        {signupNames && signupNames.length > 0 && (
+          <div className="pt-2 border-t border-slate-800/80 mt-2 space-y-1">
+            <p className="text-[9px] font-bold text-indigo-400 uppercase tracking-wider font-mono">Signups:</p>
+            <div className="max-h-[100px] overflow-y-auto pr-1 text-xs text-slate-350 font-mono space-y-0.5 scrollbar-thin scrollbar-thumb-slate-800">
+              {signupNames.map((name: string, idx: number) => (
                 <div key={idx} className="truncate select-text">• {name}</div>
               ))}
             </div>

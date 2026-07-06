@@ -20,6 +20,7 @@ export interface TrafficData {
   actions: number;
   projectsCount?: number;
   projectNames?: string[];
+  signupNames?: string[];
 }
 
 

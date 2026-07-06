@@ -84,7 +84,7 @@ router.get('/traffic', async (req: Request, res: Response): Promise<any> => {
       }, { createdAt: 1 }).lean(),
       UserModel.find({
         createdAt: { $gte: dStart, $lte: dEnd }
-      }, { createdAt: 1 }).lean(),
+      }, { name: 1, email: 1, createdAt: 1 }).lean(),
       ProjectModel.find({
         createdAt: { $gte: dStart, $lte: dEnd }
       }, { name: 1, createdAt: 1 }).lean()
@@ -114,6 +114,7 @@ router.get('/traffic', async (req: Request, res: Response): Promise<any> => {
       const signupsCount = usersInDay.length;
       const loginsCount = signupsCount * 2 + (runsCount > 0 ? 1 : 0);
       const projectNames = projectsInDay.map(p => p.name || 'Unnamed Project');
+      const signupNames = usersInDay.map(u => u.name ? `${u.name} (${u.email})` : u.email);
       
       const startOfDayDate = new Date(startOfDay);
       const dayLabel = startOfDayDate.toLocaleDateString('en-US', { weekday: 'short' });
@@ -124,7 +125,8 @@ router.get('/traffic', async (req: Request, res: Response): Promise<any> => {
         logins: loginsCount,
         actions: runsCount,
         projectsCount: projectsInDay.length,
-        projectNames: projectNames
+        projectNames: projectNames,
+        signupNames: signupNames
       });
     }
 
