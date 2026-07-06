@@ -70,8 +70,8 @@ export default function BusinessPlanDashboard() {
           className="w-full flex items-center justify-between p-6 bg-white hover:bg-gray-50 transition-colors focus:outline-none"
         >
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-50 rounded-lg">
-              <Icon className="w-5 h-5 text-[#1A73E8]" />
+            <div className="p-2 bg-[#e4f3ee] rounded-lg">
+              <Icon className="w-5 h-5 text-[#008465]" />
             </div>
             <h3 className="text-lg font-medium text-gray-900">{title}</h3>
           </div>
@@ -105,12 +105,7 @@ export default function BusinessPlanDashboard() {
       <PageHeader 
         title="AI Business Document" 
         description={bp.executiveSummary?.startupName || selectedOpportunity?.title}
-      >
-        <Button variant="outline">
-          <Download className="w-4 h-4 mr-2" />
-          Export PDF
-        </Button>
-      </PageHeader>
+      />
 
       <div className="space-y-2">
         <ExpandableSection id="executive" title="Executive Summary" icon={Compass}>

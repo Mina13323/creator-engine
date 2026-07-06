@@ -933,6 +933,7 @@ export interface AdminSettings {
   maintenance: boolean;
   flagAlerts: boolean;
   weeklyReports: boolean;
+  lastWeeklyReportSentAt?: Date;
 }
 
 const AdminSettingsSchema = new Schema<AdminSettings & Document>(
@@ -946,7 +947,8 @@ const AdminSettingsSchema = new Schema<AdminSettings & Document>(
     lockdown: { type: Boolean, default: false },
     maintenance: { type: Boolean, default: false },
     flagAlerts: { type: Boolean, default: true },
-    weeklyReports: { type: Boolean, default: false }
+    weeklyReports: { type: Boolean, default: false },
+    lastWeeklyReportSentAt: { type: Date }
   },
   { timestamps: true, collection: 'admin_settings' }
 );

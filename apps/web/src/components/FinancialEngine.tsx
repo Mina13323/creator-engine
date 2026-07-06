@@ -14,7 +14,7 @@ import { useI18n } from '../lib/i18n/I18nContext';
 import { authClient } from '../lib/authClient';
 
 export default function FinancialEngine() {
-  const { t, dir } = useI18n();
+  const { t, dir, locale } = useI18n();
   const currentProject = useStore(state => state.currentProject);
   const ventureState = useStore(state => state.ventureState);
   
@@ -24,7 +24,6 @@ export default function FinancialEngine() {
   const [businessModel, setBusinessModel] = useState('SaaS');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any>(null);
-  const [loadingExisting, setLoadingExisting] = useState(false);
 
   const prevOpportunityId = React.useRef<string | undefined>(opportunity?.id || (opportunity as any)?._id);
 
@@ -57,12 +56,23 @@ export default function FinancialEngine() {
         projectId: currentProject.id,
         businessIdea,
         businessModel,
+        locale
       });
 
       setResults({
         financial: data.financialForecast,
         pricing: data.pricing || {},
       });
+
+      useStore.setState((state) => ({
+        ventureState: state.ventureState
+          ? {
+              ...state.ventureState,
+              financialForecast: data.financialForecast,
+              pricingStrategy: data.pricing || {}
+            }
+          : state.ventureState
+      }));
     } catch (error) {
       console.error('Failed to generate financials', error);
     } finally {
@@ -87,7 +97,7 @@ export default function FinancialEngine() {
                 value={businessIdea}
                 onChange={(e) => setBusinessIdea(e.target.value)}
                 placeholder="e.g. A marketplace for local artisans..."
-                className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl p-4 text-gray-900 focus:ring-2 focus:ring-[#1A73E8] outline-none transition-all resize-none h-32"
+                className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl p-4 text-gray-900 focus:ring-2 focus:ring-[#008465] outline-none transition-all resize-none h-32"
               />
             </div>
             
@@ -97,7 +107,7 @@ export default function FinancialEngine() {
                 <select 
                   value={businessModel}
                   onChange={(e) => setBusinessModel(e.target.value)}
-                  className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl p-4 text-gray-900 focus:ring-2 focus:ring-[#1A73E8] outline-none"
+                  className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl p-4 text-gray-900 focus:ring-2 focus:ring-[#008465] outline-none"
                 >
                   <option value="SaaS">B2B SaaS (Subscription)</option>
                   <option value="Marketplace">Marketplace (Commission)</option>
@@ -143,7 +153,7 @@ export default function FinancialEngine() {
           {/* KPI Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <MetricCard title="Startup Capital" value={`EGP ${results.financial.totalStartupCost?.toLocaleString()}`} icon={Building} delay={0.1} />
-            <MetricCard title="Burn Rate (Mo)" value={`EGP ${results.financial.monthlyBurn?.toLocaleString()}`} icon={Server} delay={0.2} />
+            <MetricCard title="Burn Rate (Mo)" value={`EGP ${(results.financial.monthlyBurn || results.financial.totalMonthlyCost || 0).toLocaleString()}`} icon={Server} delay={0.2} />
             <MetricCard title="Break-even" value={`Month ${results.financial.breakEvenMonth}`} icon={TrendingUp} delay={0.3} />
             <MetricCard title="Pricing Model" value={results.pricing.recommendedStrategyType} icon={DollarSign} delay={0.4} />
           </div>
@@ -155,7 +165,7 @@ export default function FinancialEngine() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Calculator className="w-5 h-5 text-[#1A73E8]" />
+                    <Calculator className="w-5 h-5 text-[#008465]" />
                     Cost Infrastructure
                   </CardTitle>
                 </CardHeader>
@@ -169,7 +179,7 @@ export default function FinancialEngine() {
                             <p className="font-semibold text-gray-900">{cost.category}</p>
                             <p className="text-sm text-gray-500 mt-0.5">{cost.description}</p>
                           </div>
-                          <span className="font-bold text-[#1A73E8] bg-blue-50 px-3 py-1 rounded-lg">
+                          <span className="font-bold text-[#008465] bg-[#e4f3ee] px-3 py-1 rounded-lg">
                             EGP {cost.amount.toLocaleString()}
                           </span>
                         </div>
@@ -186,7 +196,7 @@ export default function FinancialEngine() {
                             <p className="font-semibold text-gray-900">{cost.category}</p>
                             <p className="text-sm text-gray-500 mt-0.5">{cost.description}</p>
                           </div>
-                          <span className="font-bold text-[#1A73E8] bg-blue-50 px-3 py-1 rounded-lg">
+                          <span className="font-bold text-[#008465] bg-[#e4f3ee] px-3 py-1 rounded-lg">
                             EGP {cost.amount.toLocaleString()}/mo
                           </span>
                         </div>
@@ -216,9 +226,9 @@ export default function FinancialEngine() {
 
                   <div className="space-y-4 flex-1">
                     {results.pricing.priceTiers?.map((tier: any, i: number) => (
-                      <div key={i} className={`border rounded-xl p-5 relative overflow-hidden transition-all ${i === 1 ? 'border-[#1A73E8] shadow-[0_4px_12px_rgba(26,115,232,0.15)] bg-white' : 'border-[rgba(60,64,67,0.12)] bg-[#F8FAFD]'}`}>
+                      <div key={i} className={`border rounded-xl p-5 relative overflow-hidden transition-all ${i === 1 ? 'border-[#008465] shadow-[0_4px_12px_rgba(0,132,101,0.15)] bg-white' : 'border-[rgba(60,64,67,0.12)] bg-[#F8FAFD]'}`}>
                         {i === 1 && (
-                          <div className="absolute top-0 right-0 bg-[#1A73E8] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-lg">
+                          <div className="absolute top-0 right-0 bg-[#008465] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-lg">
                             Recommended
                           </div>
                         )}
@@ -231,7 +241,7 @@ export default function FinancialEngine() {
                         <ul className="space-y-2">
                           {tier.features?.map((feat: string, j: number) => (
                             <li key={j} className="text-sm text-gray-600 flex items-start gap-2">
-                              <ArrowRight className="w-4 h-4 text-[#1A73E8] shrink-0 mt-0.5" />
+                              <ArrowRight className="w-4 h-4 text-[#008465] shrink-0 mt-0.5" />
                               <span className="leading-tight">{feat}</span>
                             </li>
                           ))}

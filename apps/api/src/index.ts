@@ -34,6 +34,7 @@ import executionRouter from './routes/execution';
 import { requireCredits, requireSubscription } from './middleware';
 import { deductCredits, CREDIT_COSTS, getUserCredits, provisionUserMonetization } from './services/creditEngine';
 import { authMiddleware, adminMiddleware } from './middleware';
+import { sendWeeklyReportEmail, startWeeklyReportScheduler } from './services/weeklyReports';
 import { LoginRequest, SignupRequest, AuthResponse, AuthUser, FounderProfile, SelectedOpportunity, BusinessPlan } from '@creator/types';
 import { runFounderAgent, runOpportunityAgent, runBusinessPlanAgent, runCofounderAgent, runFinancialAgent, runBrandingAgent, runMarketingAgent, runPitchAgent, runEvaluatorAgent } from '@creator/agents';
 import { processAndIngestDocument } from '@creator/rag-core';
@@ -109,6 +110,7 @@ registerMaintenanceHandlers(
 connectDB(MONGO_URL)
   .then(() => {
     dbConnected = true;
+    startWeeklyReportScheduler();
   })
   .catch((err) => {
     console.error('MongoDB connection failed. API requires DB.', err);
@@ -118,7 +120,7 @@ connectDB(MONGO_URL)
 // ==========================================
 // AI PROVIDERS STATUS (Phase 4 & 5)
 // ==========================================
-app.get('/api/ai/providers/status', async (req: Request, res: Response) => {
+app.get('/api/ai/providers/status', authMiddleware, async (req: Request, res: Response) => {
   const videoProvider = process.env.VIDEO_PROVIDER || 'chain';
   const status = {
     llm: { provider: 'fireworks', status: true },
@@ -162,7 +164,7 @@ function generateToken(userId: string, email: string): string {
 
 
 function toAuthUser(user: any): AuthUser {
-  return { id: user.id, email: user.email, name: user.name, avatar: user.avatar, role: user.role, isBanned: user.isBanned, token: user.token };
+  return { id: user.id, email: user.email, name: user.name, avatar: user.avatar, role: user.role, isBanned: user.isBanned };
 }
 
 // Base health check
@@ -178,7 +180,7 @@ app.get('/api/system/status', (req: Request, res: Response) => {
   });
 });
 
-app.get('/api/system/health', async (req: Request, res: Response): Promise<any> => {
+app.get('/api/system/health', authMiddleware, adminMiddleware, async (req: Request, res: Response): Promise<any> => {
   const databaseOnline = dbConnected && ProjectModel.db.readyState === 1;
   const hasFireworks = Boolean(process.env.FIREWORKS_API_KEY);
   const hasCloudinary = Boolean(
@@ -241,7 +243,7 @@ app.post('/api/auth/signup', authRateLimiter, validateRequest(signupSchema), asy
 
 
     res.cookie('token', token, { httpOnly: true, secure: env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
-    return res.status(201).json({ token, user: toAuthUser(newUser) });
+    return res.status(201).json({ user: toAuthUser(newUser) });
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
@@ -273,7 +275,7 @@ app.post('/api/auth/login', authRateLimiter, validateRequest(loginSchema), async
     await user.save();
 
     res.cookie('token', token, { httpOnly: true, secure: env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
-    return res.json({ token, user: toAuthUser(user) });
+    return res.json({ user: toAuthUser(user) });
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
@@ -313,7 +315,7 @@ app.post('/api/auth/google', authRateLimiter, validateRequest(googleAuthSchema),
 
     const tokenPayload = generateToken(user.id, email);
     res.cookie('token', tokenPayload, { httpOnly: true, secure: env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 86400000 });
-    return res.json({ token: tokenPayload, user: toAuthUser(user) });
+    return res.json({ user: toAuthUser(user) });
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
@@ -388,6 +390,13 @@ app.get('/api/account', authMiddleware, async (req: Request, res: Response): Pro
 });
 
 // Admin Routes
+app.post('/api/portal/reports/send-weekly', authMiddleware, adminMiddleware, async (req: Request, res: Response): Promise<any> => {
+  try {
+    return res.json(await sendWeeklyReportEmail());
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+});
 app.use('/api/portal', adminRouter);
 app.use('/api/payments', paymentsRouter);
 app.use('/api/marketing-studio', aiRateLimiter, marketingStudioRouter);
@@ -580,7 +589,7 @@ app.post('/api/projects', authMiddleware, validateRequest(createProjectSchema), 
 app.post('/api/founder/analyze', authMiddleware, aiRateLimiter, validateRequest(analyzeFounderSchema), requireCredits(CREDIT_COSTS.FOUNDER_ANALYSIS), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
-    const { projectId, data } = req.body;
+    const { projectId, data, locale } = req.body;
     
     if (!projectId || !data) return res.status(400).json({ error: 'Missing projectId or data' });
     if (!dbConnected) return res.status(503).json({ error: 'DB required' });
@@ -597,7 +606,7 @@ app.post('/api/founder/analyze', authMiddleware, aiRateLimiter, validateRequest(
     };
 
     // Call Agent with tracking
-    const analysis = await trackAgentRun(userId, projectId, 'founder-analysis', sanitizedData, () => runFounderAgent(projectId, sanitizedData));
+    const analysis = await trackAgentRun(userId, projectId, 'founder-analysis', sanitizedData, () => runFounderAgent(projectId, sanitizedData, '', locale || 'en'));
     
     const founderProfile = new FounderProfileModel({
       id: `fp_${Date.now()}`,
@@ -623,7 +632,7 @@ app.post('/api/founder/analyze', authMiddleware, aiRateLimiter, validateRequest(
 app.post('/api/opportunities/discover', authMiddleware, aiRateLimiter, validateRequest(discoverOpportunitySchema), requireCredits(CREDIT_COSTS.OPPORTUNITY_DISCOVERY), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
-    const { projectId } = req.body;
+    const { projectId, locale } = req.body;
     if (!projectId) return res.status(400).json({ error: 'Missing projectId' });
     if (!dbConnected) return res.status(503).json({ error: 'DB required' });
 
@@ -636,7 +645,7 @@ app.post('/api/opportunities/discover', authMiddleware, aiRateLimiter, validateR
       projectId,
       'opportunity-discovery',
       founderProfile.toObject(),
-      () => runOpportunityAgent(projectId, founderProfile.toObject()),
+      () => runOpportunityAgent(projectId, founderProfile.toObject(), '', locale || 'en'),
       'deepseek-v4-flash'
     );
     
@@ -962,7 +971,7 @@ app.get('/api/projects', authMiddleware, async (req: Request, res: Response) => 
 app.post('/api/ai/chat', authMiddleware, aiRateLimiter, validateRequest(aiChatSchema), requireCredits(CREDIT_COSTS.AI_CHAT_MESSAGE), async (req: Request, res: Response): Promise<any> => {
   try {
     const userId = (req as any).user.id;
-    const { projectId, message } = req.body;
+    const { projectId, message, locale } = req.body;
     if (!projectId || !message) return res.status(400).json({ error: 'Missing projectId or message' });
 
     const context = await loadOwnedProjectContext(projectId, userId);
@@ -974,13 +983,13 @@ app.post('/api/ai/chat', authMiddleware, aiRateLimiter, validateRequest(aiChatSc
     const userMessage = { id: `msg_user_${Date.now()}`, sender: 'user' as const, message, timestamp: new Date() };
     chatHistory.push(userMessage);
 
-    const aiResponse = await runCofounderAgent(message, state?.toObject() || context.project, `${buildContextString(context)}\nConversation:\n${JSON.stringify(chatHistory)}`);
+    const aiResponse = await runCofounderAgent(message, state?.toObject() || context.project, `${buildContextString(context)}\nConversation:\n${JSON.stringify(chatHistory)}`, locale || 'en');
     if (!aiResponse) return res.status(502).json({ error: 'AI consultant failed to produce a response' });
     chatHistory.push(aiResponse);
 
     if (dbConnected) {
       await ConversationModel.findOneAndUpdate(
-        { projectId },
+        { projectId, userId },
         {
           $setOnInsert: { id: `conv_${Date.now()}`, projectId, userId },
           $push: { messages: { $each: [userMessage, aiResponse] } }
@@ -1011,11 +1020,24 @@ app.get('/api/ai/chat/:projectId', authMiddleware, async (req: Request, res: Res
   }
 });
 
+app.delete('/api/ai/chat/:projectId', authMiddleware, async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const { projectId } = req.params;
+    if (dbConnected) {
+      await ConversationModel.deleteOne({ projectId, userId });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 async function generateFinancialHandler(req: Request, res: Response): Promise<any> {
   try {
     const userId = (req as any).user.id;
-    const { projectId, businessIdea, businessModel, currency = 'EGP' } = req.body;
+    const { projectId, businessIdea, businessModel, currency = 'EGP', locale } = req.body;
     const context = await loadOwnedProjectContext(projectId, userId);
     const contextStr = buildContextString(context);
     const resolvedIdea = getBusinessIdeaFromContext(context, businessIdea);
@@ -1030,7 +1052,7 @@ async function generateFinancialHandler(req: Request, res: Response): Promise<an
       projectId,
       'financial',
       { businessIdea: resolvedIdea, businessModel: resolvedModel, context },
-      () => runFinancialAgent(projectId, resolvedIdea, resolvedModel, contextStr),
+      () => runFinancialAgent(projectId, resolvedIdea, resolvedModel, contextStr, locale || 'en'),
       'deepseek-v4-flash'
     );
 
@@ -1072,7 +1094,7 @@ async function generateFinancialHandler(req: Request, res: Response): Promise<an
 async function generateBrandingHandler(req: Request, res: Response): Promise<any> {
   try {
     const userId = (req as any).user.id;
-    const { projectId } = req.body;
+    const { projectId, locale } = req.body;
     const context = await loadOwnedProjectContext(projectId, userId);
     const selectedOpportunity = context.selectedOpportunity;
     const businessPlan = getLatestBusinessPlanFromState(context);
@@ -1089,7 +1111,7 @@ async function generateBrandingHandler(req: Request, res: Response): Promise<any
       projectId,
       'branding',
       { selectedOpportunity, businessPlan, context },
-      () => runBrandingAgent(projectId, selectedOpportunity, businessPlan, buildContextString(context)),
+      () => runBrandingAgent(projectId, selectedOpportunity, businessPlan, buildContextString(context), locale || 'en'),
       'deepseek-v4-flash'
     );
 
@@ -1129,7 +1151,7 @@ async function generateBrandingHandler(req: Request, res: Response): Promise<any
 async function generateMarketingHandler(req: Request, res: Response): Promise<any> {
   try {
     const userId = (req as any).user.id;
-    const { projectId } = req.body;
+    const { projectId, locale } = req.body;
     const context = await loadOwnedProjectContext(projectId, userId);
     const businessPlan = getLatestBusinessPlanFromState(context);
     const brandIdentity = context.branding;
@@ -1146,7 +1168,7 @@ async function generateMarketingHandler(req: Request, res: Response): Promise<an
       projectId,
       'marketing',
       { brandIdentity, businessPlan, context },
-      () => runMarketingAgent(projectId, brandIdentity, businessPlan, buildContextString(context)),
+      () => runMarketingAgent(projectId, brandIdentity, businessPlan, buildContextString(context), locale || 'en'),
       'deepseek-v4-flash'
     );
 
@@ -1186,7 +1208,7 @@ async function generateMarketingHandler(req: Request, res: Response): Promise<an
 async function generatePitchHandler(req: Request, res: Response): Promise<any> {
   try {
     const userId = (req as any).user.id;
-    const { projectId } = req.body;
+    const { projectId, locale } = req.body;
     const context = await loadOwnedProjectContext(projectId, userId);
     const businessPlan = getLatestBusinessPlanFromState(context);
     const brandIdentity = context.branding;
@@ -1203,7 +1225,7 @@ async function generatePitchHandler(req: Request, res: Response): Promise<any> {
       projectId,
       'pitch',
       { businessPlan, brandIdentity, context },
-      () => runPitchAgent(projectId, businessPlan, brandIdentity, buildContextString(context)),
+      () => runPitchAgent(projectId, businessPlan, brandIdentity, buildContextString(context), locale || 'en'),
       'deepseek-v4-flash'
     );
 
@@ -1278,12 +1300,12 @@ app.post(
 
 
 
+app.use(errorHandler);
+
 if (require.main === module) {
   app.listen(PORT, () => {
     console.info(`Creator Engine backend running on http://localhost:${PORT}`);
   });
 }
-
-app.use(errorHandler);
 
 export { app };

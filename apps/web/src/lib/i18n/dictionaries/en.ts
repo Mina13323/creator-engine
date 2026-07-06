@@ -310,12 +310,19 @@ export const en = {
   faq: {
     title: 'Frequently asked questions',
     q1: 'What is Creator Engine and how does it work?',
+    a1: 'Creator Engine is an AI-powered platform that helps aspiring entrepreneurs and students generate, validate, and build structured business plans. It uses a combination of LLMs, Autonomous Agents, and localized knowledge to guide you from idea to execution.',
     q2: 'Is Creator Engine tailored for the Egyptian market?',
+    a2: 'Yes! Creator Engine uses a specialized Knowledge Base (RAG) loaded with Egyptian market insights, local pricing trends, and business frameworks to ensure the generated concepts are practical and relevant to the local market.',
     q3: 'How does the Multi-Agent architecture work?',
+    a3: 'Our Multi-Agent architecture delegates tasks to specialized AI agents. For example, the Idea Agent brainstorms concepts, the Validation Agent scores feasibility, the Business Agent builds the canvas, and the Marketing Agent creates launch strategies—all working together autonomously.',
     q4: 'Can I use Creator Engine if I only have a budget and skills, but no idea?',
+    a4: 'Absolutely. You can input your budget, skills, and interests into the Founder Profile, and our Idea Generator will propose hyper-localized, tailored business opportunities that fit your exact constraints.',
     q5: 'What is the AI Trinity Strategy?',
+    a5: 'The AI Trinity Strategy is our core foundation: Intelligence (our underlying LLMs), Action (our Multi-Agent workflow that acts on your behalf), and Knowledge (our FAISS Vector Database providing real-world local context).',
     q6: 'How does this differ from just asking ChatGPT?',
-    q7: 'Who is AI Foundry?'
+    a6: 'Unlike ChatGPT, which provides generic conversational answers, Creator Engine follows a structured entrepreneurial framework. It grounds its reasoning in real local data (RAG) and produces comprehensive, ready-to-use artifacts like financial models, pitch decks, and lean canvases.',
+    q7: 'Who is AI Foundry?',
+    a7: 'AI Foundry is the team of developers and AI specialists who built Creator Engine to empower the next generation of founders in Egypt and the MENA region.'
   },
   footer: {
     desc: 'Creator Engine by AI Foundry. GenAI / Entrepreneurship / SaaS.',

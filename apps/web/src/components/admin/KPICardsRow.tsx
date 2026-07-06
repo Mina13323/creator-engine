@@ -8,8 +8,8 @@ export function KPICardsRow({ stats }: { stats: ModerationStats }) {
       title: 'Active Users', 
       value: stats.activeUsers.toLocaleString(), 
       icon: Users, 
-      color: 'text-indigo-400 border-indigo-500/10 hover:border-indigo-500/30', 
-      bgGlow: 'bg-indigo-500/10',
+      color: 'text-emerald-400 border-emerald-500/10 hover:border-emerald-500/30', 
+      bgGlow: 'bg-emerald-500/10',
       sub: 'Total registered platform creators' 
     },
     { 

@@ -22,12 +22,12 @@ export default function CreditIndicator() {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={() => setShowPricingModal(true)}
-      className="flex items-center gap-2 bg-gradient-to-r from-blue-900/40 to-indigo-900/40 border border-blue-500/30 px-3 py-1.5 rounded-full hover:bg-blue-800/40 transition-colors"
+      className="flex items-center gap-2 bg-gradient-to-r from-emerald-950 via-emerald-900 to-slate-950 border border-emerald-300/70 px-3 py-1.5 rounded-full shadow-[0_0_18px_rgba(16,185,129,0.25)] hover:border-emerald-200 hover:shadow-[0_0_24px_rgba(16,185,129,0.38)] transition-all"
     >
-      <Sparkles className="w-4 h-4 text-blue-400" />
-      <span className="text-sm font-medium text-blue-200">
+      <Sparkles className="w-4 h-4 text-emerald-100 drop-shadow-[0_0_6px_rgba(209,250,229,0.9)]" />
+      <span className="text-sm font-extrabold text-white tracking-wide drop-shadow-[0_1px_4px_rgba(0,0,0,0.75)]">
         {isDemo ? (
-          <span className="bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded text-xs">{t('pricing.demoMode')}</span>
+          <span className="bg-emerald-200 text-emerald-950 px-2 py-0.5 rounded text-xs font-extrabold">{t('pricing.demoMode')}</span>
         ) : (
           `${(credits || 0).toLocaleString()} ${t('pricing.credits')}`
         )}

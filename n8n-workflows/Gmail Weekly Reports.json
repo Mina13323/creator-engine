@@ -1,0 +1,110 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks"
+            }
+          ]
+        }
+      },
+      "id": "64ba30fc-908f-4b0d-a767-ec2406a7448d",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5000/api/portal/reports/generate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzcl8xNzgzMjg4NDgzMzgzIiwiZW1haWwiOiJvbWFhYXJtb2hhbWVkMjExQGdtYWlsLmNvbSIsImlhdCI6MTc4MzI5MDcyMSwiZXhwIjoxNzgzODk1NTIxfQ.n2fhk6gJliJUwSq_96qVDy7nYTyz0Dt2sB_Yu7cLe2I"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4a818a7e-fd79-4fa7-b8b4-8a2ae4927e14",
+      "name": "Fetch API Report Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        208,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.adminEmails }}",
+        "subject": "Creator Engine - Weekly Analytics Report",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"utf-8\">\n  <title>Creator Engine System Report</title>\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n  <link href=\"https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap\" rel=\"stylesheet\">\n  <style>\n    body { \n      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif; \n      background-color: #fcfcfc; \n      color: #2e403d; \n      margin: 0; \n      padding: 30px 20px; \n    }\n    .container { \n      max-width: 600px; \n      margin: 0 auto; \n      background: #ffffff; \n      border-radius: 24px; \n      overflow: hidden; \n      box-shadow: 0 20px 50px rgba(0, 132, 101, 0.05); \n      border: 1px solid #e4f3ee; \n    }\n    .header { \n      background: linear-gradient(135deg, #2e403d 0%, #008465 100%); \n      padding: 40px 30px; \n      text-align: center; \n      color: #ffffff; \n    }\n    .header h1 { \n      margin: 0; \n      font-size: 26px; \n      font-weight: 800; \n      letter-spacing: -0.5px; \n    }\n    .header p { \n      margin: 6px 0 0 0; \n      font-size: 13px; \n      color: #a3d9cb; \n      text-transform: uppercase;\n      letter-spacing: 1px;\n      font-weight: 600;\n    }\n    .content { \n      padding: 35px 30px; \n    }\n    .grid { \n      display: table; \n      width: 100%; \n      table-layout: fixed; \n      margin-bottom: 25px; \n    }\n    .grid-col { \n      display: table-cell; \n      width: 50%; \n      padding: 8px; \n    }\n    .card { \n      background: #fbfdfc; \n      border: 1px solid #e4f3ee; \n      border-radius: 16px; \n      padding: 20px 16px; \n      text-align: center; \n      transition: all 0.2s ease;\n    }\n    .card-title { \n      font-size: 11px; \n      text-transform: uppercase; \n      color: #8fa8a2; \n      font-weight: 700; \n      letter-spacing: 1px; \n      margin-bottom: 8px; \n    }\n    .card-value { \n      font-size: 26px; \n      font-weight: 800; \n      color: #2e403d; \n    }\n    .table-container { \n      width: 100%; \n      border-collapse: collapse; \n      margin-top: 10px; \n    }\n    .table-container th { \n      background: #e4f3ee; \n      color: #008465; \n      font-weight: 800; \n      font-size: 12px; \n      text-align: left; \n      padding: 12px 14px; \n      border-radius: 4px;\n    }\n    .table-container td { \n      padding: 14px; \n      border-bottom: 1px solid #e4f3ee; \n      font-size: 13px; \n      color: #2e403d; \n    }\n    .feature-item { \n      margin-bottom: 18px; \n    }\n    .feature-header {\n      font-size: 13px;\n      margin-bottom: 6px;\n    }\n    .feature-name { \n      color: #2e403d; \n      font-weight: 600; \n      float: left; \n    }\n    .feature-value { \n      color: #008465; \n      font-weight: 700; \n      float: right; \n    }\n    .progress-track {\n      background: #e4f3ee;\n      height: 6px;\n      border-radius: 3px;\n      overflow: hidden;\n      width: 100%;\n    }\n    .progress-bar {\n      background: #008465;\n      height: 100%;\n      border-radius: 3px;\n    }\n    .footer { \n      background: #fbfdfc; \n      padding: 25px; \n      text-align: center; \n      font-size: 11px; \n      color: #8fa8a2; \n      border-top: 1px solid #e4f3ee; \n    }\n    .badge { \n      display: inline-block; \n      padding: 5px 10px; \n      font-size: 10px; \n      font-weight: 700; \n      border-radius: 8px; \n      text-transform: uppercase;\n      letter-spacing: 0.5px;\n    }\n    .badge-success { \n      background-color: #e4f3ee; \n      color: #008465; \n    }\n    .badge-admin { \n      background-color: #2e403d; \n      color: #ffffff; \n    }\n    .clearfix { \n      clear: both; \n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>Creator Engine</h1>\n      <p>System Diagnostics &amp; Analytics Report</p>\n    </div>\n    <div class=\"content\">\n      <div class=\"grid\">\n        <div class=\"grid-col\">\n          <div class=\"card\">\n            <div class=\"card-title\">Total Users</div>\n            <div class=\"card-value\">{{ $json.totalUsers }}</div>\n          </div>\n        </div>\n        <div class=\"grid-col\">\n          <div class=\"card\">\n            <div class=\"card-title\">New Signups</div>\n            <div class=\"card-value\" style=\"color: #008465;\">+{{ $json.recentSignups }}</div>\n          </div>\n        </div>\n      </div>\n      <div class=\"grid\" style=\"margin-top: -10px;\">\n        <div class=\"grid-col\">\n          <div class=\"card\">\n            <div class=\"card-title\">Agent Success Rate</div>\n            <div class=\"card-value\" style=\"color: #008465;\">\n              {{ Math.round(($json.statusBreakdown.success / $json.totalRuns) * 100) }}%\n            </div>\n          </div>\n        </div>\n        <div class=\"grid-col\">\n          <div class=\"card\">\n            <div class=\"card-title\">Credits Spent</div>\n            <div class=\"card-value\" style=\"color: #2e403d;\">{{ $json.totalCreditsConsumed }}</div>\n          </div>\n        </div>\n      </div>\n\n      <!-- Section Title: Registrations -->\n      <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"border-collapse: collapse; margin: 35px 0 20px 0;\">\n        <tr>\n          <td style=\"width: 4px; background-color: #008465; border-radius: 2px;\">&nbsp;</td>\n          <td style=\"padding-left: 10px; font-size: 13px; font-weight: 800; color: #2e403d; text-transform: uppercase; letter-spacing: 1px; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\">Recent User Registrations</td>\n        </tr>\n      </table>\n\n      <table class=\"table-container\">\n        <thead>\n          <tr>\n            <th>Name</th>\n            <th>Email</th>\n            <th>Role</th>\n          </tr>\n        </thead>\n        <tbody>\n          {{ $json.users.map(u => `\n            <tr>\n              <td><strong>${u.name}</strong></td>\n              <td>${u.email}</td>\n              <td><span class=\"badge ${u.role === 'admin' ? 'badge-admin' : 'badge-success'}\">${u.role}</span></td>\n            </tr>\n          `).join('') }}\n        </tbody>\n      </table>\n\n      <!-- Section Title: Token Usage -->\n      <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"border-collapse: collapse; margin: 35px 0 20px 0;\">\n        <tr>\n          <td style=\"width: 4px; background-color: #008465; border-radius: 2px;\">&nbsp;</td>\n          <td style=\"padding-left: 10px; font-size: 13px; font-weight: 800; color: #2e403d; text-transform: uppercase; letter-spacing: 1px; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\">Token Usage Breakdown</td>\n        </tr>\n      </table>\n\n      <div style=\"margin-top: 15px;\">\n        {{\n          Object.entries($json.featureBreakdown).map(([feature, amount]) => {\n            const percentage = $json.totalCreditsConsumed > 0 ? Math.round((Math.abs(amount) / $json.totalCreditsConsumed) * 100) : 0;\n            return `\n              <div class=\"feature-item\">\n                <div class=\"feature-header\">\n                  <span class=\"feature-name\">${feature}</span>\n                  <span class=\"feature-value\">${Math.abs(amount)} Credits (${percentage}%)</span>\n                  <div class=\"clearfix\"></div>\n                </div>\n                <div class=\"progress-track\">\n                  <div class=\"progress-bar\" style=\"width: ${percentage}%\"></div>\n                </div>\n              </div>\n            `;\n          }).join('')\n        }}\n      </div>\n    </div>\n    <div class=\"footer\">\n      This is an automated system report. To configure alert settings, visit the System Policies inside your Admin Dashboard.\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        0
+      ],
+      "id": "86894681-9cf9-46cc-be70-2edf46b30137",
+      "name": "Send a message",
+      "webhookId": "a8e68fc9-94db-40bd-a823-870a69045f52",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "4i4dQfksF2Waz6f1",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch API Report Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch API Report Data": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e7acb740-8541-4e20-9a75-d6aa21c9527b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6c90d3f9359bf109833e919a38a614f313106dd872e3af2f4a027c93f5c2333b"
+  },
+  "nodeGroups": [],
+  "id": "FJ4gk1Sd3EVv9onp",
+  "tags": []
+}

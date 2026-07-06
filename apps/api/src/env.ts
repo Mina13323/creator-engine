@@ -5,6 +5,11 @@ import path from 'path';
 const envPath = path.resolve(__dirname, '../../../.env');
 dotenv.config({ path: envPath });
 
+const booleanFromEnv = z.preprocess((value) => {
+  if (typeof value === 'string') return value.toLowerCase() === 'true';
+  return value;
+}, z.boolean());
+
 const envSchema = z.object({
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
   JWT_SECRET: z.string().min(1, 'JWT_SECRET is required'),
@@ -34,6 +39,18 @@ const envSchema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string().optional(),
   CLOUDINARY_API_KEY: z.string().optional(),
   CLOUDINARY_API_SECRET: z.string().optional(),
+
+  // Weekly report and content flag email delivery
+  WEEKLY_REPORT_ENABLED: booleanFromEnv.default(false),
+  SMTP_HOST: z.string().optional(),
+  SMTP_PORT: z.coerce.number().default(587),
+  SMTP_SECURE: booleanFromEnv.default(false),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
+  SMTP_FROM: z.string().optional(),
+  WEEKLY_REPORT_RECIPIENTS: z.string().optional(),
+  CONTENT_FLAG_ALERT_RECIPIENTS: z.string().optional(),
+  WEEKLY_REPORT_CHECK_INTERVAL_MS: z.coerce.number().default(60 * 60 * 1000),
 });
 
 const _env = envSchema.safeParse(process.env);

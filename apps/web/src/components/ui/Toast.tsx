@@ -32,8 +32,8 @@ const ToastItem = ({ error, onRemove }: { error: AppError; onRemove: (id: string
       </div>
     ),
     info: (
-      <div className="p-1.5 bg-indigo-500/10 rounded-lg border border-indigo-500/20">
-        <Info className="w-4 h-4 text-indigo-400" />
+      <div className="p-1.5 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+        <Info className="w-4 h-4 text-emerald-400" />
       </div>
     )
   };
@@ -41,7 +41,7 @@ const ToastItem = ({ error, onRemove }: { error: AppError; onRemove: (id: string
   const cardStyles = {
     error: 'border-l-3 border-l-rose-500/90 shadow-[0_8px_30px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(4,8,20)] border-y border-r border-slate-200/80 dark:border-slate-800/60',
     warning: 'border-l-3 border-l-amber-500/90 shadow-[0_8px_30px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(4,8,20)] border-y border-r border-slate-200/80 dark:border-slate-800/60',
-    info: 'border-l-3 border-l-indigo-500/90 shadow-[0_8px_30px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(4,8,20)] border-y border-r border-slate-200/80 dark:border-slate-800/60'
+    info: 'border-l-3 border-l-emerald-500/90 shadow-[0_8px_30px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(4,8,20)] border-y border-r border-slate-200/80 dark:border-slate-800/60'
   };
 
   const type = error.type || 'error';

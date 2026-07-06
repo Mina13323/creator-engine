@@ -65,7 +65,7 @@ export function SpeakButton({
           ${sizeClasses}
           ${
             isActive
-              ? 'bg-indigo-100 text-indigo-700 border border-indigo-200 hover:bg-indigo-200'
+              ? 'bg-emerald-100 text-emerald-700 border border-emerald-200 hover:bg-emerald-200'
               : 'bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200 hover:text-slate-700'
           }
           ${className}
@@ -79,7 +79,7 @@ export function SpeakButton({
                 <span
                   key={i}
                   style={{ animationDelay: `${i * 0.12}s` }}
-                  className="w-[3px] bg-indigo-500 rounded-full animate-[tts-bar_0.8s_ease-in-out_infinite_alternate]"
+                  className="w-[3px] bg-emerald-500 rounded-full animate-[tts-bar_0.8s_ease-in-out_infinite_alternate]"
                 />
               ))}
             </span>

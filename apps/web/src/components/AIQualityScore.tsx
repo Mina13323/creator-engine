@@ -61,7 +61,7 @@ export const AIQualityScore = ({ evaluation }: AIQualityScoreProps) => {
                 initial={{ width: 0 }}
                 animate={{ width: `${metric.value}%` }}
                 transition={{ duration: 1, delay: 0.2 }}
-                className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"
+                className="h-full bg-gradient-to-r from-[#008465] to-[#00b37e] rounded-full"
               />
             </div>
           </div>
@@ -71,7 +71,7 @@ export const AIQualityScore = ({ evaluation }: AIQualityScoreProps) => {
       {recommendations && recommendations.length > 0 && (
         <div className="pt-6 border-t border-white/5">
           <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
-            <span className="text-indigo-400">✧</span> AI Recommendations
+            <span className="text-emerald-400">✧</span> AI Recommendations
           </h3>
           <ul className="flex flex-col gap-3">
             {recommendations.map((rec, idx) => (
@@ -82,7 +82,7 @@ export const AIQualityScore = ({ evaluation }: AIQualityScoreProps) => {
                 transition={{ delay: 0.4 + idx * 0.1 }}
                 className="text-gray-300 text-sm flex items-start gap-3 bg-white/5 p-4 rounded-xl"
               >
-                <div className="min-w-1.5 min-h-1.5 bg-indigo-400 rounded-full mt-2 shadow-[0_0_8px_rgba(129,140,248,0.8)]" />
+                <div className="min-w-1.5 min-h-1.5 bg-emerald-400 rounded-full mt-2 shadow-[0_0_8px_rgba(0,179,126,0.8)]" />
                 <span className="leading-relaxed">{rec}</span>
               </motion.li>
             ))}

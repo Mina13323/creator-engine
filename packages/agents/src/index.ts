@@ -86,13 +86,15 @@ async function callN8n<T>(workflowPath: string, payload: any): Promise<N8nWebhoo
 export async function runFounderAgent(
   projectId: string,
   onboardingData: any,
-  contextStr: string = ''
+  contextStr: string = '',
+  locale: string = 'en'
 ): Promise<Partial<FounderProfile> | null> {
   contextStr = (await import('./egyptContext').then(m => m.buildEgyptContextString(JSON.stringify(onboardingData)))) + (contextStr ? '\n\n' + contextStr : '');
   const result = await callN8n<Partial<FounderProfile>>('founder-analysis-flow', {
     projectId,
     data: onboardingData,
-    contextStr
+    contextStr,
+    locale
   });
 
   if (result && result.success) {
@@ -100,7 +102,11 @@ export async function runFounderAgent(
   }
   
   console.info('[FounderAgent] n8n unavailable — calling Fireworks LLM directly...');
-  const systemPrompt = `You are an expert startup founder analyst. Output ONLY valid JSON matching this schema:
+  const languageInstruction = locale === 'ar' ? 'Output your response in Arabic. Ensure JSON keys remain in English.' : 'Output your response in English.';
+  const systemPrompt = `You are an expert startup founder analyst. 
+${languageInstruction}
+
+Output ONLY valid JSON matching this schema:
 {
   "founderType": "String",
   "strengths": ["String", "String"],
@@ -129,13 +135,15 @@ ${contextStr ? '\nProject Context:\n' + contextStr : ''}`;
 export async function runOpportunityAgent(
   projectId: string,
   founderProfile: FounderProfile,
-  contextStr: string = ''
+  contextStr: string = '',
+  locale: string = 'en'
 ): Promise<BusinessOpportunity[] | null> {
   contextStr = (await import('./egyptContext').then(m => m.buildEgyptContextString(JSON.stringify(founderProfile)))) + (contextStr ? '\n\n' + contextStr : '');
   const result = await callN8n<BusinessOpportunity[]>('opportunity-discovery-flow', {
     projectId,
     founderProfile,
-    contextStr
+    contextStr,
+    locale
   });
 
   if (result && result.success && Array.isArray(result.data)) {
@@ -143,7 +151,10 @@ export async function runOpportunityAgent(
   }
 
   console.info('[OpportunityAgent] n8n unavailable — calling Fireworks LLM directly...');
+  const languageInstruction = locale === 'ar' ? 'Output your response in Arabic. Ensure JSON keys remain in English.' : 'Output your response in English.';
   const systemPrompt = `You are an expert startup opportunity generator. Based on the founder's profile, generate 2-3 tailored business opportunities.
+${languageInstruction}
+
 Output ONLY a JSON object containing an "opportunities" array. Example schema:
 {
   "opportunities": [
@@ -306,7 +317,8 @@ ${contextStr ? '\nProject Context:\n' + contextStr : ''}`;
   const rawJson = await callFireworksChat(systemPrompt, userPrompt, {
     model: 'accounts/fireworks/models/deepseek-v4-flash',
     response_format: { type: 'json_object' },
-    max_tokens: 8192
+    max_tokens: 8192,
+    timeoutMs: 90000
   });
 
   const parsed = parseLLMJson<any>(rawJson);
@@ -327,7 +339,8 @@ export async function runFinancialAgent(
   projectId: string,
   businessIdea: string,
   businessModel: string,
-  contextStr: string = ''
+  contextStr: string = '',
+  locale: string = 'en'
 ): Promise<any | null> {
   const financialUrl = process.env.FINANCIAL_ENGINE_URL;
   let result: any = null;
@@ -342,7 +355,7 @@ export async function runFinancialAgent(
         'Content-Type': 'application/json',
         'User-Agent': 'CreatorEngine/1.0'
       },
-      body: JSON.stringify({ projectId, businessIdea, businessModel, contextStr }),
+      body: JSON.stringify({ projectId, businessIdea, businessModel, contextStr, locale }),
       signal: AbortSignal.timeout(30000),
     });
 
@@ -354,28 +367,25 @@ export async function runFinancialAgent(
     }
   } catch (e) {
     console.warn('[FinancialAgent] Direct URL failed, falling back to shared n8n:', e);
-    result = await callN8n<any>('financial-engine', { projectId, businessIdea, businessModel, contextStr });
+    result = await callN8n<any>('financial-engine', { projectId, businessIdea, businessModel, contextStr, locale });
   }
 
   // 1. Retrieve Egyptian market/pricing context via MongoDB vector search (RAG)
   let ragContext = contextStr;
   try {
-    const searchPrompt = `${businessIdea} ${businessModel} Egyptian market pricing costs`;
-    console.log('[FinancialAgent] Fetching RAG documents for query:', searchPrompt);
-    const ragDocs = await queryRAG(searchPrompt, 3);
-    const formattedDocs = ragDocs.map((doc: any) => `[${doc.title}]\n${doc.content}`).join('\n\n');
-    
-    if (formattedDocs) {
-      ragContext = ragContext 
-        ? `${ragContext}\n\nLocal Market Context:\n${formattedDocs}`
-        : formattedDocs;
+    const ragDocs = await queryRAG(`Pricing and costs for ${businessIdea} in Egypt using ${businessModel}`, 4);
+    if (ragDocs && ragDocs.length > 0) {
+      ragContext += '\n\nMarket Data:\n' + ragDocs.map((doc: any) => `[${doc.title}]\n${doc.content}`).join('\n\n');
     }
   } catch (err) {
     console.warn('[FinancialAgent] RAG query failed, proceeding with fallback content:', err);
   }
 
   console.info('[FinancialAgent] n8n unavailable — calling Fireworks LLM directly...');
+  const languageInstruction = locale === 'ar' ? 'Output your response in Arabic. Ensure JSON keys remain in English.' : 'Output your response in English.';
   const systemPrompt = `You are a startup financial modeler for the Egyptian market (values in EGP). Generate a realistic financial projection based on the business idea and model.
+${languageInstruction}
+
 Your response MUST be a valid JSON object matching this schema:
 {
   "financial": {
@@ -419,13 +429,16 @@ ${ragContext ? '\nContext:\n' + ragContext : ''}`;
     console.log('[FinancialAgent] Calling LLM...');
     rawJson = await callFireworksChat(systemPrompt, userPrompt, {
       model: 'accounts/fireworks/models/deepseek-v4-flash',
-      response_format: { type: 'json_object' }
+      response_format: { type: 'json_object' },
+      max_tokens: 8192,
+      timeoutMs: 90000
     });
 
     if (!rawJson) {
       console.warn('[FinancialAgent] Primary Fireworks model (deepseek-v4-flash) failed. Trying fallback...');
       rawJson = await callLLMWithFallback(systemPrompt, userPrompt, {
-        response_format: { type: 'json_object' }
+        response_format: { type: 'json_object' },
+        timeoutMs: 90000
       });
     }
 
@@ -509,14 +522,16 @@ ${ragContext ? '\nContext:\n' + ragContext : ''}`;
 export async function runCofounderAgent(
   message: string,
   projectContext: any,
-  contextStr: string = ''
+  contextStr: string = '',
+  locale: string = 'en'
 ): Promise<any> {
   const projectId = projectContext?.id || projectContext?.projectId;
   contextStr = (await import('./egyptContext').then(m => m.buildEgyptContextString(JSON.stringify(projectContext)))) + (contextStr ? '\n\n' + contextStr : '');
   const n8nResult = await callN8n<any>('cofounder-chat-flow', {
     message,
     projectContext,
-    contextStr
+    contextStr,
+    locale
   });
 
   if (n8nResult && n8nResult.success) {
@@ -532,7 +547,9 @@ export async function runCofounderAgent(
   const ragContext = ragDocs.map((doc: any) => `[${doc.title}]\n${doc.content}`).join('\n\n');
 
   console.info('[Agents] Falling back to direct LLM fetch...');
+  const languageInstruction = locale === 'ar' ? 'Output your response in Arabic.' : 'Output your response in English.';
   const systemPrompt = `You are the Principal AI Consultant and Cofounder. You are actively building the user's startup. 
+${languageInstruction}
 Use the following context to provide tailored advice.
 
 ${contextStr}
@@ -571,7 +588,8 @@ export async function runBrandingAgent(
   projectId: string,
   selectedOpportunity: SelectedOpportunity | any,
   businessPlan: BusinessPlan | any,
-  contextStr: string = ''
+  contextStr: string = '',
+  locale: string = 'en'
 ): Promise<Partial<BrandIdentity> | null> {
 
   // ── 1. Try n8n workflow first ───────────────────────────────────────────
@@ -580,7 +598,8 @@ export async function runBrandingAgent(
     projectId,
     opportunity: selectedOpportunity,
     businessPlan,
-    contextStr
+    contextStr,
+    locale
   });
 
   if (n8nResult && n8nResult.success) {
@@ -597,7 +616,8 @@ export async function runBrandingAgent(
 
   // ── 3. Call Gemini (or Fireworks fallback) ──────────────────────────────
   const prompt = AGENT_PROMPTS.BRANDING_AGENT;
-  const systemPrompt = `${prompt.system}\n\n${contextStr ? 'Project Context:\n' + contextStr : ''}`;
+  const languageInstruction = locale === 'ar' ? 'Output your response in Arabic. Ensure JSON keys remain in English.' : 'Output your response in English.';
+  const systemPrompt = `${prompt.system}\n\n${languageInstruction}\n\n${contextStr ? 'Project Context:\n' + contextStr : ''}`;
   
   const rawJson = await callLLMWithFallback(
     systemPrompt,
@@ -646,7 +666,8 @@ export async function runMarketingAgent(
   projectId: string,
   brandIdentity: BrandIdentity | any,
   businessPlan: BusinessPlan | any,
-  contextStr: string = ''
+  contextStr: string = '',
+  locale: string = 'en'
 ): Promise<Partial<MarketingCampaign> | null> {
 
   // ── 1. Try n8n workflow first (includes Tavily search) ─────────────────
@@ -655,7 +676,8 @@ export async function runMarketingAgent(
     projectId,
     brandIdentity,
     businessPlan,
-    contextStr
+    contextStr,
+    locale
   });
 
   if (n8nResult && n8nResult.success) {
@@ -675,7 +697,8 @@ export async function runMarketingAgent(
 
   // ── 3. Call Gemini (or Fireworks fallback) ──────────────────────────────
   const prompt = AGENT_PROMPTS.MARKETING_AGENT;
-  const systemPrompt = `${prompt.system}\n\n${contextStr ? 'Project Context:\n' + contextStr : ''}`;
+  const languageInstruction = locale === 'ar' ? 'Output your response in Arabic. Ensure JSON keys remain in English.' : 'Output your response in English.';
+  const systemPrompt = `${prompt.system}\n\n${languageInstruction}\n\n${contextStr ? 'Project Context:\n' + contextStr : ''}`;
   
   const rawJson = await callLLMWithFallback(
     systemPrompt,
@@ -735,7 +758,8 @@ export async function runPitchAgent(
   projectId: string,
   businessPlan: BusinessPlan | any,
   brandIdentity: BrandIdentity | any,
-  contextStr: string = ''
+  contextStr: string = '',
+  locale: string = 'en'
 ): Promise<Partial<PitchDeck> | null> {
 
   // ── 1. Try n8n workflow first ───────────────────────────────────────────
@@ -744,7 +768,8 @@ export async function runPitchAgent(
     projectId,
     businessPlan,
     brandIdentity,
-    contextStr
+    contextStr,
+    locale
   });
 
   if (n8nResult && n8nResult.success) {
@@ -764,7 +789,8 @@ export async function runPitchAgent(
 
   // ── 3. Call Gemini (or Fireworks fallback) ──────────────────────────────
   const prompt = AGENT_PROMPTS.PITCH_AGENT;
-  const systemPrompt = `${prompt.system}\n\n${contextStr ? 'Project Context:\n' + contextStr : ''}`;
+  const languageInstruction = locale === 'ar' ? 'Output your response in Arabic. Ensure JSON keys remain in English.' : 'Output your response in English.';
+  const systemPrompt = `${prompt.system}\n\n${languageInstruction}\n\n${contextStr ? 'Project Context:\n' + contextStr : ''}`;
   
   const rawJson = await callLLMWithFallback(
     systemPrompt,

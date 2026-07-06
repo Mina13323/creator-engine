@@ -19,7 +19,7 @@ export function ModerationFeed({
       {feed.map((event) => {
         // Set style configurations based on event type
         let cardBgClass = 'bg-slate-900/40 border-slate-800/80 hover:border-slate-800';
-        let iconContainerClass = 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20';
+        let iconContainerClass = 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
         let icon = <FileText className="w-4 h-4" />;
         let title = 'New Venture Created';
         let description = event.details || `Project engine initialization completed successfully.`;
@@ -37,14 +37,12 @@ export function ModerationFeed({
           title = 'New User Registered';
           description = event.details || `User signed up to the platform.`;
         } else if (event.type === 'Agent Execution') {
-          cardBgClass = 'bg-blue-500/5 border-blue-500/10 hover:border-blue-500/20';
-          iconContainerClass = 'bg-blue-500/10 text-blue-400 border border-blue-500/20';
+          cardBgClass = 'bg-emerald-500/5 border-emerald-500/10 hover:border-emerald-500/20';
+          iconContainerClass = 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
           icon = <Cpu className="w-4 h-4" />;
           title = 'AI Agent Execution Log';
           description = event.details || `AI agent process thread finalized.`;
-        }
-
-        const isFlagged = event.type === 'Flagged Project';
+        }        const isFlagged = event.type === 'Flagged Project';
 
         return (
           <div 

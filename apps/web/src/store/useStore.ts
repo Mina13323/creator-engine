@@ -37,6 +37,7 @@ interface StoreState {
   conversations: any;
   setActiveConversation: any;
   loadConversations: any;
+  deleteConversation: any;
   activeConversationId: any;
   generateImage: any;
   brandIdentity: any;
@@ -111,10 +112,45 @@ export const useStore = create<StoreState>((set, get) => ({
   restoreProject: () => {},
   deleteProject: () => {},
 
-  clearChat: () => {},
+  clearChat: () => set({ chatMessages: [], activeConversationId: null }),
   conversations: [],
-  setActiveConversation: () => {},
-  loadConversations: async () => {},
+  setActiveConversation: (conversationId: string) => {
+    const conversation = get().conversations.find((conv: any) => conv.id === conversationId);
+    if (!conversation) return;
+    set({ activeConversationId: conversationId, chatMessages: conversation.messages || [] });
+  },
+  loadConversations: async (projectId: string) => {
+    try {
+      const messages = await authClient.get<ChatMessage[]>(`/ai/chat/${projectId}`);
+      const firstUserMessage = messages.find(msg => msg.sender === 'user')?.message;
+      const conversation = messages.length > 0
+        ? [{
+            id: projectId,
+            projectId,
+            title: firstUserMessage ? firstUserMessage.slice(0, 48) : 'AI Cofounder Chat',
+            messages,
+            updatedAt: messages[messages.length - 1]?.timestamp || new Date()
+          }]
+        : [];
+      set({
+        conversations: conversation,
+        activeConversationId: conversation.length ? projectId : null,
+        chatMessages: messages
+      });
+    } catch (e) {
+      console.warn('Failed to load AI chat history', e);
+      set({ conversations: [], activeConversationId: null, chatMessages: [] });
+    }
+  },
+  deleteConversation: async (projectId: string) => {
+    try {
+      await authClient.delete<{ success: boolean }>(`/ai/chat/${projectId}`);
+      set({ conversations: [], activeConversationId: null, chatMessages: [] });
+    } catch (e) {
+      console.error('Failed to delete AI chat history', e);
+      throw e;
+    }
+  },
   activeConversationId: null,
   generateImage: async () => {},
   brandIdentity: null,
@@ -122,7 +158,8 @@ export const useStore = create<StoreState>((set, get) => ({
   generateBranding: async (projectId: string) => {
     set({ brandingLoading: true });
     try {
-      const res = await authClient.post<{ brandIdentity: any }>('/branding/generate', { projectId });
+      const locale = typeof window !== 'undefined' ? localStorage.getItem('app-locale') || 'en' : 'en';
+      const res = await authClient.post<{ brandIdentity: any }>('/branding/generate', { projectId, locale });
       set(state => ({
         brandIdentity: res.brandIdentity,
         ventureState: state.ventureState
@@ -189,6 +226,8 @@ export const useStore = create<StoreState>((set, get) => ({
       ventureState: null,
       activeTab: 'dashboard',
       chatMessages: [],
+      conversations: [],
+      activeConversationId: null,
       opportunities: [],
       selectedOpportunity: null,
       isSelecting: false,
@@ -241,12 +280,7 @@ export const useStore = create<StoreState>((set, get) => ({
         loading: false
       });
 
-      try {
-        const chatData = await authClient.get<ChatMessage[]>(`/ai/chat/${projectId}`);
-        set({ chatMessages: chatData });
-      } catch {
-        set({ chatMessages: [] });
-      }
+      await get().loadConversations(projectId);
     } catch (e) {
       console.warn('Failed to load project state', e);
       set({ loading: false });
@@ -280,7 +314,8 @@ export const useStore = create<StoreState>((set, get) => ({
   analyzeFounder: async (projectId, data) => {
     set({ loading: true, loadingMessage: 'Analyzing Founder Profile...' });
     try {
-      const res = await authClient.post<{ founderProfile: FounderProfile }>('/founder/analyze', { projectId, data });
+      const locale = typeof window !== 'undefined' ? localStorage.getItem('app-locale') || 'en' : 'en';
+      const res = await authClient.post<{ founderProfile: FounderProfile }>('/founder/analyze', { projectId, data, locale });
       set(state => ({
         ventureState: {
           id: `vs_${Date.now()}`,
@@ -303,7 +338,8 @@ export const useStore = create<StoreState>((set, get) => ({
   discoverOpportunities: async (projectId) => {
     set({ loading: true, loadingMessage: 'Discovering Startup Opportunities...' });
     try {
-      const res = await authClient.post<{ opportunities: BusinessOpportunity[] }>('/opportunities/discover', { projectId });
+      const locale = typeof window !== 'undefined' ? localStorage.getItem('app-locale') || 'en' : 'en';
+      const res = await authClient.post<{ opportunities: BusinessOpportunity[] }>('/opportunities/discover', { projectId, locale });
       set({ opportunities: res.opportunities, activeTab: 'opportunities', loading: false });
     } catch (e: any) {
       set({ loading: false });
@@ -339,7 +375,8 @@ export const useStore = create<StoreState>((set, get) => ({
   generateRoadmap: async (projectId) => {
     set({ loading: true, loadingMessage: 'Generating execution roadmap...' });
     try {
-      const res = await authClient.post<{ roadmap: any }>('/execution/generate', { projectId });
+      const locale = typeof window !== 'undefined' ? localStorage.getItem('app-locale') || 'en' : 'en';
+      const res = await authClient.post<{ roadmap: any }>('/execution/generate', { projectId, locale });
       set(state => ({
         currentOutputs: { ...(state.currentOutputs || {}), roadmap: res.roadmap },
         ventureState: state.ventureState ? { ...state.ventureState, roadmap: res.roadmap } : state.ventureState,
@@ -366,9 +403,10 @@ export const useStore = create<StoreState>((set, get) => ({
     }
   },
 
-  generateBusinessPlan: async (projectId, locale = 'en') => {
+  generateBusinessPlan: async (projectId, localeArg?: string) => {
     set({ loading: true, loadingMessage: 'Generating Lean Canvas & Business Plan...' });
     try {
+      const locale = localeArg || (typeof window !== 'undefined' ? localStorage.getItem('app-locale') || 'en' : 'en');
       const res = await authClient.post<{ businessPlan: BusinessPlan }>('/business-plan/generate', { projectId, locale });
       set(state => {
         const updatedState = state.ventureState ? { ...state.ventureState, businessPlan: res.businessPlan } : state.ventureState;
@@ -407,12 +445,24 @@ export const useStore = create<StoreState>((set, get) => ({
     }));
 
     try {
+      const locale = typeof window !== 'undefined' ? localStorage.getItem('app-locale') || 'en' : 'en';
       const data = await authClient.post<{ history: ChatMessage[] }>('/ai/chat', {
         projectId: currentProject.id,
-        message
+        message,
+        locale
       });
+      const title = data.history.find(msg => msg.sender === 'user')?.message?.slice(0, 48) || 'AI Cofounder Chat';
+      const conversation = {
+        id: currentProject.id,
+        projectId: currentProject.id,
+        title,
+        messages: data.history,
+        updatedAt: data.history[data.history.length - 1]?.timestamp || new Date()
+      };
       set({
         chatMessages: data.history,
+        conversations: [conversation],
+        activeConversationId: currentProject.id,
         chatLoading: false
       });
     } catch (e) {
@@ -425,7 +475,9 @@ export const useStore = create<StoreState>((set, get) => ({
       currentProject: null,
       ventureState: null,
       activeTab: 'dashboard',
-      chatMessages: []
+      chatMessages: [],
+      conversations: [],
+      activeConversationId: null
     });
   },
 
@@ -436,6 +488,8 @@ export const useStore = create<StoreState>((set, get) => ({
       ventureState: null,
       activeTab: 'dashboard',
       chatMessages: [],
+      conversations: [],
+      activeConversationId: null,
       opportunities: []
     });
   }

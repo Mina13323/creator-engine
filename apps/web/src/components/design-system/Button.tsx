@@ -11,12 +11,12 @@ interface ButtonProps extends HTMLMotionProps<"button"> {
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading, fullWidth, children, disabled, ...props }, ref) => {
-    const baseStyles = "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50";
+    const baseStyles = "inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#008465] disabled:pointer-events-none disabled:opacity-50";
     
     // MD3 styling rules
     const variants = {
-      primary: "bg-[#1A73E8] text-white hover:bg-blue-700 shadow-[0_1px_3px_rgba(60,64,67,0.15)]",
-      secondary: "bg-blue-50 text-[#1A73E8] hover:bg-blue-100",
+      primary: "bg-[#008465] text-white hover:bg-[#007055] shadow-[0_10px_20px_rgba(0,132,101,0.16)]",
+      secondary: "bg-[#e4f3ee] text-[#008465] hover:bg-[#d9eee8]",
       outline: "border border-gray-200 bg-transparent hover:bg-gray-50 text-gray-700",
       ghost: "bg-transparent hover:bg-gray-100 text-gray-700",
       danger: "bg-[#EA4335] text-white hover:bg-red-700 shadow-[0_1px_3px_rgba(60,64,67,0.15)]",

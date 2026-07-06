@@ -113,25 +113,25 @@ const SCHEMES: Record<string, PlanScheme> = {
   // ── PRO: Electric neon noir ─────────────────────────────────────────────────
   pro: {
     cardBg: 'bg-gradient-to-b from-[#0a0518] via-[#0d0620] to-[#080412]',
-    cardBorder: 'border border-indigo-700/40',
-    cardHover: 'hover:border-indigo-500/70',
-    cardShadow: 'hover:shadow-indigo-900/60',
-    decoration: 'absolute inset-0 rounded-2xl overflow-hidden pointer-events-none before:absolute before:inset-0 before:bg-[repeating-linear-gradient(0deg,transparent,transparent_3px,rgba(99,102,241,0.015)_3px,rgba(99,102,241,0.015)_4px)]',
-    headerBg: 'bg-gradient-to-r from-indigo-950/90 to-purple-950/40 border-b border-indigo-800/30',
+    cardBorder: 'border border-emerald-700/40',
+    cardHover: 'hover:border-emerald-500/70',
+    cardShadow: 'hover:shadow-emerald-900/60',
+    decoration: 'absolute inset-0 rounded-2xl overflow-hidden pointer-events-none before:absolute before:inset-0 before:bg-[repeating-linear-gradient(0deg,transparent,transparent_3px,rgba(0,132,101,0.015)_3px,rgba(0,132,101,0.015)_4px)]',
+    headerBg: 'bg-gradient-to-r from-emerald-950/90 to-[#2e403d]/40 border-b border-emerald-800/30',
     Icon: FlaskConical,
-    iconClass: 'text-indigo-400',
+    iconClass: 'text-emerald-400',
     nameClass: 'text-white font-bold tracking-wide text-base',
-    activePill: 'bg-indigo-500/20 text-indigo-200 border border-indigo-500/40 text-[9px] animate-pulse',
-    priceBg: 'bg-indigo-950/50 border border-indigo-600/40 rounded-xl px-4 py-2.5 shadow-[0_0_20px_rgba(99,102,241,0.2)]',
+    activePill: 'bg-emerald-500/20 text-emerald-200 border border-emerald-500/40 text-[9px] animate-pulse',
+    priceBg: 'bg-emerald-950/50 border border-emerald-600/40 rounded-xl px-4 py-2.5 shadow-[0_0_20px_rgba(0,132,101,0.2)]',
     priceText: 'text-white text-2xl font-black tracking-tight',
-    priceUnit: 'text-indigo-400 text-xs',
-    statDivider: 'border-indigo-900/30',
-    statLabel: 'text-indigo-400 uppercase tracking-widest text-[9px] font-semibold',
-    statValue: 'text-indigo-100 font-bold',
-    bulletClass: 'w-1.5 h-1.5 rounded-full bg-indigo-300 shrink-0 mt-1.5 shadow-[0_0_4px_rgba(99,102,241,0.9)]',
-    featureText: 'text-indigo-100 text-xs',
-    editBtn: 'flex-1 bg-indigo-600/10 border border-indigo-600/30 hover:bg-indigo-600/20 hover:border-indigo-500/50 text-indigo-300 hover:text-indigo-100 font-semibold text-xs h-9 rounded-xl transition-all shadow-[0_0_8px_rgba(99,102,241,0.1)] hover:shadow-[0_0_12px_rgba(99,102,241,0.2)]',
-    deleteBtn: 'bg-transparent border border-indigo-900/30 hover:bg-rose-950/30 hover:border-rose-800/40 text-indigo-800 hover:text-rose-400 h-9 w-9 rounded-xl transition-colors',
+    priceUnit: 'text-emerald-400 text-xs',
+    statDivider: 'border-emerald-900/30',
+    statLabel: 'text-emerald-400 uppercase tracking-widest text-[9px] font-semibold',
+    statValue: 'text-emerald-100 font-bold',
+    bulletClass: 'w-1.5 h-1.5 rounded-full bg-emerald-300 shrink-0 mt-1.5 shadow-[0_0_4px_rgba(0,132,101,0.9)]',
+    featureText: 'text-emerald-100 text-xs',
+    editBtn: 'flex-1 bg-emerald-600/10 border border-emerald-600/30 hover:bg-emerald-600/20 hover:border-emerald-500/50 text-emerald-300 hover:text-emerald-100 font-semibold text-xs h-9 rounded-xl transition-all shadow-[0_0_8px_rgba(0,132,101,0.1)] hover:shadow-[0_0_12px_rgba(0,132,101,0.2)]',
+    deleteBtn: 'bg-transparent border border-emerald-900/30 hover:bg-rose-950/30 hover:border-rose-800/40 text-emerald-800 hover:text-rose-400 h-9 w-9 rounded-xl transition-colors',
   },
 
   // ── AGENCY: Gold luxury editorial ───────────────────────────────────────────
@@ -452,9 +452,9 @@ export default function AdminPlansPage() {
               <div className="pt-4 border-t border-slate-800/40 space-y-2">
                 <label className="block text-sm font-semibold text-slate-300">Included Features</label>
                 <div className="flex gap-2">
-                  <input type="text" value={featureInput} onChange={(e) => setFeatureInput(e.target.value)} placeholder="e.g. Unlimited AI runs" className="flex-grow bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition-colors"
+                  <input type="text" value={featureInput} onChange={(e) => setFeatureInput(e.target.value)} placeholder="e.g. Unlimited AI runs" className="flex-grow bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-emerald-500 transition-colors"
                     onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddFeature(); } }} />
-                  <Button type="button" onClick={handleAddFeature} className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs px-4 rounded-xl h-9 shrink-0">Add</Button>
+                  <Button type="button" onClick={handleAddFeature} className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-4 rounded-xl h-9 shrink-0">Add</Button>
                 </div>
                 <div className="bg-slate-950 border border-slate-800 rounded-xl p-3 max-h-[140px] overflow-y-auto space-y-1.5">
                   {features.map((f, i) => (

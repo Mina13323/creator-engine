@@ -8,9 +8,9 @@ interface VentureFunnelProps {
 export function VentureFunnel({ statusCounts }: VentureFunnelProps) {
   const stages = [
     { key: 'draft', label: 'Draft', color: 'from-slate-600 to-slate-500', glow: 'bg-slate-500/10' },
-    { key: 'idea', label: 'Idea Pitch', color: 'from-blue-600 to-cyan-500', glow: 'bg-cyan-500/10' },
+    { key: 'idea', label: 'Idea Pitch', color: 'from-emerald-600 to-cyan-500', glow: 'bg-cyan-500/10' },
     { key: 'validated', label: 'Validated', color: 'from-amber-600 to-yellow-500', glow: 'bg-yellow-500/10' },
-    { key: 'branded', label: 'Branded', color: 'from-purple-600 to-indigo-500', glow: 'bg-indigo-500/10' },
+    { key: 'branded', label: 'Branded', color: 'from-[#2e403d] to-[#00b37e]', glow: 'bg-emerald-500/10' },
     { key: 'marketing-ready', label: 'Marketing Ready', color: 'from-pink-600 to-rose-500', glow: 'bg-rose-500/10' },
     { key: 'active', label: 'Launch Active', color: 'from-emerald-600 to-teal-500', glow: 'bg-emerald-500/10' },
     { key: 'archived', label: 'Archived', color: 'from-slate-800 to-slate-700', glow: 'bg-slate-700/5' },

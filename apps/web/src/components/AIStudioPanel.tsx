@@ -108,11 +108,11 @@ export default function AIStudioPanel() {
             onClick={() => setActiveTab('image')}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
               activeTab === 'image' 
-                ? 'bg-indigo-50 text-indigo-700 border border-indigo-100 shadow-sm' 
+                ? 'bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm' 
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-transparent'
             }`}
           >
-            <ImagePlus className={`w-5 h-5 ${activeTab === 'image' ? 'text-indigo-600' : 'text-slate-400'}`} />
+            <ImagePlus className={`w-5 h-5 ${activeTab === 'image' ? 'text-emerald-600' : 'text-slate-400'}`} />
             {t('aiStudio.imageGen')}
           </button>
           
@@ -120,11 +120,11 @@ export default function AIStudioPanel() {
             onClick={() => setActiveTab('media')}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
               activeTab === 'media' 
-                ? 'bg-indigo-50 text-indigo-700 border border-indigo-100 shadow-sm' 
+                ? 'bg-emerald-50 text-emerald-700 border border-emerald-100 shadow-sm' 
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-transparent'
             }`}
           >
-            <Video className={`w-5 h-5 ${activeTab === 'media' ? 'text-indigo-600' : 'text-slate-400'}`} />
+            <Video className={`w-5 h-5 ${activeTab === 'media' ? 'text-emerald-600' : 'text-slate-400'}`} />
             {t('aiStudio.mediaGen')}
           </button>
 
@@ -167,7 +167,7 @@ export default function AIStudioPanel() {
                     value={imagePrompt}
                     onChange={(e) => setImagePrompt(e.target.value)}
                     placeholder={t('aiStudio.promptPlaceholder')}
-                    className="w-full p-4 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 resize-none h-32 text-slate-700"
+                    className="w-full p-4 rounded-xl border border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 resize-none h-32 text-slate-700"
                     disabled={isGenerating}
                   />
                 </div>
@@ -183,8 +183,8 @@ export default function AIStudioPanel() {
                         disabled={isGenerating}
                         className={`px-4 py-2 rounded-full text-xs font-medium border transition-colors ${
                           imageStyle === style 
-                            ? 'bg-indigo-600 text-white border-indigo-600' 
-                            : 'bg-white text-slate-600 border-slate-300 hover:border-indigo-300 hover:bg-indigo-50'
+                            ? 'bg-emerald-600 text-white border-emerald-600' 
+                            : 'bg-white text-slate-600 border-slate-300 hover:border-emerald-300 hover:bg-emerald-50'
                         }`}
                       >
                         {style}
@@ -197,7 +197,7 @@ export default function AIStudioPanel() {
                   <button
                     type="submit"
                     disabled={!imagePrompt.trim() || isGenerating}
-                    className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white px-6 py-3 rounded-xl font-semibold transition-colors"
+                    className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white px-6 py-3 rounded-xl font-semibold transition-colors"
                   >
                     {isGenerating ? (
                       <>
@@ -245,8 +245,8 @@ export default function AIStudioPanel() {
               exit="exit"
               className="h-full flex flex-col items-center justify-center text-center max-w-md mx-auto py-12"
             >
-              <div className="w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center mb-6">
-                <Video className="w-8 h-8 text-indigo-500" />
+              <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-6">
+                <Video className="w-8 h-8 text-emerald-500" />
               </div>
               <h2 className="text-xl font-bold text-slate-800 mb-2">Video & Audio Generation</h2>
               <p className="text-slate-500 mb-8 text-sm">
@@ -313,7 +313,7 @@ export default function AIStudioPanel() {
                 <button
                   disabled={uploading}
                   onClick={() => fileInputRef.current?.click()}
-                  className="aspect-square rounded-xl border-2 border-dashed border-slate-300 hover:border-indigo-400 hover:bg-indigo-50 transition-colors flex flex-col items-center justify-center text-slate-500 hover:text-indigo-600 gap-3 disabled:opacity-50"
+                  className="aspect-square rounded-xl border-2 border-dashed border-slate-300 hover:border-emerald-400 hover:bg-emerald-50 transition-colors flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600 gap-3 disabled:opacity-50"
                 >
                   <Layers className="w-8 h-8" />
                   <span className="text-sm font-medium">{uploading ? 'Uploading...' : 'Upload Asset'}</span>

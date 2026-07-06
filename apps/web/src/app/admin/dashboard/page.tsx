@@ -218,14 +218,14 @@ export default function AdminDashboardPage() {
             <CardContent className="space-y-4 pt-5">
               
               {/* Manage Users Button */}
-              <div className="p-4 bg-indigo-500/5 border border-indigo-500/10 hover:border-indigo-500/25 rounded-2xl transition-colors">
-                <h3 className="font-bold text-sm text-indigo-300">Creator Directory Mod</h3>
+              <div className="p-4 bg-emerald-500/5 border border-emerald-500/10 hover:border-emerald-500/25 rounded-2xl transition-colors">
+                <h3 className="font-bold text-sm text-emerald-300">Creator Directory Mod</h3>
                 <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
                   Elevate/demote roles, manage user wallets, or execute platform accounts suspension.
                 </p>
                 <button
                   onClick={() => router.push('/admin/users')}
-                  className="mt-3.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl shadow-md transition-colors"
+                  className="mt-3.5 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl shadow-md transition-colors"
                 >
                   Launch User Directory
                 </button>
@@ -294,7 +294,7 @@ export default function AdminDashboardPage() {
                 <div className="p-3.5 rounded-2xl border border-slate-800/80 hover:border-slate-800 bg-slate-900/30 text-left flex flex-col justify-between">
                   <div>
                     <h4 className="font-bold text-xs text-slate-300 flex items-center gap-1.5">
-                      <Database className="w-3.5 h-3.5 text-indigo-400" />
+                      <Database className="w-3.5 h-3.5 text-emerald-400" />
                       Seed Data
                     </h4>
                     <p className="text-[10px] text-slate-500 mt-1 leading-normal">
@@ -304,7 +304,7 @@ export default function AdminDashboardPage() {
                   <button
                     onClick={handleSeedPlans}
                     disabled={seedingLoading}
-                    className="mt-3 text-[10px] font-bold bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-300 border border-indigo-500/20 py-1.5 px-3 rounded-lg text-center transition-colors"
+                    className="mt-3 text-[10px] font-bold bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-300 border border-emerald-500/20 py-1.5 px-3 rounded-lg text-center transition-colors"
                   >
                     {seedingLoading ? 'Seeding...' : 'Seed Plans'}
                   </button>

@@ -1,0 +1,9 @@
+# Keep broad scanners from reporting generated or vendored files.
+graphify-out/
+.kilo/worktrees/
+.kilo/node_modules/
+node_modules/
+.next/
+dist/
+build/
+.turbo/

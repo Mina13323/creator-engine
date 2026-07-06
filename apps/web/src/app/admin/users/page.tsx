@@ -68,7 +68,7 @@ export default function UsersPage() {
     }
   };
 
-  if (loading) return <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 animate-spin text-indigo-500" /></div>;
+  if (loading) return <div className="flex justify-center p-12"><Loader2 className="w-8 h-8 animate-spin text-emerald-500" /></div>;
 
   return (
     <div className="space-y-6">
@@ -95,14 +95,14 @@ export default function UsersPage() {
                   <select
                     value={u.role || 'user'}
                     onChange={(e) => handleRoleChange(u.id, e.target.value, u.role || 'user')}
-                    className={`bg-slate-950 border text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer ${
+                    className={`bg-slate-950 border text-xs font-semibold rounded-xl px-2.5 py-1.5 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer ${
                       u.role === 'admin'
-                        ? 'text-indigo-400 border-indigo-500/30'
+                        ? 'text-emerald-400 border-emerald-500/30'
                         : 'text-slate-400 border-slate-800'
                     }`}
                   >
                     <option value="user" className="bg-[#0c1222] text-slate-300">User</option>
-                    <option value="admin" className="bg-[#0c1222] text-indigo-400">Admin</option>
+                    <option value="admin" className="bg-[#0c1222] text-emerald-400">Admin</option>
                   </select>
                 </td>
                 <td className="px-6 py-4">

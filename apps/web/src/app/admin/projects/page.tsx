@@ -161,7 +161,7 @@ export default function AdminProjectsPage() {
       case 'validated':
         return 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20';
       case 'branded':
-        return 'text-indigo-400 bg-indigo-500/10 border-indigo-500/20';
+        return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
       case 'marketing-ready':
         return 'text-pink-400 bg-pink-500/10 border-pink-500/20';
       case 'idea':
@@ -281,14 +281,12 @@ export default function AdminProjectsPage() {
                   </td>
 
                   {/* Flag Status */}
-                  <td className="px-6 py-4">
-                    {p.isFlagged ? (
+                  <td className="px-6 py-4">                    {p.isFlagged ? (
                       <div className="flex flex-col gap-1">
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/10 border border-rose-500/20 text-rose-400">
                           <Flag className="w-3.5 h-3.5 fill-rose-400/20" />
                           Flagged
-                        </span>
-                        {p.flagReason && (
+                        </span>                        {p.flagReason && (
                           <span className="text-[11px] text-slate-400 max-w-[180px] truncate" title={p.flagReason}>
                             Reason: {p.flagReason}
                           </span>

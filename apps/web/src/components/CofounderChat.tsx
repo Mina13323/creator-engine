@@ -35,7 +35,7 @@ export default function CofounderChat() {
           <div className="relative">
             <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
             <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500"></span>
-            <Brain className="w-5 h-5 text-blue-400" />
+            <Brain className="w-5 h-5 text-emerald-400" />
           </div>
           <div>
             <h3 className="text-sm font-bold text-white leading-none">CEO Copilot</h3>
@@ -53,8 +53,8 @@ export default function CofounderChat() {
       >
         {chatMessages.length === 0 ? (
           <div className="h-full flex flex-col justify-center items-center text-center p-4">
-            <div className="w-10 h-10 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-3">
-              <Sparkles className="w-5 h-5 text-blue-400" />
+            <div className="w-10 h-10 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-3">
+              <Sparkles className="w-5 h-5 text-emerald-400" />
             </div>
             <h4 className="text-xs font-bold text-slate-200">Start Brainstorming</h4>
             <p className="text-[10px] text-slate-500 max-w-[200px] leading-relaxed mt-1">
@@ -74,7 +74,7 @@ export default function CofounderChat() {
                 {/* Avatar */}
                 <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs border ${
                   isUser 
-                    ? 'border-blue-500/30 bg-blue-600/10 text-blue-400' 
+                    ? 'border-emerald-500/30 bg-emerald-600/10 text-emerald-400' 
                     : 'border-emerald-500/30 bg-emerald-600/10 text-emerald-400'
                 }`}>
                   {isUser ? <User className="w-3.5 h-3.5" /> : <Brain className="w-3.5 h-3.5" />}
@@ -84,7 +84,7 @@ export default function CofounderChat() {
                 <div className="space-y-1.5">
                   <div className={`p-3 rounded-2xl text-xs leading-relaxed ${
                     isUser 
-                      ? 'bg-blue-600 text-white rounded-tr-none' 
+                      ? 'bg-emerald-600 text-white rounded-tr-none' 
                       : 'bg-slate-900 border border-white/5 text-slate-100 rounded-tl-none'
                   }`}>
                     {msg.message}
@@ -97,7 +97,7 @@ export default function CofounderChat() {
                         text={msg.message} 
                         size="sm" 
                         label="Listen"
-                        className="!bg-blue-600/20 !border-blue-500/30 !text-blue-300 hover:!bg-blue-600/30 hover:!text-blue-200" 
+                        className="!bg-emerald-600/20 !border-emerald-500/30 !text-emerald-300 hover:!bg-emerald-600/30 hover:!text-emerald-200" 
                       />
                       
                       {/* RAG Sources Citations */}
@@ -105,7 +105,7 @@ export default function CofounderChat() {
                         <div className="flex flex-wrap gap-1 items-center">
                           <span className="text-[9px] text-slate-500 mr-1">RAG citation:</span>
                           {msg.ragSources.map((source, sIdx) => (
-                            <span key={sIdx} className="text-[9px] text-blue-400 border border-blue-500/10 bg-blue-500/5 px-1.5 py-0.5 rounded flex items-center gap-0.5 font-medium">
+                            <span key={sIdx} className="text-[9px] text-emerald-400 border border-emerald-500/10 bg-emerald-500/5 px-1.5 py-0.5 rounded flex items-center gap-0.5 font-medium">
                               {source} <ExternalLink className="w-2 h-2" />
                             </span>
                           ))}
@@ -152,7 +152,7 @@ export default function CofounderChat() {
           <button
             type="submit"
             disabled={!input.trim() || chatLoading}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white flex items-center justify-center transition-colors"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white flex items-center justify-center transition-colors"
           >
             <Send className="w-3.5 h-3.5" />
           </button>

@@ -107,15 +107,15 @@ export default function BrandingPanel() {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-[#E8F0FE] rounded-2xl">
-                <Sparkles className="w-8 h-8 text-[#1A73E8]" />
+              <div className="p-3 bg-[#e4f3ee] rounded-2xl">
+                <Sparkles className="w-8 h-8 text-[#008465]" />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-1">
                   {brandIdentity.brandName}
                 </h2>
-                <p className="text-[#1A73E8] font-medium mb-3 text-lg">{brandIdentity.tagline}</p>
-                <blockquote className="border-l-4 border-[#1A73E8] pl-4 italic text-gray-600 text-sm leading-relaxed">
+                <p className="text-[#008465] font-medium mb-3 text-lg">{brandIdentity.tagline}</p>
+                <blockquote className="border-l-4 border-[#008465] pl-4 italic text-gray-600 text-sm leading-relaxed">
                   &ldquo;{brandIdentity.slogan}&rdquo;
                 </blockquote>
               </div>
@@ -214,7 +214,7 @@ export default function BrandingPanel() {
           <Card hoverable className="h-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Palette className="w-5 h-5 text-[#1A73E8]" />
+                <Palette className="w-5 h-5 text-[#008465]" />
                 Color System
               </CardTitle>
             </CardHeader>
@@ -249,14 +249,14 @@ export default function BrandingPanel() {
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
               <div>
                 <CardTitle className="flex items-center gap-2">
-                  <ImagePlus className="w-5 h-5 text-[#1A73E8]" />
+                  <ImagePlus className="w-5 h-5 text-[#008465]" />
                   AI Logo Studio
                 </CardTitle>
                 <p className="text-gray-500 text-xs mt-1">
                   Custom logo prompt engineered by AI. Click generate to build vector assets.
                 </p>
               </div>
-              <span className="text-xs text-[#1A73E8] border border-blue-200 bg-blue-50 px-3 py-1 rounded-full flex items-center gap-1.5 font-semibold">
+              <span className="text-xs text-[#008465] border border-[#ccede3] bg-[#e4f3ee] px-3 py-1 rounded-full flex items-center gap-1.5 font-semibold">
                 <Sparkles className="w-3.5 h-3.5" /> FLUX Active
               </span>
             </CardHeader>
@@ -278,7 +278,7 @@ export default function BrandingPanel() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={generatedLogo} alt="Generated Logo" className="rounded-xl max-h-56 object-contain shadow-sm border border-[rgba(60,64,67,0.12)] bg-white" />
                   <div className="w-full flex justify-end mt-4">
-                    <a href={generatedLogo} target="_blank" rel="noreferrer" className="text-sm text-[#1A73E8] hover:text-blue-700 font-semibold flex items-center gap-1.5">
+                    <a href={generatedLogo} target="_blank" rel="noreferrer" className="text-sm text-[#008465] hover:text-emerald-700 font-semibold flex items-center gap-1.5">
                       Download High-Res Vector <Compass className="w-4 h-4" />
                     </a>
                   </div>

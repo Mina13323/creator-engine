@@ -39,7 +39,7 @@ export function AILoadingOverlay({ message }: { message?: string }) {
       >
         {/* Animated background gradient */}
         <div className="absolute -top-32 -right-32 w-64 h-64 bg-emerald-500/10 blur-[60px] rounded-full animate-pulse" />
-        <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-indigo-500/10 blur-[60px] rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-emerald-500/10 blur-[60px] rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
 
         <div className="relative z-10 flex flex-col items-center text-center">
           <motion.div 
@@ -90,7 +90,7 @@ export function AILoadingOverlay({ message }: { message?: string }) {
 
           <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mt-8">
             <motion.div 
-              className="h-full bg-gradient-to-r from-emerald-500 to-indigo-500 rounded-full"
+              className="h-full bg-gradient-to-r from-emerald-500 to-[#00b37e] rounded-full"
               initial={{ width: '0%' }}
               animate={{ width: `${((stepIndex + 1) / 5) * 100}%` }}
               transition={{ ease: "easeInOut", duration: 0.8 }}

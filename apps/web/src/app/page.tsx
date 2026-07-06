@@ -189,8 +189,8 @@ export default function AppPage() {
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 z-50 flex items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 flex gap-1">
-            <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm skew-x-12"></div>
-            <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm -skew-x-12"></div>
+            <div className="w-1/2 h-full bg-[#008465] rounded-sm skew-x-12"></div>
+            <div className="w-1/2 h-full bg-[#008465] rounded-sm -skew-x-12"></div>
           </div>
           <span className="font-bold text-lg text-slate-900 tracking-tight">Creator Engine</span>
         </div>
@@ -237,8 +237,8 @@ export default function AppPage() {
           {/* Logo */}
           <div className="hidden md:flex items-center gap-2 mb-8">
             <div className="w-5 h-5 flex gap-1">
-              <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm skew-x-12"></div>
-              <div className="w-1/2 h-full bg-[#1A73E8] rounded-sm -skew-x-12"></div>
+              <div className="w-1/2 h-full bg-[#008465] rounded-sm skew-x-12"></div>
+              <div className="w-1/2 h-full bg-[#008465] rounded-sm -skew-x-12"></div>
             </div>
             <span className="font-bold text-xl text-slate-900 tracking-tight">Creator Engine</span>
           </div>
@@ -297,21 +297,21 @@ export default function AppPage() {
                 {isActive && (
                   <motion.div
                     layoutId="sidebar-active-pill"
-                    className="absolute inset-0 bg-[#E8F0FE] rounded-full -z-10"
+                    className="absolute inset-0 bg-emerald-50 rounded-full -z-10"
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   />
                 )}
-                <Icon className={`w-4 h-4 relative z-10 transition-colors ${isActive ? 'text-[#1A73E8]' : 'text-slate-500 group-hover:text-slate-700'}`} />
-                <span className={`relative z-10 ${isActive ? 'text-[#1A73E8] font-bold' : 'text-slate-700 font-medium'}`}>{item.label}</span>
+                <Icon className={`w-4 h-4 relative z-10 transition-colors ${isActive ? 'text-emerald-700' : 'text-slate-500 group-hover:text-slate-700'}`} />
+                <span className={`relative z-10 ${isActive ? 'text-emerald-700 font-bold' : 'text-slate-700 font-medium'}`}>{item.label}</span>
               </button>
             );
           })}
           {user?.role === 'admin' && (
             <Link
               href="/admin/dashboard"
-              className="w-full flex items-center gap-3 px-3 py-2 rounded-full text-sm font-semibold text-[#1A73E8] bg-blue-50 hover:bg-blue-100 mt-2 transition-all"
+              className="w-full flex items-center gap-3 px-3 py-2 rounded-full text-sm font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 mt-2 transition-all"
             >
-              <ShieldAlert className="w-4 h-4 text-[#1A73E8]" />
+              <ShieldAlert className="w-4 h-4 text-emerald-700" />
               Admin Dashboard
             </Link>
           )}
@@ -340,7 +340,7 @@ export default function AppPage() {
                   className="w-6 h-6 rounded-full object-cover" 
                 />
               ) : (
-                <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-xs font-bold">
+                <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">
                   {userInitial}
                 </div>
               )}
@@ -373,31 +373,36 @@ export default function AppPage() {
           </div>
           <div className="flex items-center gap-4">
             {/* Language Switcher */}
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setLocale(locale === 'en' ? 'ar' : 'en')}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition-colors shadow-sm"
+              className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full shadow-[0_8px_20px_rgba(0,132,101,0.08)] hover:bg-emerald-100 hover:border-emerald-300 transition-all text-xs font-extrabold text-emerald-800 tracking-wide"
               title="Switch Language / تغيير اللغة"
             >
-              <Globe className="w-3.5 h-3.5 text-slate-500" />
+              <Globe className="w-3.5 h-3.5 text-[#008465]" />
               <span>{locale === 'en' ? 'العربية' : 'English'}</span>
-            </button>
+            </motion.button>
 
             <CreditIndicator />
-            <span className="text-slate-500 text-xs font-semibold bg-slate-50 px-3 py-1 rounded-full border border-slate-100">
-              {userDisplayName}
-            </span>
-            <button
+            <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full shadow-[0_8px_20px_rgba(15,23,42,0.06)] text-xs font-extrabold text-slate-700 tracking-wide">
+              <UserCircle className="w-3.5 h-3.5 text-[#008465]" />
+              <span>{userDisplayName}</span>
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => logout()}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-rose-50/80 border border-rose-100 text-rose-600 hover:bg-rose-100 hover:text-rose-700 transition-all shadow-sm"
+              className="flex items-center gap-1.5 bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-full shadow-[0_8px_20px_rgba(225,29,72,0.08)] hover:bg-rose-100 hover:border-rose-300 transition-all text-xs font-extrabold text-rose-700 tracking-wide"
             >
-              <LogOut className="w-3.5 h-3.5" />
+              <LogOut className="w-3.5 h-3.5 text-rose-600" />
               {t('sidebar.logout')}
-            </button>
+            </motion.button>
           </div>
         </header>
 
         {/* Workspace Viewport */}
-        <div className="flex-grow overflow-y-auto p-6 md:p-8">
+        <div className={`flex-grow min-h-0 ${activeTab === 'ai-consultant' ? 'overflow-hidden p-0' : 'overflow-y-auto p-6 md:p-8'}`}>
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -405,7 +410,7 @@ export default function AppPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="flex-1 w-full max-w-6xl mx-auto"
+              className={`flex-1 w-full ${activeTab === 'ai-consultant' ? 'h-full max-w-none' : 'max-w-6xl mx-auto'}`}
             >
               {activeTab === 'dashboard' && <Dashboard />}
             {activeTab === 'opportunities' && <OpportunityExplorer />}

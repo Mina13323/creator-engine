@@ -31,7 +31,7 @@ export function RevenueAnalytics({
         <Card className="bg-gradient-to-b from-[#0f172a] to-[#0c1222] border-slate-800/80 rounded-2xl shadow-xl p-5 md:col-span-1 flex flex-col justify-between">
           <div>
             <h3 className="text-sm font-bold text-slate-200 border-b border-slate-800/50 pb-3 flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-indigo-400" />
+              <CreditCard className="w-4 h-4 text-emerald-400" />
               Plan Distributions
             </h3>
             <div className="mt-4 space-y-3.5">
@@ -48,7 +48,7 @@ export function RevenueAnalytics({
                       <span className="text-xs font-bold text-slate-200 block capitalize">{tier.label}</span>
                       <span className="text-[10px] text-slate-500 mt-0.5 block">{tier.desc}</span>
                     </div>
-                    <span className="text-xs font-mono font-bold text-indigo-300 bg-indigo-500/15 border border-indigo-500/20 px-2.5 py-0.5 rounded-lg">
+                    <span className="text-xs font-mono font-bold text-emerald-300 bg-emerald-500/15 border border-emerald-500/20 px-2.5 py-0.5 rounded-lg">
                       {count}
                     </span>
                   </div>

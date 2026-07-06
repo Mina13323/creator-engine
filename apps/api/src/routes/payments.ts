@@ -155,91 +155,23 @@ router.post('/paymob/create', authMiddleware, async (req: Request, res: Response
 
 
 
-// Localhost testing redirect handler
+// Browser redirect handler — only redirects, does NOT grant credits (webhook handles that)
+const FRONTEND_REDIRECT = process.env.FRONTEND_URL || 'http://localhost:3000';
 router.get('/paymob/verify-redirect', async (req: Request, res: Response): Promise<any> => {
   try {
     const { merchant_order_id, success } = req.query;
-    
-    if (!merchant_order_id) {
-        return res.send(`<script>window.top.location.href = "${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard?payment_error=missing_order_id";</script>`);
-    }
-
-    const tx = await PaymentTransactionModel.findOne({ paymentIntentId: merchant_order_id as string });
-    if (!tx) {
-        return res.send(`<script>window.top.location.href = "${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard?payment_error=not_found";</script>`);
-    }
-
-    if (tx.status === 'paid') {
-        return res.send(`<script>window.top.location.href = "${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard?payment_success=true";</script>`);
-    }
-
-    if (success === 'true' || String(success) === 'true') {
-        tx.status = 'paid';
-        await tx.save();
-
-        if (tx.metadata && tx.metadata.packId) {
-            let pack;
-            try {
-                pack = await CreditPackModel.findOne({ slug: tx.metadata.packId });
-                if (!pack) pack = await CreditPackModel.findById(tx.metadata.packId);
-            } catch(e) {}
-            
-            if (pack) {
-                const wallet = await CreditWalletModel.findOne({ userId: tx.userId });
-                if (wallet) {
-                    wallet.availableCredits += pack.credits;
-                    wallet.totalPurchasedCredits += pack.credits;
-                    await wallet.save();
-                }
-            }
-        } else if (tx.metadata && tx.metadata.planId) {
-            let plan;
-            try {
-                plan = await SubscriptionPlanModel.findOne({ slug: tx.metadata.planId });
-                if (!plan) plan = await SubscriptionPlanModel.findById(tx.metadata.planId);
-            } catch(e) {}
-            
-            if (plan) {
-                const now = new Date();
-                const nextMonth = new Date();
-                nextMonth.setMonth(now.getMonth() + 1);
-                
-                await UserSubscriptionModel.findOneAndUpdate(
-                    { userId: tx.userId },
-                    { 
-                        planId: plan.slug,
-                        status: 'active',
-                        startsAt: now,
-                        expiresAt: nextMonth,
-                        autoRenew: true
-                    },
-                    { upsert: true, new: true }
-                );
-                
-                const wallet = await CreditWalletModel.findOne({ userId: tx.userId });
-                if (wallet) {
-                    wallet.availableCredits += plan.monthlyCredits;
-                    wallet.totalPurchasedCredits += plan.monthlyCredits;
-                    await wallet.save();
-                }
-            }
-        }
-        
-    } else {
-        tx.status = 'failed';
-        await tx.save();
-    }
-    
-    return res.send(`<script>window.top.location.href = "${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard?payment_success=true";</script>`);
+    const successParam = success === 'true' ? 'payment_success=true' : 'payment_error=failed';
+    return res.send(`<script>window.top.location.href = "${FRONTEND_REDIRECT}/dashboard?${successParam}&order=${merchant_order_id || ''}";</script>`);
   } catch (err: any) {
     console.error('Verify redirect error:', err);
-    return res.send(`<script>window.top.location.href = "${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard?payment_error=server_error";</script>`);
+    return res.send(`<script>window.top.location.href = "${FRONTEND_REDIRECT}/dashboard?payment_error=server_error";</script>`);
   }
 });
 
-router.post('/paymob/verify-redirect', async (req: Request, res: Response): Promise<any> => {
+router.post('/paymob/verify-redirect', authMiddleware, async (req: Request, res: Response): Promise<any> => {
   try {
-    const { merchant_order_id, success } = req.body;
+    const userId = (req as any).user.id;
+    const { merchant_order_id } = req.body;
     
     if (!merchant_order_id) return res.status(400).json({ error: 'Missing merchant_order_id' });
 
@@ -248,70 +180,97 @@ router.post('/paymob/verify-redirect', async (req: Request, res: Response): Prom
         return res.status(404).json({ error: 'Transaction not found' });
     }
 
-    if (tx.status === 'paid') {
-        return res.status(200).json({ message: 'Already processed', wallet: await CreditWalletModel.findOne({ userId: tx.userId }) });
+    // Security: Ensure the transaction belongs to the requesting user
+    if (tx.userId !== userId) {
+        return res.status(403).json({ error: 'Forbidden: transaction does not belong to you' });
     }
 
-    if (success === 'true' || success === true) {
-        tx.status = 'paid';
-        await tx.save();
+    if (tx.status === 'paid') {
+        const wallet = await CreditWalletModel.findOne({ userId });
+        return res.status(200).json({ message: 'Already processed', wallet });
+    }
 
-        if (tx.metadata && tx.metadata.packId) {
-            let pack;
-            try {
-                pack = await CreditPackModel.findOne({ slug: tx.metadata.packId });
-                if (!pack) pack = await CreditPackModel.findById(tx.metadata.packId);
-            } catch(e) {}
-            
-            if (pack) {
-                const wallet = await CreditWalletModel.findOne({ userId: tx.userId });
-                if (wallet) {
-                    wallet.availableCredits += pack.credits;
-                    wallet.totalPurchasedCredits += pack.credits;
-                    await wallet.save();
-                }
+    // Server-side verification: query Paymob for actual payment status
+    // instead of trusting client-side `success` flag
+    let paymentVerified = false;
+    if (PAYMOB_API_KEY) {
+      try {
+        // Authenticate with Paymob
+        const authRes = await fetch('https://accept.paymob.com/api/auth/tokens', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ api_key: PAYMOB_API_KEY })
+        });
+        const authData = await authRes.json();
+
+        if (authData.token) {
+          // Query Paymob for the order status by merchant_order_id
+          const orderRes = await fetch(
+            `https://accept.paymob.com/api/ecommerce/orders?merchant_order_id=${merchant_order_id}`,
+            { headers: { 'Authorization': `Bearer ${authData.token}` } }
+          );
+          const orderData = await orderRes.json();
+          // Paymob returns results array; check if any transaction succeeded
+          const results = orderData.results || (Array.isArray(orderData) ? orderData : [orderData]);
+          for (const order of results) {
+            if (order.paid_amount_cents && order.paid_amount_cents > 0) {
+              paymentVerified = true;
+              break;
             }
-        } else if (tx.metadata && tx.metadata.planId) {
-            let plan;
-            try {
-                plan = await SubscriptionPlanModel.findOne({ slug: tx.metadata.planId });
-                if (!plan) plan = await SubscriptionPlanModel.findById(tx.metadata.planId);
-            } catch(e) {}
-            
-            if (plan) {
-                // Update or create subscription
-                const now = new Date();
-                const nextMonth = new Date();
-                nextMonth.setMonth(now.getMonth() + 1);
-                
-                await UserSubscriptionModel.findOneAndUpdate(
-                    { userId: tx.userId },
-                    { 
-                        planId: plan.slug,
-                        status: 'active',
-                        startsAt: now,
-                        expiresAt: nextMonth,
-                        autoRenew: true
-                    },
-                    { upsert: true, new: true }
-                );
-                
-                // Add credits to wallet
-                const wallet = await CreditWalletModel.findOne({ userId: tx.userId });
-                if (wallet) {
-                    wallet.availableCredits += plan.monthlyCredits;
-                    wallet.totalPurchasedCredits += plan.monthlyCredits;
-                    await wallet.save();
-                }
-            }
+          }
         }
-        
-    } else {
-        tx.status = 'failed';
-        await tx.save();
+      } catch (verifyErr) {
+        console.error('Paymob server-side verification failed:', verifyErr);
+        // Fall through — do NOT grant credits if verification fails
+      }
+    }
+
+    if (!paymentVerified) {
+      return res.status(402).json({ error: 'Payment not confirmed by provider. Please wait for processing or contact support.' });
+    }
+
+    // Atomically claim the transaction to prevent double-spending
+    const claimedTx = await PaymentTransactionModel.findOneAndUpdate(
+      { paymentIntentId: merchant_order_id, status: 'pending' },
+      { $set: { status: 'paid' } },
+      { new: true }
+    );
+
+    if (!claimedTx) {
+      return res.status(200).json({ message: 'Already processed' });
+    }
+
+    // Grant credits/subscription based on transaction type
+    if (claimedTx.metadata && claimedTx.metadata.packId) {
+      let pack;
+      try {
+        pack = await CreditPackModel.findOne({ slug: claimedTx.metadata.packId });
+        if (!pack) pack = await CreditPackModel.findById(claimedTx.metadata.packId);
+      } catch(e) {}
+      if (pack) {
+        await addCredits(userId, pack.credits, 'topup', merchant_order_id);
+      }
+    } else if (claimedTx.metadata && claimedTx.metadata.planId) {
+      let plan;
+      try {
+        plan = await SubscriptionPlanModel.findOne({ slug: claimedTx.metadata.planId });
+        if (!plan) plan = await SubscriptionPlanModel.findById(claimedTx.metadata.planId);
+      } catch(e) {}
+      if (plan) {
+        const now = new Date();
+        const nextMonth = new Date();
+        nextMonth.setMonth(now.getMonth() + 1);
+        await UserSubscriptionModel.findOneAndUpdate(
+          { userId },
+          { planId: plan.slug, status: 'active', startsAt: now, expiresAt: nextMonth, autoRenew: true },
+          { upsert: true, new: true }
+        );
+        await addCredits(userId, plan.monthlyCredits, 'subscription', merchant_order_id);
+      }
     }
     
-    return res.status(200).json({ message: 'Processed' });
+    const wallet = await CreditWalletModel.findOne({ userId });
+    return res.status(200).json({ message: 'Payment verified and processed', wallet });
   } catch (err: any) {
     console.error('Verify redirect error:', err);
     return res.status(500).json({ error: err.message });

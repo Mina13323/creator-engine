@@ -20,7 +20,7 @@ export function DashboardObservability({ observability }: DashboardObservability
     <Card className="bg-gradient-to-b from-[#0f172a] to-[#0c1222] border-slate-800/80 rounded-2xl shadow-xl">
       <CardHeader className="border-b border-slate-800/40 pb-4">
         <CardTitle className="text-base font-bold text-slate-100 flex items-center gap-2">
-          <Activity className="w-4 h-4 text-indigo-400" />
+          <Activity className="w-4 h-4 text-emerald-400" />
           Platform AI Telemetry
         </CardTitle>
       </CardHeader>
@@ -36,7 +36,7 @@ export function DashboardObservability({ observability }: DashboardObservability
               P: {observability.totalPromptTokens.toLocaleString()} | C: {observability.totalCompletionTokens.toLocaleString()}
             </p>
           </div>
-          <div className="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-lg shrink-0">
+          <div className="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg shrink-0">
             <Cpu className="w-4 h-4" />
           </div>
         </div>

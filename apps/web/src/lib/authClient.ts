@@ -17,13 +17,7 @@ async function request<T>(
     ...(options.headers as Record<string, string> || {}),
   };
 
-  // Automatically append local token if available
-  if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('token');
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-  }
+  // Credentials 'include' handles HttpOnly cookie transmission automatically
 
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
@@ -33,9 +27,7 @@ async function request<T>(
 
   // Handle 401 — auto-logout
   if (res.status === 401) {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('token');
-    }
+    // Automatically triggered logout on unauthorized status
     // Dynamically import the store to avoid circular dependencies
     const { useStore } = await import('../store/useStore');
     useStore.getState().logout();
@@ -92,9 +84,6 @@ async function login(body: LoginRequest): Promise<AuthResponse> {
     method: 'POST',
     body: JSON.stringify(body),
   });
-  if (typeof window !== 'undefined' && data.token) {
-    localStorage.setItem('token', data.token);
-  }
   return data;
 }
 
@@ -103,9 +92,6 @@ async function signup(body: SignupRequest): Promise<AuthResponse> {
     method: 'POST',
     body: JSON.stringify(body),
   });
-  if (typeof window !== 'undefined' && data.token) {
-    localStorage.setItem('token', data.token);
-  }
   return data;
 }
 
@@ -114,9 +100,6 @@ async function googleLogin(credential: string): Promise<AuthResponse> {
     method: 'POST',
     body: JSON.stringify({ credential }),
   });
-  if (typeof window !== 'undefined' && data.token) {
-    localStorage.setItem('token', data.token);
-  }
   return data;
 }
 
@@ -126,9 +109,7 @@ async function logout(): Promise<void> {
   } catch {
     // Ignore errors — logout is best-effort on backend
   }
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('token');
-  }
+
 }
 
 async function getMe(): Promise<{ user: AuthUser }> {

@@ -2,8 +2,8 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import React, { ReactNode, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { ReactNode, useRef, useState } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useI18n } from '../lib/i18n/I18nContext';
 import {
   ArrowRight,
@@ -205,6 +205,7 @@ function PlanSheet({ title }: { title: string }) {
 
 export default function LandingPage({ onGetStarted, onLogin, isAuthenticated }: LandingPageProps) {
   const { t, locale, setLocale, dir } = useI18n();
+  const [openFaq, setOpenFaq] = useState<string | null>(null);
 
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -341,14 +342,14 @@ export default function LandingPage({ onGetStarted, onLogin, isAuthenticated }: 
               </div>
               <p className="mt-2 text-sm text-slate-600">{t('hero.ideaAgentDesc')}</p>
             </motion.div>
-            <motion.div className="absolute left-8 top-[420px] w-[355px] rounded-xl bg-white/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.14)] backdrop-blur rtl:right-8 rtl:left-auto" style={{ y: heroCardsY }}>
+            <motion.div className="absolute right-8 top-24 w-[355px] rounded-xl bg-white/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.14)] backdrop-blur rtl:left-8 rtl:right-auto" style={{ y: heroCardsY }}>
               <div className="flex items-center gap-2 text-purple-600 mb-2">
                 <Database className="h-5 w-5" />
                 <span className="font-semibold">{t('hero.ragBase')}</span>
               </div>
               <p className="text-sm text-slate-600">{t('hero.ragBaseDesc')}</p>
             </motion.div>
-            <motion.div className="absolute bottom-4 left-8 w-72 rounded-xl bg-white/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.12)] backdrop-blur rtl:right-8 rtl:left-auto" style={{ y: heroCardsY }}>
+            <motion.div className="absolute bottom-12 right-12 w-72 rounded-xl bg-white/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.12)] backdrop-blur rtl:left-12 rtl:right-auto" style={{ y: heroCardsY }}>
               <p className="text-lg font-medium">{t('hero.businessValidated')}</p>
               <div className="mt-4 flex items-center gap-5">
                 <Donut />
@@ -382,8 +383,8 @@ export default function LandingPage({ onGetStarted, onLogin, isAuthenticated }: 
           <motion.div className="mt-16 grid gap-8 lg:grid-cols-3" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-90px' }}>
             <PremiumCard>
               <ProductMockup t={t} />
-              <h3 className="mt-8 text-2xl font-medium">{t('features.intelligence')}</h3>
-              <p className="mt-5 max-w-[380px] text-base leading-relaxed text-[#4c5661]">
+              <h3 className="mt-8 text-2xl font-medium text-center">{t('features.intelligence')}</h3>
+              <p className="mt-5 mx-auto max-w-[380px] text-base leading-relaxed text-[#4c5661] text-center">
                 {t('features.intelligenceDesc')}
               </p>
             </PremiumCard>
@@ -402,8 +403,8 @@ export default function LandingPage({ onGetStarted, onLogin, isAuthenticated }: 
                   </div>
                 </div>
               </div>
-              <h3 className="mt-8 text-2xl font-medium">{t('features.action')}</h3>
-              <p className="mt-5 max-w-[380px] text-base leading-relaxed text-[#4c5661]">
+              <h3 className="mt-8 text-2xl font-medium text-center">{t('features.action')}</h3>
+              <p className="mt-5 mx-auto max-w-[380px] text-base leading-relaxed text-[#4c5661] text-center">
                 {t('features.actionDesc')}
               </p>
             </PremiumCard>
@@ -421,8 +422,8 @@ export default function LandingPage({ onGetStarted, onLogin, isAuthenticated }: 
                   </div>
                 </div>
               </div>
-              <h3 className="mt-8 text-2xl font-medium">{t('features.knowledge')}</h3>
-              <p className="mt-5 max-w-[380px] text-base leading-relaxed text-[#4c5661]">
+              <h3 className="mt-8 text-2xl font-medium text-center">{t('features.knowledge')}</h3>
+              <p className="mt-5 mx-auto max-w-[380px] text-base leading-relaxed text-[#4c5661] text-center">
                 {t('features.knowledgeDesc')}
               </p>
             </PremiumCard>
@@ -519,12 +520,35 @@ export default function LandingPage({ onGetStarted, onLogin, isAuthenticated }: 
         <Reveal className="mx-auto grid max-w-[1520px] gap-12 px-6 py-20 md:px-12 lg:grid-cols-[360px_1fr] lg:px-20">
           <h2 className="text-4xl font-normal leading-tight tracking-[-0.035em]">{t('faq.title')}</h2>
           <div>
-            {faqKeys.map(key => (
-              <button key={key} className="group flex w-full items-center justify-between border-b border-[#dadada] py-5 text-left text-base font-medium transition-colors hover:text-[#008465]">
-                {t(key)}
-                <ChevronDown className="h-4 w-4 text-[#77808a] transition-transform group-hover:rotate-[-90deg] rtl:group-hover:rotate-[90deg]" />
-              </button>
-            ))}
+            {faqKeys.map(key => {
+              const isOpen = openFaq === key;
+              return (
+                <div key={key} className="border-b border-[#dadada]">
+                  <button 
+                    onClick={() => setOpenFaq(isOpen ? null : key)} 
+                    className="group flex w-full items-center justify-between py-5 text-left text-base font-medium transition-colors hover:text-[#008465]"
+                  >
+                    {t(key)}
+                    <ChevronDown className={`h-4 w-4 text-[#77808a] transition-transform ${isOpen ? 'rotate-180' : 'group-hover:rotate-[-90deg] rtl:group-hover:rotate-[90deg]'}`} />
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="overflow-hidden"
+                      >
+                        <p className="pb-5 pr-8 text-sm leading-relaxed text-[#4c5661]">
+                          {t(key.replace('.q', '.a'))}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
         </Reveal>
       </main>

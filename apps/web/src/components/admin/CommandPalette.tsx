@@ -118,7 +118,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
 
           {/* Creators Section */}
           <div className="space-y-2">
-            <div className="text-[10px] font-mono font-bold text-indigo-400 uppercase tracking-widest flex items-center gap-1.5">
+            <div className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-1.5">
               <Users className="w-3.5 h-3.5" />
               Creators ({filteredUsers.length})
             </div>
@@ -140,7 +140,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                   <div className="flex items-center gap-2 shrink-0">
                     <span className={`text-[9px] font-bold px-2 py-0.5 rounded-md ${
                       user.role === 'admin'
-                        ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20'
+                        ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                         : 'bg-slate-800 text-slate-400 border border-slate-700/50'
                     }`}>
                       {user.role}

@@ -213,7 +213,7 @@ export default function PitchDashboard() {
           <motion.div variants={fadeInUp}>
           <Card className="p-6 border-slate-200 shadow-sm rounded-2xl bg-white h-full print:border-slate-200 print:shadow-none hover:shadow-md transition-all">
             <h3 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2 border-b border-slate-100 pb-3 print:text-black print:border-slate-200">
-              <Users className="w-4 h-4 text-blue-500" />
+              <Users className="w-4 h-4 text-emerald-500" />
               Traction &amp; Milestones
             </h3>
             <p className="text-sm text-slate-700 leading-relaxed italic whitespace-pre-line print:text-slate-800">

@@ -104,7 +104,7 @@ export default function AccountDetails() {
           text: t('account.planAdmin'),
           color: 'text-amber-700 bg-amber-50 border-amber-200',
         }
-      : { text: t('account.planFree'), color: 'text-indigo-700 bg-indigo-50 border-indigo-200' };
+      : { text: t('account.planFree'), color: 'text-emerald-700 bg-emerald-50 border-emerald-200' };
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -132,17 +132,17 @@ export default function AccountDetails() {
       {profile && (
         <>
           {/* Avatar + Name hero */}
-          <div className="bg-gradient-to-br from-indigo-50 via-white to-emerald-50 border border-slate-200 rounded-2xl p-6 flex items-center gap-5 shadow-sm">
+          <div className="bg-gradient-to-br from-emerald-50 via-white to-emerald-50 border border-slate-200 rounded-2xl p-6 flex items-center gap-5 shadow-sm">
             {profile.avatar && !imgError ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={profile.avatar}
                 alt={profile.name || profile.email}
                 onError={() => setImgError(true)}
-                className="w-16 h-16 rounded-full object-cover ring-2 ring-indigo-200"
+                className="w-16 h-16 rounded-full object-cover ring-2 ring-emerald-200"
               />
             ) : (
-              <div className="w-16 h-16 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-2xl font-bold ring-2 ring-indigo-200">
+              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl font-bold ring-2 ring-emerald-200">
                 {userInitial}
               </div>
             )}

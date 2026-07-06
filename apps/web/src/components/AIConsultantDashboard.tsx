@@ -3,18 +3,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../store/useStore';
 import { 
-  Send, Sparkles, User, Brain, ExternalLink, Lightbulb, 
+  Send, Sparkles, User, Brain, ExternalLink, Lightbulb,
   History as HistoryIcon, FileText, Megaphone, CheckCircle2, ChevronRight,
-  ArrowUp, CornerDownLeft
+  ArrowUp, CornerDownLeft, Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { Button, Card, CardContent } from './design-system';
 
 export default function AIConsultantDashboard() {
-  const { chatMessages, sendChatMessage, clearChat, chatLoading, currentProject, conversations, setActiveConversation, loadConversations, activeConversationId } = useStore();
+  const { chatMessages, sendChatMessage, clearChat, chatLoading, currentProject, conversations, setActiveConversation, loadConversations, deleteConversation, activeConversationId } = useStore();
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const [conversationToDelete, setConversationToDelete] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -73,13 +74,13 @@ export default function AIConsultantDashboard() {
   };
 
   return (
-    <div className="h-[calc(100vh-64px)] md:h-screen flex bg-[#F8FAFD] font-sans text-gray-900">
+    <div className="h-full min-h-0 flex overflow-hidden bg-[#F8FAFD] font-sans text-gray-900">
       
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col min-w-0 relative">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0 relative overflow-hidden">
         
         {/* Header — refined with solid background and shadow for absolute fixed position */}
-        <div className="px-6 py-4 border-b border-gray-100/80 flex items-center justify-between sticky top-0 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.02)] z-30">
+        <div className="px-6 py-4 border-b border-[#d9eee8] flex items-center justify-between shrink-0 bg-white/95 shadow-[0_2px_12px_rgba(0,0,0,0.02)] backdrop-blur-xl z-30">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#008465] to-[#00b37e] flex items-center justify-center shadow-sm shadow-emerald-200/50">
               <Sparkles className="w-4 h-4 text-white" />
@@ -98,7 +99,10 @@ export default function AIConsultantDashboard() {
         </div>
 
         {/* Messages Container with project background */}
-        <div className="flex-1 overflow-y-auto px-4 md:px-16 lg:px-28 xl:px-36 py-8 space-y-6 custom-scrollbar bg-[#F8FAFD]">
+        <div className="relative flex-1 min-h-0 overflow-hidden bg-[radial-gradient(circle_at_top_left,rgba(0,132,101,0.08),transparent_30%),linear-gradient(180deg,#F8FAFD_0%,#f1f7f4_100%)]">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-[#F8FAFD] to-transparent z-10" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#f1f7f4] to-transparent z-10" />
+          <div className="h-full overflow-y-auto px-4 md:px-16 lg:px-28 xl:px-36 py-8 pr-3 md:pr-12 lg:pr-24 xl:pr-32 space-y-6 custom-scrollbar chat-scrollbar scroll-smooth">
           {chatMessages.length === 0 ? (
             <div className="h-full flex flex-col justify-center items-center max-w-2xl mx-auto py-12">
               {/* Welcome icon */}
@@ -127,7 +131,7 @@ export default function AIConsultantDashboard() {
                   <button 
                     key={i}
                     onClick={() => handleActionClick(action.prompt)} 
-                    className="p-4 rounded-xl border border-gray-150 bg-white hover:border-emerald-200 hover:bg-emerald-50/20 hover:shadow-sm transition-all duration-200 text-left flex items-start gap-3.5 group"
+                className="p-4 rounded-xl border border-gray-150 bg-white hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-emerald-50/20 hover:shadow-[0_16px_36px_rgba(0,132,101,0.08)] transition-all duration-200 text-left flex items-start gap-3.5 group"
                   >
                     <div className="p-2 bg-gray-50 rounded-lg group-hover:bg-emerald-100/60 transition-colors flex-shrink-0">
                       <action.icon className="w-4 h-4 text-gray-500 group-hover:text-[#008465] transition-colors" />
@@ -163,11 +167,11 @@ export default function AIConsultantDashboard() {
                   <div className={`space-y-1 max-w-[80%] min-w-0`}>
                     {/* Message content */}
                     {isUser ? (
-                      <div className="bg-[#2e403d] text-white px-5 py-3.5 rounded-2xl rounded-br-md text-[15px] leading-relaxed font-normal whitespace-pre-wrap shadow-sm shadow-slate-200">
+                      <div className="bg-[#243833] text-white px-5 py-3.5 rounded-2xl rounded-br-md text-[15px] leading-relaxed font-normal whitespace-pre-wrap shadow-[0_14px_30px_rgba(36,56,51,0.16)]">
                         {msg.message}
                       </div>
                     ) : (
-                      <div className="bg-white border border-[#ccede3] px-5 py-4 rounded-2xl rounded-tl-md shadow-sm">
+                      <div className="bg-white/95 border border-[#ccede3] px-5 py-4 rounded-2xl rounded-tl-md shadow-[0_18px_50px_rgba(0,132,101,0.07)] backdrop-blur">
                         <div className="prose prose-sm prose-emerald max-w-none text-slate-800 leading-relaxed [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_p]:my-2 [&_ul]:my-2 [&_ol]:my-2 [&_li]:my-0.5 [&_h1]:text-lg [&_h2]:text-base [&_h3]:text-sm [&_code]:text-xs [&_code]:bg-[#e4f3ee]/60 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_pre]:bg-[#2e403d] [&_pre]:text-gray-100 [&_pre]:rounded-lg [&_pre]:p-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_strong]:text-emerald-800 [&_strong]:font-semibold">
                           <ReactMarkdown>{msg.message}</ReactMarkdown>
                         </div>
@@ -229,10 +233,11 @@ export default function AIConsultantDashboard() {
             </motion.div>
           )}
           <div ref={messagesEndRef} className="h-4" />
+          </div>
         </div>
 
         {/* Input Area — elevated for high contrast against F8FAFD */}
-        <div className="px-4 md:px-16 lg:px-28 xl:px-36 pb-5 pt-3 bg-gradient-to-t from-[#F8FAFD] via-[#F8FAFD]/95 to-transparent z-20">
+        <div className="shrink-0 px-4 md:px-16 lg:px-28 xl:px-36 pb-5 pt-3 bg-white/80 border-t border-[#d9eee8]/70 backdrop-blur-xl z-20 shadow-[0_-18px_50px_rgba(15,23,42,0.04)]">
           <form onSubmit={handleSubmit} className="relative">
             <div className={`relative flex items-end bg-white border rounded-2xl transition-all duration-200 ${
               isFocused 
@@ -249,7 +254,7 @@ export default function AIConsultantDashboard() {
                 disabled={chatLoading}
                 rows={1}
                 placeholder="Ask the Consultant anything..."
-                className="w-full bg-transparent px-5 py-4 text-[15px] text-gray-900 placeholder-gray-400 focus:outline-none disabled:opacity-50 resize-none leading-relaxed max-h-40"
+                className="w-full bg-transparent px-5 py-4 text-[15px] text-gray-900 placeholder-gray-400 focus:outline-none disabled:opacity-50 resize-none leading-relaxed max-h-40 custom-scrollbar"
               />
               <div className="flex items-center gap-1.5 px-3 pb-3 flex-shrink-0">
                 <div className="hidden sm:flex items-center gap-1 text-[10px] text-gray-300 font-medium mr-1 select-none">
@@ -258,7 +263,7 @@ export default function AIConsultantDashboard() {
                 <button
                   type="submit"
                   disabled={!input.trim() || chatLoading}
-                  className="w-9 h-9 rounded-xl bg-[#008465] hover:bg-[#007055] text-white disabled:opacity-30 disabled:bg-gray-300 flex items-center justify-center transition-all duration-150 shadow-sm"
+                  className="w-9 h-9 rounded-xl bg-[#008465] hover:-translate-y-0.5 hover:bg-[#007055] text-white disabled:translate-y-0 disabled:opacity-30 disabled:bg-gray-300 flex items-center justify-center transition-all duration-150 shadow-[0_10px_20px_rgba(0,132,101,0.22)]"
                 >
                   <ArrowUp className="w-4 h-4" />
                 </button>
@@ -272,8 +277,8 @@ export default function AIConsultantDashboard() {
       </div>
 
       {/* Memory Side-panel */}
-      <div className="w-72 bg-white border-l border-gray-150 flex flex-col hidden lg:flex">
-        <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+      <div className="w-72 min-h-0 bg-white border-l border-gray-150 flex-col hidden lg:flex">
+        <div className="p-4 border-b border-gray-100 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2 text-sm text-gray-700 font-semibold">
             <HistoryIcon className="w-4 h-4 text-gray-400" />
             Memory
@@ -283,7 +288,7 @@ export default function AIConsultantDashboard() {
           </Button>
         </div>
         
-        <div className="flex-1 p-4 overflow-y-auto space-y-5">
+        <div className="flex-1 min-h-0 p-4 overflow-y-auto space-y-5 custom-scrollbar">
           {/* Project Context */}
           <div className="space-y-2">
             <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Project</h3>
@@ -312,24 +317,92 @@ export default function AIConsultantDashboard() {
             ) : (
               <div className="space-y-1">
                 {conversations.map((conv: any, idx: number) => (
-                  <button
+                  <div
                     key={conv.id || `conv-${idx}`}
-                    onClick={() => setActiveConversation(conv.id)}
-                    className={`w-full text-left text-[13px] p-2.5 rounded-lg transition-all duration-150 group flex items-center justify-between ${
-                      activeConversationId === conv.id 
-                        ? 'bg-emerald-50 text-[#008465] font-medium border border-emerald-100' 
+                    className={`w-full rounded-lg transition-all duration-150 group flex items-center ${
+                      activeConversationId === conv.id
+                        ? 'bg-emerald-50 text-[#008465] font-medium border border-emerald-100'
                         : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 hover:shadow-sm'
                     }`}
                   >
-                    <div className="line-clamp-1 flex-1 pr-2">{conv.title || 'Conversation...'}</div>
-                    <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 text-gray-300 transition-opacity flex-shrink-0" />
-                  </button>
+                    <button
+                      onClick={() => setActiveConversation(conv.id)}
+                      className="flex-1 text-left text-[13px] p-2.5 min-w-0 flex items-center justify-between"
+                    >
+                      <div className="line-clamp-1 flex-1 pr-2">{conv.title || 'Conversation...'}</div>
+                      <ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 text-gray-300 transition-opacity flex-shrink-0" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setConversationToDelete(conv);
+                      }}
+                      className="mr-1.5 p-1.5 rounded-md text-gray-300 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                      aria-label="Delete conversation"
+                      title="Delete conversation"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 ))}
               </div>
             )}
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {conversationToDelete && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/20 px-4 backdrop-blur-sm"
+            onClick={() => setConversationToDelete(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 10 }}
+              transition={{ duration: 0.16 }}
+              className="w-full max-w-sm rounded-2xl border border-rose-100 bg-white p-5 shadow-[0_24px_80px_rgba(15,23,42,0.18)]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
+                  <Trash2 className="h-4 w-4" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-sm font-bold text-slate-900">Delete AI Cofounder chat?</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                    This permanently removes the saved chat memory for this project. This action cannot be undone.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-5 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setConversationToDelete(null)}
+                  className="rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const projectId = conversationToDelete.projectId || currentProject.id;
+                    setConversationToDelete(null);
+                    await deleteConversation(projectId);
+                  }}
+                  className="rounded-full bg-rose-600 px-4 py-2 text-xs font-semibold text-white shadow-[0_10px_24px_rgba(225,29,72,0.22)] transition-colors hover:bg-rose-700"
+                >
+                  Delete forever
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

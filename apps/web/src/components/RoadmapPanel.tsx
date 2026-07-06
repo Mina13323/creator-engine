@@ -9,11 +9,18 @@ import {
   TrendingUp, Shield, Layers, AlertCircle, Banknote
 } from 'lucide-react';
 
+import { useI18n } from '../lib/i18n/I18nContext';
+
 /** Format a number with Egyptian currency display */
-function formatEGP(amount: number | undefined | null, currency: string = 'EGP'): string {
+function formatEGP(amount: number | undefined | null, currency: string = 'EGP', locale: string = 'en'): string {
   if (amount === undefined || amount === null) return '—';
-  const sym = currency === 'EGP' ? 'ج.م' : currency;
-  return `${Number(amount).toLocaleString('ar-EG')} ${sym}`;
+  if (locale === 'ar') {
+    const sym = currency === 'EGP' ? 'ج.م' : currency;
+    return `${Number(amount).toLocaleString('ar-EG')} ${sym}`;
+  } else {
+    const sym = currency === 'EGP' ? 'EGP' : currency;
+    return `${sym} ${Number(amount).toLocaleString('en-US')}`;
+  }
 }
 import { Card } from './ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -30,7 +37,7 @@ function EmptyRoadmap() {
   };
 
   const features = [
-    { icon: Map, color: 'text-blue-500', bg: 'bg-blue-50', label: '90-Day Execution Plan', desc: 'Phased milestones with clear deliverables' },
+    { icon: Map, color: 'text-emerald-500', bg: 'bg-[#e4f3ee]', label: '90-Day Execution Plan', desc: 'Phased milestones with clear deliverables' },
     { icon: Target, color: 'text-purple-500', bg: 'bg-purple-50', label: 'Market-Specific Tasks', desc: 'Tailored to your chosen business model' },
     { icon: DollarSign, color: 'text-emerald-500', bg: 'bg-emerald-50', label: 'Budget Estimates', desc: 'Per-phase cost breakdown & totals' },
     { icon: BarChart3, color: 'text-rose-500', bg: 'bg-rose-50', label: 'Priority Scoring', desc: 'AI-ranked tasks by impact & urgency' },
@@ -45,21 +52,21 @@ function EmptyRoadmap() {
         className="w-full max-w-3xl"
       >
         {/* Hero Card */}
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-900 p-10 mb-6 shadow-2xl">
-          <div className="absolute top-0 left-0 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl -translate-x-1/3 -translate-y-1/3 animate-pulse" />
-          <div className="absolute bottom-0 right-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl translate-x-1/4 translate-y-1/4 animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-emerald-950 to-emerald-900 p-10 mb-6 shadow-2xl">
+          <div className="absolute top-0 left-0 w-72 h-72 bg-emerald-500/20 rounded-full blur-3xl -translate-x-1/3 -translate-y-1/3 animate-pulse" />
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl translate-x-1/4 translate-y-1/4 animate-pulse" style={{ animationDelay: '1s' }} />
 
           <div className="relative z-10 text-center">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm mb-6 shadow-xl">
               <Rocket className="w-10 h-10 text-white" />
             </div>
-            <div className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold px-4 py-1.5 rounded-full mb-5">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-bold px-4 py-1.5 rounded-full mb-5">
               <Sparkles className="w-3.5 h-3.5" />
               AI-Powered Execution Intelligence
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">
               Build Your 90-Day<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-300">
                 Launch Roadmap
               </span>
             </h1>
@@ -71,9 +78,9 @@ function EmptyRoadmap() {
               disabled={loading}
               className="group relative inline-flex items-center gap-3 bg-white text-slate-900 font-bold px-10 py-4 rounded-2xl text-base shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {loading ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Zap className="w-5 h-5 text-blue-600 group-hover:scale-110 transition-transform" />}
+              {loading ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Zap className="w-5 h-5 text-emerald-600 group-hover:scale-110 transition-transform" />}
               {loading ? 'Generating Roadmap...' : 'Generate Execution Roadmap'}
-              {!loading && <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-blue-500 rounded-full animate-ping opacity-75" />}
+              {!loading && <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-emerald-500 rounded-full animate-ping opacity-75" />}
             </button>
             <p className="text-slate-500 text-xs mt-4">Uses 30 credits · Takes ~20 seconds</p>
           </div>
@@ -118,7 +125,7 @@ function PhaseCard({ phase, idx, totalPhases, onTaskToggle }: {
   const progress = tasks.length > 0 ? Math.round((completedCount / tasks.length) * 100) : 0;
 
   const phaseColors = [
-    { dot: 'bg-blue-500', border: 'border-blue-200', badgeBg: 'bg-blue-50', badgeText: 'text-blue-700', badgeBorder: 'border-blue-200', bar: 'bg-blue-500', ring: 'border-blue-500', iconBg: 'bg-blue-50', iconText: 'text-blue-500' },
+    { dot: 'bg-emerald-500', border: 'border-[#ccede3]', badgeBg: 'bg-[#e4f3ee]', badgeText: 'text-emerald-700', badgeBorder: 'border-[#ccede3]', bar: 'bg-emerald-500', ring: 'border-emerald-500', iconBg: 'bg-[#e4f3ee]', iconText: 'text-emerald-500' },
     { dot: 'bg-purple-500', border: 'border-purple-200', badgeBg: 'bg-purple-50', badgeText: 'text-purple-700', badgeBorder: 'border-purple-200', bar: 'bg-purple-500', ring: 'border-purple-500', iconBg: 'bg-purple-50', iconText: 'text-purple-500' },
     { dot: 'bg-emerald-500', border: 'border-emerald-200', badgeBg: 'bg-emerald-50', badgeText: 'text-emerald-700', badgeBorder: 'border-emerald-200', bar: 'bg-emerald-500', ring: 'border-emerald-500', iconBg: 'bg-emerald-50', iconText: 'text-emerald-500' },
     { dot: 'bg-rose-500', border: 'border-rose-200', badgeBg: 'bg-rose-50', badgeText: 'text-rose-700', badgeBorder: 'border-rose-200', bar: 'bg-rose-500', ring: 'border-rose-500', iconBg: 'bg-rose-50', iconText: 'text-rose-500' },
@@ -232,6 +239,7 @@ function PhaseCard({ phase, idx, totalPhases, onTaskToggle }: {
 }
 
 export default function RoadmapPanel() {
+  const { locale } = useI18n();
   const { currentOutputs, currentProject, loading, generateRoadmap } = useStore();
   const [roadmapState, setRoadmapState] = useState<any>(null);
 
@@ -297,7 +305,7 @@ export default function RoadmapPanel() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Rocket className="w-5 h-5 text-blue-600" />
+            <Rocket className="w-5 h-5 text-emerald-600" />
             <h1 className="text-2xl font-black text-slate-900">Execution Roadmap</h1>
             <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full">
               🇪🇬 Egypt · EGP
@@ -318,8 +326,8 @@ export default function RoadmapPanel() {
       {/* Stats Strip */}
       <motion.div variants={staggerContainer} initial="initial" animate="animate" className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { icon: Clock, bg: 'bg-blue-50', border: 'border-blue-100', iconColor: 'text-blue-500', value: `${roadmap.totalDurationWeeks ?? '—'} Weeks`, label: 'Total Duration' },
-          { icon: Banknote, bg: 'bg-emerald-50', border: 'border-emerald-100', iconColor: 'text-emerald-500', value: formatEGP(roadmap.totalEstimatedBudget, roadmap.currency), label: 'Est. Budget' },
+          { icon: Clock, bg: 'bg-[#e4f3ee]', border: 'border-[#d9eee8]', iconColor: 'text-emerald-500', value: `${roadmap.totalDurationWeeks ?? '—'} Weeks`, label: 'Total Duration' },
+          { icon: Banknote, bg: 'bg-emerald-50', border: 'border-emerald-100', iconColor: 'text-emerald-500', value: formatEGP(roadmap.totalEstimatedBudget, roadmap.currency, locale), label: 'Est. Budget' },
           { icon: Layers, bg: 'bg-purple-50', border: 'border-purple-100', iconColor: 'text-purple-500', value: `${phases.length}`, label: 'Phases' },
           { icon: CheckSquare, bg: 'bg-rose-50', border: 'border-rose-100', iconColor: 'text-rose-500', value: `${totalTasks}`, label: 'Action Items' },
         ].map((stat, i) => (
@@ -346,7 +354,7 @@ export default function RoadmapPanel() {
               <span className="text-sm font-black text-slate-900">{overallProgress}%</span>
             </div>
             <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-700" style={{ width: `${overallProgress}%` }} />
+              <div className="h-full bg-gradient-to-r from-[#008465] to-[#00b37e] rounded-full transition-all duration-700" style={{ width: `${overallProgress}%` }} />
             </div>
           </div>
           <div className="text-right text-xs text-slate-500 whitespace-nowrap">

@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 async function test() {
-  const url = process.env.DATABASE_URL || "mongodb://menawaelmagdy_db_user:minawaelmagdy@ac-ewbnhwg-shard-00-00.2krql9o.mongodb.net:27017,ac-ewbnhwg-shard-00-01.2krql9o.mongodb.net:27017,ac-ewbnhwg-shard-00-02.2krql9o.mongodb.net:27017/creator_engine?ssl=true&authSource=admin&retryWrites=true&w=majority&appName=creator-engine";
+  const url = process.env.DATABASE_URL;
+  if (!url) { console.error('DATABASE_URL env var is required'); process.exit(1); }
   await mongoose.connect(url);
   
   const tx = await mongoose.connection.collection('payment_transactions').find().sort({createdAt: -1}).limit(1).toArray();

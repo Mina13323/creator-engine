@@ -22,7 +22,8 @@ const SubscriptionPlanModel2 = mongoose.models.SubscriptionPlan || mongoose.mode
 const CreditPackModel2 = mongoose.models.CreditPack || mongoose.model('CreditPack', CreditPackSchema);
 
 async function seed() {
-  const url = process.env.DATABASE_URL || "mongodb://menawaelmagdy_db_user:minawaelmagdy@ac-ewbnhwg-shard-00-00.2krql9o.mongodb.net:27017,ac-ewbnhwg-shard-00-01.2krql9o.mongodb.net:27017,ac-ewbnhwg-shard-00-02.2krql9o.mongodb.net:27017/creator_engine?ssl=true&authSource=admin&retryWrites=true&w=majority&appName=creator-engine";
+  const url = process.env.DATABASE_URL;
+  if (!url) { console.error('DATABASE_URL env var is required'); process.exit(1); }
   await mongoose.connect(url);
   
   const plans = [

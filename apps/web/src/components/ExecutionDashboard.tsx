@@ -48,7 +48,7 @@ export const ExecutionDashboard = ({ roadmap, onUpdateTask, aiSuggestions = [] }
         
         {/* Progress Card */}
         <div className="col-span-2 bg-[#1A1D24] border border-white/10 rounded-3xl p-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
           <h2 className="text-xl font-medium text-white mb-2">Startup Progress</h2>
           <div className="flex items-end gap-4 mb-6">
             <span className="text-5xl font-bold text-white tracking-tight">{progress}%</span>
@@ -60,7 +60,7 @@ export const ExecutionDashboard = ({ roadmap, onUpdateTask, aiSuggestions = [] }
               initial={{ width: 0 }} 
               animate={{ width: `${progress}%` }} 
               transition={{ duration: 1, ease: "easeOut" }}
-              className="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full" 
+              className="h-full bg-gradient-to-r from-[#008465] via-[#00b37e] to-[#2e403d] rounded-full" 
             />
           </div>
           
@@ -71,9 +71,9 @@ export const ExecutionDashboard = ({ roadmap, onUpdateTask, aiSuggestions = [] }
         </div>
 
         {/* AI Suggestions Card */}
-        <div className="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-500/20 rounded-3xl p-8 flex flex-col">
+        <div className="bg-gradient-to-br from-emerald-900/40 to-[#2e403d]/40 border border-emerald-500/20 rounded-3xl p-8 flex flex-col">
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-indigo-500/20 rounded-xl">
+            <div className="p-2 bg-emerald-500/20 rounded-xl">
               <span className="text-indigo-400 text-xl">✧</span>
             </div>
             <h3 className="text-white font-medium">AI Suggestions</h3>
@@ -107,15 +107,15 @@ export const ExecutionDashboard = ({ roadmap, onUpdateTask, aiSuggestions = [] }
         <motion.div 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6 flex items-center justify-between shadow-lg shadow-blue-500/5"
+          className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-6 flex items-center justify-between shadow-lg shadow-emerald-500/5"
         >
           <div>
-            <h4 className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-2">Today&apos;s Focus</h4>
+            <h4 className="text-emerald-400 text-xs font-bold uppercase tracking-widest mb-2">Today&apos;s Focus</h4>
             <h3 className="text-xl font-medium text-white">{todaysFocus.title}</h3>
           </div>
           <button 
             onClick={() => onUpdateTask(todaysFocus.id, 'done')}
-            className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-xl transition-all active:scale-95"
+            className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-xl transition-all active:scale-95"
           >
             Mark Complete
           </button>

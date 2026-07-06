@@ -27,3 +27,15 @@ Thumbs.db
 
 # Turbo cache
 .turbo/
+
+# Generated analysis output
+graphify-out/
+
+# Local Kilo worktrees and plugin dependencies
+.kilo/worktrees/
+.kilo/node_modules/
+
+# Test scripts and temporary seeds (contains local credentials)
+test-*.js
+test-*.ts
+seed-db*.js

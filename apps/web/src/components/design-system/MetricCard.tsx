@@ -21,11 +21,11 @@ export function MetricCard({ title, value, icon: Icon, trend, delay = 0 }: Metri
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.3 }}
     >
-      <Card hoverable className="p-6">
+      <Card hoverable className="p-6 bg-white/95 border-[#d9eee8] shadow-[0_18px_50px_rgba(0,132,101,0.05)]">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-medium text-gray-500">{title}</h3>
-          <div className="p-2 bg-blue-50 rounded-lg">
-            <Icon className="w-5 h-5 text-[#1A73E8]" />
+          <div className="p-2 bg-[#e4f3ee] rounded-lg ring-1 ring-[#ccede3]">
+            <Icon className="w-5 h-5 text-[#008465]" />
           </div>
         </div>
         <div className="flex items-end space-x-3">

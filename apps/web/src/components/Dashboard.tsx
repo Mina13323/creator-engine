@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import { useI18n } from '../lib/i18n/I18nContext';
 
+const inputClassName = "w-full bg-[#F8FAFD] border border-[#d9eee8] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#008465]/20 focus:border-[#008465] focus:bg-white transition-all";
+
 export default function Dashboard() {
   const { t, dir } = useI18n();
   const { 
@@ -107,15 +109,15 @@ export default function Dashboard() {
                   className="p-5 cursor-pointer flex items-center justify-between group"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-[#E8F0FE] text-[#1A73E8] flex items-center justify-center font-bold">
+                    <div className="w-10 h-10 rounded-full bg-[#e4f3ee] text-[#008465] flex items-center justify-center font-bold ring-1 ring-[#ccede3]">
                       {proj.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 group-hover:text-[#1A73E8] transition-colors">{proj.name}</h3>
+                      <h3 className="font-semibold text-gray-900 group-hover:text-[#008465] transition-colors">{proj.name}</h3>
                       <p className="text-xs text-gray-500 capitalize">{proj.status || 'Draft'}</p>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-[#1A73E8]" />
+                  <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-[#008465]" />
                 </Card>
               ))}
             </div>
@@ -125,7 +127,7 @@ export default function Dashboard() {
         <Card className="max-w-xl mx-auto">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Rocket className="w-5 h-5 text-[#1A73E8]" />
+              <Rocket className="w-5 h-5 text-[#008465]" />
               Initialize New Venture
             </CardTitle>
           </CardHeader>
@@ -139,7 +141,7 @@ export default function Dashboard() {
                   value={projectName}
                   onChange={(e) => setProjectName(e.target.value)}
                   placeholder="e.g. Acme SaaS"
-                  className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-3 px-4 text-sm text-gray-900 focus:ring-2 focus:ring-[#1A73E8] focus:bg-white outline-none transition-all"
+                  className={`${inputClassName} py-3 px-4 text-gray-900`}
                 />
               </div>
               <Button type="submit" fullWidth isLoading={loading} disabled={!projectName.trim()}>
@@ -176,7 +178,7 @@ export default function Dashboard() {
           title={currentProject.name} 
           description="Provide context about your skills and goals to build your founder profile."
         >
-          <span className="px-3 py-1 bg-blue-50 text-[#1A73E8] text-xs font-bold rounded-full uppercase tracking-wider">
+          <span className="px-3 py-1 bg-[#e4f3ee] text-[#008465] text-xs font-bold rounded-full uppercase tracking-wider ring-1 ring-[#ccede3]">
             Setup Required
           </span>
         </PageHeader>
@@ -184,7 +186,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-[#1A73E8]" />
+              <Sparkles className="w-5 h-5 text-[#008465]" />
               Founder Context
             </CardTitle>
           </CardHeader>
@@ -196,12 +198,12 @@ export default function Dashboard() {
                   
                   <div className="space-y-2">
                     <label className="text-xs font-semibold text-gray-700">Skills (comma separated)</label>
-                    <input required type="text" value={skillsInput} onChange={(e) => setSkillsInput(e.target.value)} placeholder="e.g. Marketing, Python, Sales" className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]" />
+                    <input required type="text" value={skillsInput} onChange={(e) => setSkillsInput(e.target.value)} placeholder="e.g. Marketing, Python, Sales" className={inputClassName} />
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-xs font-semibold text-gray-700">Experience Level</label>
-                    <select value={formData.experience} onChange={(e) => setFormData({...formData, experience: e.target.value})} className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]">
+                    <select value={formData.experience} onChange={(e) => setFormData({...formData, experience: e.target.value})} className={inputClassName}>
                       <option value="Beginner">Beginner</option>
                       <option value="Intermediate">Intermediate</option>
                       <option value="Expert">Expert</option>
@@ -210,7 +212,7 @@ export default function Dashboard() {
 
                   <div className="space-y-2">
                     <label className="text-xs font-semibold text-gray-700">Industry Interests (comma separated)</label>
-                    <input required type="text" value={industryInput} onChange={(e) => setIndustryInput(e.target.value)} placeholder="e.g. SaaS, E-commerce, Fintech" className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]" />
+                    <input required type="text" value={industryInput} onChange={(e) => setIndustryInput(e.target.value)} placeholder="e.g. SaaS, E-commerce, Fintech" className={inputClassName} />
                   </div>
                 </div>
 
@@ -219,12 +221,12 @@ export default function Dashboard() {
 
                   <div className="space-y-2">
                     <label className="text-xs font-semibold text-gray-700">Budget ($)</label>
-                    <input required type="number" value={formData.budget} onChange={(e) => setFormData({...formData, budget: Number(e.target.value)})} className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]" />
+                    <input required type="number" value={formData.budget} onChange={(e) => setFormData({...formData, budget: Number(e.target.value)})} className={inputClassName} />
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-xs font-semibold text-gray-700">Available Time</label>
-                    <select value={formData.availableTime} onChange={(e) => setFormData({...formData, availableTime: e.target.value})} className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]">
+                    <select value={formData.availableTime} onChange={(e) => setFormData({...formData, availableTime: e.target.value})} className={inputClassName}>
                       <option value="Side Hustle (5-10 hrs/wk)">Side Hustle (5-10 hrs/wk)</option>
                       <option value="Part-time (20 hrs/wk)">Part-time (20 hrs/wk)</option>
                       <option value="Full-time (40+ hrs/wk)">Full-time (40+ hrs/wk)</option>
@@ -233,7 +235,7 @@ export default function Dashboard() {
 
                   <div className="space-y-2">
                     <label className="text-xs font-semibold text-gray-700">Startup Goals</label>
-                    <input required type="text" value={formData.startupGoals} onChange={(e) => setFormData({...formData, startupGoals: e.target.value})} placeholder="e.g. Build a lifestyle business" className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl py-2.5 px-3.5 text-sm outline-none focus:ring-2 focus:ring-[#1A73E8]" />
+                    <input required type="text" value={formData.startupGoals} onChange={(e) => setFormData({...formData, startupGoals: e.target.value})} placeholder="e.g. Build a lifestyle business" className={inputClassName} />
                   </div>
                 </div>
               </div>
@@ -290,9 +292,9 @@ export default function Dashboard() {
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                 <div>
                   <p className="text-sm text-gray-500 mb-1">Founder Archetype</p>
-                  <h2 className="text-3xl font-bold text-[#1A73E8]">{founderProfile.founderType || 'Visionary Hustler'}</h2>
+                  <h2 className="text-3xl font-bold text-[#008465]">{founderProfile.founderType || 'Visionary Hustler'}</h2>
                 </div>
-                <div className="flex-1 bg-[#F8FAFD] rounded-xl p-4 border border-[rgba(60,64,67,0.12)]">
+                <div className="flex-1 bg-[#f1f7f4] rounded-xl p-4 border border-[#d9eee8]">
                   <p className="text-sm font-medium text-gray-700 mb-2">AI Progress Timeline</p>
                   <div className="space-y-3">
                     {progress.map(p => (
@@ -301,8 +303,8 @@ export default function Dashboard() {
                           <span className="text-gray-600">{p.label}</span>
                           <span className="font-medium">{p.percent}%</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-1.5">
-                          <div className="bg-[#1A73E8] h-1.5 rounded-full" style={{ width: `${p.percent}%` }}></div>
+                        <div className="w-full bg-[#d9eee8] rounded-full h-1.5">
+                          <div className="bg-gradient-to-r from-[#008465] to-[#00b37e] h-1.5 rounded-full" style={{ width: `${p.percent}%` }}></div>
                         </div>
                       </div>
                     ))}
@@ -336,33 +338,33 @@ export default function Dashboard() {
 
         {/* RIGHT COL */}
         <div className="space-y-6">
-          <Card className="bg-[#E8F0FE] border-blue-100">
+          <Card className="bg-[#e4f3ee] border-[#ccede3] shadow-[0_18px_50px_rgba(0,132,101,0.07)]">
             <CardHeader>
-              <CardTitle className="text-[#1A73E8] flex items-center gap-2">
+              <CardTitle className="text-[#008465] flex items-center gap-2">
                 <Sparkles className="w-5 h-5" />
                 Next Best Actions
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {!(ventureState as any).opportunities?.length ? (
-                <div className="p-3 bg-white rounded-xl shadow-sm border border-blue-50 text-sm flex items-start gap-3 cursor-pointer hover:border-blue-200" onClick={() => discoverOpportunities(currentProject.id)}>
-                  <Search className="w-5 h-5 text-[#1A73E8] mt-0.5" />
+                <div className="p-3 bg-white rounded-xl shadow-sm border border-[#ccede3] text-sm flex items-start gap-3 cursor-pointer hover:border-[#008465]/40 hover:shadow-[0_12px_28px_rgba(0,132,101,0.08)] transition-all" onClick={() => discoverOpportunities(currentProject.id)}>
+                  <Search className="w-5 h-5 text-[#008465] mt-0.5" />
                   <div>
                     <p className="font-semibold text-gray-900">Discover Opportunities</p>
                     <p className="text-gray-500 text-xs mt-0.5">Let AI scan the market based on your profile.</p>
                   </div>
                 </div>
               ) : !ventureState.businessPlan ? (
-                <div className="p-3 bg-white rounded-xl shadow-sm border border-blue-50 text-sm flex items-start gap-3 cursor-pointer hover:border-blue-200" onClick={() => useStore.setState({ activeTab: 'business-plan' })}>
-                  <FileText className="w-5 h-5 text-[#1A73E8] mt-0.5" />
+                <div className="p-3 bg-white rounded-xl shadow-sm border border-[#ccede3] text-sm flex items-start gap-3 cursor-pointer hover:border-[#008465]/40 hover:shadow-[0_12px_28px_rgba(0,132,101,0.08)] transition-all" onClick={() => useStore.setState({ activeTab: 'business-plan' })}>
+                  <FileText className="w-5 h-5 text-[#008465] mt-0.5" />
                   <div>
                     <p className="font-semibold text-gray-900">Build Business Strategy</p>
                     <p className="text-gray-500 text-xs mt-0.5">Generate your Lean Canvas and Model.</p>
                   </div>
                 </div>
               ) : (
-                <div className="p-3 bg-white rounded-xl shadow-sm border border-blue-50 text-sm flex items-start gap-3 cursor-pointer hover:border-blue-200" onClick={() => useStore.setState({ activeTab: 'marketing' })}>
-                  <Megaphone className="w-5 h-5 text-[#1A73E8] mt-0.5" />
+                <div className="p-3 bg-white rounded-xl shadow-sm border border-[#ccede3] text-sm flex items-start gap-3 cursor-pointer hover:border-[#008465]/40 hover:shadow-[0_12px_28px_rgba(0,132,101,0.08)] transition-all" onClick={() => useStore.setState({ activeTab: 'marketing' })}>
+                  <Megaphone className="w-5 h-5 text-[#008465] mt-0.5" />
                   <div>
                     <p className="font-semibold text-gray-900">Create Launch Campaign</p>
                     <p className="text-gray-500 text-xs mt-0.5">Generate video ads and social copy.</p>

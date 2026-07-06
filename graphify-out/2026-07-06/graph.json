@@ -148,10 +148,82 @@
       "norm_label": "remote"
     },
     {
-      "label": "sessions",
+      "label": "wt-1783301724257-1",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L10",
+      "id": "kilo_agent_manager_worktrees_wt_1783301724257_1",
+      "community": 92,
+      "norm_label": "wt-1783301724257-1"
+    },
+    {
+      "label": "branch",
       "file_type": "code",
       "source_file": ".kilo/agent-manager.json",
       "source_location": "L11",
+      "id": "kilo_agent_manager_wt_1783301724257_1_branch",
+      "community": 92,
+      "norm_label": "branch"
+    },
+    {
+      "label": "path",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L12",
+      "id": "kilo_agent_manager_wt_1783301724257_1_path",
+      "community": 92,
+      "norm_label": "path"
+    },
+    {
+      "label": "parentBranch",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L13",
+      "id": "kilo_agent_manager_wt_1783301724257_1_parentbranch",
+      "community": 92,
+      "norm_label": "parentbranch"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L14",
+      "id": "kilo_agent_manager_wt_1783301724257_1_createdat",
+      "community": 92,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "remote",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L15",
+      "id": "kilo_agent_manager_wt_1783301724257_1_remote",
+      "community": 92,
+      "norm_label": "remote"
+    },
+    {
+      "label": "branchOwned",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L16",
+      "id": "kilo_agent_manager_wt_1783301724257_1_branchowned",
+      "community": 92,
+      "norm_label": "branchowned"
+    },
+    {
+      "label": "autoNameSessionId",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L17",
+      "id": "kilo_agent_manager_wt_1783301724257_1_autonamesessionid",
+      "community": 92,
+      "norm_label": "autonamesessionid"
+    },
+    {
+      "label": "sessions",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L20",
       "id": "kilo_agent_manager_sessions",
       "community": 92,
       "norm_label": "sessions"
@@ -160,7 +232,7 @@
       "label": "ses_0f58b6744ffe90nXao4EuycvSa",
       "file_type": "code",
       "source_file": ".kilo/agent-manager.json",
-      "source_location": "L12",
+      "source_location": "L21",
       "id": "kilo_agent_manager_sessions_ses_0f58b6744ffe90nxao4euycvsa",
       "community": 92,
       "norm_label": "ses_0f58b6744ffe90nxao4euycvsa"
@@ -169,7 +241,7 @@
       "label": "worktreeId",
       "file_type": "code",
       "source_file": ".kilo/agent-manager.json",
-      "source_location": "L13",
+      "source_location": "L22",
       "id": "kilo_agent_manager_ses_0f58b6744ffe90nxao4euycvsa_worktreeid",
       "community": 92,
       "norm_label": "worktreeid"
@@ -178,8 +250,35 @@
       "label": "createdAt",
       "file_type": "code",
       "source_file": ".kilo/agent-manager.json",
-      "source_location": "L14",
+      "source_location": "L23",
       "id": "kilo_agent_manager_ses_0f58b6744ffe90nxao4euycvsa_createdat",
+      "community": 92,
+      "norm_label": "createdat"
+    },
+    {
+      "label": "ses_0caef1b6bffebyMyr4xchKMSFm",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L25",
+      "id": "kilo_agent_manager_sessions_ses_0caef1b6bffebymyr4xchkmsfm",
+      "community": 92,
+      "norm_label": "ses_0caef1b6bffebymyr4xchkmsfm"
+    },
+    {
+      "label": "worktreeId",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L26",
+      "id": "kilo_agent_manager_ses_0caef1b6bffebymyr4xchkmsfm_worktreeid",
+      "community": 92,
+      "norm_label": "worktreeid"
+    },
+    {
+      "label": "createdAt",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L27",
+      "id": "kilo_agent_manager_ses_0caef1b6bffebymyr4xchkmsfm_createdat",
       "community": 92,
       "norm_label": "createdat"
     },
@@ -187,7 +286,7 @@
       "label": "tabOrder",
       "file_type": "code",
       "source_file": ".kilo/agent-manager.json",
-      "source_location": "L17",
+      "source_location": "L30",
       "id": "kilo_agent_manager_taborder",
       "community": 92,
       "norm_label": "taborder"
@@ -196,7 +295,7 @@
       "label": "local",
       "file_type": "code",
       "source_file": ".kilo/agent-manager.json",
-      "source_location": "L18",
+      "source_location": "L31",
       "id": "kilo_agent_manager_taborder_local",
       "community": 92,
       "norm_label": "local"
@@ -205,10 +304,19 @@
       "label": "worktreeOrder",
       "file_type": "code",
       "source_file": ".kilo/agent-manager.json",
-      "source_location": "L22",
+      "source_location": "L35",
       "id": "kilo_agent_manager_worktreeorder",
       "community": 92,
       "norm_label": "worktreeorder"
+    },
+    {
+      "label": "sessionsCollapsed",
+      "file_type": "code",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L39",
+      "id": "kilo_agent_manager_sessionscollapsed",
+      "community": 92,
+      "norm_label": "sessionscollapsed"
     },
     {
       "label": "package.json",
@@ -751,10 +859,19 @@
       "norm_label": "multer"
     },
     {
-      "label": "zod",
+      "label": "nodemailer",
       "file_type": "code",
       "source_file": "apps/api/package.json",
       "source_location": "L29",
+      "id": "api_package_dependencies_nodemailer",
+      "community": 3,
+      "norm_label": "nodemailer"
+    },
+    {
+      "label": "zod",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L30",
       "id": "api_package_dependencies_zod",
       "community": 3,
       "norm_label": "zod"
@@ -763,7 +880,7 @@
       "label": "devDependencies",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L31",
+      "source_location": "L32",
       "id": "api_package_devdependencies",
       "community": 3,
       "norm_label": "devdependencies"
@@ -772,7 +889,7 @@
       "label": "@types/bcryptjs",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L32",
+      "source_location": "L33",
       "id": "api_package_devdependencies_types_bcryptjs",
       "community": 3,
       "norm_label": "@types/bcryptjs"
@@ -781,7 +898,7 @@
       "label": "@types/cookie-parser",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L33",
+      "source_location": "L34",
       "id": "api_package_devdependencies_types_cookie_parser",
       "community": 3,
       "norm_label": "@types/cookie-parser"
@@ -790,7 +907,7 @@
       "label": "@types/cors",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L34",
+      "source_location": "L35",
       "id": "api_package_devdependencies_types_cors",
       "community": 3,
       "norm_label": "@types/cors"
@@ -799,7 +916,7 @@
       "label": "@types/express",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L35",
+      "source_location": "L36",
       "id": "api_package_devdependencies_types_express",
       "community": 3,
       "norm_label": "@types/express"
@@ -808,7 +925,7 @@
       "label": "@types/jsonwebtoken",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L36",
+      "source_location": "L37",
       "id": "api_package_devdependencies_types_jsonwebtoken",
       "community": 3,
       "norm_label": "@types/jsonwebtoken"
@@ -817,7 +934,7 @@
       "label": "@types/multer",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L37",
+      "source_location": "L38",
       "id": "api_package_devdependencies_types_multer",
       "community": 3,
       "norm_label": "@types/multer"
@@ -826,16 +943,25 @@
       "label": "@types/node",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L38",
+      "source_location": "L39",
       "id": "api_package_devdependencies_types_node",
       "community": 3,
       "norm_label": "@types/node"
     },
     {
+      "label": "@types/nodemailer",
+      "file_type": "code",
+      "source_file": "apps/api/package.json",
+      "source_location": "L40",
+      "id": "api_package_devdependencies_types_nodemailer",
+      "community": 3,
+      "norm_label": "@types/nodemailer"
+    },
+    {
       "label": "@types/supertest",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L39",
+      "source_location": "L41",
       "id": "api_package_devdependencies_types_supertest",
       "community": 3,
       "norm_label": "@types/supertest"
@@ -844,7 +970,7 @@
       "label": "@vitest/coverage-v8",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L40",
+      "source_location": "L42",
       "id": "api_package_devdependencies_vitest_coverage_v8",
       "community": 3,
       "norm_label": "@vitest/coverage-v8"
@@ -853,7 +979,7 @@
       "label": "supertest",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L41",
+      "source_location": "L43",
       "id": "api_package_devdependencies_supertest",
       "community": 3,
       "norm_label": "supertest"
@@ -862,7 +988,7 @@
       "label": "ts-node-dev",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L42",
+      "source_location": "L44",
       "id": "api_package_devdependencies_ts_node_dev",
       "community": 3,
       "norm_label": "ts-node-dev"
@@ -871,7 +997,7 @@
       "label": "typescript",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L43",
+      "source_location": "L45",
       "id": "api_package_devdependencies_typescript",
       "community": 3,
       "norm_label": "typescript"
@@ -880,7 +1006,7 @@
       "label": "vitest",
       "file_type": "code",
       "source_file": "apps/api/package.json",
-      "source_location": "L44",
+      "source_location": "L46",
       "id": "api_package_devdependencies_vitest",
       "community": 3,
       "norm_label": "vitest"
@@ -934,7 +1060,7 @@
       "label": "_env",
       "file_type": "code",
       "source_file": "apps/api/src/env.ts",
-      "source_location": "L39",
+      "source_location": "L50",
       "id": "src_env_env",
       "community": 211,
       "norm_label": "_env"
@@ -988,7 +1114,7 @@
       "label": "googleClient",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L74",
+      "source_location": "L75",
       "id": "src_index_googleclient",
       "community": 96,
       "norm_label": "googleclient"
@@ -997,7 +1123,7 @@
       "label": "app",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L76",
+      "source_location": "L77",
       "id": "src_index_app",
       "community": 164,
       "norm_label": "app"
@@ -1006,7 +1132,7 @@
       "label": "allowedOrigins",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L79",
+      "source_location": "L80",
       "id": "src_index_allowedorigins",
       "community": 96,
       "norm_label": "allowedorigins"
@@ -1015,7 +1141,7 @@
       "label": "origin()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L81",
+      "source_location": "L82",
       "id": "src_index_origin",
       "community": 96,
       "norm_label": "origin()"
@@ -1024,7 +1150,7 @@
       "label": "generateToken()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L159",
+      "source_location": "L161",
       "id": "src_index_generatetoken",
       "community": 96,
       "norm_label": "generatetoken()"
@@ -1033,7 +1159,7 @@
       "label": "toAuthUser()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L164",
+      "source_location": "L166",
       "id": "src_index_toauthuser",
       "community": 96,
       "norm_label": "toauthuser()"
@@ -1042,7 +1168,7 @@
       "label": "updateVentureState()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L402",
+      "source_location": "L411",
       "id": "src_index_updateventurestate",
       "community": 114,
       "norm_label": "updateventurestate()"
@@ -1051,7 +1177,7 @@
       "label": "evaluateAndSave()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L416",
+      "source_location": "L425",
       "id": "src_index_evaluateandsave",
       "community": 114,
       "norm_label": "evaluateandsave()"
@@ -1060,7 +1186,7 @@
       "label": "trackAgentRun()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L455",
+      "source_location": "L464",
       "id": "src_index_trackagentrun",
       "community": 114,
       "norm_label": "trackagentrun()"
@@ -1069,7 +1195,7 @@
       "label": "getLatestBusinessPlanFromState()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L514",
+      "source_location": "L523",
       "id": "src_index_getlatestbusinessplanfromstate",
       "community": 114,
       "norm_label": "getlatestbusinessplanfromstate()"
@@ -1078,7 +1204,7 @@
       "label": "getBusinessIdeaFromContext()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L518",
+      "source_location": "L527",
       "id": "src_index_getbusinessideafromcontext",
       "community": 114,
       "norm_label": "getbusinessideafromcontext()"
@@ -1087,7 +1213,7 @@
       "label": "getBusinessModelFromContext()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L527",
+      "source_location": "L536",
       "id": "src_index_getbusinessmodelfromcontext",
       "community": 114,
       "norm_label": "getbusinessmodelfromcontext()"
@@ -1096,7 +1222,7 @@
       "label": "loadOwnedProjectContext()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L536",
+      "source_location": "L545",
       "id": "src_index_loadownedprojectcontext",
       "community": 114,
       "norm_label": "loadownedprojectcontext()"
@@ -1105,7 +1231,7 @@
       "label": "generateFinancialHandler()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L1015",
+      "source_location": "L1024",
       "id": "src_index_generatefinancialhandler",
       "community": 114,
       "norm_label": "generatefinancialhandler()"
@@ -1114,7 +1240,7 @@
       "label": "generateBrandingHandler()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L1072",
+      "source_location": "L1081",
       "id": "src_index_generatebrandinghandler",
       "community": 114,
       "norm_label": "generatebrandinghandler()"
@@ -1123,7 +1249,7 @@
       "label": "generateMarketingHandler()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L1129",
+      "source_location": "L1138",
       "id": "src_index_generatemarketinghandler",
       "community": 114,
       "norm_label": "generatemarketinghandler()"
@@ -1132,7 +1258,7 @@
       "label": "generatePitchHandler()",
       "file_type": "code",
       "source_file": "apps/api/src/index.ts",
-      "source_location": "L1186",
+      "source_location": "L1195",
       "id": "src_index_generatepitchhandler",
       "community": 114,
       "norm_label": "generatepitchhandler()"
@@ -1246,10 +1372,28 @@
       "norm_label": "router"
     },
     {
+      "label": "WeeklyReportData",
+      "file_type": "code",
+      "source_file": "apps/api/src/routes/admin.ts",
+      "source_location": "L527",
+      "id": "routes_admin_weeklyreportdata",
+      "community": 142,
+      "norm_label": "weeklyreportdata"
+    },
+    {
+      "label": "generateWeeklyReportData()",
+      "file_type": "code",
+      "source_file": "apps/api/src/routes/admin.ts",
+      "source_location": "L543",
+      "id": "routes_admin_generateweeklyreportdata",
+      "community": 142,
+      "norm_label": "generateweeklyreportdata()"
+    },
+    {
       "label": "_getLockdown()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L670",
+      "source_location": "L697",
       "id": "routes_admin_getlockdown",
       "community": 142,
       "norm_label": "_getlockdown()"
@@ -1258,7 +1402,7 @@
       "label": "_setLockdown()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L671",
+      "source_location": "L698",
       "id": "routes_admin_setlockdown",
       "community": 142,
       "norm_label": "_setlockdown()"
@@ -1267,7 +1411,7 @@
       "label": "registerLockdownHandlers()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L672",
+      "source_location": "L699",
       "id": "routes_admin_registerlockdownhandlers",
       "community": 142,
       "norm_label": "registerlockdownhandlers()"
@@ -1276,7 +1420,7 @@
       "label": "_setMaintenance()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L679",
+      "source_location": "L706",
       "id": "routes_admin_setmaintenance",
       "community": 142,
       "norm_label": "_setmaintenance()"
@@ -1285,7 +1429,7 @@
       "label": "registerMaintenanceHandlers()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L680",
+      "source_location": "L707",
       "id": "routes_admin_registermaintenancehandlers",
       "community": 142,
       "norm_label": "registermaintenancehandlers()"
@@ -1667,6 +1811,96 @@
       "id": "services_creditengine_provisionusermonetization",
       "community": 99,
       "norm_label": "provisionusermonetization()"
+    },
+    {
+      "label": "weeklyReports.ts",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L1",
+      "id": "services_weeklyreports",
+      "community": 142,
+      "norm_label": "weeklyreports.ts"
+    },
+    {
+      "label": "escapeHtml()",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L13",
+      "id": "services_weeklyreports_escapehtml",
+      "community": 142,
+      "norm_label": "escapehtml()"
+    },
+    {
+      "label": "getRecipientList()",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L24",
+      "id": "services_weeklyreports_getrecipientlist",
+      "community": 142,
+      "norm_label": "getrecipientlist()"
+    },
+    {
+      "label": "buildWeeklyReportHtml()",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L32",
+      "id": "services_weeklyreports_buildweeklyreporthtml",
+      "community": 142,
+      "norm_label": "buildweeklyreporthtml()"
+    },
+    {
+      "label": "createTransport()",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L116",
+      "id": "services_weeklyreports_createtransport",
+      "community": 142,
+      "norm_label": "createtransport()"
+    },
+    {
+      "label": "sendWeeklyReportEmail()",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L132",
+      "id": "services_weeklyreports_sendweeklyreportemail",
+      "community": 142,
+      "norm_label": "sendweeklyreportemail()"
+    },
+    {
+      "label": "shouldSendWeeklyReport()",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L156",
+      "id": "services_weeklyreports_shouldsendweeklyreport",
+      "community": 142,
+      "norm_label": "shouldsendweeklyreport()"
+    },
+    {
+      "label": "runWeeklyReportCheck()",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L164",
+      "id": "services_weeklyreports_runweeklyreportcheck",
+      "community": 142,
+      "norm_label": "runweeklyreportcheck()"
+    },
+    {
+      "label": "startWeeklyReportScheduler()",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L179",
+      "id": "services_weeklyreports_startweeklyreportscheduler",
+      "community": 142,
+      "norm_label": "startweeklyreportscheduler()"
+    },
+    {
+      "label": "stopWeeklyReportScheduler()",
+      "file_type": "code",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L188",
+      "id": "services_weeklyreports_stopweeklyreportscheduler",
+      "community": 142,
+      "norm_label": "stopweeklyreportscheduler()"
     },
     {
       "label": "validate.ts",
@@ -3708,7 +3942,7 @@
       "source_file": "apps/web/src/app/admin/dashboard/page.tsx",
       "source_location": "L1",
       "id": "dashboard_page",
-      "community": 209,
+      "community": 5,
       "norm_label": "page.tsx"
     },
     {
@@ -3717,7 +3951,7 @@
       "source_file": "apps/web/src/app/admin/dashboard/page.tsx",
       "source_location": "L23",
       "id": "dashboard_page_trafficchart",
-      "community": 209,
+      "community": 5,
       "norm_label": "trafficchart"
     },
     {
@@ -3726,7 +3960,7 @@
       "source_file": "apps/web/src/app/admin/dashboard/page.tsx",
       "source_location": "L28",
       "id": "dashboard_page_admindashboardpage",
-      "community": 158,
+      "community": 5,
       "norm_label": "admindashboardpage()"
     },
     {
@@ -3753,7 +3987,7 @@
       "source_file": "apps/web/src/app/admin/moderation/page.tsx",
       "source_location": "L1",
       "id": "moderation_page",
-      "community": 158,
+      "community": 5,
       "norm_label": "page.tsx"
     },
     {
@@ -3762,7 +3996,7 @@
       "source_file": "apps/web/src/app/admin/moderation/page.tsx",
       "source_location": "L23",
       "id": "moderation_page_agentrun",
-      "community": 158,
+      "community": 5,
       "norm_label": "agentrun"
     },
     {
@@ -3771,7 +4005,7 @@
       "source_file": "apps/web/src/app/admin/moderation/page.tsx",
       "source_location": "L40",
       "id": "moderation_page_observabilitystats",
-      "community": 158,
+      "community": 5,
       "norm_label": "observabilitystats"
     },
     {
@@ -3780,7 +4014,7 @@
       "source_file": "apps/web/src/app/admin/moderation/page.tsx",
       "source_location": "L49",
       "id": "moderation_page_projectformod",
-      "community": 158,
+      "community": 5,
       "norm_label": "projectformod"
     },
     {
@@ -3789,7 +4023,7 @@
       "source_file": "apps/web/src/app/admin/moderation/page.tsx",
       "source_location": "L62",
       "id": "moderation_page_moderationpage",
-      "community": 158,
+      "community": 5,
       "norm_label": "moderationpage()"
     },
     {
@@ -3798,7 +4032,7 @@
       "source_file": "apps/web/src/app/admin/plans/page.tsx",
       "source_location": "L1",
       "id": "plans_page",
-      "community": 184,
+      "community": 5,
       "norm_label": "page.tsx"
     },
     {
@@ -3807,7 +4041,7 @@
       "source_file": "apps/web/src/app/admin/plans/page.tsx",
       "source_location": "L15",
       "id": "plans_page_subscriptionplan",
-      "community": 184,
+      "community": 5,
       "norm_label": "subscriptionplan"
     },
     {
@@ -3816,7 +4050,7 @@
       "source_file": "apps/web/src/app/admin/plans/page.tsx",
       "source_location": "L30",
       "id": "plans_page_planscheme",
-      "community": 184,
+      "community": 5,
       "norm_label": "planscheme"
     },
     {
@@ -3825,7 +4059,7 @@
       "source_file": "apps/web/src/app/admin/plans/page.tsx",
       "source_location": "L64",
       "id": "plans_page_schemes",
-      "community": 184,
+      "community": 5,
       "norm_label": "schemes"
     },
     {
@@ -3834,7 +4068,7 @@
       "source_file": "apps/web/src/app/admin/plans/page.tsx",
       "source_location": "L210",
       "id": "plans_page_slug_scheme",
-      "community": 184,
+      "community": 5,
       "norm_label": "slug_scheme"
     },
     {
@@ -3843,7 +4077,7 @@
       "source_file": "apps/web/src/app/admin/plans/page.tsx",
       "source_location": "L220",
       "id": "plans_page_scheme_cycle",
-      "community": 184,
+      "community": 5,
       "norm_label": "scheme_cycle"
     },
     {
@@ -3852,7 +4086,7 @@
       "source_file": "apps/web/src/app/admin/plans/page.tsx",
       "source_location": "L222",
       "id": "plans_page_getscheme",
-      "community": 184,
+      "community": 5,
       "norm_label": "getscheme()"
     },
     {
@@ -3861,7 +4095,7 @@
       "source_file": "apps/web/src/app/admin/plans/page.tsx",
       "source_location": "L229",
       "id": "plans_page_adminplanspage",
-      "community": 184,
+      "community": 5,
       "norm_label": "adminplanspage()"
     },
     {
@@ -3870,7 +4104,7 @@
       "source_file": "apps/web/src/app/admin/projects/page.tsx",
       "source_location": "L1",
       "id": "projects_page",
-      "community": 184,
+      "community": 5,
       "norm_label": "page.tsx"
     },
     {
@@ -3879,7 +4113,7 @@
       "source_file": "apps/web/src/app/admin/projects/page.tsx",
       "source_location": "L21",
       "id": "projects_page_creatorinfo",
-      "community": 184,
+      "community": 5,
       "norm_label": "creatorinfo"
     },
     {
@@ -3888,7 +4122,7 @@
       "source_file": "apps/web/src/app/admin/projects/page.tsx",
       "source_location": "L27",
       "id": "projects_page_projectwithcreator",
-      "community": 184,
+      "community": 5,
       "norm_label": "projectwithcreator"
     },
     {
@@ -3897,7 +4131,7 @@
       "source_file": "apps/web/src/app/admin/projects/page.tsx",
       "source_location": "L43",
       "id": "projects_page_adminprojectspage",
-      "community": 184,
+      "community": 5,
       "norm_label": "adminprojectspage()"
     },
     {
@@ -3906,7 +4140,7 @@
       "source_file": "apps/web/src/app/admin/settings/page.tsx",
       "source_location": "L1",
       "id": "settings_page",
-      "community": 100,
+      "community": 140,
       "norm_label": "page.tsx"
     },
     {
@@ -3915,7 +4149,7 @@
       "source_file": "apps/web/src/app/admin/settings/page.tsx",
       "source_location": "L25",
       "id": "settings_page_settingspage",
-      "community": 100,
+      "community": 140,
       "norm_label": "settingspage()"
     },
     {
@@ -3924,7 +4158,7 @@
       "source_file": "apps/web/src/app/admin/users/page.tsx",
       "source_location": "L1",
       "id": "users_page",
-      "community": 184,
+      "community": 5,
       "norm_label": "page.tsx"
     },
     {
@@ -3933,7 +4167,7 @@
       "source_file": "apps/web/src/app/admin/users/page.tsx",
       "source_location": "L12",
       "id": "users_page_userspage",
-      "community": 184,
+      "community": 5,
       "norm_label": "userspage()"
     },
     {
@@ -4120,9 +4354,9 @@
       "label": "AIConsultantDashboard()",
       "file_type": "code",
       "source_file": "apps/web/src/components/AIConsultantDashboard.tsx",
-      "source_location": "L13",
+      "source_location": "L14",
       "id": "components_aiconsultantdashboard_aiconsultantdashboard",
-      "community": 100,
+      "community": 140,
       "norm_label": "aiconsultantdashboard()"
     },
     {
@@ -4248,7 +4482,7 @@
       "source_file": "apps/web/src/components/BrandingPanel.tsx",
       "source_location": "L17",
       "id": "components_brandingpanel_brandingpanel",
-      "community": 20,
+      "community": 140,
       "norm_label": "brandingpanel()"
     },
     {
@@ -4336,7 +4570,7 @@
       "label": "Dashboard()",
       "file_type": "code",
       "source_file": "apps/web/src/components/Dashboard.tsx",
-      "source_location": "L16",
+      "source_location": "L18",
       "id": "components_dashboard_dashboard",
       "community": 140,
       "norm_label": "dashboard()"
@@ -4410,7 +4644,7 @@
       "source_file": "apps/web/src/components/InsufficientCreditsModal.tsx",
       "source_location": "L1",
       "id": "components_insufficientcreditsmodal",
-      "community": 212,
+      "community": 140,
       "norm_label": "insufficientcreditsmodal.tsx"
     },
     {
@@ -4419,7 +4653,7 @@
       "source_file": "apps/web/src/components/InsufficientCreditsModal.tsx",
       "source_location": "L8",
       "id": "components_insufficientcreditsmodal_feature_costs",
-      "community": 212,
+      "community": 140,
       "norm_label": "feature_costs"
     },
     {
@@ -4428,7 +4662,7 @@
       "source_file": "apps/web/src/components/InsufficientCreditsModal.tsx",
       "source_location": "L20",
       "id": "components_insufficientcreditsmodal_insufficientcreditsmodalprops",
-      "community": 212,
+      "community": 140,
       "norm_label": "insufficientcreditsmodalprops"
     },
     {
@@ -4437,7 +4671,7 @@
       "source_file": "apps/web/src/components/InsufficientCreditsModal.tsx",
       "source_location": "L27",
       "id": "components_insufficientcreditsmodal_insufficientcreditsmodal",
-      "community": 212,
+      "community": 140,
       "norm_label": "insufficientcreditsmodal()"
     },
     {
@@ -4563,7 +4797,7 @@
       "source_file": "apps/web/src/components/LandingPage.tsx",
       "source_location": "L206",
       "id": "components_landingpage_landingpage",
-      "community": 14,
+      "community": 100,
       "norm_label": "landingpage()"
     },
     {
@@ -4707,7 +4941,7 @@
       "source_file": "apps/web/src/components/OpportunityExplorer.tsx",
       "source_location": "L1",
       "id": "components_opportunityexplorer",
-      "community": 100,
+      "community": 20,
       "norm_label": "opportunityexplorer.tsx"
     },
     {
@@ -4716,7 +4950,7 @@
       "source_file": "apps/web/src/components/OpportunityExplorer.tsx",
       "source_location": "L14",
       "id": "components_opportunityexplorer_opportunityexplorer",
-      "community": 100,
+      "community": 140,
       "norm_label": "opportunityexplorer()"
     },
     {
@@ -4887,7 +5121,7 @@
       "source_file": "apps/web/src/components/admin/CommandPalette.tsx",
       "source_location": "L1",
       "id": "admin_commandpalette",
-      "community": 184,
+      "community": 5,
       "norm_label": "commandpalette.tsx"
     },
     {
@@ -4896,7 +5130,7 @@
       "source_file": "apps/web/src/components/admin/CommandPalette.tsx",
       "source_location": "L6",
       "id": "admin_commandpalette_commandpaletteprops",
-      "community": 184,
+      "community": 5,
       "norm_label": "commandpaletteprops"
     },
     {
@@ -4905,7 +5139,7 @@
       "source_file": "apps/web/src/components/admin/CommandPalette.tsx",
       "source_location": "L11",
       "id": "admin_commandpalette_commandpalette",
-      "community": 184,
+      "community": 140,
       "norm_label": "commandpalette()"
     },
     {
@@ -4914,7 +5148,7 @@
       "source_file": "apps/web/src/components/admin/DashboardObservability.tsx",
       "source_location": "L1",
       "id": "admin_dashboardobservability",
-      "community": 209,
+      "community": 5,
       "norm_label": "dashboardobservability.tsx"
     },
     {
@@ -4923,7 +5157,7 @@
       "source_file": "apps/web/src/components/admin/DashboardObservability.tsx",
       "source_location": "L4",
       "id": "admin_dashboardobservability_dashboardobservabilityprops",
-      "community": 209,
+      "community": 5,
       "norm_label": "dashboardobservabilityprops"
     },
     {
@@ -4932,7 +5166,7 @@
       "source_file": "apps/web/src/components/admin/DashboardObservability.tsx",
       "source_location": "L16",
       "id": "admin_dashboardobservability_dashboardobservability",
-      "community": 209,
+      "community": 5,
       "norm_label": "dashboardobservability()"
     },
     {
@@ -4941,7 +5175,7 @@
       "source_file": "apps/web/src/components/admin/KPICardsRow.tsx",
       "source_location": "L1",
       "id": "admin_kpicardsrow",
-      "community": 209,
+      "community": 5,
       "norm_label": "kpicardsrow.tsx"
     },
     {
@@ -4950,7 +5184,7 @@
       "source_file": "apps/web/src/components/admin/KPICardsRow.tsx",
       "source_location": "L5",
       "id": "admin_kpicardsrow_kpicardsrow",
-      "community": 209,
+      "community": 5,
       "norm_label": "kpicardsrow()"
     },
     {
@@ -4959,7 +5193,7 @@
       "source_file": "apps/web/src/components/admin/ModerationFeed.tsx",
       "source_location": "L1",
       "id": "admin_moderationfeed",
-      "community": 158,
+      "community": 5,
       "norm_label": "moderationfeed.tsx"
     },
     {
@@ -4968,7 +5202,7 @@
       "source_file": "apps/web/src/components/admin/ModerationFeed.tsx",
       "source_location": "L5",
       "id": "admin_moderationfeed_moderationfeed",
-      "community": 158,
+      "community": 5,
       "norm_label": "moderationfeed()"
     },
     {
@@ -4977,7 +5211,7 @@
       "source_file": "apps/web/src/components/admin/RevenueAnalytics.tsx",
       "source_location": "L1",
       "id": "admin_revenueanalytics",
-      "community": 209,
+      "community": 5,
       "norm_label": "revenueanalytics.tsx"
     },
     {
@@ -4986,7 +5220,7 @@
       "source_file": "apps/web/src/components/admin/RevenueAnalytics.tsx",
       "source_location": "L4",
       "id": "admin_revenueanalytics_revenueanalyticsprops",
-      "community": 209,
+      "community": 5,
       "norm_label": "revenueanalyticsprops"
     },
     {
@@ -4995,7 +5229,7 @@
       "source_file": "apps/web/src/components/admin/RevenueAnalytics.tsx",
       "source_location": "L20",
       "id": "admin_revenueanalytics_revenueanalytics",
-      "community": 209,
+      "community": 5,
       "norm_label": "revenueanalytics()"
     },
     {
@@ -5004,25 +5238,34 @@
       "source_file": "apps/web/src/components/admin/TrafficChart.tsx",
       "source_location": "L1",
       "id": "admin_trafficchart",
-      "community": 158,
+      "community": 5,
       "norm_label": "trafficchart.tsx"
+    },
+    {
+      "label": "ModalData",
+      "file_type": "code",
+      "source_file": "apps/web/src/components/admin/TrafficChart.tsx",
+      "source_location": "L7",
+      "id": "admin_trafficchart_modaldata",
+      "community": 5,
+      "norm_label": "modaldata"
     },
     {
       "label": "CustomTooltip()",
       "file_type": "code",
       "source_file": "apps/web/src/components/admin/TrafficChart.tsx",
-      "source_location": "L7",
+      "source_location": "L15",
       "id": "admin_trafficchart_customtooltip",
-      "community": 158,
+      "community": 5,
       "norm_label": "customtooltip()"
     },
     {
       "label": "TrafficChart()",
       "file_type": "code",
       "source_file": "apps/web/src/components/admin/TrafficChart.tsx",
-      "source_location": "L49",
+      "source_location": "L68",
       "id": "admin_trafficchart_trafficchart",
-      "community": 158,
+      "community": 5,
       "norm_label": "trafficchart()"
     },
     {
@@ -5031,7 +5274,7 @@
       "source_file": "apps/web/src/components/admin/VentureFunnel.tsx",
       "source_location": "L1",
       "id": "admin_venturefunnel",
-      "community": 209,
+      "community": 5,
       "norm_label": "venturefunnel.tsx"
     },
     {
@@ -5040,7 +5283,7 @@
       "source_file": "apps/web/src/components/admin/VentureFunnel.tsx",
       "source_location": "L4",
       "id": "admin_venturefunnel_venturefunnelprops",
-      "community": 209,
+      "community": 5,
       "norm_label": "venturefunnelprops"
     },
     {
@@ -5049,7 +5292,7 @@
       "source_file": "apps/web/src/components/admin/VentureFunnel.tsx",
       "source_location": "L8",
       "id": "admin_venturefunnel_venturefunnel",
-      "community": 209,
+      "community": 5,
       "norm_label": "venturefunnel()"
     },
     {
@@ -5337,7 +5580,7 @@
       "source_file": "apps/web/src/components/ui/SpeakButton.tsx",
       "source_location": "L1",
       "id": "ui_speakbutton",
-      "community": 210,
+      "community": 100,
       "norm_label": "speakbutton.tsx"
     },
     {
@@ -5346,7 +5589,7 @@
       "source_file": "apps/web/src/components/ui/SpeakButton.tsx",
       "source_location": "L5",
       "id": "ui_speakbutton_speakbuttonprops",
-      "community": 210,
+      "community": 100,
       "norm_label": "speakbuttonprops"
     },
     {
@@ -5355,7 +5598,7 @@
       "source_file": "apps/web/src/components/ui/SpeakButton.tsx",
       "source_location": "L19",
       "id": "ui_speakbutton_speakbutton",
-      "community": 210,
+      "community": 100,
       "norm_label": "speakbutton()"
     },
     {
@@ -5391,7 +5634,7 @@
       "source_file": "apps/web/src/components/ui/badge.tsx",
       "source_location": "L1",
       "id": "ui_badge",
-      "community": 158,
+      "community": 5,
       "norm_label": "badge.tsx"
     },
     {
@@ -5400,7 +5643,7 @@
       "source_file": "apps/web/src/components/ui/badge.tsx",
       "source_location": "L7",
       "id": "ui_badge_badgevariants",
-      "community": 158,
+      "community": 5,
       "norm_label": "badgevariants"
     },
     {
@@ -5409,7 +5652,7 @@
       "source_file": "apps/web/src/components/ui/badge.tsx",
       "source_location": "L30",
       "id": "ui_badge_badge",
-      "community": 158,
+      "community": 5,
       "norm_label": "badge()"
     },
     {
@@ -5418,7 +5661,7 @@
       "source_file": "apps/web/src/components/ui/button.tsx",
       "source_location": "L1",
       "id": "ui_button",
-      "community": 100,
+      "community": 5,
       "norm_label": "button.tsx"
     },
     {
@@ -5427,7 +5670,7 @@
       "source_file": "apps/web/src/components/ui/button.tsx",
       "source_location": "L6",
       "id": "ui_button_buttonvariants",
-      "community": 100,
+      "community": 5,
       "norm_label": "buttonvariants"
     },
     {
@@ -5436,7 +5679,7 @@
       "source_file": "apps/web/src/components/ui/button.tsx",
       "source_location": "L43",
       "id": "ui_button_button",
-      "community": 100,
+      "community": 5,
       "norm_label": "button()"
     },
     {
@@ -5445,7 +5688,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L1",
       "id": "ui_card",
-      "community": 209,
+      "community": 5,
       "norm_label": "card.tsx"
     },
     {
@@ -5454,7 +5697,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L5",
       "id": "ui_card_card",
-      "community": 209,
+      "community": 5,
       "norm_label": "card()"
     },
     {
@@ -5463,7 +5706,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L23",
       "id": "ui_card_cardheader",
-      "community": 209,
+      "community": 5,
       "norm_label": "cardheader()"
     },
     {
@@ -5472,7 +5715,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L36",
       "id": "ui_card_cardtitle",
-      "community": 209,
+      "community": 5,
       "norm_label": "cardtitle()"
     },
     {
@@ -5499,7 +5742,7 @@
       "source_file": "apps/web/src/components/ui/card.tsx",
       "source_location": "L72",
       "id": "ui_card_cardcontent",
-      "community": 209,
+      "community": 5,
       "norm_label": "cardcontent()"
     },
     {
@@ -5517,7 +5760,7 @@
       "source_file": "apps/web/src/components/ui/checkbox.tsx",
       "source_location": "L1",
       "id": "ui_checkbox",
-      "community": 100,
+      "community": 20,
       "norm_label": "checkbox.tsx"
     },
     {
@@ -5526,7 +5769,7 @@
       "source_file": "apps/web/src/components/ui/checkbox.tsx",
       "source_location": "L5",
       "id": "ui_checkbox_checkbox",
-      "community": 100,
+      "community": 20,
       "norm_label": "checkbox"
     },
     {
@@ -5661,7 +5904,7 @@
       "source_file": "apps/web/src/hooks/useModerationDashboard.ts",
       "source_location": "L1",
       "id": "hooks_usemoderationdashboard",
-      "community": 158,
+      "community": 5,
       "norm_label": "usemoderationdashboard.ts"
     },
     {
@@ -5670,7 +5913,7 @@
       "source_file": "apps/web/src/hooks/useModerationDashboard.ts",
       "source_location": "L5",
       "id": "hooks_usemoderationdashboard_moderationstats",
-      "community": 158,
+      "community": 5,
       "norm_label": "moderationstats"
     },
     {
@@ -5679,34 +5922,34 @@
       "source_file": "apps/web/src/hooks/useModerationDashboard.ts",
       "source_location": "L16",
       "id": "hooks_usemoderationdashboard_trafficdata",
-      "community": 158,
+      "community": 5,
       "norm_label": "trafficdata"
     },
     {
       "label": "ModerationEvent",
       "file_type": "code",
       "source_file": "apps/web/src/hooks/useModerationDashboard.ts",
-      "source_location": "L27",
+      "source_location": "L28",
       "id": "hooks_usemoderationdashboard_moderationevent",
-      "community": 158,
+      "community": 5,
       "norm_label": "moderationevent"
     },
     {
       "label": "DashboardExtendedData",
       "file_type": "code",
       "source_file": "apps/web/src/hooks/useModerationDashboard.ts",
-      "source_location": "L36",
+      "source_location": "L37",
       "id": "hooks_usemoderationdashboard_dashboardextendeddata",
-      "community": 158,
+      "community": 5,
       "norm_label": "dashboardextendeddata"
     },
     {
       "label": "useModerationDashboard()",
       "file_type": "code",
       "source_file": "apps/web/src/hooks/useModerationDashboard.ts",
-      "source_location": "L77",
+      "source_location": "L78",
       "id": "hooks_usemoderationdashboard_usemoderationdashboard",
-      "community": 158,
+      "community": 5,
       "norm_label": "usemoderationdashboard()"
     },
     {
@@ -5715,7 +5958,7 @@
       "source_file": "apps/web/src/hooks/useSpeech.ts",
       "source_location": "L1",
       "id": "hooks_usespeech",
-      "community": 210,
+      "community": 100,
       "norm_label": "usespeech.ts"
     },
     {
@@ -5724,7 +5967,7 @@
       "source_file": "apps/web/src/hooks/useSpeech.ts",
       "source_location": "L3",
       "id": "hooks_usespeech_speechstatus",
-      "community": 210,
+      "community": 100,
       "norm_label": "speechstatus"
     },
     {
@@ -5733,7 +5976,7 @@
       "source_file": "apps/web/src/hooks/useSpeech.ts",
       "source_location": "L5",
       "id": "hooks_usespeech_usespeechreturn",
-      "community": 210,
+      "community": 100,
       "norm_label": "usespeechreturn"
     },
     {
@@ -5742,7 +5985,7 @@
       "source_file": "apps/web/src/hooks/useSpeech.ts",
       "source_location": "L19",
       "id": "hooks_usespeech_globalaudio",
-      "community": 210,
+      "community": 100,
       "norm_label": "globalaudio"
     },
     {
@@ -5751,7 +5994,7 @@
       "source_file": "apps/web/src/hooks/useSpeech.ts",
       "source_location": "L51",
       "id": "hooks_usespeech_stripmarkdown",
-      "community": 210,
+      "community": 100,
       "norm_label": "stripmarkdown()"
     },
     {
@@ -5760,7 +6003,7 @@
       "source_file": "apps/web/src/hooks/useSpeech.ts",
       "source_location": "L65",
       "id": "hooks_usespeech_usespeech",
-      "community": 210,
+      "community": 100,
       "norm_label": "usespeech()"
     },
     {
@@ -5796,7 +6039,7 @@
       "source_file": "apps/web/src/lib/adminClient.ts",
       "source_location": "L1",
       "id": "lib_adminclient",
-      "community": 184,
+      "community": 5,
       "norm_label": "adminclient.ts"
     },
     {
@@ -5805,7 +6048,7 @@
       "source_file": "apps/web/src/lib/adminClient.ts",
       "source_location": "L7",
       "id": "lib_adminclient_adminclient",
-      "community": 184,
+      "community": 5,
       "norm_label": "adminclient"
     },
     {
@@ -5814,7 +6057,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L1",
       "id": "lib_api",
-      "community": 20,
+      "community": 207,
       "norm_label": "api.ts"
     },
     {
@@ -5823,7 +6066,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L3",
       "id": "lib_api_apiclient",
-      "community": 213,
+      "community": 216,
       "norm_label": "apiclient"
     },
     {
@@ -5832,7 +6075,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L4",
       "id": "lib_api_apiclient_generateimage",
-      "community": 213,
+      "community": 216,
       "norm_label": ".generateimage()"
     },
     {
@@ -5841,7 +6084,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L28",
       "id": "lib_api_apiclient_uploadfile",
-      "community": 213,
+      "community": 216,
       "norm_label": ".uploadfile()"
     },
     {
@@ -5850,7 +6093,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L79",
       "id": "lib_api_apiclient_generatemarketingstudioad",
-      "community": 213,
+      "community": 216,
       "norm_label": ".generatemarketingstudioad()"
     },
     {
@@ -5859,7 +6102,7 @@
       "source_file": "apps/web/src/lib/api.ts",
       "source_location": "L132",
       "id": "lib_api_api",
-      "community": 20,
+      "community": 207,
       "norm_label": "api"
     },
     {
@@ -7040,6 +7283,186 @@
       "id": "n8n_workflows_financial_engine_fixed_code_in_javascript1_main",
       "community": 28,
       "norm_label": "main"
+    },
+    {
+      "label": "Gmail Weekly Reports.json",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L1",
+      "id": "n8n_workflows_gmail_weekly_reports",
+      "community": 184,
+      "norm_label": "gmail weekly reports.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L2",
+      "id": "n8n_workflows_gmail_weekly_reports_name",
+      "community": 184,
+      "norm_label": "name"
+    },
+    {
+      "label": "nodes",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L3",
+      "id": "n8n_workflows_gmail_weekly_reports_nodes",
+      "community": 184,
+      "norm_label": "nodes"
+    },
+    {
+      "label": "pinData",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L72",
+      "id": "n8n_workflows_gmail_weekly_reports_pindata",
+      "community": 184,
+      "norm_label": "pindata"
+    },
+    {
+      "label": "connections",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L73",
+      "id": "n8n_workflows_gmail_weekly_reports_connections",
+      "community": 184,
+      "norm_label": "connections"
+    },
+    {
+      "label": "Schedule Trigger",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L74",
+      "id": "n8n_workflows_gmail_weekly_reports_connections_schedule_trigger",
+      "community": 184,
+      "norm_label": "schedule trigger"
+    },
+    {
+      "label": "main",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L75",
+      "id": "n8n_workflows_gmail_weekly_reports_schedule_trigger_main",
+      "community": 184,
+      "norm_label": "main"
+    },
+    {
+      "label": "Fetch API Report Data",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L85",
+      "id": "n8n_workflows_gmail_weekly_reports_connections_fetch_api_report_data",
+      "community": 184,
+      "norm_label": "fetch api report data"
+    },
+    {
+      "label": "main",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L86",
+      "id": "n8n_workflows_gmail_weekly_reports_fetch_api_report_data_main",
+      "community": 184,
+      "norm_label": "main"
+    },
+    {
+      "label": "active",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L97",
+      "id": "n8n_workflows_gmail_weekly_reports_active",
+      "community": 184,
+      "norm_label": "active"
+    },
+    {
+      "label": "settings",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L98",
+      "id": "n8n_workflows_gmail_weekly_reports_settings",
+      "community": 184,
+      "norm_label": "settings"
+    },
+    {
+      "label": "executionOrder",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L99",
+      "id": "n8n_workflows_gmail_weekly_reports_settings_executionorder",
+      "community": 184,
+      "norm_label": "executionorder"
+    },
+    {
+      "label": "binaryMode",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L100",
+      "id": "n8n_workflows_gmail_weekly_reports_settings_binarymode",
+      "community": 184,
+      "norm_label": "binarymode"
+    },
+    {
+      "label": "versionId",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L102",
+      "id": "n8n_workflows_gmail_weekly_reports_versionid",
+      "community": 184,
+      "norm_label": "versionid"
+    },
+    {
+      "label": "meta",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L103",
+      "id": "n8n_workflows_gmail_weekly_reports_meta",
+      "community": 184,
+      "norm_label": "meta"
+    },
+    {
+      "label": "templateCredsSetupCompleted",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L104",
+      "id": "n8n_workflows_gmail_weekly_reports_meta_templatecredssetupcompleted",
+      "community": 184,
+      "norm_label": "templatecredssetupcompleted"
+    },
+    {
+      "label": "instanceId",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L105",
+      "id": "n8n_workflows_gmail_weekly_reports_meta_instanceid",
+      "community": 184,
+      "norm_label": "instanceid"
+    },
+    {
+      "label": "nodeGroups",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L107",
+      "id": "n8n_workflows_gmail_weekly_reports_nodegroups",
+      "community": 184,
+      "norm_label": "nodegroups"
+    },
+    {
+      "label": "id",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L108",
+      "id": "n8n_workflows_gmail_weekly_reports_id",
+      "community": 184,
+      "norm_label": "id"
+    },
+    {
+      "label": "tags",
+      "file_type": "code",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L109",
+      "id": "n8n_workflows_gmail_weekly_reports_tags",
+      "community": 184,
+      "norm_label": "tags"
     },
     {
       "label": "audit_workflows.py",
@@ -8433,7 +8856,7 @@
       "source_file": "package.json",
       "source_location": "L1",
       "id": "package",
-      "community": 6,
+      "community": 209,
       "norm_label": "package.json"
     },
     {
@@ -8442,7 +8865,7 @@
       "source_file": "package.json",
       "source_location": "L2",
       "id": "package_name",
-      "community": 6,
+      "community": 209,
       "norm_label": "name"
     },
     {
@@ -8451,7 +8874,7 @@
       "source_file": "package.json",
       "source_location": "L3",
       "id": "package_version",
-      "community": 6,
+      "community": 209,
       "norm_label": "version"
     },
     {
@@ -8460,7 +8883,7 @@
       "source_file": "package.json",
       "source_location": "L4",
       "id": "package_private",
-      "community": 6,
+      "community": 209,
       "norm_label": "private"
     },
     {
@@ -8469,7 +8892,7 @@
       "source_file": "package.json",
       "source_location": "L5",
       "id": "package_description",
-      "community": 6,
+      "community": 209,
       "norm_label": "description"
     },
     {
@@ -8478,7 +8901,7 @@
       "source_file": "package.json",
       "source_location": "L6",
       "id": "package_scripts",
-      "community": 6,
+      "community": 215,
       "norm_label": "scripts"
     },
     {
@@ -8487,7 +8910,7 @@
       "source_file": "package.json",
       "source_location": "L7",
       "id": "package_scripts_dev",
-      "community": 6,
+      "community": 215,
       "norm_label": "dev"
     },
     {
@@ -8496,7 +8919,7 @@
       "source_file": "package.json",
       "source_location": "L8",
       "id": "package_scripts_build",
-      "community": 6,
+      "community": 215,
       "norm_label": "build"
     },
     {
@@ -8505,7 +8928,7 @@
       "source_file": "package.json",
       "source_location": "L9",
       "id": "package_scripts_lint",
-      "community": 6,
+      "community": 215,
       "norm_label": "lint"
     },
     {
@@ -8514,7 +8937,7 @@
       "source_file": "package.json",
       "source_location": "L10",
       "id": "package_scripts_format",
-      "community": 6,
+      "community": 215,
       "norm_label": "format"
     },
     {
@@ -8523,7 +8946,7 @@
       "source_file": "package.json",
       "source_location": "L12",
       "id": "package_devdependencies",
-      "community": 6,
+      "community": 158,
       "norm_label": "devdependencies"
     },
     {
@@ -8532,7 +8955,7 @@
       "source_file": "package.json",
       "source_location": "L13",
       "id": "package_devdependencies_types_node",
-      "community": 6,
+      "community": 158,
       "norm_label": "@types/node"
     },
     {
@@ -8541,7 +8964,7 @@
       "source_file": "package.json",
       "source_location": "L14",
       "id": "package_devdependencies_types_react",
-      "community": 6,
+      "community": 158,
       "norm_label": "@types/react"
     },
     {
@@ -8550,7 +8973,7 @@
       "source_file": "package.json",
       "source_location": "L15",
       "id": "package_devdependencies_types_react_dom",
-      "community": 6,
+      "community": 158,
       "norm_label": "@types/react-dom"
     },
     {
@@ -8559,7 +8982,7 @@
       "source_file": "package.json",
       "source_location": "L16",
       "id": "package_devdependencies_dotenv",
-      "community": 6,
+      "community": 158,
       "norm_label": "dotenv"
     },
     {
@@ -8568,7 +8991,7 @@
       "source_file": "package.json",
       "source_location": "L17",
       "id": "package_devdependencies_jsonwebtoken",
-      "community": 6,
+      "community": 158,
       "norm_label": "jsonwebtoken"
     },
     {
@@ -8577,7 +9000,7 @@
       "source_file": "package.json",
       "source_location": "L18",
       "id": "package_devdependencies_mongoose",
-      "community": 6,
+      "community": 158,
       "norm_label": "mongoose"
     },
     {
@@ -8586,7 +9009,7 @@
       "source_file": "package.json",
       "source_location": "L19",
       "id": "package_devdependencies_next",
-      "community": 6,
+      "community": 158,
       "norm_label": "next"
     },
     {
@@ -8595,7 +9018,7 @@
       "source_file": "package.json",
       "source_location": "L20",
       "id": "package_devdependencies_prettier",
-      "community": 6,
+      "community": 158,
       "norm_label": "prettier"
     },
     {
@@ -8604,7 +9027,7 @@
       "source_file": "package.json",
       "source_location": "L21",
       "id": "package_devdependencies_react",
-      "community": 6,
+      "community": 158,
       "norm_label": "react"
     },
     {
@@ -8613,7 +9036,7 @@
       "source_file": "package.json",
       "source_location": "L22",
       "id": "package_devdependencies_react_dom",
-      "community": 6,
+      "community": 158,
       "norm_label": "react-dom"
     },
     {
@@ -8622,7 +9045,7 @@
       "source_file": "package.json",
       "source_location": "L23",
       "id": "package_devdependencies_ts_node",
-      "community": 6,
+      "community": 158,
       "norm_label": "ts-node"
     },
     {
@@ -8640,7 +9063,7 @@
       "source_file": "package.json",
       "source_location": "L25",
       "id": "package_devdependencies_typescript",
-      "community": 6,
+      "community": 158,
       "norm_label": "typescript"
     },
     {
@@ -8649,7 +9072,7 @@
       "source_file": "package.json",
       "source_location": "L27",
       "id": "package_engines",
-      "community": 6,
+      "community": 209,
       "norm_label": "engines"
     },
     {
@@ -8658,7 +9081,7 @@
       "source_file": "package.json",
       "source_location": "L28",
       "id": "package_engines_node",
-      "community": 6,
+      "community": 209,
       "norm_label": "node"
     },
     {
@@ -8667,7 +9090,7 @@
       "source_file": "package.json",
       "source_location": "L29",
       "id": "package_engines_pnpm",
-      "community": 6,
+      "community": 209,
       "norm_label": "pnpm"
     },
     {
@@ -8676,7 +9099,7 @@
       "source_file": "package.json",
       "source_location": "L31",
       "id": "package_packagemanager",
-      "community": 6,
+      "community": 209,
       "norm_label": "packagemanager"
     },
     {
@@ -8685,7 +9108,7 @@
       "source_file": "package.json",
       "source_location": "L32",
       "id": "package_dependencies",
-      "community": 6,
+      "community": 213,
       "norm_label": "dependencies"
     },
     {
@@ -8694,7 +9117,7 @@
       "source_file": "package.json",
       "source_location": "L33",
       "id": "package_dependencies_langchain_openai",
-      "community": 6,
+      "community": 213,
       "norm_label": "@langchain/openai"
     },
     {
@@ -8703,7 +9126,7 @@
       "source_file": "package.json",
       "source_location": "L34",
       "id": "package_dependencies_pinecone_database_pinecone",
-      "community": 6,
+      "community": 213,
       "norm_label": "@pinecone-database/pinecone"
     },
     {
@@ -8712,7 +9135,7 @@
       "source_file": "package.json",
       "source_location": "L35",
       "id": "package_dependencies_mongodb",
-      "community": 6,
+      "community": 213,
       "norm_label": "mongodb"
     },
     {
@@ -8721,7 +9144,7 @@
       "source_file": "package.json",
       "source_location": "L36",
       "id": "package_dependencies_zod",
-      "community": 6,
+      "community": 213,
       "norm_label": "zod"
     },
     {
@@ -9124,7 +9547,7 @@
       "label": "runOpportunityAgent()",
       "file_type": "code",
       "source_file": "packages/agents/src/index.ts",
-      "source_location": "L129",
+      "source_location": "L135",
       "id": "src_index_runopportunityagent",
       "community": 129,
       "norm_label": "runopportunityagent()"
@@ -9133,7 +9556,7 @@
       "label": "runBusinessPlanAgent()",
       "file_type": "code",
       "source_file": "packages/agents/src/index.ts",
-      "source_location": "L194",
+      "source_location": "L205",
       "id": "src_index_runbusinessplanagent",
       "community": 129,
       "norm_label": "runbusinessplanagent()"
@@ -9142,7 +9565,7 @@
       "label": "runFinancialAgent()",
       "file_type": "code",
       "source_file": "packages/agents/src/index.ts",
-      "source_location": "L326",
+      "source_location": "L338",
       "id": "src_index_runfinancialagent",
       "community": 129,
       "norm_label": "runfinancialagent()"
@@ -9151,7 +9574,7 @@
       "label": "runCofounderAgent()",
       "file_type": "code",
       "source_file": "packages/agents/src/index.ts",
-      "source_location": "L509",
+      "source_location": "L522",
       "id": "src_index_runcofounderagent",
       "community": 129,
       "norm_label": "runcofounderagent()"
@@ -9160,7 +9583,7 @@
       "label": "runBrandingAgent()",
       "file_type": "code",
       "source_file": "packages/agents/src/index.ts",
-      "source_location": "L570",
+      "source_location": "L587",
       "id": "src_index_runbrandingagent",
       "community": 129,
       "norm_label": "runbrandingagent()"
@@ -9169,7 +9592,7 @@
       "label": "runMarketingAgent()",
       "file_type": "code",
       "source_file": "packages/agents/src/index.ts",
-      "source_location": "L645",
+      "source_location": "L665",
       "id": "src_index_runmarketingagent",
       "community": 129,
       "norm_label": "runmarketingagent()"
@@ -9178,7 +9601,7 @@
       "label": "runPitchAgent()",
       "file_type": "code",
       "source_file": "packages/agents/src/index.ts",
-      "source_location": "L734",
+      "source_location": "L757",
       "id": "src_index_runpitchagent",
       "community": 129,
       "norm_label": "runpitchagent()"
@@ -9576,7 +9999,7 @@
       "source_file": "packages/agents/src/media/videoProvider.ts",
       "source_location": "L27",
       "id": "media_videoprovider_generatemarketingvideo",
-      "community": 10,
+      "community": 129,
       "norm_label": "generatemarketingvideo()"
     },
     {
@@ -10474,7 +10897,7 @@
       "label": "AdminSettingsSchema",
       "file_type": "code",
       "source_file": "packages/database/src/index.ts",
-      "source_location": "L938",
+      "source_location": "L939",
       "id": "src_index_adminsettingsschema",
       "community": 1,
       "norm_label": "adminsettingsschema"
@@ -10485,7 +10908,7 @@
       "source_file": "packages/database/src/services/projectContext.ts",
       "source_location": "L1",
       "id": "services_projectcontext",
-      "community": 129,
+      "community": 114,
       "norm_label": "projectcontext.ts"
     },
     {
@@ -10494,7 +10917,7 @@
       "source_file": "packages/database/src/services/projectContext.ts",
       "source_location": "L15",
       "id": "services_projectcontext_getprojectcontext",
-      "community": 129,
+      "community": 114,
       "norm_label": "getprojectcontext()"
     },
     {
@@ -10503,7 +10926,7 @@
       "source_file": "packages/database/src/services/projectContext.ts",
       "source_location": "L57",
       "id": "services_projectcontext_buildcontextstring",
-      "community": 129,
+      "community": 114,
       "norm_label": "buildcontextstring()"
     },
     {
@@ -12647,6 +13070,24 @@
       "id": "scripts_test_report_testreport",
       "community": 146,
       "norm_label": "testreport()"
+    },
+    {
+      "label": "test-send-weekly.ts",
+      "file_type": "code",
+      "source_file": "scripts/test-send-weekly.ts",
+      "source_location": "L1",
+      "id": "scripts_test_send_weekly",
+      "community": 142,
+      "norm_label": "test-send-weekly.ts"
+    },
+    {
+      "label": "testSendWeekly()",
+      "file_type": "code",
+      "source_file": "scripts/test-send-weekly.ts",
+      "source_location": "L10",
+      "id": "scripts_test_send_weekly_testsendweekly",
+      "community": 142,
+      "norm_label": "testsendweekly()"
     },
     {
       "label": "test_stdin.py",
@@ -15349,11 +15790,38 @@
       "norm_label": "step-by-step user journey"
     },
     {
+      "label": "unwrapFinancialAgentResult()",
+      "file_type": "code",
+      "source_file": "packages/agents/src/index.ts",
+      "source_location": "L326",
+      "community": 129,
+      "norm_label": "unwrapfinancialagentresult()",
+      "id": "src_index_unwrapfinancialagentresult"
+    },
+    {
+      "label": "defaultPricingResponse()",
+      "file_type": "code",
+      "source_file": "packages/agents/src/index.ts",
+      "source_location": "L346",
+      "community": 129,
+      "norm_label": "defaultpricingresponse()",
+      "id": "src_index_defaultpricingresponse"
+    },
+    {
+      "label": "buildFallbackFinancialResponse()",
+      "file_type": "code",
+      "source_file": "packages/agents/src/index.ts",
+      "source_location": "L371",
+      "community": 129,
+      "norm_label": "buildfallbackfinancialresponse()",
+      "id": "src_index_buildfallbackfinancialresponse"
+    },
+    {
       "label": "dotenv",
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L32",
-      "community": 6,
+      "community": 213,
       "norm_label": "dotenv",
       "id": "package_dependencies_dotenv"
     },
@@ -15362,7 +15830,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L34",
-      "community": 6,
+      "community": 213,
       "norm_label": "mongoose",
       "id": "package_dependencies_mongoose"
     },
@@ -15371,7 +15839,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L37",
-      "community": 6,
+      "community": 209,
       "norm_label": "pnpm",
       "id": "package_pnpm"
     },
@@ -15380,7 +15848,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L38",
-      "community": 6,
+      "community": 209,
       "norm_label": "onlybuiltdependencies",
       "id": "package_pnpm_onlybuiltdependencies"
     },
@@ -15866,7 +16334,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L6",
-      "community": 78,
+      "community": 214,
       "norm_label": "scripts",
       "id": "creator_engine_package_scripts"
     },
@@ -15875,7 +16343,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L7",
-      "community": 78,
+      "community": 214,
       "norm_label": "dev",
       "id": "creator_engine_package_scripts_dev"
     },
@@ -15884,7 +16352,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L8",
-      "community": 78,
+      "community": 214,
       "norm_label": "build",
       "id": "creator_engine_package_scripts_build"
     },
@@ -15893,7 +16361,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L9",
-      "community": 78,
+      "community": 214,
       "norm_label": "lint",
       "id": "creator_engine_package_scripts_lint"
     },
@@ -15902,7 +16370,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L10",
-      "community": 78,
+      "community": 214,
       "norm_label": "format",
       "id": "creator_engine_package_scripts_format"
     },
@@ -15911,7 +16379,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L12",
-      "community": 78,
+      "community": 210,
       "norm_label": "devdependencies",
       "id": "creator_engine_package_devdependencies"
     },
@@ -15920,7 +16388,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L13",
-      "community": 78,
+      "community": 210,
       "norm_label": "@types/node",
       "id": "creator_engine_package_devdependencies_types_node"
     },
@@ -15929,7 +16397,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L14",
-      "community": 78,
+      "community": 210,
       "norm_label": "@types/react",
       "id": "creator_engine_package_devdependencies_types_react"
     },
@@ -15938,7 +16406,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L15",
-      "community": 78,
+      "community": 210,
       "norm_label": "@types/react-dom",
       "id": "creator_engine_package_devdependencies_types_react_dom"
     },
@@ -15947,7 +16415,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L16",
-      "community": 78,
+      "community": 210,
       "norm_label": "next",
       "id": "creator_engine_package_devdependencies_next"
     },
@@ -15956,7 +16424,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L17",
-      "community": 78,
+      "community": 210,
       "norm_label": "prettier",
       "id": "creator_engine_package_devdependencies_prettier"
     },
@@ -15965,7 +16433,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L18",
-      "community": 78,
+      "community": 210,
       "norm_label": "react",
       "id": "creator_engine_package_devdependencies_react"
     },
@@ -15974,7 +16442,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L19",
-      "community": 78,
+      "community": 210,
       "norm_label": "react-dom",
       "id": "creator_engine_package_devdependencies_react_dom"
     },
@@ -15992,7 +16460,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L21",
-      "community": 78,
+      "community": 210,
       "norm_label": "typescript",
       "id": "creator_engine_package_devdependencies_typescript"
     },
@@ -16037,7 +16505,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L28",
-      "community": 78,
+      "community": 212,
       "norm_label": "dependencies",
       "id": "creator_engine_package_dependencies"
     },
@@ -16046,7 +16514,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L29",
-      "community": 78,
+      "community": 212,
       "norm_label": "@langchain/openai",
       "id": "creator_engine_package_dependencies_langchain_openai"
     },
@@ -16055,7 +16523,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L30",
-      "community": 78,
+      "community": 212,
       "norm_label": "@pinecone-database/pinecone",
       "id": "creator_engine_package_dependencies_pinecone_database_pinecone"
     },
@@ -16064,7 +16532,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L31",
-      "community": 78,
+      "community": 212,
       "norm_label": "dotenv",
       "id": "creator_engine_package_dependencies_dotenv"
     },
@@ -16073,7 +16541,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L32",
-      "community": 78,
+      "community": 212,
       "norm_label": "mongodb",
       "id": "creator_engine_package_dependencies_mongodb"
     },
@@ -16082,7 +16550,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L33",
-      "community": 78,
+      "community": 212,
       "norm_label": "mongoose",
       "id": "creator_engine_package_dependencies_mongoose"
     },
@@ -16091,7 +16559,7 @@
       "file_type": "code",
       "source_file": "package.json",
       "source_location": "L34",
-      "community": 78,
+      "community": 212,
       "norm_label": "zod",
       "id": "creator_engine_package_dependencies_zod"
     },
@@ -17261,7 +17729,7 @@
       "file_type": "code",
       "source_file": "apps/web/src/hooks/useModerationDashboard.ts",
       "source_location": "L21",
-      "community": 158,
+      "community": 5,
       "norm_label": "flaggedcategory",
       "id": "hooks_usemoderationdashboard_flaggedcategory"
     },
@@ -17350,7 +17818,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 14,
+      "community": 100,
       "norm_label": "rag architecture",
       "id": "components_landingpage_concept_rag_architecture"
     },
@@ -17363,7 +17831,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 14,
+      "community": 100,
       "norm_label": "multi-agent system",
       "id": "components_landingpage_concept_multi_agent_system"
     },
@@ -17855,6 +18323,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".kilo/agent-manager.json",
+      "source_location": "L39",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager",
+      "target": "kilo_agent_manager_sessionscollapsed"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
       "source_location": "L17",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -17890,6 +18368,16 @@
       "confidence_score": 1.0,
       "source": "kilo_agent_manager_worktrees",
       "target": "kilo_agent_manager_worktrees_wt_1782586839163_1"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager_worktrees",
+      "target": "kilo_agent_manager_worktrees_wt_1783301724257_1"
     },
     {
       "relation": "contains",
@@ -17945,6 +18433,86 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".kilo/agent-manager.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager_worktrees_wt_1783301724257_1",
+      "target": "kilo_agent_manager_wt_1783301724257_1_autonamesessionid"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager_worktrees_wt_1783301724257_1",
+      "target": "kilo_agent_manager_wt_1783301724257_1_branch"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager_worktrees_wt_1783301724257_1",
+      "target": "kilo_agent_manager_wt_1783301724257_1_branchowned"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager_worktrees_wt_1783301724257_1",
+      "target": "kilo_agent_manager_wt_1783301724257_1_createdat"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager_worktrees_wt_1783301724257_1",
+      "target": "kilo_agent_manager_wt_1783301724257_1_parentbranch"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager_worktrees_wt_1783301724257_1",
+      "target": "kilo_agent_manager_wt_1783301724257_1_path"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager_worktrees_wt_1783301724257_1",
+      "target": "kilo_agent_manager_wt_1783301724257_1_remote"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L25",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager_sessions",
+      "target": "kilo_agent_manager_sessions_ses_0caef1b6bffebymyr4xchkmsfm"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
       "source_location": "L12",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -17970,6 +18538,26 @@
       "confidence_score": 1.0,
       "source": "kilo_agent_manager_sessions_ses_0f58b6744ffe90nxao4euycvsa",
       "target": "kilo_agent_manager_ses_0f58b6744ffe90nxao4euycvsa_worktreeid"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager_sessions_ses_0caef1b6bffebymyr4xchkmsfm",
+      "target": "kilo_agent_manager_ses_0caef1b6bffebymyr4xchkmsfm_createdat"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".kilo/agent-manager.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kilo_agent_manager_sessions_ses_0caef1b6bffebymyr4xchkmsfm",
+      "target": "kilo_agent_manager_ses_0caef1b6bffebymyr4xchkmsfm_worktreeid"
     },
     {
       "relation": "contains",
@@ -18585,6 +19173,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/package.json",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "api_package_dependencies",
+      "target": "api_package_dependencies_nodemailer"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
       "source_location": "L16",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -18715,6 +19313,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/package.json",
+      "source_location": "L40",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "api_package_devdependencies",
+      "target": "api_package_devdependencies_types_nodemailer"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/package.json",
       "source_location": "L39",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -18783,6 +19391,17 @@
       "target": "src_env"
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "src_env"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/env.ts",
@@ -18843,6 +19462,17 @@
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "apps_api_src_index_ts_src_index",
+      "target": "src_env_env"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
       "target": "src_env_env"
     },
     {
@@ -19094,6 +19724,39 @@
       "confidence_score": 1.0,
       "source": "apps_api_src_index_ts_src_index",
       "target": "services_creditengine_provisionusermonetization"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/index.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_index_ts_src_index",
+      "target": "services_weeklyreports"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/index.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_index_ts_src_index",
+      "target": "services_weeklyreports_sendweeklyreportemail"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/index.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "apps_api_src_index_ts_src_index",
+      "target": "services_weeklyreports_startweeklyreportscheduler"
     },
     {
       "relation": "contains",
@@ -20392,6 +21055,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/api/src/routes/admin.ts",
+      "source_location": "L543",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_admin",
+      "target": "routes_admin_generateweeklyreportdata"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/routes/admin.ts",
       "source_location": "L147",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -20457,6 +21130,60 @@
       "confidence_score": 1.0,
       "source": "routes_admin",
       "target": "routes_admin_setmaintenance"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/routes/admin.ts",
+      "source_location": "L527",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "routes_admin",
+      "target": "routes_admin_weeklyreportdata"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "routes_admin"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "routes_admin_weeklyreportdata"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "routes_admin_generateweeklyreportdata"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L133",
+      "weight": 1.0,
+      "source": "services_weeklyreports_sendweeklyreportemail",
+      "target": "routes_admin_generateweeklyreportdata"
     },
     {
       "relation": "contains",
@@ -20993,6 +21720,195 @@
       "confidence_score": 1.0,
       "source": "scripts_production_e2e_main",
       "target": "services_creditengine_addcredits"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test-send-weekly.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "scripts_test_send_weekly",
+      "target": "services_weeklyreports",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "services_weeklyreports_buildweeklyreporthtml"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L116",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "services_weeklyreports_createtransport"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "services_weeklyreports_escapehtml"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "services_weeklyreports_getrecipientlist"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L164",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "services_weeklyreports_runweeklyreportcheck"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L132",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "services_weeklyreports_sendweeklyreportemail"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L156",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "services_weeklyreports_shouldsendweeklyreport"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L179",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "services_weeklyreports_startweeklyreportscheduler"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L188",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports",
+      "target": "services_weeklyreports_stopweeklyreportscheduler"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L134",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports_sendweeklyreportemail",
+      "target": "services_weeklyreports_getrecipientlist"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L144",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports_sendweeklyreportemail",
+      "target": "services_weeklyreports_buildweeklyreporthtml"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L139",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports_sendweeklyreportemail",
+      "target": "services_weeklyreports_createtransport"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test-send-weekly.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "scripts_test_send_weekly",
+      "target": "services_weeklyreports_sendweeklyreportemail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test-send-weekly.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "scripts_test_send_weekly_testsendweekly",
+      "target": "services_weeklyreports_sendweeklyreportemail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L169",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports_runweeklyreportcheck",
+      "target": "services_weeklyreports_sendweeklyreportemail"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L168",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports_runweeklyreportcheck",
+      "target": "services_weeklyreports_shouldsendweeklyreport"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/api/src/services/weeklyReports.ts",
+      "source_location": "L185",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "services_weeklyreports_startweeklyreportscheduler",
+      "target": "services_weeklyreports_runweeklyreportcheck"
     },
     {
       "relation": "contains",
@@ -29468,6 +30384,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "apps/web/src/components/admin/TrafficChart.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "admin_trafficchart",
+      "target": "admin_trafficchart_modaldata"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "apps/web/src/components/admin/TrafficChart.tsx",
       "source_location": "L6",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -32475,6 +33401,196 @@
       "confidence_score": 1.0,
       "source": "n8n_workflows_financial_engine_fixed_connections_code_in_javascript1",
       "target": "n8n_workflows_financial_engine_fixed_code_in_javascript1_main"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L97",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports",
+      "target": "n8n_workflows_gmail_weekly_reports_active"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L73",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports",
+      "target": "n8n_workflows_gmail_weekly_reports_connections"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L108",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports",
+      "target": "n8n_workflows_gmail_weekly_reports_id"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L103",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports",
+      "target": "n8n_workflows_gmail_weekly_reports_meta"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports",
+      "target": "n8n_workflows_gmail_weekly_reports_name"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L107",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports",
+      "target": "n8n_workflows_gmail_weekly_reports_nodegroups"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports",
+      "target": "n8n_workflows_gmail_weekly_reports_nodes"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L72",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports",
+      "target": "n8n_workflows_gmail_weekly_reports_pindata"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L98",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports",
+      "target": "n8n_workflows_gmail_weekly_reports_settings"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L109",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports",
+      "target": "n8n_workflows_gmail_weekly_reports_tags"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L102",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports",
+      "target": "n8n_workflows_gmail_weekly_reports_versionid"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L85",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports_connections",
+      "target": "n8n_workflows_gmail_weekly_reports_connections_fetch_api_report_data"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L74",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports_connections",
+      "target": "n8n_workflows_gmail_weekly_reports_connections_schedule_trigger"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L75",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports_connections_schedule_trigger",
+      "target": "n8n_workflows_gmail_weekly_reports_schedule_trigger_main"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L86",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports_connections_fetch_api_report_data",
+      "target": "n8n_workflows_gmail_weekly_reports_fetch_api_report_data_main"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L100",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports_settings",
+      "target": "n8n_workflows_gmail_weekly_reports_settings_binarymode"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L99",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports_settings",
+      "target": "n8n_workflows_gmail_weekly_reports_settings_executionorder"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L105",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports_meta",
+      "target": "n8n_workflows_gmail_weekly_reports_meta_instanceid"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "n8n-workflows/Gmail Weekly Reports.json",
+      "source_location": "L104",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "n8n_workflows_gmail_weekly_reports_meta",
+      "target": "n8n_workflows_gmail_weekly_reports_meta_templatecredssetupcompleted"
     },
     {
       "relation": "contains",
@@ -35886,6 +37002,16 @@
       "target": "packages_agents_src_index_ts_src_index"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "packages/agents/src/index.ts",
+      "source_location": "L371",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "packages_agents_src_index_ts_src_index",
+      "target": "src_index_buildfallbackfinancialresponse"
+    },
+    {
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -35916,6 +37042,16 @@
       "confidence_score": 1.0,
       "source": "packages_agents_src_index_ts_src_index",
       "target": "src_index_calln8n"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "packages/agents/src/index.ts",
+      "source_location": "L346",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "packages_agents_src_index_ts_src_index",
+      "target": "src_index_defaultpricingresponse"
     },
     {
       "relation": "imports",
@@ -36018,6 +37154,16 @@
       "confidence_score": 1.0,
       "source": "packages_agents_src_index_ts_src_index",
       "target": "src_index_runpitchagent"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "packages/agents/src/index.ts",
+      "source_location": "L326",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "packages_agents_src_index_ts_src_index",
+      "target": "src_index_unwrapfinancialagentresult"
     },
     {
       "relation": "re_exports",
@@ -36154,6 +37300,17 @@
     {
       "relation": "calls",
       "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "packages/agents/src/index.ts",
+      "source_location": "L522",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_index_runfinancialagent",
+      "target": "src_index_buildfallbackfinancialresponse"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "packages/agents/src/index.ts",
@@ -36161,6 +37318,17 @@
       "weight": 1.0,
       "source": "src_index_runfinancialagent",
       "target": "src_index_queryrag"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "packages/agents/src/index.ts",
+      "source_location": "L439",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_index_runfinancialagent",
+      "target": "src_index_unwrapfinancialagentresult"
     },
     {
       "relation": "calls",
@@ -38965,6 +40133,28 @@
       "target": "src_index_connectdb"
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test-send-weekly.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "scripts_test_send_weekly",
+      "target": "src_index_connectdb",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test-send-weekly.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "scripts_test_send_weekly_testsendweekly",
+      "target": "src_index_connectdb",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "inherits",
       "context": "type",
       "confidence": "EXTRACTED",
@@ -41424,6 +42614,16 @@
       "confidence_score": 1.0,
       "source": "scripts_test_report",
       "target": "scripts_test_report_testreport"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test-send-weekly.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "scripts_test_send_weekly",
+      "target": "scripts_test_send_weekly_testsendweekly",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -44327,6 +45527,28 @@
       "target": "presentation_content_step_by_step_user_journey"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "packages/agents/src/index.ts",
+      "source_location": "L340",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_index_unwrapfinancialagentresult",
+      "target": "src_index_defaultpricingresponse"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "packages/agents/src/index.ts",
+      "source_location": "L401",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "src_index_buildfallbackfinancialresponse",
+      "target": "src_index_defaultpricingresponse"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "package.json",
@@ -45732,5 +46954,5 @@
       "source_file": ".claude/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "b88f1b6275482fc45e5e1135bc11f1cc31378e80"
+  "built_at_commit": "548daac3d755577c58ca62ae36edab0b678ab667"
 }

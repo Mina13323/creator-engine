@@ -37,7 +37,7 @@ export default function MarketResearchDashboard() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-2xl p-6 text-white shadow-xl">
+        <div className="bg-gradient-to-br from-slate-900 to-emerald-950 rounded-2xl p-6 text-white shadow-xl">
           <h3 className="font-semibold mb-6 flex items-center gap-2 text-indigo-100">
             <TrendingUp className="w-5 h-5" />
             Trend Analysis & Dynamics

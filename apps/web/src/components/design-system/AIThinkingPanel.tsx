@@ -18,8 +18,8 @@ export function AIThinkingPanel({ title = "Analyzing your business...", stages }
     <div className="w-full max-w-md mx-auto bg-[#F8FAFD] rounded-[24px] p-6 border border-[rgba(60,64,67,0.12)]">
       <div className="flex items-center space-x-3 mb-6">
         <div className="relative flex h-4 w-4">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#1A73E8] opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-4 w-4 bg-[#1A73E8]"></span>
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#008465] opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-4 w-4 bg-[#008465]"></span>
         </div>
         <h3 className="font-medium text-gray-900 text-lg">{title}</h3>
       </div>
@@ -35,7 +35,7 @@ export function AIThinkingPanel({ title = "Analyzing your business...", stages }
               className="flex items-center space-x-3"
             >
               {stage.status === 'completed' && <CheckCircle2 className="w-5 h-5 text-[#34A853]" />}
-              {stage.status === 'active' && <Loader2 className="w-5 h-5 text-[#1A73E8] animate-spin" />}
+              {stage.status === 'active' && <Loader2 className="w-5 h-5 text-[#008465] animate-spin" />}
               {stage.status === 'pending' && <Circle className="w-5 h-5 text-gray-300" />}
               {stage.status === 'error' && <Circle className="w-5 h-5 text-[#EA4335]" />}
               

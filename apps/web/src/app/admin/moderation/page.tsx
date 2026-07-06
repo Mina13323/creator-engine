@@ -174,7 +174,7 @@ export default function ModerationPage() {
               <h3 className="text-2xl font-bold text-slate-100 mt-2">{stats.totalTokens.toLocaleString()}</h3>
               <p className="text-slate-500 text-[11px] mt-1">Prompt: {stats.totalPromptTokens.toLocaleString()} | Comp: {stats.totalCompletionTokens.toLocaleString()}</p>
             </div>
-            <div className="w-12 h-12 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center">
               <Coins className="w-6 h-6" />
             </div>
           </div>
@@ -196,7 +196,7 @@ export default function ModerationPage() {
               <h3 className="text-2xl font-bold text-slate-100 mt-2">{successRate}%</h3>
               <p className="text-slate-500 text-[11px] mt-1">Status of live loaded runs</p>
             </div>
-            <div className="w-12 h-12 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center">
               <Activity className="w-6 h-6" />
             </div>
           </div>
@@ -293,7 +293,7 @@ export default function ModerationPage() {
         {/* Workflow breakdown list */}
         <div className="bg-[#0c1222] border border-slate-800/80 rounded-2xl shadow-lg p-6 lg:col-span-1 space-y-4">
           <h3 className="text-lg font-bold text-slate-100 flex items-center gap-2">
-            <Layers className="w-5 h-5 text-indigo-400" />
+            <Layers className="w-5 h-5 text-emerald-400" />
             Token Burn by Workflow
           </h3>
           <div className="divide-y divide-slate-800/60 max-h-[380px] overflow-y-auto pr-1">
@@ -306,7 +306,7 @@ export default function ModerationPage() {
                   <div className="text-xs text-slate-500 mt-0.5">{meta.count} calls</div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-xs font-semibold text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded-full">
+                  <div className="text-xs font-semibold text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
                     {meta.tokens.toLocaleString()} tokens
                   </div>
                 </div>
@@ -354,7 +354,7 @@ export default function ModerationPage() {
                     <td className="px-5 py-3.5">
                       {r.totalTokens ? (
                         <div className="flex flex-col">
-                          <span className="font-semibold text-indigo-300">{r.totalTokens.toLocaleString()} total</span>
+                          <span className="font-semibold text-emerald-300">{r.totalTokens.toLocaleString()} total</span>
                           <span className="text-[9px] text-slate-500">Prompt: {r.promptTokens} | Comp: {r.completionTokens}</span>
                         </div>
                       ) : (

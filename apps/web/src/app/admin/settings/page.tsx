@@ -124,7 +124,7 @@ export default function SettingsPage() {
         <Button 
           onClick={handleSave} 
           disabled={saving}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold flex items-center gap-2 px-5 py-2.5 rounded-xl shadow-lg transition-all shrink-0 self-start md:self-auto"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold flex items-center gap-2 px-5 py-2.5 rounded-xl shadow-lg transition-all shrink-0 self-start md:self-auto"
         >
           <Save className="w-4 h-4" />
           {saving ? 'Saving System Policies...' : 'Save Settings'}
@@ -135,7 +135,7 @@ export default function SettingsPage() {
         {/* Card 1: AI Agent Orchestration */}
         <div className="bg-[#0c1222] border border-slate-800/80 rounded-2xl p-6 shadow-xl space-y-6">
           <div className="flex items-center gap-3 border-b border-slate-800/40 pb-4">
-            <div className="p-2.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-xl">
+            <div className="p-2.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-xl">
               <Cpu className="w-5 h-5" />
             </div>
             <div>
@@ -150,7 +150,7 @@ export default function SettingsPage() {
               <select 
                 value={defaultModel} 
                 onChange={(e) => setDefaultModel(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition-colors"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition-colors"
               >
                 <option value="deepseek-v4-flash">Deepseek v4 Flash (Recommended)</option>
                 <option value="deepseek-v3-pro">Deepseek v3 Pro</option>
@@ -162,7 +162,7 @@ export default function SettingsPage() {
             <div className="space-y-2">
               <div className="flex justify-between items-center text-xs">
                 <label className="font-semibold text-slate-400">Model Temperature</label>
-                <span className="font-mono text-indigo-400 font-bold bg-indigo-500/10 px-2 py-0.5 rounded">{aiTemperature.toFixed(1)}</span>
+                <span className="font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded">{aiTemperature.toFixed(1)}</span>
               </div>
               <input 
                 type="range" 
@@ -171,7 +171,7 @@ export default function SettingsPage() {
                 step="0.1" 
                 value={aiTemperature} 
                 onChange={(e) => setAiTemperature(parseFloat(e.target.value))}
-                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
               />
               <p className="text-[10px] text-slate-500 italic">Lower values produce structured results; higher values produce more creative marketing/names.</p>
             </div>
@@ -179,7 +179,7 @@ export default function SettingsPage() {
             <div className="space-y-2">
               <div className="flex justify-between items-center text-xs">
                 <label className="font-semibold text-slate-400">Max Token Limit Per Execution</label>
-                <span className="font-mono text-blue-400 font-bold bg-blue-500/10 px-2 py-0.5 rounded">{maxTokensPerRun.toLocaleString()}</span>
+                <span className="font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded">{maxTokensPerRun.toLocaleString()}</span>
               </div>
               <input 
                 type="range" 
@@ -188,7 +188,7 @@ export default function SettingsPage() {
                 step="25000" 
                 value={maxTokensPerRun} 
                 onChange={(e) => setMaxTokensPerRun(parseInt(e.target.value))}
-                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
+                className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-[#008465]"
               />
             </div>
           </div>
@@ -309,7 +309,7 @@ export default function SettingsPage() {
         {/* Card 4: Audit & Administrative Alerts */}
         <div className="bg-[#0c1222] border border-slate-800/80 rounded-2xl p-6 shadow-xl space-y-6">
           <div className="flex items-center gap-3 border-b border-slate-800/40 pb-4">
-            <div className="p-2.5 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-xl">
+            <div className="p-2.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-xl">
               <Sliders className="w-5 h-5" />
             </div>
             <div>
@@ -326,9 +326,9 @@ export default function SettingsPage() {
               </div>
               <button 
                 onClick={() => setFlagAlerts(!flagAlerts)}
-                className={`relative w-11 h-6 rounded-full transition-all duration-300 ease-in-out shrink-0 focus:outline-none focus:ring-2 focus:ring-indigo-500/25 ${
+                className={`relative w-11 h-6 rounded-full transition-all duration-300 ease-in-out shrink-0 focus:outline-none focus:ring-2 focus:ring-emerald-500/25 ${
                   flagAlerts 
-                    ? 'bg-indigo-600 shadow-[0_0_10px_rgba(79,70,229,0.3)]' 
+                    ? 'bg-emerald-600 shadow-[0_0_10px_rgba(0,132,101,0.3)]' 
                     : 'bg-slate-800'
                 }`}
               >
@@ -347,9 +347,9 @@ export default function SettingsPage() {
               </div>
               <button 
                 onClick={() => setWeeklyReports(!weeklyReports)}
-                className={`relative w-11 h-6 rounded-full transition-all duration-300 ease-in-out shrink-0 focus:outline-none focus:ring-2 focus:ring-indigo-500/25 ${
+                className={`relative w-11 h-6 rounded-full transition-all duration-300 ease-in-out shrink-0 focus:outline-none focus:ring-2 focus:ring-[#008465]/25 ${
                   weeklyReports 
-                    ? 'bg-indigo-650 shadow-[0_0_10px_rgba(79,70,229,0.3)]' 
+                    ? 'bg-[#008465] shadow-[0_0_10px_rgba(0,132,101,0.3)]' 
                     : 'bg-slate-800'
                 }`}
               >
@@ -387,7 +387,7 @@ export default function SettingsPage() {
             <div className="p-4 bg-slate-950/40 rounded-xl border border-slate-900">
               <span className="text-slate-500 uppercase tracking-wider font-mono text-[9px]">Security Role Privilege</span>
               <div className="mt-1">
-                <span className="text-[10px] font-bold text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded-md">
+                <span className="text-[10px] font-bold text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">
                   {user?.role?.toUpperCase() || 'USER'}
                 </span>
               </div>

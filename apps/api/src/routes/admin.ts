@@ -25,6 +25,7 @@ import {
   CreditTransactionModel
 } from '@creator/database';
 import { authMiddleware, adminMiddleware } from '../middleware';
+import { sendContentFlagAlert } from '../services/contentFlagAlerts';
 
 const router = Router();
 
@@ -42,7 +43,6 @@ router.get('/stats', async (req: Request, res: Response): Promise<any> => {
     // Calculate success rate of agents
     const successfulRuns = await AgentRunModel.countDocuments({ status: 'success' });
     const successRate = agentRuns > 0 ? Math.round((successfulRuns / agentRuns) * 100) : 100;
-
     const flaggedProjects = await ProjectModel.countDocuments({ isFlagged: true });
     
     // DB is connected if we get here
@@ -206,7 +206,7 @@ router.get('/feed', async (req: Request, res: Response): Promise<any> => {
 // GET /api/admin/users
 router.get('/users', async (req: Request, res: Response): Promise<any> => {
   try {
-    const users = await UserModel.find().sort({ createdAt: -1 });
+    const users = await UserModel.find().select('-password -token').sort({ createdAt: -1 });
     return res.json(users);
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
@@ -328,6 +328,7 @@ router.put('/projects/:projectId', async (req: Request, res: Response): Promise<
     const { projectId } = req.params;
     const { name, description, industry, status, isFlagged, flagReason } = req.body;
     
+    const previousProject = await ProjectModel.findOne({ id: projectId }).lean() as any;
     const project = await ProjectModel.findOneAndUpdate(
       { id: projectId },
       { name, description, industry, status, isFlagged, flagReason },
@@ -338,7 +339,20 @@ router.put('/projects/:projectId', async (req: Request, res: Response): Promise<
       return res.status(404).json({ error: 'Project not found' });
     }
 
-    return res.json({ success: true, project });
+    let alert: { sent: boolean; recipients: string[] } | null = null;
+    if (isFlagged === true && !previousProject?.isFlagged) {
+      try {
+        alert = await sendContentFlagAlert({
+          projectId,
+          reason: flagReason,
+          flaggedBy: (req as any).user?.email || (req as any).user?.id
+        });
+      } catch (alertError) {
+        console.error('Content flag alert failed:', alertError);
+      }
+    }
+
+    return res.json({ success: true, project, alert });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
@@ -381,12 +395,31 @@ router.post('/projects/:projectId/flag', async (req: Request, res: Response): Pr
   try {
     const { projectId } = req.params;
     const { flag, reason } = req.body;
+    const previousProject = await ProjectModel.findOne({ id: projectId }).lean() as any;
     const project = await ProjectModel.findOneAndUpdate(
-      { id: projectId }, 
-      { isFlagged: !!flag, flagReason: reason || '' }, 
+      { id: projectId },
+      { isFlagged: !!flag, flagReason: reason || '' },
       { new: true }
     );
-    return res.json({ success: true, project });
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    let alert: { sent: boolean; recipients: string[] } | null = null;
+    if (!!flag && !previousProject?.isFlagged) {
+      try {
+        alert = await sendContentFlagAlert({
+          projectId,
+          reason,
+          flaggedBy: (req as any).user?.email || (req as any).user?.id
+        });
+      } catch (alertError) {
+        console.error('Content flag alert failed:', alertError);
+      }
+    }
+
+    return res.json({ success: true, project, alert });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
@@ -525,73 +558,85 @@ router.post('/settings', async (req: Request, res: Response): Promise<any> => {
   }
 });
 
+export interface WeeklyReportData {
+  success: boolean;
+  generatedAt: Date;
+  adminEmails: string;
+  totalUsers: number;
+  recentSignups: number;
+  users: any[];
+  totalRuns: number;
+  totalPromptTokens: number;
+  totalCompletionTokens: number;
+  modelBreakdown: Record<string, number>;
+  statusBreakdown: Record<string, number>;
+  totalCreditsConsumed: number;
+  featureBreakdown: Record<string, number>;
+}
+
+export async function generateWeeklyReportData(): Promise<WeeklyReportData> {
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+  const totalUsers = await UserModel.countDocuments();
+  const recentSignups = await UserModel.countDocuments({ createdAt: { $gte: oneWeekAgo } });
+  const users = await UserModel.find({ createdAt: { $gte: oneWeekAgo } })
+    .select('name email role createdAt')
+    .lean();
+  const admins = await UserModel.find({ role: 'admin' }).select('email').lean();
+  const adminEmails = admins.map((a: any) => a.email).filter(Boolean).join(', ');
+
+  const recentAgentRuns = await AgentRunModel.find({ createdAt: { $gte: oneWeekAgo } }).lean();
+  const totalRuns = recentAgentRuns.length;
+  let totalPromptTokens = 0;
+  let totalCompletionTokens = 0;
+  const modelBreakdown: Record<string, number> = {};
+  const statusBreakdown: Record<string, number> = {};
+
+  recentAgentRuns.forEach(run => {
+    totalPromptTokens += (run as any).promptTokens || (run as any).tokensPrompt || 0;
+    totalCompletionTokens += (run as any).completionTokens || (run as any).tokensCompletion || 0;
+    const model = (run as any).aiModel || (run as any).model || 'unknown';
+    modelBreakdown[model] = (modelBreakdown[model] || 0) + 1;
+    const status = (run as any).status || 'unknown';
+    statusBreakdown[status] = (statusBreakdown[status] || 0) + 1;
+  });
+
+  const recentTransactions = await CreditTransactionModel.find({
+    createdAt: { $gte: oneWeekAgo },
+    type: 'usage'
+  }).lean();
+  let totalCreditsConsumed = 0;
+  const featureBreakdown: Record<string, number> = {};
+
+  recentTransactions.forEach(tx => {
+    const amount = Math.abs((tx as any).amount || 0);
+    totalCreditsConsumed += amount;
+    const feat = (tx as any).feature || 'unknown';
+    featureBreakdown[feat] = (featureBreakdown[feat] || 0) + amount;
+  });
+
+  return {
+    success: true,
+    generatedAt: new Date(),
+    adminEmails,
+    totalUsers,
+    recentSignups,
+    users,
+    totalRuns,
+    totalPromptTokens,
+    totalCompletionTokens,
+    modelBreakdown,
+    statusBreakdown,
+    totalCreditsConsumed,
+    featureBreakdown
+  };
+}
+
 // GET /api/admin/reports/generate — compiles system stats from the last 7 days and returns JSON report
 router.get('/reports/generate', async (req: Request, res: Response): Promise<any> => {
   try {
-    const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
-    // 1. User Signups & Admins
-    const totalUsers = await UserModel.countDocuments();
-    const recentSignups = await UserModel.countDocuments({ createdAt: { $gte: oneWeekAgo } });
-    const users = await UserModel.find({ createdAt: { $gte: oneWeekAgo } })
-      .select('name email role createdAt')
-      .lean();
-    const admins = await UserModel.find({ role: 'admin' }).select('email').lean();
-    const adminEmails = admins.map((a: any) => a.email).filter(Boolean).join(', ');
-
-    // 2. Agent Runs / Token Consumption
-    const recentAgentRuns = await AgentRunModel.find({ createdAt: { $gte: oneWeekAgo } }).lean();
-    const totalRuns = recentAgentRuns.length;
-    
-    let totalPromptTokens = 0;
-    let totalCompletionTokens = 0;
-    const modelBreakdown: Record<string, number> = {};
-    const statusBreakdown: Record<string, number> = {};
-
-    recentAgentRuns.forEach(run => {
-      totalPromptTokens += (run as any).tokensPrompt || 0;
-      totalCompletionTokens += (run as any).tokensCompletion || 0;
-      
-      const model = (run as any).model || 'unknown';
-      modelBreakdown[model] = (modelBreakdown[model] || 0) + 1;
-
-      const status = (run as any).status || 'unknown';
-      statusBreakdown[status] = (statusBreakdown[status] || 0) + 1;
-    });
-
-    // 3. Credit Transactions
-    const recentTransactions = await CreditTransactionModel.find({ 
-      createdAt: { $gte: oneWeekAgo },
-      type: 'usage'
-    }).lean();
-
-    let totalCreditsConsumed = 0;
-    const featureBreakdown: Record<string, number> = {};
-
-    recentTransactions.forEach(tx => {
-      // In the DB usage transactions have negative amounts (e.g. -75)
-      const amount = Math.abs((tx as any).amount || 0);
-      totalCreditsConsumed += amount;
-      const feat = (tx as any).feature || 'unknown';
-      featureBreakdown[feat] = (featureBreakdown[feat] || 0) + amount;
-    });
-
-    return res.json({
-      success: true,
-      generatedAt: new Date(),
-      adminEmails,
-      totalUsers,
-      recentSignups,
-      users,
-      totalRuns,
-      totalPromptTokens,
-      totalCompletionTokens,
-      modelBreakdown,
-      statusBreakdown,
-      totalCreditsConsumed,
-      featureBreakdown
-    });
+    return res.json(await generateWeeklyReportData());
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

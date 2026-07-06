@@ -77,7 +77,7 @@ function UploadSlot({ icon: Icon, url, progress, label, onUpload, onClear, multi
         onClick={() => inputRef.current?.click()}
         title={`Upload ${label}`}
         className={`relative w-12 h-12 rounded-xl border-2 transition-all flex items-center justify-center cursor-pointer overflow-hidden ${
-          url ? 'border-[#1A73E8] bg-blue-50' : 'border-[rgba(60,64,67,0.12)] bg-[#F8FAFD] hover:border-[#1A73E8] hover:bg-blue-50'
+          url ? 'border-[#008465] bg-[#e4f3ee]' : 'border-[rgba(60,64,67,0.12)] bg-[#F8FAFD] hover:border-[#008465] hover:bg-[#e4f3ee]'
         }`}
       >
         <input 
@@ -91,13 +91,13 @@ function UploadSlot({ icon: Icon, url, progress, label, onUpload, onClear, multi
         
         {progress > 0 && progress < 100 ? (
           <div className="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
-            <span className="text-[10px] font-bold text-[#1A73E8]">{progress}%</span>
+            <span className="text-[10px] font-bold text-[#008465]">{progress}%</span>
           </div>
         ) : url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={url} className="w-full h-full object-cover" alt={label} />
         ) : (
-          <Icon className="w-5 h-5 text-gray-400 group-hover:text-[#1A73E8] transition-colors" />
+          <Icon className="w-5 h-5 text-gray-400 group-hover:text-[#008465] transition-colors" />
         )}
 
         {url && !multiple && (
@@ -332,7 +332,7 @@ export default function MarketingStudio() {
               </div>
               <CardContent className="p-4 bg-gray-50 flex items-center justify-between border-t border-[rgba(60,64,67,0.12)]">
                 <div className="flex items-center gap-2">
-                   <div className="bg-[#1A73E8] text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
+                   <div className="bg-[#008465] text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
                     {genResult.video?.generationType === 'COMPOSER_VIDEO' ? 'Composer Video' : 'AI Generated Video'}
                   </div>
                 </div>
@@ -359,7 +359,7 @@ export default function MarketingStudio() {
                    <CardTitle className="text-sm font-semibold uppercase tracking-wider text-gray-500">Video Script & Voiceover</CardTitle>
                 </CardHeader>
                 <CardContent>
-                   <p className="text-gray-700 text-sm leading-relaxed italic border-l-4 border-[#1A73E8] pl-4">&quot;{genResult.script?.script}&quot;</p>
+                   <p className="text-gray-700 text-sm leading-relaxed italic border-l-4 border-[#008465] pl-4">&quot;{genResult.script?.script}&quot;</p>
                 </CardContent>
               </Card>
               
@@ -370,7 +370,7 @@ export default function MarketingStudio() {
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
                     {(genResult.script?.hashtags || []).map((tag: string, i: number) => (
-                      <span key={i} className="px-3 py-1 bg-blue-50 text-[#1A73E8] text-xs font-medium rounded-full border border-blue-100">{tag}</span>
+                      <span key={i} className="px-3 py-1 bg-[#e4f3ee] text-[#008465] text-xs font-medium rounded-full border border-[#d9eee8]">{tag}</span>
                     ))}
                   </div>
                 </CardContent>
@@ -394,7 +394,7 @@ export default function MarketingStudio() {
                     onChange={(e) => setPrompt(e.target.value)}
                     placeholder="Describe your ad... e.g. A fast-paced UGC style ad for a new skincare line."
                     rows={4}
-                    className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl p-4 text-gray-900 focus:ring-2 focus:ring-[#1A73E8] outline-none transition-all resize-none"
+                    className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-xl p-4 text-gray-900 focus:ring-2 focus:ring-[#008465] outline-none transition-all resize-none"
                   />
                 </div>
                 
@@ -431,7 +431,7 @@ export default function MarketingStudio() {
             {history.length > 0 && (
                <div className="space-y-4">
                   <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                    <History className="w-5 h-5 text-[#1A73E8]" />
+                    <History className="w-5 h-5 text-[#008465]" />
                     Recent Generations
                   </h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -444,7 +444,7 @@ export default function MarketingStudio() {
                           muted loop onMouseOver={e => previewVideo(e.currentTarget)} onMouseOut={e => { e.currentTarget.pause(); e.currentTarget.currentTime = 0; }}
                          />
                          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                           <button onClick={(e) => { e.stopPropagation(); downloadFile(entry.url, `ad-${entry.id}.mp4`); }} className="p-1.5 bg-white/90 rounded text-gray-700 hover:text-[#1A73E8] shadow-sm">
+                           <button onClick={(e) => { e.stopPropagation(); downloadFile(entry.url, `ad-${entry.id}.mp4`); }} className="p-1.5 bg-white/90 rounded text-gray-700 hover:text-[#008465] shadow-sm">
                              <Download className="w-4 h-4" />
                            </button>
                          </div>
@@ -460,7 +460,7 @@ export default function MarketingStudio() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <MonitorPlay className="w-5 h-5 text-[#1A73E8]" />
+                  <MonitorPlay className="w-5 h-5 text-[#008465]" />
                   Production Settings
                 </CardTitle>
               </CardHeader>
@@ -474,7 +474,7 @@ export default function MarketingStudio() {
                       const sel = ASSETS.ugc.find(u => u.name === e.target.value);
                       if (sel) setParams(p => ({ ...p, format: sel.name, videoUrl: sel.url }));
                     }}
-                    className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-lg p-2.5 text-gray-900 text-sm focus:ring-2 focus:ring-[#1A73E8] outline-none"
+                    className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-lg p-2.5 text-gray-900 text-sm focus:ring-2 focus:ring-[#008465] outline-none"
                   >
                     {ASSETS.ugc.map(u => <option key={u.id} value={u.name}>{u.name}</option>)}
                   </select>
@@ -485,7 +485,7 @@ export default function MarketingStudio() {
                   <select 
                     value={params.ratio}
                     onChange={(e) => setParams(p => ({ ...p, ratio: e.target.value }))}
-                    className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-lg p-2.5 text-gray-900 text-sm focus:ring-2 focus:ring-[#1A73E8] outline-none"
+                    className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-lg p-2.5 text-gray-900 text-sm focus:ring-2 focus:ring-[#008465] outline-none"
                   >
                     {OPTIONS.ratio.map(r => <option key={r} value={r}>{r}</option>)}
                   </select>
@@ -496,7 +496,7 @@ export default function MarketingStudio() {
                   <select 
                     value={params.duration}
                     onChange={(e) => setParams(p => ({ ...p, duration: Number(e.target.value) }))}
-                    className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-lg p-2.5 text-gray-900 text-sm focus:ring-2 focus:ring-[#1A73E8] outline-none"
+                    className="w-full bg-[#F8FAFD] border border-[rgba(60,64,67,0.12)] rounded-lg p-2.5 text-gray-900 text-sm focus:ring-2 focus:ring-[#008465] outline-none"
                   >
                     {OPTIONS.duration.map(d => <option key={d} value={d}>{d} Seconds</option>)}
                   </select>
