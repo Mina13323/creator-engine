@@ -21,6 +21,7 @@ export interface TrafficData {
   projectsCount?: number;
   projectNames?: string[];
   signupNames?: string[];
+  activeUsers?: string[];
 }
 
 

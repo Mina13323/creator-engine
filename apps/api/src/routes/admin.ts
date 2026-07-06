@@ -81,7 +81,7 @@ router.get('/traffic', async (req: Request, res: Response): Promise<any> => {
     const [runs, users, projects] = await Promise.all([
       AgentRunModel.find({
         createdAt: { $gte: dStart, $lte: dEnd }
-      }, { createdAt: 1 }).lean(),
+      }, { userId: 1, createdAt: 1 }).lean(),
       UserModel.find({
         createdAt: { $gte: dStart, $lte: dEnd }
       }, { name: 1, email: 1, createdAt: 1 }).lean(),
@@ -89,6 +89,12 @@ router.get('/traffic', async (req: Request, res: Response): Promise<any> => {
         createdAt: { $gte: dStart, $lte: dEnd }
       }, { name: 1, createdAt: 1 }).lean()
     ]);
+
+    const activeUserIds = Array.from(new Set(runs.map(r => r.userId).filter(Boolean)));
+    const activeUsersList = await UserModel.find({
+      id: { $in: activeUserIds }
+    }, { name: 1, email: 1, id: 1 }).lean();
+    const userLookup = new Map(activeUsersList.map(u => [u.id, u]));
 
     const traffic = [];
     for (let i = 10; i >= 0; i--) {
@@ -115,6 +121,15 @@ router.get('/traffic', async (req: Request, res: Response): Promise<any> => {
       const loginsCount = signupsCount * 2 + (runsCount > 0 ? 1 : 0);
       const projectNames = projectsInDay.map(p => p.name || 'Unnamed Project');
       const signupNames = usersInDay.map(u => u.name ? `${u.name} (${u.email})` : u.email);
+
+      const activeUserIdsInDay = Array.from(new Set(runsInDay.map(r => r.userId).filter(Boolean)));
+      const activeUsersInDay = Array.from(new Set([
+        ...signupNames,
+        ...activeUserIdsInDay.map(uid => {
+          const u = userLookup.get(uid);
+          return u ? (u.name ? `${u.name} (${u.email})` : u.email) : uid;
+        })
+      ]));
       
       const startOfDayDate = new Date(startOfDay);
       const dayLabel = startOfDayDate.toLocaleDateString('en-US', { weekday: 'short' });
@@ -126,7 +141,8 @@ router.get('/traffic', async (req: Request, res: Response): Promise<any> => {
         actions: runsCount,
         projectsCount: projectsInDay.length,
         projectNames: projectNames,
-        signupNames: signupNames
+        signupNames: signupNames,
+        activeUsers: activeUsersInDay
       });
     }
 

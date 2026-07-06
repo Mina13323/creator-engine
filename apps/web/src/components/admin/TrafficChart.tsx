@@ -8,6 +8,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const projectNames = payload[0]?.payload?.projectNames;
     const signupNames = payload[0]?.payload?.signupNames;
+    const activeUsers = payload[0]?.payload?.activeUsers;
     return (
       <div className="bg-[#0f172a] border border-slate-800 p-4 rounded-xl shadow-2xl space-y-1.5 animate-in fade-in duration-200 min-w-[200px]">
         <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest font-mono">{label}</p>
@@ -35,6 +36,16 @@ const CustomTooltip = ({ active, payload, label }: any) => {
             <p className="text-[9px] font-bold text-indigo-400 uppercase tracking-wider font-mono">Signups:</p>
             <div className="max-h-[100px] overflow-y-auto pr-1 text-xs text-slate-350 font-mono space-y-0.5 scrollbar-thin scrollbar-thumb-slate-800">
               {signupNames.map((name: string, idx: number) => (
+                <div key={idx} className="truncate select-text">• {name}</div>
+              ))}
+            </div>
+          </div>
+        )}
+        {activeUsers && activeUsers.length > 0 && (
+          <div className="pt-2 border-t border-slate-800/80 mt-2 space-y-1">
+            <p className="text-[9px] font-bold text-emerald-400 uppercase tracking-wider font-mono">Active Users:</p>
+            <div className="max-h-[100px] overflow-y-auto pr-1 text-xs text-slate-350 font-mono space-y-0.5 scrollbar-thin scrollbar-thumb-slate-800">
+              {activeUsers.map((name: string, idx: number) => (
                 <div key={idx} className="truncate select-text">• {name}</div>
               ))}
             </div>
@@ -174,19 +185,21 @@ export function TrafficChart({ data, view }: { data: TrafficData[]; view: 'USERS
               </div>
             </div>
 
-            {/* Column 3: Metrics */}
+            {/* Column 3: Active Users & Actions */}
             <div className="p-4 bg-slate-950/30 border border-slate-850 rounded-xl flex flex-col justify-between min-h-[140px]">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400 font-mono">Activity Volume</span>
-                <div className="mt-3 space-y-2 text-xs font-mono text-slate-400">
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-500">Sign Ins:</span>
-                    <span className="font-bold text-slate-300">{selectedDay.logins}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-500">AI runs:</span>
-                    <span className="font-bold text-emerald-400">{selectedDay.actions}</span>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400 font-mono">Active Users &amp; Actions</span>
+                  <span className="text-xs font-mono font-bold text-slate-350">{selectedDay.actions} runs</span>
+                </div>
+                <div className="mt-3 max-h-[80px] overflow-y-auto pr-1 text-xs text-slate-400 space-y-1 font-mono">
+                  {selectedDay.activeUsers && selectedDay.activeUsers.length > 0 ? (
+                    selectedDay.activeUsers.map((name, idx) => (
+                      <div key={idx} className="truncate select-text">• {name}</div>
+                    ))
+                  ) : (
+                    <div className="text-slate-600 text-[10px] italic">No active users today</div>
+                  )}
                 </div>
               </div>
             </div>
