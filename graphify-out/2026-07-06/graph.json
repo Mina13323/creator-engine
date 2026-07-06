@@ -1249,7 +1249,7 @@
       "label": "_getLockdown()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L668",
+      "source_location": "L670",
       "id": "routes_admin_getlockdown",
       "community": 142,
       "norm_label": "_getlockdown()"
@@ -1258,7 +1258,7 @@
       "label": "_setLockdown()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L669",
+      "source_location": "L671",
       "id": "routes_admin_setlockdown",
       "community": 142,
       "norm_label": "_setlockdown()"
@@ -1267,7 +1267,7 @@
       "label": "registerLockdownHandlers()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L670",
+      "source_location": "L672",
       "id": "routes_admin_registerlockdownhandlers",
       "community": 142,
       "norm_label": "registerlockdownhandlers()"
@@ -1276,7 +1276,7 @@
       "label": "_setMaintenance()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L677",
+      "source_location": "L679",
       "id": "routes_admin_setmaintenance",
       "community": 142,
       "norm_label": "_setmaintenance()"
@@ -1285,7 +1285,7 @@
       "label": "registerMaintenanceHandlers()",
       "file_type": "code",
       "source_file": "apps/api/src/routes/admin.ts",
-      "source_location": "L678",
+      "source_location": "L680",
       "id": "routes_admin_registermaintenancehandlers",
       "community": 142,
       "norm_label": "registermaintenancehandlers()"
@@ -5020,7 +5020,7 @@
       "label": "TrafficChart()",
       "file_type": "code",
       "source_file": "apps/web/src/components/admin/TrafficChart.tsx",
-      "source_location": "L38",
+      "source_location": "L49",
       "id": "admin_trafficchart_trafficchart",
       "community": 158,
       "norm_label": "trafficchart()"
@@ -5686,7 +5686,7 @@
       "label": "ModerationEvent",
       "file_type": "code",
       "source_file": "apps/web/src/hooks/useModerationDashboard.ts",
-      "source_location": "L26",
+      "source_location": "L27",
       "id": "hooks_usemoderationdashboard_moderationevent",
       "community": 158,
       "norm_label": "moderationevent"
@@ -5695,7 +5695,7 @@
       "label": "DashboardExtendedData",
       "file_type": "code",
       "source_file": "apps/web/src/hooks/useModerationDashboard.ts",
-      "source_location": "L35",
+      "source_location": "L36",
       "id": "hooks_usemoderationdashboard_dashboardextendeddata",
       "community": 158,
       "norm_label": "dashboardextendeddata"
@@ -5704,7 +5704,7 @@
       "label": "useModerationDashboard()",
       "file_type": "code",
       "source_file": "apps/web/src/hooks/useModerationDashboard.ts",
-      "source_location": "L76",
+      "source_location": "L77",
       "id": "hooks_usemoderationdashboard_usemoderationdashboard",
       "community": 158,
       "norm_label": "usemoderationdashboard()"
@@ -45732,5 +45732,5 @@
       "source_file": ".claude/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "00f214f539f2d2e76ed62337a3312da81d4d1eb6"
+  "built_at_commit": "b88f1b6275482fc45e5e1135bc11f1cc31378e80"
 }
