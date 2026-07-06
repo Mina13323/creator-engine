@@ -73,37 +73,37 @@ export default function AIConsultantDashboard() {
   };
 
   return (
-    <div className="h-[calc(100vh-64px)] md:h-screen flex bg-white font-sans text-gray-900">
+    <div className="h-[calc(100vh-64px)] md:h-screen flex bg-[#F8FAFD] font-sans text-gray-900">
       
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 relative">
         
-        {/* Header — refined with subtle depth */}
-        <div className="px-6 py-3.5 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white/95 backdrop-blur-sm z-10">
+        {/* Header — refined with solid background and shadow for absolute fixed position */}
+        <div className="px-6 py-4 border-b border-gray-100/80 flex items-center justify-between sticky top-0 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.02)] z-30">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1A73E8] to-[#4f9cf7] flex items-center justify-center shadow-sm shadow-blue-200/50">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#008465] to-[#00b37e] flex items-center justify-center shadow-sm shadow-emerald-200/50">
               <Sparkles className="w-4 h-4 text-white" />
             </div>
             <div>
-              <h1 className="text-[15px] font-semibold text-gray-900 tracking-tight leading-tight">AI Strategy Consultant</h1>
+              <h1 className="text-[15px] font-bold text-gray-900 tracking-tight leading-tight">AI Strategy Consultant</h1>
               <span className="text-[11px] text-gray-400 font-medium">{currentProject.name}</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 text-[11px] text-gray-400 font-medium bg-gray-50 px-2.5 py-1 rounded-full">
+            <div className="flex items-center gap-1.5 text-[11px] text-[#008465] font-semibold bg-[#e4f3ee] px-2.5 py-1 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
               Gemini 1.5 Pro
             </div>
           </div>
         </div>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-4 md:px-16 lg:px-28 xl:px-36 py-8 space-y-6 custom-scrollbar">
+        {/* Messages Container with project background */}
+        <div className="flex-1 overflow-y-auto px-4 md:px-16 lg:px-28 xl:px-36 py-8 space-y-6 custom-scrollbar bg-[#F8FAFD]">
           {chatMessages.length === 0 ? (
             <div className="h-full flex flex-col justify-center items-center max-w-2xl mx-auto py-12">
               {/* Welcome icon */}
               <div className="relative mb-8">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#1A73E8] to-[#7c3aed] flex items-center justify-center shadow-lg shadow-blue-200/40">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#008465] to-[#00b37e] flex items-center justify-center shadow-lg shadow-emerald-200/40">
                   <Sparkles className="w-7 h-7 text-white" />
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
@@ -127,10 +127,10 @@ export default function AIConsultantDashboard() {
                   <button 
                     key={i}
                     onClick={() => handleActionClick(action.prompt)} 
-                    className="p-4 rounded-xl border border-gray-100 hover:border-blue-200 hover:bg-blue-50/30 transition-all duration-200 text-left flex items-start gap-3.5 group"
+                    className="p-4 rounded-xl border border-gray-150 bg-white hover:border-emerald-200 hover:bg-emerald-50/20 hover:shadow-sm transition-all duration-200 text-left flex items-start gap-3.5 group"
                   >
-                    <div className="p-2 bg-gray-50 rounded-lg group-hover:bg-blue-100/60 transition-colors flex-shrink-0">
-                      <action.icon className="w-4 h-4 text-gray-500 group-hover:text-[#1A73E8] transition-colors" />
+                    <div className="p-2 bg-gray-50 rounded-lg group-hover:bg-emerald-100/60 transition-colors flex-shrink-0">
+                      <action.icon className="w-4 h-4 text-gray-500 group-hover:text-[#008465] transition-colors" />
                     </div>
                     <div className="min-w-0">
                       <div className="font-medium text-sm text-gray-900">{action.title}</div>
@@ -155,7 +155,7 @@ export default function AIConsultantDashboard() {
                 >
                   {/* AI Avatar */}
                   {!isUser && (
-                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#1A73E8] to-[#7c3aed] flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#008465] to-[#00b37e] flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
                       <Sparkles className="w-3.5 h-3.5 text-white" />
                     </div>
                   )}
@@ -163,12 +163,12 @@ export default function AIConsultantDashboard() {
                   <div className={`space-y-1 max-w-[80%] min-w-0`}>
                     {/* Message content */}
                     {isUser ? (
-                      <div className="bg-[#1A73E8] text-white px-5 py-3.5 rounded-2xl rounded-br-md text-[15px] leading-relaxed font-normal whitespace-pre-wrap shadow-sm shadow-blue-200/30">
+                      <div className="bg-[#2e403d] text-white px-5 py-3.5 rounded-2xl rounded-br-md text-[15px] leading-relaxed font-normal whitespace-pre-wrap shadow-sm shadow-slate-200">
                         {msg.message}
                       </div>
                     ) : (
-                      <div className="bg-gray-50/80 border border-gray-100 px-5 py-4 rounded-2xl rounded-tl-md">
-                        <div className="prose prose-sm prose-slate max-w-none text-gray-800 leading-relaxed [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_p]:my-2 [&_ul]:my-2 [&_ol]:my-2 [&_li]:my-0.5 [&_h1]:text-lg [&_h2]:text-base [&_h3]:text-sm [&_code]:text-xs [&_code]:bg-gray-200/60 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_pre]:bg-gray-900 [&_pre]:text-gray-100 [&_pre]:rounded-lg [&_pre]:p-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_strong]:text-gray-900">
+                      <div className="bg-white border border-[#ccede3] px-5 py-4 rounded-2xl rounded-tl-md shadow-sm">
+                        <div className="prose prose-sm prose-emerald max-w-none text-slate-800 leading-relaxed [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_p]:my-2 [&_ul]:my-2 [&_ol]:my-2 [&_li]:my-0.5 [&_h1]:text-lg [&_h2]:text-base [&_h3]:text-sm [&_code]:text-xs [&_code]:bg-[#e4f3ee]/60 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_pre]:bg-[#2e403d] [&_pre]:text-gray-100 [&_pre]:rounded-lg [&_pre]:p-4 [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_strong]:text-emerald-800 [&_strong]:font-semibold">
                           <ReactMarkdown>{msg.message}</ReactMarkdown>
                         </div>
                       </div>
@@ -177,19 +177,19 @@ export default function AIConsultantDashboard() {
                     {/* Timestamp */}
                     <div className={`flex items-center gap-1.5 ${isUser ? 'justify-end' : 'justify-start'}`}>
                       {(msg as any).createdAt && (
-                        <span className="text-[10px] text-gray-300 font-medium">{formatTime((msg as any).createdAt)}</span>
+                        <span className="text-[10px] text-gray-400 font-medium">{formatTime((msg as any).createdAt)}</span>
                       )}
                     </div>
 
                     {/* RAG Sources */}
                     {!isUser && msg.ragSources && msg.ragSources.length > 0 && (
-                      <div className="mt-2 pt-3 border-t border-gray-100 flex flex-col gap-2">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                      <div className="mt-2 pt-3 border-t border-gray-100/80 flex flex-col gap-2">
+                        <span className="text-[10px] font-bold text-[#008465] uppercase tracking-wider flex items-center gap-1.5">
                           <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Retrieved Context
                         </span>
                         <div className="flex flex-wrap gap-1.5">
                           {msg.ragSources.map((source, sIdx) => (
-                            <span key={sIdx} className="text-[11px] text-gray-500 bg-white border border-gray-100 px-2 py-1 rounded-md font-medium hover:bg-blue-50 hover:text-blue-600 hover:border-blue-100 cursor-pointer transition-all flex items-center gap-1">
+                            <span key={sIdx} className="text-[11px] text-[#008465] bg-[#e4f3ee]/40 border border-[#ccede3]/60 px-2.5 py-1 rounded-md font-medium hover:bg-[#e4f3ee] cursor-pointer transition-all flex items-center gap-1">
                               {source} <ExternalLink className="w-2.5 h-2.5" />
                             </span>
                           ))}
@@ -200,7 +200,7 @@ export default function AIConsultantDashboard() {
 
                   {/* User Avatar */}
                   {isUser && (
-                    <div className="w-8 h-8 rounded-xl bg-gray-800 flex items-center justify-center flex-shrink-0 mt-0.5 text-white">
+                    <div className="w-8 h-8 rounded-xl bg-slate-700 flex items-center justify-center flex-shrink-0 mt-0.5 text-white shadow-sm">
                       <User className="w-3.5 h-3.5" />
                     </div>
                   )}
@@ -212,18 +212,18 @@ export default function AIConsultantDashboard() {
           {/* Loading state */}
           {chatLoading && (
             <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex gap-3">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#1A73E8] to-[#7c3aed] flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#008465] to-[#00b37e] flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
                 <Sparkles className="w-3.5 h-3.5 text-white animate-pulse" />
               </div>
-              <div className="bg-gray-50/80 border border-gray-100 rounded-2xl rounded-tl-md px-5 py-4 max-w-xs">
+              <div className="bg-white border border-[#ccede3] rounded-2xl rounded-tl-md px-5 py-4 max-w-xs shadow-sm animate-in fade-in duration-200">
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-4 h-4 rounded-full border-2 border-blue-500 border-t-transparent animate-spin"></div>
+                  <div className="w-4 h-4 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin"></div>
                   <span className="text-sm font-medium text-gray-600">Analyzing context...</span>
                 </div>
                 <div className="space-y-2">
-                  <div className="h-2 bg-gray-200/80 rounded-full animate-pulse w-full"></div>
-                  <div className="h-2 bg-gray-200/80 rounded-full animate-pulse w-4/5"></div>
-                  <div className="h-2 bg-gray-200/80 rounded-full animate-pulse w-3/5"></div>
+                  <div className="h-2 bg-[#e4f3ee]/60 rounded-full animate-pulse w-full"></div>
+                  <div className="h-2 bg-[#e4f3ee]/60 rounded-full animate-pulse w-4/5"></div>
+                  <div className="h-2 bg-[#e4f3ee]/60 rounded-full animate-pulse w-3/5"></div>
                 </div>
               </div>
             </motion.div>
@@ -231,13 +231,13 @@ export default function AIConsultantDashboard() {
           <div ref={messagesEndRef} className="h-4" />
         </div>
 
-        {/* Input Area — elevated, premium feel */}
-        <div className="px-4 md:px-16 lg:px-28 xl:px-36 pb-5 pt-2 bg-gradient-to-t from-white via-white/95 to-transparent">
+        {/* Input Area — elevated for high contrast against F8FAFD */}
+        <div className="px-4 md:px-16 lg:px-28 xl:px-36 pb-5 pt-3 bg-gradient-to-t from-[#F8FAFD] via-[#F8FAFD]/95 to-transparent z-20">
           <form onSubmit={handleSubmit} className="relative">
-            <div className={`relative flex items-end bg-white border rounded-2xl shadow-sm transition-all duration-200 ${
+            <div className={`relative flex items-end bg-white border rounded-2xl transition-all duration-200 ${
               isFocused 
-                ? 'border-blue-300 shadow-[0_0_0_3px_rgba(26,115,232,0.08)] ring-0' 
-                : 'border-gray-200 hover:border-gray-300'
+                ? 'border-emerald-300 shadow-[0_4px_20px_rgba(0,132,101,0.06),0_0_0_3px_rgba(0,132,101,0.04)]' 
+                : 'border-gray-200/80 hover:border-gray-300 shadow-[0_2px_8px_rgba(0,0,0,0.02)]'
             }`}>
               <textarea
                 ref={textareaRef}
@@ -252,27 +252,27 @@ export default function AIConsultantDashboard() {
                 className="w-full bg-transparent px-5 py-4 text-[15px] text-gray-900 placeholder-gray-400 focus:outline-none disabled:opacity-50 resize-none leading-relaxed max-h-40"
               />
               <div className="flex items-center gap-1.5 px-3 pb-3 flex-shrink-0">
-                <div className="hidden sm:flex items-center gap-1 text-[10px] text-gray-300 font-medium mr-1">
+                <div className="hidden sm:flex items-center gap-1 text-[10px] text-gray-300 font-medium mr-1 select-none">
                   <CornerDownLeft className="w-3 h-3" /> Enter
                 </div>
                 <button
                   type="submit"
                   disabled={!input.trim() || chatLoading}
-                  className="w-9 h-9 rounded-xl bg-[#1A73E8] hover:bg-[#1567d3] text-white disabled:opacity-30 disabled:bg-gray-300 flex items-center justify-center transition-all duration-150 shadow-sm"
+                  className="w-9 h-9 rounded-xl bg-[#008465] hover:bg-[#007055] text-white disabled:opacity-30 disabled:bg-gray-300 flex items-center justify-center transition-all duration-150 shadow-sm"
                 >
                   <ArrowUp className="w-4 h-4" />
                 </button>
               </div>
             </div>
           </form>
-          <div className="text-center mt-2.5">
-             <span className="text-[11px] text-gray-300">AI may generate inaccurate responses. Verify important information.</span>
+          <div className="text-center mt-2.5 select-none">
+             <span className="text-[11px] text-gray-400">AI may generate inaccurate responses. Verify important information.</span>
           </div>
         </div>
       </div>
 
       {/* Memory Side-panel */}
-      <div className="w-72 bg-gray-50/50 border-l border-gray-100 flex flex-col hidden lg:flex">
+      <div className="w-72 bg-white border-l border-gray-150 flex flex-col hidden lg:flex">
         <div className="p-4 border-b border-gray-100 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-gray-700 font-semibold">
             <HistoryIcon className="w-4 h-4 text-gray-400" />
@@ -317,8 +317,8 @@ export default function AIConsultantDashboard() {
                     onClick={() => setActiveConversation(conv.id)}
                     className={`w-full text-left text-[13px] p-2.5 rounded-lg transition-all duration-150 group flex items-center justify-between ${
                       activeConversationId === conv.id 
-                        ? 'bg-blue-50 text-[#1A73E8] font-medium border border-blue-100' 
-                        : 'text-gray-500 hover:bg-white hover:text-gray-700 hover:shadow-sm'
+                        ? 'bg-emerald-50 text-[#008465] font-medium border border-emerald-100' 
+                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 hover:shadow-sm'
                     }`}
                   >
                     <div className="line-clamp-1 flex-1 pr-2">{conv.title || 'Conversation...'}</div>
