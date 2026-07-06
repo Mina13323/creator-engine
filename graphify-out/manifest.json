@@ -550,13 +550,13 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/admin/TrafficChart.tsx": {
-    "mtime": 1783173766.7775278,
-    "ast_hash": "bf69e5cbeadd1fe180d0861f33a169d6",
+    "mtime": 1783296587.5513644,
+    "ast_hash": "71e5babd95aee5566ac531072917cc65",
     "semantic_hash": ""
   },
   "apps/web/src/hooks/useModerationDashboard.ts": {
-    "mtime": 1783287513.022599,
-    "ast_hash": "6bd4618648c1db0e40b7f42d9766a561",
+    "mtime": 1783296581.3611994,
+    "ast_hash": "77358abefe2a3d3d54790df4d837945e",
     "semantic_hash": ""
   },
   "scripts/create_admin.js": {
@@ -570,8 +570,8 @@
     "semantic_hash": ""
   },
   "apps/api/src/routes/admin.ts": {
-    "mtime": 1783293297.3140326,
-    "ast_hash": "1bd66e168ad46d90da5c492860550cbb",
+    "mtime": 1783296575.877959,
+    "ast_hash": "03791a18a280dc4344c5983cddf318b4",
     "semantic_hash": ""
   },
   "apps/web/src/app/admin/moderation/page.tsx": {
