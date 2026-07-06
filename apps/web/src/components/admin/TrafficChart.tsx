@@ -1,8 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { TrafficData } from '@/hooks/useModerationDashboard';
+
+type ModalData = {
+  title: string;
+  color: string;
+  count?: number | string;
+  items: string[];
+  emptyText: string;
+};
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -60,6 +68,18 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export function TrafficChart({ data, view }: { data: TrafficData[]; view: 'USERS' | 'PROJECTS' }) {
   const [mounted, setMounted] = useState(false);
   const [selectedDayIndex, setSelectedDayIndex] = useState<number | null>(null);
+  const [modalData, setModalData] = useState<ModalData | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const openModal = useCallback((d: ModalData) => {
+    setModalData(d);
+    dialogRef.current?.showModal();
+  }, []);
+
+  const closeModal = useCallback(() => {
+    dialogRef.current?.close();
+    setModalData(null);
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -148,64 +168,166 @@ export function TrafficChart({ data, view }: { data: TrafficData[]; view: 'USERS
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Column 1: Signups */}
-            <div className="p-4 bg-slate-950/30 border border-slate-850 rounded-xl flex flex-col justify-between min-h-[140px]">
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-purple-400 font-mono">New Signups</span>
-                  <span className="text-xs font-mono font-bold text-slate-350">{selectedDay.signups}</span>
-                </div>
-                <div className="mt-3 max-h-[80px] overflow-y-auto pr-1 text-xs text-slate-400 space-y-1 font-mono">
-                  {selectedDay.signupNames && selectedDay.signupNames.length > 0 ? (
-                    selectedDay.signupNames.map((name, idx) => (
-                      <div key={idx} className="truncate select-text">• {name}</div>
-                    ))
-                  ) : (
-                    <div className="text-slate-600 text-[10px] italic">No user registrations</div>
-                  )}
-                </div>
+            <div className="p-4 bg-slate-950/30 border border-slate-800/60 rounded-xl flex flex-col gap-3 min-h-[140px]">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black uppercase tracking-wider text-purple-400 font-mono">New Signups</span>
+                <span className="text-xs font-mono font-bold text-slate-350">{selectedDay.signups}</span>
               </div>
+              <div className="flex-1 max-h-[70px] overflow-hidden text-xs text-slate-400 space-y-1 font-mono">
+                {selectedDay.signupNames && selectedDay.signupNames.length > 0 ? (
+                  selectedDay.signupNames.slice(0, 3).map((name, idx) => (
+                    <div key={idx} className="truncate">• {name}</div>
+                  ))
+                ) : (
+                  <div className="text-slate-600 text-[10px] italic">No user registrations</div>
+                )}
+                {selectedDay.signupNames && selectedDay.signupNames.length > 3 && (
+                  <div className="text-slate-600 text-[10px]">+{selectedDay.signupNames.length - 3} more...</div>
+                )}
+              </div>
+              <button
+                onClick={() => openModal({
+                  title: 'New Signups',
+                  color: '#a855f7',
+                  count: selectedDay.signups,
+                  items: selectedDay.signupNames ?? [],
+                  emptyText: 'No user registrations on this day'
+                })}
+                className="mt-auto text-[10px] font-bold text-purple-400/70 hover:text-purple-400 transition-colors uppercase tracking-wider font-mono border border-purple-400/20 hover:border-purple-400/50 rounded-lg py-1.5 px-3 flex items-center gap-1.5 w-fit self-start hover:bg-purple-400/5"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                See Details
+              </button>
             </div>
 
             {/* Column 2: Projects */}
-            <div className="p-4 bg-slate-950/30 border border-slate-850 rounded-xl flex flex-col justify-between min-h-[140px]">
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-cyan-400 font-mono">Created Projects</span>
-                  <span className="text-xs font-mono font-bold text-slate-350">{selectedDay.projectsCount ?? 0}</span>
-                </div>
-                <div className="mt-3 max-h-[80px] overflow-y-auto pr-1 text-xs text-slate-400 space-y-1 font-mono">
-                  {selectedDay.projectNames && selectedDay.projectNames.length > 0 ? (
-                    selectedDay.projectNames.map((name, idx) => (
-                      <div key={idx} className="truncate select-text">• {name}</div>
-                    ))
-                  ) : (
-                    <div className="text-slate-600 text-[10px] italic">No projects created</div>
-                  )}
-                </div>
+            <div className="p-4 bg-slate-950/30 border border-slate-800/60 rounded-xl flex flex-col gap-3 min-h-[140px]">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black uppercase tracking-wider text-cyan-400 font-mono">Created Projects</span>
+                <span className="text-xs font-mono font-bold text-slate-350">{selectedDay.projectsCount ?? 0}</span>
               </div>
+              <div className="flex-1 max-h-[70px] overflow-hidden text-xs text-slate-400 space-y-1 font-mono">
+                {selectedDay.projectNames && selectedDay.projectNames.length > 0 ? (
+                  selectedDay.projectNames.slice(0, 3).map((name, idx) => (
+                    <div key={idx} className="truncate">• {name}</div>
+                  ))
+                ) : (
+                  <div className="text-slate-600 text-[10px] italic">No projects created</div>
+                )}
+                {selectedDay.projectNames && selectedDay.projectNames.length > 3 && (
+                  <div className="text-slate-600 text-[10px]">+{selectedDay.projectNames.length - 3} more...</div>
+                )}
+              </div>
+              <button
+                onClick={() => openModal({
+                  title: 'Created Projects',
+                  color: '#06b6d4',
+                  count: selectedDay.projectsCount ?? 0,
+                  items: selectedDay.projectNames ?? [],
+                  emptyText: 'No projects created on this day'
+                })}
+                className="mt-auto text-[10px] font-bold text-cyan-400/70 hover:text-cyan-400 transition-colors uppercase tracking-wider font-mono border border-cyan-400/20 hover:border-cyan-400/50 rounded-lg py-1.5 px-3 flex items-center gap-1.5 w-fit self-start hover:bg-cyan-400/5"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                See Details
+              </button>
             </div>
 
             {/* Column 3: Active Users & Actions */}
-            <div className="p-4 bg-slate-950/30 border border-slate-850 rounded-xl flex flex-col justify-between min-h-[140px]">
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400 font-mono">Active Users &amp; Actions</span>
-                  <span className="text-xs font-mono font-bold text-slate-350">{selectedDay.actions} runs</span>
-                </div>
-                <div className="mt-3 max-h-[80px] overflow-y-auto pr-1 text-xs text-slate-400 space-y-1 font-mono">
-                  {selectedDay.activeUsers && selectedDay.activeUsers.length > 0 ? (
-                    selectedDay.activeUsers.map((name, idx) => (
-                      <div key={idx} className="truncate select-text">• {name}</div>
-                    ))
-                  ) : (
-                    <div className="text-slate-600 text-[10px] italic">No active users today</div>
-                  )}
-                </div>
+            <div className="p-4 bg-slate-950/30 border border-slate-800/60 rounded-xl flex flex-col gap-3 min-h-[140px]">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-400 font-mono">Active Users &amp; Actions</span>
+                <span className="text-xs font-mono font-bold text-slate-350">{selectedDay.actions} runs</span>
               </div>
+              <div className="flex-1 max-h-[70px] overflow-hidden text-xs text-slate-400 space-y-1 font-mono">
+                {selectedDay.activeUsers && selectedDay.activeUsers.length > 0 ? (
+                  selectedDay.activeUsers.slice(0, 3).map((name, idx) => (
+                    <div key={idx} className="truncate">• {name}</div>
+                  ))
+                ) : (
+                  <div className="text-slate-600 text-[10px] italic">No active users today</div>
+                )}
+                {selectedDay.activeUsers && selectedDay.activeUsers.length > 3 && (
+                  <div className="text-slate-600 text-[10px]">+{selectedDay.activeUsers.length - 3} more...</div>
+                )}
+              </div>
+              <button
+                onClick={() => openModal({
+                  title: 'Active Users & Actions',
+                  color: '#10b981',
+                  count: `${selectedDay.actions} AI runs`,
+                  items: selectedDay.activeUsers ?? [],
+                  emptyText: 'No active users on this day'
+                })}
+                className="mt-auto text-[10px] font-bold text-emerald-400/70 hover:text-emerald-400 transition-colors uppercase tracking-wider font-mono border border-emerald-400/20 hover:border-emerald-400/50 rounded-lg py-1.5 px-3 flex items-center gap-1.5 w-fit self-start hover:bg-emerald-400/5"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                See Details
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Detail Modal */}
+      <dialog
+        ref={dialogRef}
+        onClick={(e) => { if (e.target === dialogRef.current) closeModal(); }}
+        className="rounded-2xl bg-[#0a0f1e] border border-slate-800/80 shadow-2xl p-0 max-w-lg w-full backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+        style={{ outline: 'none' }}
+      >
+        {modalData && (
+          <div className="p-6 flex flex-col gap-5">
+            {/* Header */}
+            <div className="flex items-start justify-between">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: modalData.color }} />
+                  <h3 className="text-sm font-black uppercase tracking-widest font-mono" style={{ color: modalData.color }}>
+                    {modalData.title}
+                  </h3>
+                </div>
+                {modalData.count !== undefined && (
+                  <p className="text-[10px] text-slate-500 font-mono pl-4">Total: {modalData.count}</p>
+                )}
+              </div>
+              <button
+                onClick={closeModal}
+                className="text-slate-600 hover:text-slate-300 transition-colors p-1 rounded-lg hover:bg-slate-800/60"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="max-h-[400px] overflow-y-auto pr-1 flex flex-col gap-1">
+              {modalData.items.length > 0 ? (
+                modalData.items.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-3 py-2 px-3 rounded-lg hover:bg-slate-800/40 transition-colors group"
+                  >
+                    <span className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: modalData.color, opacity: 0.7 }} />
+                    <span className="text-xs text-slate-300 font-mono select-all break-all">{item}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="text-slate-600 text-xs italic text-center py-8">{modalData.emptyText}</div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="pt-3 border-t border-slate-800/60 flex justify-end">
+              <button
+                onClick={closeModal}
+                className="text-xs font-bold text-slate-400 hover:text-slate-200 transition-colors uppercase tracking-wider font-mono border border-slate-700/60 hover:border-slate-600 rounded-lg py-2 px-4 hover:bg-slate-800/40"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+      </dialog>
     </div>
   );
 }
