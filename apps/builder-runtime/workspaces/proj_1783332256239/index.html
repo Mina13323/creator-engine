@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venture - Modern Technology</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="app-bar">
+    <div class="container">
+      <div class="logo">Venture</div>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#features" class="nav-link">Features</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+        <span class="menu-icon"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <h1 class="display-large">Build Tomorrow's Solutions Today</h1>
+          <p class="body-large hero-subtitle">Empowering businesses with cutting-edge authentication and dashboard tools.</p>
+          <div class="hero-actions">
+            <button class="btn filled">Get Started</button>
+            <button class="btn outlined">Learn More</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="features">
+      <div class="container">
+        <h2 class="headline-medium section-title">Core Features</h2>
+        <div class="feature-grid">
+          <div class="card elevated">
+            <div class="card-content">
+              <h3 class="title-large">Authentication</h3>
+              <p class="body-medium">Secure and seamless user authentication with multi-factor support.</p>
+            </div>
+          </div>
+          <div class="card elevated">
+            <div class="card-content">
+              <h3 class="title-large">Dashboard</h3>
+              <p class="body-medium">Real-time analytics and customizable widgets for data-driven decisions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container">
+        <h2 class="headline-medium section-title">About Us</h2>
+        <div class="about-content">
+          <div class="about-text">
+            <p class="body-large">We are a technology company dedicated to building modern, scalable solutions. Our team combines expertise in security and data visualization to deliver products that businesses trust.</p>
+            <p class="body-large">Our mission is to simplify complex workflows and empower teams to focus on what matters most.</p>
+          </div>
+          <div class="about-stats">
+            <div class="stat">
+              <span class="stat-value" id="statClients">500+</span>
+              <span class="stat-label">Clients</span>
+            </div>
+            <div class="stat">
+              <span class="stat-value" id="statProjects">1200+</span>
+              <span class="stat-label">Projects</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="body-small">&copy; 2025 Venture. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

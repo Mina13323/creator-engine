@@ -7,7 +7,7 @@ interface StoreState {
   projects: Project[];
   currentProject: Project | null;
   ventureState: VentureState | null;
-  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'roadmap' | 'ai-studio' | 'account' | 'ai-consultant';
+  activeTab: 'dashboard' | 'business-builder' | 'opportunities' | 'business-plan' | 'financials' | 'branding' | 'marketing' | 'roadmap' | 'ai-studio' | 'account' | 'ai-consultant' | 'builder';
   isOnboarded: boolean;
   
   // Async states

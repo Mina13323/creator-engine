@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { callHuggingFaceImage } from '@creator/agents';
+import * as dotenv from 'dotenv';
+import path from 'path';
+
+// Load root .env
+dotenv.config({ path: path.resolve(process.cwd(), '../../.env') });
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,8 +15,9 @@ export async function POST(req: NextRequest) {
     }
 
     const hfToken = process.env.HF_TOKEN;
-    if (!hfToken) {
-      return NextResponse.json({ error: 'HF_TOKEN not configured' }, { status: 500 });
+    const fwToken = process.env.FIREWORKS_API_KEY;
+    if (!hfToken && !fwToken) {
+      return NextResponse.json({ error: 'HF_TOKEN or FIREWORKS_API_KEY not configured' }, { status: 500 });
     }
 
     const cleanPrompt = prompt.replace(/\n/g, ' ').trim();

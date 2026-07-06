@@ -1,0 +1,1 @@
+export const Index = ({ children, ...props }: any) => <div {...props}>{children}</div>;

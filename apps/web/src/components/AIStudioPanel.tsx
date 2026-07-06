@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { useStore } from '../store/useStore';
 import { authClient } from '../lib/authClient';
+import { api } from '../lib/api';
 import { ImagePlus, Video, FileAudio, FolderHeart, Sparkles, Download, Layers } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fadeInUp, fadeIn, staggerContainer } from '../lib/motion-presets';
@@ -12,7 +13,7 @@ type StudioTab = 'image' | 'media' | 'library';
 
 export default function AIStudioPanel() {
   const { t } = useI18n();
-  const { currentProject, generateImage } = useStore();
+  const { currentProject } = useStore();
   const [activeTab, setActiveTab] = useState<StudioTab>('image');
   
   const [uploading, setUploading] = useState(false);
@@ -73,8 +74,8 @@ export default function AIStudioPanel() {
     setIsGenerating(true);
     setGeneratedImageUrl(null); // Clear previous image while generating
     try {
-      const url = await generateImage(imagePrompt, imageStyle);
-      setGeneratedImageUrl(url);
+      const result = await api.generateImage({ prompt: imagePrompt, model: imageStyle });
+      setGeneratedImageUrl(result.url);
     } catch (error) {
       console.error("Failed to generate image", error);
       alert("Failed to generate image. Please try again.");

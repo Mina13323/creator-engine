@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Level Up Tech — Dashboard & Authentication</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#121212] text-[#ffffff] font-body">
+
+  <!-- Navigation -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#1e1e1e]/80 backdrop-blur-md border-b border-[#2c2c2c]">
+    <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <div class="flex items-center gap-2">
+        <span class="text-[#00E5FF] text-2xl font-display font-bold tracking-wider">LEVELUP</span>
+        <span class="text-[#b0b0b0] text-sm font-body hidden sm:inline-block">| tech</span>
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#home" class="text-[#ffffff] hover:text-[#00E5FF] transition-colors duration-300 font-body text-sm uppercase tracking-widest">Home</a>
+        <a href="#about" class="text-[#b0b0b0] hover:text-[#00E5FF] transition-colors duration-300 font-body text-sm uppercase tracking-widest">About</a>
+        <a href="#features" class="text-[#b0b0b0] hover:text-[#00E5FF] transition-colors duration-300 font-body text-sm uppercase tracking-widest">Features</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="px-4 py-2 text-sm font-medium text-[#ffffff] border border-[#444444] rounded hover:bg-[#2c2c2c] transition-all duration-300">Sign In</button>
+        <button class="px-4 py-2 text-sm font-medium bg-[#00E5FF] text-[#000000] rounded hover:bg-[#00b8cc] transition-all duration-300 shadow-lg shadow-[#00E5FF]/20">Get Started</button>
+      </div>
+      <!-- Mobile menu button -->
+      <button id="menuButton" class="md:hidden text-[#ffffff] focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </nav>
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-[#1e1e1e] border-t border-[#2c2c2c] px-4 py-4 space-y-3">
+      <a href="#home" class="block text-[#ffffff] hover:text-[#00E5FF] transition-colors font-body text-sm uppercase tracking-widest">Home</a>
+      <a href="#about" class="block text-[#b0b0b0] hover:text-[#00E5FF] transition-colors font-body text-sm uppercase tracking-widest">About</a>
+      <a href="#features" class="block text-[#b0b0b0] hover:text-[#00E5FF] transition-colors font-body text-sm uppercase tracking-widest">Features</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section (Home) -->
+    <section id="home" class="min-h-screen flex items-center justify-center pt-20 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-8">
+          <div class="inline-block px-4 py-1 bg-[#2c2c2c] rounded-full border border-[#444444] text-xs uppercase tracking-widest text-[#b0b0b0]">
+            Next-gen gaming infrastructure
+          </div>
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight">
+            <span class="text-[#ffffff]">Level up your</span><br/>
+            <span class="text-[#00E5FF]">digital identity</span>
+          </h1>
+          <p class="text-lg text-[#b0b0b0] font-body leading-relaxed max-w-lg">
+            Authentication and dashboard tools built for the gaming industry. 
+            Secure, fast, and designed for players and developers alike.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <button class="px-6 py-3 bg-[#00E5FF] text-[#000000] font-medium rounded hover:bg-[#00b8cc] transition-all duration-300 shadow-lg shadow-[#00E5FF]/30 flex items-center gap-2">
+              Start Free Trial
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </button>
+            <button class="px-6 py-3 border border-[#444444] text-[#ffffff] font-medium rounded hover:bg-[#2c2c2c] transition-all duration-300 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Watch Demo
+            </button>
+          </div>
+        </div>
+        <div class="relative flex items-center justify-center">
+          <div class="w-80 h-80 md:w-96 md:h-96 rounded-full bg-gradient-to-br from-[#00E5FF]/10 via-[#1e1e1e] to-[#00E5FF]/5 border border-[#2c2c2c] flex items-center justify-center relative">
+            <div class="absolute inset-0 rounded-full bg-[#00E5FF]/5 blur-3xl"></div>
+            <div class="relative z-10 text-center">
+              <div class="text-6xl mb-4">🎮</div>
+              <div class="font-display text-2xl text-[#00E5FF]">AUTH</div>
+              <div class="font-display text-sm text-[#b0b0b0]">dashboard</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section (includes Authentication & Dashboard) -->
+    <section id="features" class="py-24 px-4 sm:px-6 lg:px-8 bg-[#1e1e1e]/50">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl sm:text-4xl font-display font-bold mb-4">Built for <span class="text-[#00E5FF]">gamers</span></h2>
+          <p class="text-[#b0b0b0] max-w-2xl mx-auto font-body">
+            Authentication and dashboards that feel native to the gaming experience. 
+            Fast, secure, and immersive.
+          </p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Authentication Card -->
+          <div class="bg-[#1e1e1e] border border-[#2c2c2c] rounded-xl p-8 hover:border-[#00E5FF]/50 transition-all duration-500 group">
+            <div class="w-12 h-12 bg-[#004d40] rounded-lg flex items-center justify-center mb-6 group-hover:bg-[#00E5FF]/20 transition-colors duration-500">
+              <svg class="w-6 h-6 text-[#00E5FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-display font-bold mb-3">Authentication</h3>
+            <p class="text-[#b0b0b0] font-body mb-6">
+              Passwordless, OAuth, and hardware-key ready. Built for speed and security 
+              — no more clunky login flows.
+            </p>
+            <ul class="space-y-2">
+              <li class="flex items-center gap-2 text-sm text-[#b0b0b0]">
+                <span class="w-1.5 h-1.5 bg-[#00E5FF] rounded-full"></span> Social login (Discord, Steam, Twitch)
+              </li>
+              <li class="flex items-center gap-2 text-sm text-[#b0b0b0]">
+                <span class="w-1.5 h-1.5 bg-[#00E5FF] rounded-full"></span> Passkey / WebAuthn support
+              </li>
+              <li class="flex items-center gap-2 text-sm text-[#b0b0b0]">
+                <span class="w-1.5 h-1.5 bg-[#00E5FF] rounded-full"></span> 2FA with authenticator apps
+              </li>
+            </ul>
+          </div>
+          <!-- Dashboard Card -->
+          <div class="bg-[#1e1e1e] border border-[#2c2c2c] rounded-xl p-8 hover:border-[#00E5FF]/50 transition-all duration-500 group">
+            <div class="w-12 h-12 bg-[#004d40] rounded-lg flex items-center justify-center mb-6 group-hover:bg-[#00E5FF]/20 transition-colors duration-500">
+              <svg class="w-6 h-6 text-[#00E5FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-display font-bold mb-3">Dashboard</h3>
+            <p class="text-[#b0b0b0] font-body mb-6">
+              Real-time analytics, player management, and game-server monitoring 
+              — all in one sleek interface.
+            </p>
+            <ul class="space-y-2">
+              <li class="flex items-center gap-2 text-sm text-[#b0b0b0]">
+                <span class="w-1.5 h-1.5 bg-[#00E5FF] rounded-full"></span> Live player count & metrics
+              </li>
+              <li class="flex items-center gap-2 text-sm text-[#b0b0b0]">
+                <span class="w-1.5 h-1.5 bg-[#00E5FF] rounded-full"></span> In-game event logs
+              </li>
+              <li class="flex items-center gap-2 text-sm text-[#b0b0b0]">
+                <span class="w-1.5 h-1.5 bg-[#00E5FF] rounded-full"></span> Team & permission management
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl sm:text-4xl font-display font-bold mb-6">
+            We speak <span class="text-[#00E5FF]">gamer</span>
+          </h2>
+          <p class="text-[#b0b0b0] font-body mb-6 leading-relaxed">
+            LevelUp Tech was founded by developers who live and breathe gaming. 
+            We know that authentication can make or break the player experience, and 
+            that a dashboard should be as responsive as your game servers.
+          </p>
+          <p class="text-[#b0b0b0] font-body mb-8 leading-relaxed">
+            Our platform is built on modern standards — WebAuthn, OAuth 2.0, and 
+            real-time WebSockets — so you can focus on building great games.
+          </p>
+          <div class="flex items-center gap-4">
+            <div class="flex -space-x-2">
+              <div class="w-10 h-10 rounded-full bg-[#00E5FF]/20 border border-[#00E5FF]/40 flex items-center justify-center text-xs font-bold text-[#00E5FF]">JD</div>
+              <div class="w-10 h-10 rounded-full bg-[#00E5FF]/20 border border-[#00E5FF]/40 flex items-center justify-center text-xs font-bold text-[#00E5FF]">AL</div>
+              <div class="w-10 h-10 rounded-full bg-[#00E5FF]/20 border border-[#00E5FF]/40 flex items-center justify-center text-xs font-bold text-[#00E5FF]">MK</div>
+            </div>
+            <span class="text-sm text-[#b0b0b0]">+2k developers trust us</span>
+          </div>
+        </div>
+        <div class="bg-[#1e1e1e] border border-[#2c2c2c] rounded-xl p-8">
+          <div class="space-y-4">
+            <div class="flex items-center gap-4 p-4 bg-[#2c2c2c] rounded-lg">
+              <span class="w-2 h-2 bg-[#00E5FF] rounded-full"></span>
+              <div>
+                <p class="font-medium text-sm">99.9% uptime</p>
+                <p class="text-xs text-[#b0b0b0]">Enterprise SLA</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 p-4 bg-[#2c2c2c] rounded-lg">
+              <span class="w-2 h-2 bg-[#00E5FF] rounded-full"></span>
+              <div>
+                <p class="font-medium text-sm">Under 50ms auth</p>
+                <p class="text-xs text-[#b0b0b0]">Global edge network</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-4 p-4 bg-[#2c2c2c] rounded-lg">
+              <span class="w-2 h-2 bg-[#00E5FF] rounded-full"></span>
+              <div>
+                <p class="font-medium text-sm">SOC 2 compliant</p>
+                <p class="text-xs text-[#b0b0b0]">Security first</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 px-4 sm:px-6 lg:px-8 bg-[#1e1e1e]/50 border-t border-[#2c2c2c]">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl sm:text-4xl font-display font-bold mb-6">
+          Ready to <span class="text-[#00E5FF]">level up</span>?
+        </h2>
+        <p class="text-[#b0b0b0] font-body mb-8 max-w-xl mx-auto">
+          Join thousands of game studios using LevelUp Tech for authentication and dashboards.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <button class="px-8 py-3 bg-[#00E5FF] text-[#000000] font-medium rounded hover:bg-[#00b8cc] transition-all duration-300 shadow-lg shadow-[#00E5FF]/30">
+            Start Building
+          </button>
+          <button class="px-8 py-3 border border-[#444444] text-[#ffffff] font-medium rounded hover:bg-[#2c2c2c] transition-all duration-300">
+            Talk to Sales
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-[#2c2c2c] py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="text-[#00E5FF] text-lg font-display font-bold tracking-wider">LEVELUP</span>
+        <span class="text-[#b0b0b0] text-xs">| tech</span>
+      </div>
+      <div class="flex gap-6 text-sm text-[#b0b0b0]">
+        <a href="#" class="hover:text-[#00E5FF] transition-colors">Privacy</a>
+        <a href="#" class="hover:text-[#00E5FF] transition-colors">Terms</a>
+        <a href="#" class="hover:text-[#00E5FF] transition-colors">Contact</a>
+      </div>
+      <p class="text-xs text-[#b0b0b0]">© 2025 LevelUp Tech — All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

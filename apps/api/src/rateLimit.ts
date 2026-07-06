@@ -4,7 +4,7 @@ import { env } from './env';
 // General endpoints rate limiter (e.g., getting states, projects)
 export const generalRateLimiter = rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MS,
-  max: env.RATE_LIMIT_MAX_GENERAL,
+  max: env.NODE_ENV === 'development' ? 10000 : env.RATE_LIMIT_MAX_GENERAL,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -15,11 +15,11 @@ export const generalRateLimiter = rateLimit({
 // Authentication endpoints rate limiter (e.g., login, signup)
 export const authRateLimiter = rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MS,
-  max: env.RATE_LIMIT_MAX_AUTH,
+  max: env.NODE_ENV === 'development' ? 10000 : env.RATE_LIMIT_MAX_AUTH,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
-    error: 'Too many authentication attempts, please try again later.'
+    error: 'Too many requests, please try again later.'
   }
 });
 

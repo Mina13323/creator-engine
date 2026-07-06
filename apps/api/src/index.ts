@@ -31,6 +31,7 @@ import paymentsRouter from './routes/payments';
 import marketingStudioRouter from './routes/marketingStudio';
 import uploadRouter from './routes/upload';
 import executionRouter from './routes/execution';
+import { builderRouter } from './routes/builder';
 import { requireCredits, requireSubscription } from './middleware';
 import { deductCredits, CREDIT_COSTS, getUserCredits, provisionUserMonetization } from './services/creditEngine';
 import { authMiddleware, adminMiddleware } from './middleware';
@@ -89,6 +90,11 @@ app.use(cors({
 app.use(generalRateLimiter);
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Serve local uploads
+import path from 'path';
+app.use('/uploads', express.static(path.resolve(process.cwd(), 'public/uploads')));
+
 app.use(cookieParser());
 
 const PORT = env.PORT;
@@ -398,6 +404,7 @@ app.post('/api/portal/reports/send-weekly', authMiddleware, adminMiddleware, asy
   }
 });
 app.use('/api/portal', adminRouter);
+app.use('/api/builder', builderRouter);
 app.use('/api/payments', paymentsRouter);
 app.use('/api/marketing-studio', aiRateLimiter, marketingStudioRouter);
 app.use('/api/upload', uploadRouter);

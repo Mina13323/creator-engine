@@ -1,3 +1,4 @@
+
 import { API_BASE } from './authClient';
 
 export class ApiClient {
@@ -33,11 +34,19 @@ export class ApiClient {
 
     let token = '';
     if (typeof window !== 'undefined') {
-      token = localStorage.getItem('token') || '';
+      const authStorage = localStorage.getItem('auth-storage');
+      if (authStorage) {
+        try {
+          const parsed = JSON.parse(authStorage);
+          token = parsed?.state?.user?.token || localStorage.getItem('token') || '';
+        } catch(e) {}
+      }
+      if (!token) token = localStorage.getItem('token') || '';
     }
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
       
       xhr.upload.onprogress = (event) => {
         if (event.lengthComputable && onProgress) {
@@ -57,9 +66,10 @@ export class ApiClient {
         } else {
           try {
             const error = JSON.parse(xhr.responseText);
-            reject(new Error(error.error || 'Upload failed'));
+            const errMsg = typeof error.error === 'object' ? JSON.stringify(error.error) : error.error;
+            reject(new Error(errMsg || 'Upload failed'));
           } catch (e) {
-            reject(new Error(`Upload failed with status ${xhr.status}`));
+            reject(new Error(`Upload failed with status ${xhr.status}: ${xhr.responseText}`));
           }
         }
       };
@@ -86,25 +96,12 @@ export class ApiClient {
   }) {
     console.info('[API] generateMarketingStudioAd requested:', params);
     
-    // We get the token manually to avoid circular dependencies
-    let token = '';
-    if (typeof window !== 'undefined') {
-      const authStorage = localStorage.getItem('auth-storage');
-      if (authStorage) {
-        try {
-          const parsed = JSON.parse(authStorage);
-          token = parsed?.state?.user?.token || localStorage.getItem('token') || '';
-        } catch(e) {}
-      }
-      if (!token) token = localStorage.getItem('token') || '';
-    }
-
     const response = await fetch(`${API_BASE}/marketing-studio/generate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       },
+      credentials: 'include',
       body: JSON.stringify(params),
     });
 
@@ -114,7 +111,7 @@ export class ApiClient {
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
           const errorData = await response.json();
-          errorMessage = errorData?.error || errorMessage;
+          errorMessage = typeof errorData?.error === 'object' ? JSON.stringify(errorData.error) : (errorData?.error || errorMessage);
         } else {
           const text = await response.text();
           errorMessage = text || errorMessage;

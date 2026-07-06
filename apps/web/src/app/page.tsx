@@ -20,6 +20,7 @@ import PricingModal from '../components/PricingModal';
 import InsufficientCreditsModal from '../components/InsufficientCreditsModal';
 import FinancialEngine from '../components/FinancialEngine';
 import AccountDetails from '../components/AccountDetails';
+import BuilderPanel from '../components/BuilderPanel';
 import { authClient } from '../lib/authClient';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useI18n } from '../lib/i18n/I18nContext';
@@ -42,11 +43,12 @@ import {
   Megaphone,
   ShieldAlert,
   UserCircle,
-  Globe
+  Globe,
+  Code2
 } from 'lucide-react';
 
 // Tabs that require authentication
-const PROTECTED_TABS = ['dashboard', 'business-builder', 'financials', 'guides', 'ai-consultant', 'pitch', 'radar', 'market-research', 'branding', 'marketing', 'roadmap'];
+const PROTECTED_TABS = ['dashboard', 'business-builder', 'financials', 'guides', 'ai-consultant', 'pitch', 'radar', 'market-research', 'branding', 'marketing', 'roadmap', 'builder'];
 
 export default function AppPage() {
   const { t, dir, locale, setLocale } = useI18n();
@@ -173,6 +175,7 @@ export default function AppPage() {
     { id: 'marketing', label: t('sidebar.marketing'), icon: Megaphone, requiresProject: true },
     { id: 'roadmap', label: t('sidebar.roadmap'), icon: Clock, requiresProject: true },
     { id: 'ai-consultant', label: t('sidebar.aiConsultant'), icon: MessageSquare, requiresProject: true },
+    { id: 'builder', label: 'AI Builder', icon: Code2, requiresProject: true },
     { id: 'ai-studio', label: t('sidebar.aiStudio'), icon: ImagePlus, requiresProject: false },
     { id: 'account', label: t('sidebar.account'), icon: UserCircle, requiresProject: false },
   ] as const;
@@ -402,7 +405,7 @@ export default function AppPage() {
         </header>
 
         {/* Workspace Viewport */}
-        <div className={`flex-grow min-h-0 ${activeTab === 'ai-consultant' ? 'overflow-hidden p-0' : 'overflow-y-auto p-6 md:p-8'}`}>
+        <div className={`flex-grow min-h-0 ${['ai-consultant', 'builder'].includes(activeTab) ? 'overflow-hidden p-0' : 'overflow-y-auto p-6 md:p-8'}`}>
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -410,7 +413,7 @@ export default function AppPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className={`flex-1 w-full ${activeTab === 'ai-consultant' ? 'h-full max-w-none' : 'max-w-6xl mx-auto'}`}
+              className={`flex-1 w-full ${['ai-consultant', 'builder'].includes(activeTab) ? 'h-full max-w-none' : 'max-w-6xl mx-auto'}`}
             >
               {activeTab === 'dashboard' && <Dashboard />}
             {activeTab === 'opportunities' && <OpportunityExplorer />}
@@ -420,6 +423,7 @@ export default function AppPage() {
             {activeTab === 'roadmap' && <RoadmapPanel />}
             {activeTab === 'ai-studio' && <AIStudioPanel />}
             {activeTab === 'ai-consultant' && <AIConsultantDashboard />}
+            {activeTab === 'builder' && <BuilderPanel />}
             {activeTab === 'account' && <AccountDetails />}
             
             {activeTab === 'financials' && <FinancialEngine />}

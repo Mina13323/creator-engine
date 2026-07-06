@@ -955,4 +955,60 @@ const AdminSettingsSchema = new Schema<AdminSettings & Document>(
 
 export const AdminSettingsModel = mongoose.models.AdminSettings || mongoose.model<AdminSettings & Document>('AdminSettings', AdminSettingsSchema);
 
+export interface IGeneratedFile {
+  path: string;
+  content: string;
+  language: string;
+}
+
+export interface IGeneratedProject extends Document {
+  id: string;
+  userId: string;
+  ventureId: string;
+  name: string;
+  framework: 'nextjs' | string;
+  status: 'planning' | 'generating' | 'building' | 'running' | 'failed';
+  files: IGeneratedFile[];
+  previewUrl?: string;
+  deploymentUrl?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const GeneratedProjectSchema = new Schema<IGeneratedProject>({
+  id: { type: String, required: true, index: true },
+  userId: { type: String, required: true, index: true },
+  ventureId: { type: String, required: true, index: true },
+  name: { type: String, required: true },
+  framework: { type: String, default: 'nextjs' },
+  status: { type: String, enum: ['planning', 'generating', 'building', 'running', 'failed'], default: 'planning' },
+  files: [{
+    path: { type: String, required: true },
+    content: { type: String, required: true },
+    language: { type: String, required: true }
+  }],
+  previewUrl: { type: String },
+  deploymentUrl: { type: String }
+}, { timestamps: true, collection: 'generated_projects' });
+
+export const GeneratedProjectModel = mongoose.models.GeneratedProject || mongoose.model<IGeneratedProject>('GeneratedProject', GeneratedProjectSchema);
+
+export interface IBuildLog extends Document {
+  projectId: string;
+  logs: string[];
+  buildErrors: string[];
+  buildStatus: 'in_progress' | 'success' | 'failed';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const BuildLogSchema = new Schema<IBuildLog>({
+  projectId: { type: String, required: true, index: true },
+  logs: [{ type: String }],
+  buildErrors: [{ type: String }],
+  buildStatus: { type: String, enum: ['in_progress', 'success', 'failed'], default: 'in_progress' }
+}, { timestamps: true, collection: 'build_logs' });
+
+export const BuildLogModel = mongoose.models.BuildLog || mongoose.model<IBuildLog>('BuildLog', BuildLogSchema);
+
 export * from './services/projectContext';

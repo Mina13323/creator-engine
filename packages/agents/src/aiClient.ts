@@ -6,6 +6,8 @@ export interface AIClientOptions {
   timeoutMs?: number;
   retries?: number;
   retryDelayMs?: number;
+  apiKey?: string;
+  baseUrl?: string;
 }
 
 export class AIError extends Error {
@@ -103,7 +105,7 @@ async function fetchWithRetry(url: string, options: RequestInit, retries: number
 }
 
 export async function callFireworksChat(systemPrompt: string, userPrompt: string, options: AIClientOptions = {}): Promise<string | null> {
-  const fireworksKey = process.env.FIREWORKS_API_KEY_CHAT || process.env.FIREWORKS_API_KEY;
+  const fireworksKey = options.apiKey || process.env.FIREWORKS_API_KEY_CHAT || process.env.FIREWORKS_API_KEY;
   if (!fireworksKey || fireworksKey.includes('your-')) {
     console.warn('[AIClient] Fireworks API key not configured.');
     return null;
@@ -180,6 +182,85 @@ export async function callFireworksChat(systemPrompt: string, userPrompt: string
   }
 }
 
+export async function callGenericOpenAIChat(systemPrompt: string, userPrompt: string, options: AIClientOptions = {}): Promise<string | null> {
+  const {
+    model = 'openai/gpt-4o-mini',
+    temperature = 0.7,
+    max_tokens = 4000,
+    response_format = { type: 'json_object' },
+    timeoutMs = 120000,
+    retries = 2,
+    retryDelayMs = 1000,
+    apiKey,
+    baseUrl = 'https://api.openai.com/v1'
+  } = options;
+
+  if (!apiKey) {
+    console.warn('[AIClient] Generic OpenAI API key not configured.');
+    return null;
+  }
+
+  try {
+    const body: any = {
+      model,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ],
+      temperature,
+      max_tokens
+    };
+
+    if (response_format) {
+      body.response_format = response_format;
+    }
+
+    const startTime = Date.now();
+    const response = await fetchWithRetry(
+      `${baseUrl}/chat/completions`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(body)
+      },
+      retries,
+      retryDelayMs,
+      timeoutMs,
+      'GenericOpenAI'
+    );
+
+    const durationMs = Date.now() - startTime;
+    const data = await response.json();
+    
+    const usage = data.usage || {};
+    console.info(JSON.stringify({
+      event: 'AI_INFERENCE',
+      provider: 'GenericOpenAI',
+      model,
+      durationMs,
+      tokensPrompt: usage.prompt_tokens || 0,
+      tokensCompletion: usage.completion_tokens || 0,
+      tokensTotal: usage.total_tokens || 0,
+      status: 'SUCCESS'
+    }));
+
+    return data.choices?.[0]?.message?.content || null;
+  } catch (error: any) {
+    console.error(JSON.stringify({
+      event: 'AI_INFERENCE',
+      provider: 'GenericOpenAI',
+      model,
+      status: 'FAILED',
+      error: error.message
+    }));
+    console.error('[AIClient] Generic OpenAI Chat failed completely:', error);
+    return null;
+  }
+}
+
 export async function callGemini(systemPrompt: string, userPrompt: string, options: AIClientOptions = {}): Promise<string | null> {
   const geminiKey = process.env.GEMINI_API_KEY;
   if (!geminiKey || geminiKey.includes('your-') || geminiKey === 'AIzaSy...') {
@@ -251,8 +332,10 @@ export async function callLLMWithFallback(systemPrompt: string, userPrompt: stri
 
 export async function callHuggingFaceImage(prompt: string, aspectRatio: string = "16:9", options: AIClientOptions = {}): Promise<Buffer | null> {
   const hfToken = process.env.HF_TOKEN;
-  if (!hfToken || hfToken.includes('your-')) {
-    console.warn('[AIClient] HF token not configured.');
+  const fwToken = process.env.FIREWORKS_API_KEY;
+
+  if ((!hfToken || hfToken.includes('your-')) && (!fwToken || fwToken.includes('your-'))) {
+    console.warn('[AIClient] Neither HF_TOKEN nor FIREWORKS_API_KEY is configured for images.');
     return null;
   }
 
@@ -262,6 +345,37 @@ export async function callHuggingFaceImage(prompt: string, aspectRatio: string =
     retries = 1,
     retryDelayMs = 2000
   } = options;
+
+  if (!hfToken || hfToken.includes('your-')) {
+    // Fallback to Fireworks Image Generation API
+    try {
+      const response = await fetchWithRetry(
+        'https://api.fireworks.ai/inference/v1/image_generation/accounts/fireworks/models/flux-1-schnell',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${fwToken}`,
+            'Accept': 'image/jpeg'
+          },
+          body: JSON.stringify({
+            prompt: prompt,
+            aspect_ratio: aspectRatio,
+            response_format: 'image' // fireworks can return raw image bytes if accept is image/jpeg
+          })
+        },
+        retries,
+        retryDelayMs,
+        timeoutMs,
+        'Fireworks-Image'
+      );
+      const arrayBuffer = await response.arrayBuffer();
+      return Buffer.from(arrayBuffer);
+    } catch (e) {
+      console.error('[AIClient] Fireworks image fallback failed:', e);
+      return null;
+    }
+  }
 
   const url = `https://router.huggingface.co/hf-inference/models/${model}`;
 

@@ -1,0 +1,70 @@
+/* Custom CSS overrides and enhancements */
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Base font */
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Display font utility */
+.font-display {
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Gradient text effect */
+.text-gradient {
+  background: linear-gradient(135deg, #00E5FF 0%, #00b8cc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Neon glow for buttons */
+.btn-neon {
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+}
+
+/* Card hover effect */
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 229, 255, 0.1);
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #121212;
+}
+::-webkit-scrollbar-thumb {
+  background: #2c2c2c;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00E5FF;
+}
+
+/* Animation for hero */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.hero-graphic {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(90deg, #1e1e1e 25%, #2c2c2c 50%, #1e1e1e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

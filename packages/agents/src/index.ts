@@ -832,3 +832,5 @@ export * from './media/storageProvider';
 export * from './evaluatorAgent';
 export * from './executionAgent';
 export * from './nextActionAgent';
+export * from './builderAgent';
+export * from './buildDiagnostics';

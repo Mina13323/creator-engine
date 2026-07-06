@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@layer base {
+  body {
+    @apply bg-background text-on-background font-sans;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto max-w-container px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Button styles */
+  .btn-filled {
+    @apply bg-primary text-on-primary px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:opacity-90 active:scale-95;
+  }
+
+  .btn-outlined {
+    @apply border-2 border-primary text-primary px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:bg-primary hover:text-on-primary active:scale-95;
+  }
+
+  .btn-text {
+    @apply text-primary px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:bg-surface-variant active:scale-95;
+  }
+
+  /* Card */
+  .card {
+    @apply bg-surface rounded-xl shadow-md border border-outline/10 overflow-hidden;
+  }
+
+  /* Section spacing */
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+}

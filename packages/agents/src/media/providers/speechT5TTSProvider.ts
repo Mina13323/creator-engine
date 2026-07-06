@@ -7,7 +7,7 @@ export class SpeechT5TTSProvider implements TTSProvider {
     if (!hfToken) throw new Error('Configuration Error: HF_TOKEN is not set for SpeechT5 TTS.');
     
     const model = 'microsoft/speecht5_tts';
-    const url = `https://router.huggingface.co/hf-inference/models/${model}`;
+    const url = `https://api-inference.huggingface.co/models/${model}`;
 
     const response = await fetch(url, {
       method: 'POST',

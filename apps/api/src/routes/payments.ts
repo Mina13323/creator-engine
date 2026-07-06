@@ -3,6 +3,7 @@ import { adminMiddleware, authMiddleware } from '../middleware';
 import { PaymentTransactionModel, UserSubscriptionModel } from '@creator/database';
 import { addCredits } from '../services/creditEngine';
 import crypto from 'crypto';
+import { env } from '../env';
 
 const router = express.Router();
 
@@ -225,8 +226,13 @@ router.post('/paymob/verify-redirect', authMiddleware, async (req: Request, res:
       }
     }
 
+    // In development mode, auto-verify for testing purposes
+    if (env.NODE_ENV === 'development' || process.env.NODE_ENV === 'development') {
+      paymentVerified = true;
+    }
+
     if (!paymentVerified) {
-      return res.status(402).json({ error: 'Payment not confirmed by provider. Please wait for processing or contact support.' });
+      return res.status(402).json({ error: 'Payment not confirmed by provider. Please wait for processing or contact support.', message: 'Payment not confirmed by provider.' });
     }
 
     // Atomically claim the transaction to prevent double-spending

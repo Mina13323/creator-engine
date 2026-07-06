@@ -16,7 +16,8 @@ export const authMiddleware = async (req: Request, res: Response, next: any) => 
     const decoded = verifyToken(token);
     (req as any).user = { id: decoded.id, email: decoded.email };
     next();
-  } catch (error) {
+  } catch (error: any) {
+    console.error('JWT Verification Error:', error.message);
     return res.status(401).json({ success: false, error: { code: 'UNAUTHORIZED', message: 'Unauthorized: Invalid token' } });
   }
 };
